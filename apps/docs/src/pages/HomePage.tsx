@@ -1,10 +1,31 @@
 import { Link } from "react-router";
+import {
+  Card,
+  CardGrid,
+  FlexItem,
+  GmhLogo,
+  Hero,
+  Section,
+  Text,
+  TextContentTitle,
+  TextHeading,
+  TextSmallStrong,
+} from "@gmhlab/ui";
 
+/**
+ * One card per route in `App.tsx`. Keep this list in step with the router and
+ * with `components/site-header.tsx`, which carries the same set as nav links.
+ */
 const demos = [
+  {
+    to: "/components",
+    title: "Components",
+    body: "The full gallery — every primitive, layout, and composition exported from @gmhlab/ui, with variants and states.",
+  },
   {
     to: "/tokens",
     title: "Tokens",
-    body: "The design-token gallery — semantic color roles, pairing recipes, and the responsive foundations grid.",
+    body: "The design-token gallery — semantic colour roles, pairing recipes, and the responsive foundations grid.",
   },
   {
     to: "/slides",
@@ -16,30 +37,50 @@ const demos = [
     title: "Flex",
     body: "Flex and FlexItem sizing demos — wrap, thirds, minor/major/fill, and column stretch.",
   },
+  {
+    to: "/button-migration",
+    title: "Button Migration",
+    body: "SDS → shadcn/Base UI: prop mapping, what ButtonGroup means now, where TriggerButton went, and href sniffing vs. the render prop.",
+  },
 ];
 
 export function HomePage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16">
-      <h1 className="text-4xl font-bold tracking-tight">monofly demo</h1>
-      <p className="mt-3 text-lg text-muted-foreground">
-        A reference app for the @gmhlab design-system stack. Pick a demo.
-      </p>
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {demos.map((demo) => (
-          <Link
-            key={demo.to}
-            to={demo.to}
-            className="group rounded-lg border border-border bg-card p-6 text-card-foreground transition-colors hover:border-foreground/30 hover:bg-accent/40"
-          >
-            <h2 className="text-xl font-semibold">{demo.title}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{demo.body}</p>
-            <span className="mt-4 inline-block text-sm font-medium text-muted-foreground group-hover:text-foreground">
-              View demo →
-            </span>
-          </Link>
-        ))}
-      </div>
+    <main>
+      <Hero variant="brand" padding="1600">
+        {/* No `href` — the component defaults to "/", which is where we
+            already are, and it supplies its own "GMH Lab, home" label. */}
+        <GmhLogo />
+        <TextContentTitle
+          align="center"
+          title="gmhlab"
+          subtitle="A reference app for the @gmhlab design-system stack — tokens, ui, and blocks. Pick a demo."
+        />
+      </Hero>
+
+      <Section variant="subtle" padding="1600">
+        <CardGrid container type="third" gap="600">
+          {demos.map((demo) => (
+            <FlexItem key={demo.to} size="minor">
+              {/* react-router Link rather than Card's `interactionProps`: that
+                  path renders a react-aria RACLink (a plain <a>), and since
+                  neither app wires RouterProvider it would full-page-reload. */}
+              <Link
+                to={demo.to}
+                className="group block h-full text-inherit no-underline"
+              >
+                <Card variant="stroke" padding="600" className="h-full">
+                  <TextHeading>{demo.title}</TextHeading>
+                  <Text>{demo.body}</Text>
+                  <TextSmallStrong className="group-hover:underline">
+                    View demo →
+                  </TextSmallStrong>
+                </Card>
+              </Link>
+            </FlexItem>
+          ))}
+        </CardGrid>
+      </Section>
     </main>
   );
 }

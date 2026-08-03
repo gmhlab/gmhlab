@@ -1,5 +1,26 @@
 import { useState, type ReactNode } from "react";
 import {
+  // layouts
+  Flex,
+  FlexItem,
+  Grid,
+  GridItem,
+  Section,
+  // compositions
+  Card,
+  CardGrid,
+  Footer,
+  FormBox,
+  Header,
+  Hero,
+  Panel,
+  PricingCard,
+  PricingCardSkeleton,
+  ProductInfoCard,
+  ProductInfoCardSkeleton,
+  ReviewCard,
+  StatsCard,
+  TestimonialCard,
   // MFY primitives
   Avatar,
   AvatarBadge,
@@ -11,7 +32,10 @@ import {
   ButtonGroup,
   ButtonGroupSeparator,
   ButtonGroupText,
+  GmhLogo,
   Image,
+  Logo,
+  Logo2,
   Text,
   TextCode,
   TextContentHeading,
@@ -31,9 +55,28 @@ import {
   TextTitleHero,
   TextTitlePage,
   // shadcn primitives
-
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
   Badge,
   Checkbox,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
   Field,
   FieldDescription,
   FieldError,
@@ -47,256 +90,389 @@ import {
   InputGroupButton,
   InputGroupInput,
   Kbd,
+  Label,
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   RadioGroup,
   RadioGroupItem,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
   Separator,
+  Slider,
   Switch,
   Textarea,
-
-  // layouts
-  Flex,
-  FlexItem,
-  Grid,
-  GridItem,
-  Section,
-  // compositions
-  Card,
-  FormBox,
-  Hero,
-  Panel,
-  PricingCard,
-  PricingCardSkeleton,
-  ProductInfoCard,
-  ProductInfoCardSkeleton,
-  ReviewCard,
-  StatsCard,
-  TestimonialCard,
   // icons + hooks
+  IconCheck,
+  IconChevronDown,
+  IconChevronRight,
+  IconChevronUp,
+  IconInstagram,
+  IconLinkedin,
+  IconMenu,
+  IconMinus,
+  IconSearch,
+  IconShoppingBag,
   IconStar,
+  IconTwitter,
+  IconX,
+  IconXLogo,
+  IconYoutube,
   useMediaQuery,
+  type IconSize,
 } from "@gmhlab/ui";
 import { SlideFooter, SlideHeader } from "@gmhlab/blocks";
-import { ArrowRight, Check, SearchIcon } from "lucide-react";
 
-const ICON_SIZES = ["14", "16", "20", "24", "32", "40", "48"] as const;
+const ICON_SIZES: IconSize[] = ["14", "16", "20", "24", "32", "40", "48"];
+
+const ICONS = [
+  { name: "IconCheck", Component: IconCheck },
+  { name: "IconChevronDown", Component: IconChevronDown },
+  { name: "IconChevronRight", Component: IconChevronRight },
+  { name: "IconChevronUp", Component: IconChevronUp },
+  { name: "IconMenu", Component: IconMenu },
+  { name: "IconMinus", Component: IconMinus },
+  { name: "IconSearch", Component: IconSearch },
+  { name: "IconShoppingBag", Component: IconShoppingBag },
+  { name: "IconStar", Component: IconStar },
+  { name: "IconX", Component: IconX },
+  { name: "IconInstagram", Component: IconInstagram },
+  { name: "IconLinkedin", Component: IconLinkedin },
+  { name: "IconTwitter", Component: IconTwitter },
+  { name: "IconXLogo", Component: IconXLogo },
+  { name: "IconYoutube", Component: IconYoutube },
+];
+
+const SECTIONS = [
+  { id: "typography", label: "Typography" },
+  { id: "buttons", label: "Buttons" },
+  { id: "badges", label: "Badges" },
+  { id: "avatars", label: "Avatars" },
+  { id: "forms", label: "Forms" },
+  { id: "overlays", label: "Overlays" },
+  { id: "icons", label: "Icons" },
+  { id: "logos", label: "Logos" },
+  { id: "images", label: "Images" },
+  { id: "layouts", label: "Layouts" },
+  { id: "cards", label: "Cards" },
+  { id: "vanity-cards", label: "Vanity cards" },
+  { id: "compositions", label: "Compositions" },
+];
 
 const img = (seed: string, w: number, h: number) =>
   `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
-/* ————— page scaffolding (not under test) ————— */
+/* ————— page scaffolding, built from the design system itself ————— */
 
-function DemoSection({
+/**
+ * One gallery section. `variant` alternates so adjacent sections separate
+ * without a hand-rolled divider, and every section is a real `Section` so the
+ * gallery exercises the same padding/background tokens the apps use.
+ */
+function Demo({
   id,
   title,
   description,
-  fullBleed = false,
+  variant = "subtle",
+  bleed = false,
   children,
 }: {
   id: string;
   title: string;
   description?: string;
-  fullBleed?: boolean;
+  variant?: "subtle" | "neutral";
+  bleed?: boolean;
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-20 py-10">
-      <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      <div
-        className={
-          fullBleed
-            ? "mt-6 flex flex-col gap-8"
-            : "mx-auto mt-6 flex max-w-6xl flex-col gap-6 px-4"
-        }
+    <div id={id} className="scroll-mt-28">
+      <Section
+        variant={variant}
+        paddingTop="1600"
+        paddingBottom={bleed ? "800" : "1600"}
       >
-        {children}
-      </div>
-    </section>
+        <Flex container direction="column" gap="1200" alignSecondary="stretch">
+          <TextContentHeading heading={title} subheading={description} />
+          {bleed ? null : (
+            <Flex direction="column" gap="800" alignSecondary="stretch">
+              {children}
+            </Flex>
+          )}
+        </Flex>
+      </Section>
+      {bleed ? children : null}
+    </div>
   );
 }
 
-function Specimen({
+/**
+ * A single specimen. `Card` forces `.card-content > *` to full width, so the
+ * label is wrapped in a Flex row to keep the TextCode pill intrinsically sized.
+ */
+function Spec({
   label,
   children,
-  className = "",
+  className,
 }: {
   label: string;
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <div
-      className={`rounded-lg border border-dashed border-border p-4 ${className}`}
-    >
-      <p className="mb-3 font-mono text-xs text-muted-foreground">{label}</p>
+    <Card variant="stroke" padding="600" className={`h-full ${className ?? ""}`}>
+      <Flex gap="200" alignSecondary="center" wrap>
+        <TextCode>{label}</TextCode>
+      </Flex>
+      {children}
+    </Card>
+  );
+}
+
+/**
+ * A row of specimens. Column count comes from Flex's grid `type`, which
+ * collapses to a single column on mobile via the responsive ratio tokens.
+ */
+function SpecRow({
+  type = "half",
+  children,
+}: {
+  type?: "half" | "third" | "quarter";
+  children: ReactNode;
+}) {
+  return (
+    <Flex type={type} wrap gap="600" alignSecondary="stretch">
+      {children}
+    </Flex>
+  );
+}
+
+/** A specimen cell. `size="minor"` only resolves under a sized parent Flex. */
+function SpecCell({ children }: { children: ReactNode }) {
+  return <FlexItem size="minor">{children}</FlexItem>;
+}
+
+/** A neutral swatch used to make layout boxes visible without inventing chrome. */
+function Tile({ children }: { children: ReactNode }) {
+  return (
+    <div className="rounded-md bg-accent px-4 py-3 text-center text-sm text-accent-foreground">
       {children}
     </div>
   );
 }
 
-function SpecimenGrid({
-  children,
-  cols = 3,
-}: {
-  children: ReactNode;
-  cols?: 2 | 3 | 4;
-}) {
-  const colClass = {
-    2: "sm:grid-cols-2",
-    3: "sm:grid-cols-2 lg:grid-cols-3",
-    4: "sm:grid-cols-2 lg:grid-cols-4",
-  }[cols];
-  return <div className={`grid gap-4 ${colClass}`}>{children}</div>;
+/** Full-bleed compositions get a caption instead of a Card wrapper. */
+function BleedSpec({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <Flex direction="column" gap="400" alignSecondary="stretch">
+      <Section variant="subtle" paddingTop="0" paddingBottom="0">
+        <Flex container>
+          <TextCode>{label}</TextCode>
+        </Flex>
+      </Section>
+      {children}
+    </Flex>
+  );
 }
 
-const toc = [
-  { id: "typography", label: "Typography" },
-  { id: "buttons", label: "Buttons (MFY)" },
-  { id: "badges", label: "Badges" },
-  { id: "avatars", label: "Avatars" },
-  { id: "forms", label: "Inputs & Forms" },
-  { id: "links", label: "Links & Separators" },
-  { id: "icons", label: "Icons" },
-  { id: "images", label: "Images" },
-  { id: "layouts", label: "Layouts" },
-  { id: "cards", label: "Cards" },
-  { id: "vanity-cards", label: "Vanity Cards" },
-  { id: "compositions", label: "Hero, Panel, SlideHeader, SlideFooter" },
-];
-
 export function ComponentsPage() {
-  const [lastEvent, setLastEvent] = useState("nothing yet");
+  const [signedIn, setSignedIn] = useState(false);
   const { isMobile, isTablet, isDesktop } = useMediaQuery();
-  const breakpoint = isMobile ? "mobile" : isTablet ? "tablet" : isDesktop ? "desktop" : "unknown";
-  const log = (message: string) => setLastEvent(message);
+  const breakpoint = isMobile
+    ? "mobile"
+    : isTablet
+      ? "tablet"
+      : isDesktop
+        ? "desktop"
+        : "unknown";
 
   return (
-    <main className="pb-24">
-      {/* intro + table of contents */}
-      <div className="mx-auto max-w-6xl px-4 pt-16">
+    <main>
+      <Hero variant="brand" padding="1600">
+        <GmhLogo />
         <TextContentTitle
+          align="center"
           title="Component gallery"
-          subtitle="Every primitive and composition from @gmhlab/ui, with variants. If something here looks broken, the package is broken."
+          subtitle="Every primitive, layout, and composition exported from @gmhlab/ui, rendered with the design system's own Section, Flex, Card, and Text components. If something here looks broken, the package is broken."
         />
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-          {toc.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              style={{ textDecoration: "none" }}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-        <p className="mt-4 font-mono text-xs text-muted-foreground">
-          useMediaQuery: {breakpoint} · press{" "}
-          <span className="font-semibold">d</span> to toggle dark mode
-        </p>
+        <Flex gap="300" alignPrimary="center" wrap>
+          <Badge variant="secondary">{breakpoint}</Badge>
+          <Badge variant="outline">press d for dark mode</Badge>
+        </Flex>
+      </Hero>
+
+      {/* Sticky section nav. The sticky wrapper is a plain div rather than the
+          Section itself — `.section` sets `position: relative`, which would
+          race a Tailwind `sticky` utility at equal specificity. */}
+      <div className="sticky top-14 z-40">
+        <Section variant="neutral" padding="400">
+          <Flex container>
+            {/* The nav scrolls sideways rather than wrapping — thirteen ghost
+                buttons wrapping would make the sticky bar tall enough to eat a
+                phone viewport. `w-max` keeps the row at its natural width so
+                the wrapper has something to scroll, and `min-w-0` lets the
+                wrapper shrink below that width as a flex item. */}
+            <div className="w-full min-w-0 overflow-x-auto">
+              <Flex gap="100" alignSecondary="center" className="w-max">
+                {SECTIONS.map((section) => (
+                  <Button
+                    key={section.id}
+                    size="sm"
+                    variant="ghost"
+                    nativeButton={false}
+                    render={<a href={`#${section.id}`} />}
+                  >
+                    {section.label}
+                  </Button>
+                ))}
+              </Flex>
+            </div>
+          </Flex>
+        </Section>
       </div>
 
-      {/* interaction log — verifies onPress wiring across the page */}
-      <div className="fixed bottom-4 right-4 z-50 rounded-full border border-border bg-background/90 px-4 py-2 font-mono text-xs shadow-lg backdrop-blur">
-        last event: <span className="font-semibold">{lastEvent}</span>
-      </div>
-
-      <DemoSection
+      <Demo
         id="typography"
         title="Typography"
-        description="The Text family — titles, body, lists, price, and content groupings."
+        description="The Text family — titles, body copy, lists, price, and the content groupings that pair them."
       >
-        <Specimen label="TextTitleHero / TextTitlePage / TextSubtitle / TextHeading / TextSubheading">
-          <Flex direction="column" gap="300">
+        <Spec label="TextTitleHero / TextTitlePage / TextSubtitle / TextHeading / TextSubheading">
+          <Flex direction="column" gap="300" alignSecondary="stretch">
             <TextTitleHero>Title hero</TextTitleHero>
             <TextTitlePage>Title page</TextTitlePage>
             <TextSubtitle>Subtitle — supporting copy under a title</TextSubtitle>
             <TextHeading>Heading</TextHeading>
             <TextSubheading>Subheading</TextSubheading>
           </Flex>
-        </Specimen>
-        <SpecimenGrid cols={2}>
-          <Specimen label="Text / TextStrong / TextEmphasis / TextSmall / TextSmallStrong / TextCode">
-            <Flex direction="column" gap="200">
-              <Text>
-                Body text with <TextStrong>strong</TextStrong>,{" "}
-                <TextEmphasis>emphasis</TextEmphasis>, and{" "}
-                <TextCode>code()</TextCode> inline.
-              </Text>
-              <TextSmall>
-                Small body text with <TextSmallStrong>small strong</TextSmallStrong>.
-              </TextSmall>
-              <Text lineHeight="single">
-                Body text with lineHeight="single" for tighter leading.
-              </Text>
-            </Flex>
-          </Specimen>
-          <Specimen label='Text lineClamp={2} (truncation)'>
-            <Text lineClamp={2}>
-              This paragraph is intentionally long so that the two-line clamp
-              can be verified. It keeps going and going past the point where
-              two lines of text would normally end, and then a bit further
-              still, so the ellipsis has something to truncate.
-            </Text>
-          </Specimen>
-          <Specimen label='TextPrice size="large" / size="small"'>
-            <Flex gap="800" alignSecondary="center">
-              <TextPrice currency="$" price="29" label="/ mo" size="large" />
-              <TextPrice currency="$" price="290" label="/ yr" size="small" />
-            </Flex>
-          </Specimen>
-          <Specimen label="TextList (default + tight) / TextLinkList">
-            <Flex gap="800" wrap>
-              <TextList title="Default density">
-                <TextListItem>Unlimited projects</TextListItem>
-                <TextListItem>Priority support</TextListItem>
-              </TextList>
-              <TextList title="Tight density" density="tight">
-                <TextListItem>Unlimited projects</TextListItem>
-                <TextListItem>Priority support</TextListItem>
-              </TextList>
-              <TextLinkList title="Link list">
-                <TextListItem>
-                  <TextLink href="#links">Documentation</TextLink>
-                </TextListItem>
-                <TextListItem>
-                  <TextLink href="#links">Changelog</TextLink>
-                </TextListItem>
-              </TextLinkList>
-            </Flex>
-          </Specimen>
-          <Specimen label='TextContentHeading align="start" / align="center"'>
-            <Flex direction="column" gap="600">
-              <TextContentHeading
-                heading="Content heading"
-                subheading="With a subheading, aligned start"
-              />
-              <TextContentHeading
-                align="center"
-                heading="Content heading"
-                subheading="With a subheading, aligned center"
-              />
-            </Flex>
-          </Specimen>
-          <Specimen label="TextContentTitle (responsive: hero on desktop, page on mobile)">
-            <TextContentTitle
-              title="Content title"
-              subtitle="Swaps TextTitleHero for TextTitlePage below the tablet breakpoint"
-            />
-          </Specimen>
-        </SpecimenGrid>
-      </DemoSection>
+        </Spec>
 
-      <DemoSection
+        <SpecRow>
+          <SpecCell>
+            <Spec label="Text / TextStrong / TextEmphasis / TextSmall / TextCode">
+              <Flex direction="column" gap="200" alignSecondary="stretch">
+                <Text>
+                  Body text with <TextStrong>strong</TextStrong>,{" "}
+                  <TextEmphasis>emphasis</TextEmphasis>, and{" "}
+                  <TextCode>code()</TextCode> inline.
+                </Text>
+                <TextSmall>
+                  Small body text with{" "}
+                  <TextSmallStrong>small strong</TextSmallStrong>.
+                </TextSmall>
+                <Text lineHeight="single">
+                  Body text with lineHeight="single" for tighter leading.
+                </Text>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Text lineClamp={2}">
+              <Text lineClamp={2}>
+                This paragraph is intentionally long so that the two-line clamp
+                can be verified. It keeps going and going past the point where
+                two lines of text would normally end, and then a bit further
+                still, so the ellipsis has something to truncate.
+              </Text>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='TextPrice size="large" / size="small"'>
+              <Flex gap="800" alignSecondary="center" wrap>
+                <TextPrice currency="$" price="29" label="/ mo" size="large" />
+                <TextPrice currency="$" price="290" label="/ yr" size="small" />
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="TextList (default + tight) / TextLinkList">
+              <Flex gap="800" wrap>
+                <TextList title="Default density">
+                  <TextListItem>Unlimited projects</TextListItem>
+                  <TextListItem>Priority support</TextListItem>
+                </TextList>
+                <TextList title="Tight density" density="tight">
+                  <TextListItem>Unlimited projects</TextListItem>
+                  <TextListItem>Priority support</TextListItem>
+                </TextList>
+                <TextLinkList title="Link list">
+                  <TextListItem>
+                    <TextLink href="#typography">Documentation</TextLink>
+                  </TextListItem>
+                  <TextListItem>
+                    <TextLink href="#typography">Changelog</TextLink>
+                  </TextListItem>
+                </TextLinkList>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='TextContentHeading align="start" / "center"'>
+              <Flex direction="column" gap="600" alignSecondary="stretch">
+                <TextContentHeading
+                  heading="Content heading"
+                  subheading="With a subheading, aligned start"
+                />
+                <TextContentHeading
+                  align="center"
+                  heading="Content heading"
+                  subheading="With a subheading, aligned center"
+                />
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="TextContentTitle (hero on desktop, page on mobile)">
+              <TextContentTitle
+                title="Content title"
+                subtitle="Swaps TextTitleHero for TextTitlePage below the tablet breakpoint"
+              />
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <Spec label="TextLink / Separator (horizontal + vertical)">
+          <Flex direction="column" gap="400" alignSecondary="stretch">
+            <Text>
+              Body copy with an inline{" "}
+              <TextLink href="#typography">TextLink</TextLink> running through
+              it.
+            </Text>
+            <Separator />
+            <Flex gap="400" alignSecondary="center" className="h-6">
+              <TextSmall>Docs</TextSmall>
+              <Separator orientation="vertical" />
+              <TextSmall>Blog</TextSmall>
+              <Separator orientation="vertical" />
+              <TextSmall>Source</TextSmall>
+            </Flex>
+          </Flex>
+        </Spec>
+      </Demo>
+
+      <Demo
         id="buttons"
         title="Buttons"
-        description="Button and ButtonGroup — Base UI primitives with shadcn cn-* styling. Every button reports to the event log."
+        description="Base UI button primitives with shadcn styling. Every button here reports to the event log in the nav bar."
+        variant="neutral"
       >
-        <Specimen label="Button variants × sizes">
-          <Flex direction="column" gap="400">
+        <Spec label="Button variants × sizes">
+          <Flex direction="column" gap="400" alignSecondary="stretch">
             {(["default", "sm"] as const).map((size) => (
               <Flex key={size} gap="300" wrap alignSecondary="center">
                 {(
@@ -313,7 +489,6 @@ export function ComponentsPage() {
                     key={variant}
                     variant={variant}
                     size={size}
-                    onClick={() => log(`Button ${variant} ${size}`)}
                   >
                     {variant} {size}
                   </Button>
@@ -321,91 +496,120 @@ export function ComponentsPage() {
               </Flex>
             ))}
           </Flex>
-        </Specimen>
-        <SpecimenGrid cols={3}>
-          <Specimen label="Button disabled">
-            <Flex gap="300" wrap>
-              <Button disabled>default</Button>
-              <Button variant="outline" disabled>
-                outline
-              </Button>
-              <Button variant="ghost" disabled>
-                ghost
-              </Button>
-            </Flex>
-          </Specimen>
-          <Specimen label="Button as an anchor (render prop)">
-            <Button variant="outline" render={<a href="#buttons" />}>
-              Anchor button
-            </Button>
-          </Specimen>
-          <Specimen label="Icon sizes">
-            <Flex gap="300" wrap alignSecondary="center">
-              {(["icon-sm", "icon", "icon-lg"] as const).map((size) => (
-                <Button
-                  key={size}
-                  size={size}
-                  variant="outline"
-                  aria-label={`Star (${size})`}
-                  onClick={() => log(`Button ${size}`)}
-                >
-                  <IconStar />
+        </Spec>
+
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label="Button disabled">
+              <Flex gap="300" wrap>
+                <Button disabled>default</Button>
+                <Button variant="outline" disabled>
+                  outline
                 </Button>
-              ))}
-            </Flex>
-          </Specimen>
-        </SpecimenGrid>
-        <SpecimenGrid cols={2}>
-          <Specimen label="ButtonGroup (segmented — attached buttons)">
-            <Flex direction="column" gap="400" alignSecondary="start">
-              {(["horizontal", "vertical"] as const).map((orientation) => (
-                <ButtonGroup key={orientation} orientation={orientation}>
-                  {["Day", "Week", "Month"].map((span) => (
-                    <Button
-                      key={span}
-                      variant="outline"
-                      onClick={() => log(`ButtonGroup ${orientation} · ${span}`)}
-                    >
-                      {span}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              ))}
-            </Flex>
-          </Specimen>
-          <Specimen label="ButtonGroup with text and separator">
-            <ButtonGroup>
-              <Button variant="outline" onClick={() => log("ButtonGroup prev")}>
-                Prev
-              </Button>
-              <ButtonGroupSeparator />
-              <ButtonGroupText>Page 2</ButtonGroupText>
-              <ButtonGroupSeparator />
-              <Button variant="outline" onClick={() => log("ButtonGroup next")}>
-                Next
-              </Button>
-            </ButtonGroup>
-          </Specimen>
-        </SpecimenGrid>
-        <Specimen label="Laying buttons out — use Flex, not ButtonGroup">
+                <Button variant="ghost" disabled>
+                  ghost
+                </Button>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            {/* `nativeButton={false}` is required whenever `render` swaps in a
+                non-<button> element — Base UI otherwise keeps native button
+                semantics it can no longer rely on, and warns at runtime. */}
+            <Spec label="Button render={<a />} (render prop)">
+              <Flex gap="300" wrap>
+                <Button
+                  variant="outline"
+                  nativeButton={false}
+                  render={<a href="#buttons" />}
+                >
+                  Anchor button
+                </Button>
+                <Button
+                  variant="link"
+                  nativeButton={false}
+                  render={<a href="#buttons" />}
+                >
+                  Link button
+                </Button>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='size="icon-sm" / "icon" / "icon-lg"'>
+              <Flex gap="300" wrap alignSecondary="center">
+                {(["icon-sm", "icon", "icon-lg"] as const).map((size) => (
+                  <Button
+                    key={size}
+                    size={size}
+                    variant="outline"
+                    aria-label={`Star (${size})`}
+                  >
+                    <IconStar />
+                  </Button>
+                ))}
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <SpecRow>
+          <SpecCell>
+            <Spec label="ButtonGroup (segmented — attached buttons)">
+              <Flex direction="column" gap="400" alignSecondary="start">
+                {(["horizontal", "vertical"] as const).map((orientation) => (
+                  <ButtonGroup key={orientation} orientation={orientation}>
+                    {["Day", "Week", "Month"].map((span) => (
+                      <Button
+                        key={span}
+                        variant="outline"
+                      >
+                        {span}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                ))}
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="ButtonGroupText + ButtonGroupSeparator">
+              <ButtonGroup>
+                <Button
+                  variant="outline"
+                >
+                  Prev
+                </Button>
+                <ButtonGroupSeparator />
+                <ButtonGroupText>Page 2</ButtonGroupText>
+                <ButtonGroupSeparator />
+                <Button
+                  variant="outline"
+                >
+                  Next
+                </Button>
+              </ButtonGroup>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <Spec label="Laying buttons out — use Flex, not ButtonGroup">
           <Flex direction="column" gap="400" alignSecondary="stretch">
             <Flex gap="300" alignSecondary="center">
-              <Button variant="outline" onClick={() => log("Flex row · cancel")}>
+              <Button variant="outline">
                 Cancel
               </Button>
-              <Button onClick={() => log("Flex row · save")}>Save</Button>
+              <Button>Save</Button>
             </Flex>
             <Flex gap="300" alignSecondary="center">
               <Button
                 className="flex-1"
                 variant="outline"
-                onClick={() => log("Flex justify · cancel")}
               >
                 Cancel
               </Button>
               <Button
                 className="flex-1"
-                onClick={() => log("Flex justify · save")}
               >
                 Save
               </Button>
@@ -413,420 +617,803 @@ export function ComponentsPage() {
             <Flex direction="column" gap="300" alignSecondary="stretch">
               <Button
                 variant="outline"
-                onClick={() => log("Flex stack · cancel")}
               >
                 Cancel
               </Button>
-              <Button onClick={() => log("Flex stack · save")}>Save</Button>
+              <Button>Save</Button>
             </Flex>
           </Flex>
-        </Specimen>
-      </DemoSection>
+        </Spec>
+      </Demo>
 
-      <DemoSection
+      <Demo
         id="badges"
         title="Badges"
-        description="Badge variants, with and without icons."
+        description="All nine variants, including the three status tones (info / warning / success) that alias the MFY semantic token pairs."
       >
-        <Specimen label="Badge: variants">
-          <div className="flex flex-wrap gap-2">
-            <Badge>default</Badge>
-            <Badge variant="secondary">secondary</Badge>
-            <Badge variant="destructive">destructive</Badge>
-            <Badge variant="outline">outline</Badge>
-            <Badge variant="ghost">ghost</Badge>
-            <Badge variant="link">link</Badge>
-          </div>
-        </Specimen>
-        <Specimen label="Badge: icon, interactive">
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">
-              <Check /> with icon
-            </Badge>
-            <Badge render={<a href="#badges" />}>badge link</Badge>
-          </div>
-        </Specimen>
-      </DemoSection>
+        <SpecRow>
+          <SpecCell>
+            <Spec label="Badge: core variants">
+              <Flex gap="200" wrap alignSecondary="center">
+                <Badge>default</Badge>
+                <Badge variant="secondary">secondary</Badge>
+                <Badge variant="destructive">destructive</Badge>
+                <Badge variant="outline">outline</Badge>
+                <Badge variant="ghost">ghost</Badge>
+                <Badge variant="link">link</Badge>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Badge: status tones + icon + link">
+              <Flex direction="column" gap="400" alignSecondary="stretch">
+                <Flex gap="200" wrap alignSecondary="center">
+                  <Badge variant="info">info</Badge>
+                  <Badge variant="warning">warning</Badge>
+                  <Badge variant="success">success</Badge>
+                </Flex>
+                <Flex gap="200" wrap alignSecondary="center">
+                  <Badge variant="success">
+                    <IconCheck /> verified
+                  </Badge>
+                  <Badge render={<a href="#badges" />}>badge link</Badge>
+                </Flex>
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+      </Demo>
 
-      <DemoSection
+      <Demo
         id="avatars"
         title="Avatars"
-        description="shadcn Avatar (image + fallback, sizes sm / default / lg), AvatarBadge status dot, AvatarGroup + AvatarGroupCount."
+        description="Image with fallback across three sizes, the AvatarBadge status dot, and AvatarGroup overflow."
+        variant="neutral"
       >
-        <SpecimenGrid cols={2}>
-          <Specimen label="Sizes (sm / default / lg) — fallback & image">
-            <Flex gap="400" alignSecondary="center" wrap>
-              <Avatar size="sm">
-                <AvatarFallback>SM</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarFallback>MD</AvatarFallback>
-              </Avatar>
-              <Avatar size="lg">
-                <AvatarFallback>LG</AvatarFallback>
-              </Avatar>
-              <Avatar size="sm">
-                <AvatarImage src={img("ava1", 96, 96)} alt="Small" />
-                <AvatarFallback>S</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarImage src={img("ava2", 96, 96)} alt="Medium" />
-                <AvatarFallback>M</AvatarFallback>
-              </Avatar>
-              <Avatar size="lg">
-                <AvatarImage src={img("ava3", 96, 96)} alt="Large" />
-                <AvatarFallback>L</AvatarFallback>
-              </Avatar>
-            </Flex>
-          </Specimen>
-          <Specimen label="AvatarBadge (status dot)">
-            <Flex gap="400" alignSecondary="center" wrap>
-              <Avatar size="lg">
-                <AvatarImage src={img("ava4", 96, 96)} alt="Online" />
-                <AvatarFallback>ON</AvatarFallback>
-                <AvatarBadge />
-              </Avatar>
-              <Avatar size="lg">
-                <AvatarFallback>JY</AvatarFallback>
-                <AvatarBadge />
-              </Avatar>
-            </Flex>
-          </Specimen>
-          <Specimen label="AvatarGroup + AvatarGroupCount (overflow)">
-            <AvatarGroup>
-              <Avatar>
-                <AvatarImage src={img("ava6", 96, 96)} alt="" />
-                <AvatarFallback>A</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarImage src={img("ava7", 96, 96)} alt="" />
-                <AvatarFallback>B</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarImage src={img("ava8", 96, 96)} alt="" />
-                <AvatarFallback>C</AvatarFallback>
-              </Avatar>
-              <AvatarGroupCount>+3</AvatarGroupCount>
-            </AvatarGroup>
-          </Specimen>
-        </SpecimenGrid>
-      </DemoSection>
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label='size="sm" / default / "lg" — fallback & image'>
+              <Flex gap="400" alignSecondary="center" wrap>
+                <Avatar size="sm">
+                  <AvatarFallback>SM</AvatarFallback>
+                </Avatar>
+                <Avatar>
+                  <AvatarFallback>MD</AvatarFallback>
+                </Avatar>
+                <Avatar size="lg">
+                  <AvatarFallback>LG</AvatarFallback>
+                </Avatar>
+                <Avatar size="sm">
+                  <AvatarImage src={img("ava1", 96, 96)} alt="Small" />
+                  <AvatarFallback>S</AvatarFallback>
+                </Avatar>
+                <Avatar>
+                  <AvatarImage src={img("ava2", 96, 96)} alt="Medium" />
+                  <AvatarFallback>M</AvatarFallback>
+                </Avatar>
+                <Avatar size="lg">
+                  <AvatarImage src={img("ava3", 96, 96)} alt="Large" />
+                  <AvatarFallback>L</AvatarFallback>
+                </Avatar>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="AvatarBadge (status dot)">
+              <Flex gap="400" alignSecondary="center" wrap>
+                <Avatar size="lg">
+                  <AvatarImage src={img("ava4", 96, 96)} alt="Online" />
+                  <AvatarFallback>ON</AvatarFallback>
+                  <AvatarBadge />
+                </Avatar>
+                <Avatar size="lg">
+                  <AvatarFallback>JY</AvatarFallback>
+                  <AvatarBadge />
+                </Avatar>
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="AvatarGroup + AvatarGroupCount">
+              <AvatarGroup>
+                <Avatar>
+                  <AvatarImage src={img("ava6", 96, 96)} alt="" />
+                  <AvatarFallback>A</AvatarFallback>
+                </Avatar>
+                <Avatar>
+                  <AvatarImage src={img("ava7", 96, 96)} alt="" />
+                  <AvatarFallback>B</AvatarFallback>
+                </Avatar>
+                <Avatar>
+                  <AvatarImage src={img("ava8", 96, 96)} alt="" />
+                  <AvatarFallback>C</AvatarFallback>
+                </Avatar>
+                <AvatarGroupCount>+3</AvatarGroupCount>
+              </AvatarGroup>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+      </Demo>
 
-      <DemoSection
+      <Demo
         id="forms"
-        title="Inputs & Forms"
-        description="Field composition (label, description, error), Checkbox, Switch & RadioGroup, Textarea, InputGroup, and Kbd."
+        title="Forms"
+        description="Field composition, the full control set — Checkbox, Switch, RadioGroup, Select, Slider, Textarea — plus InputGroup and Kbd."
       >
-        <SpecimenGrid cols={3}>
-          <Specimen label="Field + FieldLabel + Input + FieldDescription">
-            <Field>
-              <FieldLabel htmlFor="demo-email">Email</FieldLabel>
-              <Input id="demo-email" name="email" placeholder="you@example.com" />
-              <FieldDescription>We never share your email.</FieldDescription>
-            </Field>
-          </Specimen>
-          <Specimen label="Invalid Field + FieldError">
-            <Field data-invalid={true}>
-              <FieldLabel htmlFor="demo-username">Username</FieldLabel>
-              <Input
-                id="demo-username"
-                name="username"
-                placeholder="username"
-                aria-invalid
-              />
-              <FieldError>That username is taken.</FieldError>
-            </Field>
-          </Specimen>
-          <Specimen label="Disabled Field / bare Input">
-            <Flex direction="column" gap="400" alignSecondary="stretch">
-              <Field data-disabled={true}>
-                <FieldLabel htmlFor="demo-disabled">Disabled</FieldLabel>
-                <Input id="demo-disabled" disabled placeholder="Can't touch this" />
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label="Field + FieldLabel + Input + FieldDescription">
+              <Field>
+                <FieldLabel htmlFor="demo-email">Email</FieldLabel>
+                <Input
+                  id="demo-email"
+                  name="email"
+                  placeholder="you@example.com"
+                />
+                <FieldDescription>We never share your email.</FieldDescription>
               </Field>
-              <Input placeholder="Bare Input primitive" aria-label="Bare input" />
-            </Flex>
-          </Specimen>
-        </SpecimenGrid>
-        <SpecimenGrid cols={2}>
-          <Specimen label="FieldSet + FieldLegend + FieldGroup + FieldDescription">
-            <FieldSet>
-              <FieldLegend>Shipping details</FieldLegend>
-              <FieldGroup>
-                <Field>
-                  <FieldLabel htmlFor="demo-name">Full name</FieldLabel>
-                  <Input id="demo-name" placeholder="Ada Lovelace" />
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Invalid Field + FieldError">
+              <Field data-invalid={true}>
+                <FieldLabel htmlFor="demo-username">Username</FieldLabel>
+                <Input
+                  id="demo-username"
+                  name="username"
+                  placeholder="username"
+                  aria-invalid
+                />
+                <FieldError>That username is taken.</FieldError>
+              </Field>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Disabled Field / bare Input / Label">
+              <Flex direction="column" gap="400" alignSecondary="stretch">
+                <Field data-disabled={true}>
+                  <FieldLabel htmlFor="demo-disabled">Disabled</FieldLabel>
+                  <Input
+                    id="demo-disabled"
+                    disabled
+                    placeholder="Can't touch this"
+                  />
                 </Field>
-                <Field>
-                  <FieldLabel htmlFor="demo-city">City</FieldLabel>
-                  <Input id="demo-city" placeholder="London" />
-                  <FieldDescription>
-                    Where the package should arrive.
-                  </FieldDescription>
-                </Field>
-              </FieldGroup>
-            </FieldSet>
-          </Specimen>
-          <Specimen label="Checkbox / Switch / RadioGroup / Textarea">
-            <Flex direction="column" gap="600" alignSecondary="stretch">
-              <Field orientation="horizontal">
-                <Checkbox id="demo-terms" defaultChecked />
-                <FieldLabel htmlFor="demo-terms" className="font-normal">
-                  Accept terms and conditions
-                </FieldLabel>
-              </Field>
-              <Field orientation="horizontal">
-                <Switch id="demo-notifications" defaultChecked />
-                <FieldLabel htmlFor="demo-notifications" className="font-normal">
-                  Email notifications
-                </FieldLabel>
-              </Field>
-              <RadioGroup defaultValue="comfortable">
+                <Label htmlFor="demo-bare">Bare Label + Input</Label>
+                <Input id="demo-bare" placeholder="Bare Input primitive" />
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <SpecRow>
+          <SpecCell>
+            <Spec label="FieldSet + FieldLegend + FieldGroup">
+              <FieldSet>
+                <FieldLegend>Shipping details</FieldLegend>
+                <FieldGroup>
+                  <Field>
+                    <FieldLabel htmlFor="demo-name">Full name</FieldLabel>
+                    <Input id="demo-name" placeholder="Ada Lovelace" />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="demo-city">City</FieldLabel>
+                    <Input id="demo-city" placeholder="London" />
+                    <FieldDescription>
+                      Where the package should arrive.
+                    </FieldDescription>
+                  </Field>
+                </FieldGroup>
+              </FieldSet>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Checkbox / Switch / RadioGroup / Textarea">
+              <Flex direction="column" gap="600" alignSecondary="stretch">
                 <Field orientation="horizontal">
-                  <RadioGroupItem value="compact" id="demo-radio-compact" />
-                  <FieldLabel htmlFor="demo-radio-compact" className="font-normal">
-                    Compact
+                  <Checkbox id="demo-terms" defaultChecked />
+                  <FieldLabel htmlFor="demo-terms" className="font-normal">
+                    Accept terms and conditions
                   </FieldLabel>
                 </Field>
                 <Field orientation="horizontal">
-                  <RadioGroupItem value="comfortable" id="demo-radio-comfortable" />
+                  <Switch id="demo-notifications" defaultChecked />
                   <FieldLabel
-                    htmlFor="demo-radio-comfortable"
+                    htmlFor="demo-notifications"
                     className="font-normal"
                   >
-                    Comfortable
+                    Email notifications
                   </FieldLabel>
                 </Field>
-              </RadioGroup>
-              <Field>
-                <FieldLabel htmlFor="demo-notes">Notes</FieldLabel>
-                <Textarea
-                  id="demo-notes"
-                  placeholder="Anything else we should know?"
-                />
-              </Field>
-            </Flex>
-          </Specimen>
-        </SpecimenGrid>
-        <SpecimenGrid cols={2}>
-          <Specimen label="InputGroup: search with icon addon">
-            <InputGroup>
-              <InputGroupAddon>
-                <SearchIcon />
-              </InputGroupAddon>
-              <InputGroupInput
-                type="search"
-                placeholder="Search components…"
-                aria-label="Search"
-              />
-            </InputGroup>
-          </Specimen>
-          <Specimen label="InputGroup: inline submit / Kbd">
-            <Flex direction="column" gap="600" alignSecondary="stretch">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  log("inline InputGroup form submitted");
-                }}
-              >
-                <InputGroup>
-                  <InputGroupInput
-                    type="email"
-                    placeholder="you@example.com"
-                    aria-label="Email"
+                <RadioGroup defaultValue="comfortable">
+                  <Field orientation="horizontal">
+                    <RadioGroupItem value="compact" id="demo-radio-compact" />
+                    <FieldLabel
+                      htmlFor="demo-radio-compact"
+                      className="font-normal"
+                    >
+                      Compact
+                    </FieldLabel>
+                  </Field>
+                  <Field orientation="horizontal">
+                    <RadioGroupItem
+                      value="comfortable"
+                      id="demo-radio-comfortable"
+                    />
+                    <FieldLabel
+                      htmlFor="demo-radio-comfortable"
+                      className="font-normal"
+                    >
+                      Comfortable
+                    </FieldLabel>
+                  </Field>
+                </RadioGroup>
+                <Field>
+                  <FieldLabel htmlFor="demo-notes">Notes</FieldLabel>
+                  <Textarea
+                    id="demo-notes"
+                    placeholder="Anything else we should know?"
                   />
-                  <InputGroupAddon align="inline-end">
-                    <InputGroupButton type="submit">Subscribe</InputGroupButton>
+                </Field>
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label="Select (grouped, with separator)">
+              <Field>
+                <FieldLabel>Deployment region</FieldLabel>
+                <Select defaultValue="us-east">
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Americas</SelectLabel>
+                      <SelectItem value="us-east">US East</SelectItem>
+                      <SelectItem value="us-west">US West</SelectItem>
+                    </SelectGroup>
+                    <SelectSeparator />
+                    <SelectGroup>
+                      <SelectLabel>Europe</SelectLabel>
+                      <SelectItem value="eu-west">EU West</SelectItem>
+                      <SelectItem value="eu-north">EU North</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Slider (single value + range)">
+              <Flex direction="column" gap="800" alignSecondary="stretch">
+                <Slider defaultValue={40} />
+                <Slider defaultValue={[20, 70]} />
+                <Slider defaultValue={50} disabled />
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="InputGroup + Kbd">
+              <Flex direction="column" gap="600" alignSecondary="stretch">
+                <InputGroup>
+                  <InputGroupAddon>
+                    <IconSearch />
                   </InputGroupAddon>
+                  <InputGroupInput
+                    type="search"
+                    placeholder="Search components…"
+                    aria-label="Search"
+                  />
                 </InputGroup>
-              </form>
-              <Text>
-                Save with <Kbd>⌘S</Kbd>
-              </Text>
-            </Flex>
-          </Specimen>
-        </SpecimenGrid>
-      </DemoSection>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <InputGroup>
+                    <InputGroupInput
+                      type="email"
+                      placeholder="you@example.com"
+                      aria-label="Email"
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton type="submit">
+                        Subscribe
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </form>
+                <Text>
+                  Save with <Kbd>⌘S</Kbd>, search with <Kbd>⌘K</Kbd>
+                </Text>
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+      </Demo>
 
-      <DemoSection
-        id="links"
-        title="Links & Separators"
-        description="TextLink and the shadcn Separator."
+      <Demo
+        id="overlays"
+        title="Overlays & menus"
+        description="Dialog, DropdownMenu, Menubar, NavigationMenu, and Accordion — the Base UI portalled primitives."
+        variant="neutral"
       >
-        <SpecimenGrid cols={2}>
-          <Specimen label="TextLink">
-            <Flex direction="column" gap="200">
-              <TextLink href="#links">A standalone TextLink</TextLink>
-              <Text>
-                Body copy with an inline <TextLink href="#links">TextLink</TextLink>{" "}
-                running through it.
-              </Text>
-            </Flex>
-          </Specimen>
-          <Specimen label='Separator horizontal / orientation="vertical"'>
-            <div className="flex flex-col gap-4">
-              <div>
-                <Text>Above the line</Text>
-                <Separator className="my-3" />
-                <Text>Below the line</Text>
-              </div>
-              <div className="flex h-6 items-center gap-4 text-sm">
-                <span>Docs</span>
-                <Separator orientation="vertical" />
-                <span>Blog</span>
-                <Separator orientation="vertical" />
-                <span>Source</span>
-              </div>
-            </div>
-          </Specimen>
-        </SpecimenGrid>
-      </DemoSection>
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label="Dialog">
+              <Dialog>
+                <DialogTrigger render={<Button variant="outline" />}>
+                  Open dialog
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Delete workspace</DialogTitle>
+                    <DialogDescription>
+                      This removes every project in the workspace. It cannot be
+                      undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose render={<Button variant="outline" />}>
+                      Cancel
+                    </DialogClose>
+                    <Button
+                      variant="destructive"
+                    >
+                      Delete
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="DropdownMenu (labels, shortcuts, checkbox items)">
+              <DropdownMenu>
+                <DropdownMenuTrigger render={<Button variant="outline" />}>
+                  Open menu <IconChevronDown />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuLabel>My account</DropdownMenuLabel>
+                  <DropdownMenuItem>
+                    Profile
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Settings
+                    <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem defaultChecked>
+                    Show hidden files
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    variant="destructive"
+                  >
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Menubar">
+              <Menubar>
+                <MenubarMenu>
+                  <MenubarTrigger>File</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem>
+                      New tab
+                      <MenubarShortcut>⌘T</MenubarShortcut>
+                    </MenubarItem>
+                    <MenubarItem>
+                      New window
+                    </MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem>
+                      Print…
+                      <MenubarShortcut>⌘P</MenubarShortcut>
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+                <MenubarMenu>
+                  <MenubarTrigger>View</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarCheckboxItem defaultChecked>
+                      Show sidebar
+                    </MenubarCheckboxItem>
+                    <MenubarCheckboxItem>Show ruler</MenubarCheckboxItem>
+                  </MenubarContent>
+                </MenubarMenu>
+              </Menubar>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
 
-      <DemoSection
+        <SpecRow>
+          <SpecCell>
+            <Spec label="NavigationMenu">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <Flex direction="column" gap="100" className="w-64">
+                        <NavigationMenuLink href="#overlays">
+                          <IconShoppingBag /> Storefront
+                        </NavigationMenuLink>
+                        <NavigationMenuLink href="#overlays">
+                          <IconStar /> Reviews
+                        </NavigationMenuLink>
+                        <NavigationMenuLink href="#overlays">
+                          <IconSearch /> Discovery
+                        </NavigationMenuLink>
+                      </Flex>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <Flex direction="column" gap="100" className="w-64">
+                        <NavigationMenuLink href="#overlays">
+                          About
+                        </NavigationMenuLink>
+                        <NavigationMenuLink href="#overlays">
+                          Careers
+                        </NavigationMenuLink>
+                      </Flex>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Accordion">
+              <Accordion defaultValue={["item-1"]}>
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>
+                    What ships in @gmhlab/ui?
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    Primitives, layouts, and compositions — plus the tokens CSS,
+                    inlined into a single stylesheet at build time.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Which styling system?</AccordionTrigger>
+                  <AccordionContent>
+                    Two coexist: shadcn primitives on Tailwind utilities, and
+                    MFY layout components on co-located CSS driven by --mfy-*
+                    tokens.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>How does theming work?</AccordionTrigger>
+                  <AccordionContent>
+                    Both systems key off the same .dark class on the html
+                    element, so they switch together.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+      </Demo>
+
+      <Demo
         id="icons"
         title="Icons"
-        description="IconStar at every Icon size step. Stroke color comes from --svg-stroke-color."
+        description="The exported icon set, and the Icon size scale. Stroke colour comes from --svg-stroke-color; IconXLogo is the one filled glyph."
       >
-        <Specimen label={`IconStar size: ${ICON_SIZES.join(" / ")}`}>
+        <Spec label={`Icon size scale: ${ICON_SIZES.join(" / ")}`}>
           <Flex gap="600" alignSecondary="end" wrap>
             {ICON_SIZES.map((size) => (
-              <Flex key={size} direction="column" gap="200" alignSecondary="center">
+              <Flex
+                key={size}
+                direction="column"
+                gap="200"
+                alignSecondary="center"
+              >
                 <IconStar size={size} />
                 <TextSmall>{size}</TextSmall>
               </Flex>
             ))}
           </Flex>
-        </Specimen>
-      </DemoSection>
+        </Spec>
 
-      <DemoSection
+        <Spec label="Exported icons (size 24)">
+          <Grid
+            columns="repeat(auto-fill, minmax(120px, 1fr))"
+            gap="600"
+            justifyItems="center"
+          >
+            {ICONS.map(({ name, Component }) => (
+              <GridItem key={name}>
+                <Flex direction="column" gap="200" alignSecondary="center">
+                  <Component size="24" />
+                  <TextSmall>{name}</TextSmall>
+                </Flex>
+              </GridItem>
+            ))}
+          </Grid>
+        </Spec>
+      </Demo>
+
+      <Demo
+        id="logos"
+        title="Logos"
+        description="All three marks. GmhLogo is the one in use — the landscape brand mark, sized by height. All three default to href='/' and render as links; that default is currently not overridable to a non-navigating button (see GmhLogoProps)."
+        variant="neutral"
+      >
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label="GmhLogo (in use — headers & footers)">
+              <Flex alignPrimary="center" alignSecondary="center">
+                <GmhLogo />
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Logo (stroked, portrait — unreferenced)">
+              <Flex alignPrimary="center" alignSecondary="center">
+                <Logo />
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="Logo2 (filled, portrait — unreferenced)">
+              <Flex alignPrimary="center" alignSecondary="center">
+                <Logo2 />
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <Spec label="--logo-color inverts inside .section-variant-brand">
+          <Section variant="brand" padding="800" className="rounded-md">
+            <Flex alignPrimary="center" alignSecondary="center" gap="800" wrap>
+              <GmhLogo aria-label="GMH Lab on brand" />
+              <Logo2 aria-label="Logo 2 on brand" />
+            </Flex>
+          </Section>
+        </Spec>
+      </Demo>
+
+      <Demo
         id="images"
         title="Images"
         description="Aspect ratios, sizes, variants, and the built-in loading placeholder."
       >
-        <SpecimenGrid cols={3}>
-          <Specimen label='aspectRatio="1-1"'>
-            <Image src={img("sq", 400, 400)} alt="Square" aspectRatio="1-1" size="medium" />
-          </Specimen>
-          <Specimen label='aspectRatio="16-9"'>
-            <Image src={img("wide", 640, 360)} alt="Wide" aspectRatio="16-9" size="medium" />
-          </Specimen>
-          <Specimen label='aspectRatio="4-3"'>
-            <Image src={img("std", 640, 480)} alt="Standard" aspectRatio="4-3" size="medium" />
-          </Specimen>
-          <Specimen label='variant="default" (no radius)'>
-            <Image src={img("sharp", 640, 360)} alt="Sharp corners" aspectRatio="16-9" size="medium" variant="default" />
-          </Specimen>
-          <Specimen label='size="small"'>
-            <Image src={img("small", 320, 240)} alt="Small" aspectRatio="4-3" size="small" />
-          </Specimen>
-          <Specimen label="no src (permanent loading placeholder)">
-            <Image alt="Placeholder" aspectRatio="16-9" size="medium" />
-          </Specimen>
-        </SpecimenGrid>
-      </DemoSection>
+        <SpecRow type="third">
+          <SpecCell>
+            <Spec label='aspectRatio="1-1"'>
+              <Image
+                src={img("sq", 400, 400)}
+                alt="Square"
+                aspectRatio="1-1"
+                size="medium"
+              />
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='aspectRatio="16-9"'>
+              <Image
+                src={img("wide", 640, 360)}
+                alt="Wide"
+                aspectRatio="16-9"
+                size="medium"
+              />
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='aspectRatio="4-3"'>
+              <Image
+                src={img("std", 640, 480)}
+                alt="Standard"
+                aspectRatio="4-3"
+                size="medium"
+              />
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='variant="default" (no radius)'>
+              <Image
+                src={img("sharp", 640, 360)}
+                alt="Sharp corners"
+                aspectRatio="16-9"
+                size="medium"
+                variant="default"
+              />
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='size="small"'>
+              <Image
+                src={img("small", 320, 240)}
+                alt="Small"
+                aspectRatio="4-3"
+                size="small"
+              />
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label="no src (loading placeholder)">
+              <Image alt="Placeholder" aspectRatio="16-9" size="medium" />
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+      </Demo>
 
-      <DemoSection
+      <Demo
         id="layouts"
         title="Layouts"
-        description="Flex, Grid, and the Section variants. The /flex page has deeper Flex sizing demos."
+        description="Flex and Grid sizing, and the Section variants. The /flex page carries the deeper Flex sizing matrix."
+        variant="neutral"
       >
-        <Specimen label='Flex type="quarter" wrap gap="400" with FlexItem size="minor"'>
-          <Flex type="quarter" wrap gap="400">
-            {["A", "B", "C", "D"].map((label) => (
-              <FlexItem key={label} size="minor">
-                <div className="rounded-md bg-accent p-4 text-center text-sm text-accent-foreground">
-                  {label}
-                </div>
-              </FlexItem>
-            ))}
-          </Flex>
-        </Specimen>
-        <Specimen label='Grid columns="repeat(4, 1fr)" gap="400" with GridItem column spans'>
+        <SpecRow>
+          <SpecCell>
+            <Spec label='Flex type="quarter" wrap + FlexItem size="minor"'>
+              <Flex type="quarter" wrap gap="400">
+                {["A", "B", "C", "D"].map((label) => (
+                  <FlexItem key={label} size="minor">
+                    <Tile>{label}</Tile>
+                  </FlexItem>
+                ))}
+              </Flex>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='Flex type="third" — major / minor split'>
+              <Flex type="third" wrap gap="400">
+                <FlexItem size="major">
+                  <Tile>major (2/3)</Tile>
+                </FlexItem>
+                <FlexItem size="minor">
+                  <Tile>minor (1/3)</Tile>
+                </FlexItem>
+              </Flex>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <Spec label='Grid columns="repeat(4, 1fr)" + GridItem column spans'>
           <Grid columns="repeat(4, 1fr)" gap="400">
             <GridItem column="span 4">
-              <div className="rounded-md bg-accent p-4 text-center text-sm">span 4</div>
+              <Tile>span 4</Tile>
             </GridItem>
             <GridItem column="span 2">
-              <div className="rounded-md bg-accent p-4 text-center text-sm">span 2</div>
+              <Tile>span 2</Tile>
             </GridItem>
             <GridItem column="span 2">
-              <div className="rounded-md bg-accent p-4 text-center text-sm">span 2</div>
+              <Tile>span 2</Tile>
             </GridItem>
             {["1", "2", "3", "4"].map((label) => (
               <GridItem key={label}>
-                <div className="rounded-md bg-accent p-4 text-center text-sm">{label}</div>
+                <Tile>{label}</Tile>
               </GridItem>
             ))}
           </Grid>
-        </Specimen>
-        <Specimen label='Section variants: subtle / neutral / stroke / brand / image (padding="600")'>
+        </Spec>
+
+        <Spec label='Section variants (padding="600")'>
           <Flex direction="column" gap="400" alignSecondary="stretch">
             {(["subtle", "neutral", "stroke", "brand"] as const).map(
               (variant) => (
-                <Section key={variant} variant={variant} padding="600">
+                <Section
+                  key={variant}
+                  variant={variant}
+                  padding="600"
+                  className="rounded-md"
+                >
                   <Flex container>
                     <Text>Section variant="{variant}"</Text>
                   </Flex>
                 </Section>
               ),
             )}
-            <Section variant="image" src={img("section", 1200, 300)} padding="600">
+            <Section
+              variant="image"
+              src={img("section", 1200, 300)}
+              padding="600"
+              className="rounded-md"
+            >
               <Flex container>
                 <Text>Section variant="image"</Text>
               </Flex>
             </Section>
           </Flex>
-        </Specimen>
-      </DemoSection>
+        </Spec>
+      </Demo>
 
-      <DemoSection
+      <Demo
         id="cards"
         title="Cards"
-        description="The generic Card — variants, padding, direction, assets, and pressable cards."
+        description="The generic Card — variants, padding, direction, assets, and the whole-card press target."
       >
-        <SpecimenGrid cols={3}>
+        <SpecRow type="third">
           {(["default", "stroke", "brand"] as const).map((variant) => (
-            <Specimen key={variant} label={`Card variant="${variant}" padding="600"`}>
-              <Card variant={variant} padding="600">
-                <TextHeading>{variant}</TextHeading>
-                <Text>Card body content sits inside card-content.</Text>
-              </Card>
-            </Specimen>
+            <SpecCell key={variant}>
+              <Spec label={`Card variant="${variant}"`}>
+                <Card variant={variant} padding="600">
+                  <TextHeading>{variant}</TextHeading>
+                  <Text>Card body content sits inside card-content.</Text>
+                </Card>
+              </Spec>
+            </SpecCell>
           ))}
-        </SpecimenGrid>
-        <SpecimenGrid cols={2}>
-          <Specimen label='Card direction="horizontal" with Image asset (vertical on mobile)'>
-            <Card
-              variant="stroke"
-              padding="600"
-              direction="horizontal"
-              asset={<Image src={img("cardh", 640, 480)} alt="" aspectRatio="4-3" size="fill" />}
-            >
-              <TextHeading>Horizontal card</TextHeading>
-              <Text>The asset renders beside the content on desktop.</Text>
-            </Card>
-          </Specimen>
-          <Specimen label="Card interactionProps (whole card pressable) · padding=&quot;800&quot; align=&quot;center&quot;">
-            <Card
-              variant="brand"
-              padding="800"
-              align="center"
-              interactionProps={{ onPress: () => log("Card pressed") }}
-            >
-              <TextHeading>Pressable card</TextHeading>
-              <Text>Click anywhere on this card.</Text>
-            </Card>
-          </Specimen>
-        </SpecimenGrid>
-      </DemoSection>
+        </SpecRow>
 
-      <DemoSection
+        <SpecRow>
+          <SpecCell>
+            <Spec label='Card direction="horizontal" with an Image asset'>
+              <Card
+                variant="stroke"
+                padding="600"
+                direction="horizontal"
+                asset={
+                  <Image
+                    src={img("cardh", 640, 480)}
+                    alt=""
+                    aspectRatio="4-3"
+                    size="fill"
+                  />
+                }
+              >
+                <TextHeading>Horizontal card</TextHeading>
+                <Text>
+                  The asset renders beside the content on desktop and stacks on
+                  mobile.
+                </Text>
+              </Card>
+            </Spec>
+          </SpecCell>
+          <SpecCell>
+            <Spec label='Card interactionProps + align="center"'>
+              <Card
+                variant="brand"
+                padding="800"
+                align="center"
+                interactionProps={{ onPress: () => {} }}
+              >
+                <TextHeading>Pressable card</TextHeading>
+                <Text>Click anywhere on this card.</Text>
+              </Card>
+            </Spec>
+          </SpecCell>
+        </SpecRow>
+
+        <Spec label="CardGrid (heading + responsive card row)">
+          <CardGrid
+            heading="CardGrid"
+            subheading="Column count comes from the Flex grid type; section chrome is left to the caller."
+            type="third"
+            gap="400"
+          >
+            {["Discovery", "Delivery", "Support"].map((title) => (
+              <FlexItem key={title} size="minor">
+                <Card variant="stroke" padding="600">
+                  <TextHeading>{title}</TextHeading>
+                  <Text>A card inside a CardGrid.</Text>
+                </Card>
+              </FlexItem>
+            ))}
+          </CardGrid>
+        </Spec>
+      </Demo>
+
+      <Demo
         id="vanity-cards"
-        title="Vanity Cards"
-        description="PricingCard, ProductInfoCard, ReviewCard, StatsCard, TestimonialCard — and their skeletons."
+        title="Vanity cards"
+        description="PricingCard, ProductInfoCard, ReviewCard, StatsCard, TestimonialCard — and the two skeletons."
+        variant="neutral"
       >
-        <Specimen label='PricingCard size="large" (stroke / brand) + PricingCardSkeleton'>
-          <Flex type="third" wrap gap="400">
+        <Spec label='PricingCard size="large" (stroke / brand) + PricingCardSkeleton'>
+          <Flex type="third" wrap gap="400" alignSecondary="stretch">
             <FlexItem size="minor">
               <PricingCard
                 sku="1-basic"
@@ -836,7 +1423,7 @@ export function ComponentsPage() {
                 priceCurrency="$"
                 priceLabel="/ mo"
                 action="Select Basic"
-                onAction={() => log("PricingCard Basic")}
+                onAction={() => {}}
                 list={["1 project", "Community support", "1 GB storage"]}
               />
             </FlexItem>
@@ -851,18 +1438,23 @@ export function ComponentsPage() {
                 variant="brand"
                 actionVariant="outline"
                 action="Select Pro"
-                actionIcon={<ArrowRight size={16} />}
-                onAction={() => log("PricingCard Pro")}
-                list={["Unlimited projects", "Priority support", "100 GB storage"]}
+                actionIcon={<IconChevronRight />}
+                onAction={() => {}}
+                list={[
+                  "Unlimited projects",
+                  "Priority support",
+                  "100 GB storage",
+                ]}
               />
             </FlexItem>
             <FlexItem size="minor">
               <PricingCardSkeleton size="large" />
             </FlexItem>
           </Flex>
-        </Specimen>
-        <Specimen label='PricingCard size="small" / actionDisabled (current plan)'>
-          <Flex type="third" wrap gap="400">
+        </Spec>
+
+        <Spec label='PricingCard size="small" / actionDisabled'>
+          <Flex type="third" wrap gap="400" alignSecondary="stretch">
             <FlexItem size="minor">
               <PricingCard
                 sku="1-basic"
@@ -873,7 +1465,7 @@ export function ComponentsPage() {
                 priceCurrency="$"
                 priceLabel="/ yr"
                 action="Go Annual"
-                onAction={() => log("PricingCard small")}
+                onAction={() => {}}
                 list={["1 project", "Community support"]}
               />
             </FlexItem>
@@ -887,14 +1479,15 @@ export function ComponentsPage() {
                 priceCurrency="$"
                 action="Current Plan"
                 actionDisabled
-                onAction={() => log("should not fire")}
+                onAction={() => {}}
                 list={["You are on this plan"]}
               />
             </FlexItem>
           </Flex>
-        </Specimen>
-        <Specimen label="ProductInfoCard + ProductInfoCardSkeleton">
-          <Flex type="third" wrap gap="400">
+        </Spec>
+
+        <Spec label="ProductInfoCard + ProductInfoCardSkeleton">
+          <Flex type="third" wrap gap="400" alignSecondary="stretch">
             <FlexItem size="minor">
               <ProductInfoCard
                 heading="Studio Headphones"
@@ -915,9 +1508,10 @@ export function ComponentsPage() {
               <ProductInfoCardSkeleton />
             </FlexItem>
           </Flex>
-        </Specimen>
-        <Specimen label="ReviewCard / StatsCard / TestimonialCard">
-          <Flex type="third" wrap gap="400">
+        </Spec>
+
+        <Spec label="ReviewCard / StatsCard / TestimonialCard">
+          <Flex type="third" wrap gap="400" alignSecondary="stretch">
             <FlexItem size="minor">
               <ReviewCard
                 stars={4}
@@ -943,109 +1537,153 @@ export function ComponentsPage() {
               />
             </FlexItem>
           </Flex>
-        </Specimen>
-      </DemoSection>
+        </Spec>
+      </Demo>
 
-      <DemoSection
+      <Demo
         id="compositions"
-        title="Hero, Panel, SlideHeader, SlideFooter & FormBox"
-        description="Page-scale compositions rendered full-bleed."
-        fullBleed
+        title="Page compositions"
+        description="The page-scale pieces, rendered full-bleed at the width they are designed for."
+        bleed
       >
-        <div>
-          <p className="mx-auto mb-3 max-w-6xl px-4 font-mono text-xs text-muted-foreground">
-            Hero variant="stroke" with TextContentTitle + ButtonGroup
-          </p>
-          <div className="border-y border-dashed border-border">
+        <Flex direction="column" gap="1200" alignSecondary="stretch">
+          <BleedSpec label="Header — logged out / logged in (toggle below)">
+            <Flex direction="column" gap="400" alignSecondary="stretch">
+              <Header
+                user={signedIn ? { name: "Ada Lovelace" } : null}
+                onLogin={() => setSignedIn(true)}
+                onRegister={() => setSignedIn(true)}
+                onLogout={() => setSignedIn(false)}
+              />
+              <Section variant="subtle" paddingTop="0" paddingBottom="0">
+                <Flex container gap="300" alignSecondary="center">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setSignedIn((value) => !value)}
+                  >
+                    {signedIn ? "Sign out" : "Sign in"}
+                  </Button>
+                  <TextSmall>
+                    HeaderAuth swaps the auth buttons for an avatar menu, and
+                    collapses to a hamburger below 600px.
+                  </TextSmall>
+                </Flex>
+              </Section>
+            </Flex>
+          </BleedSpec>
+
+          <BleedSpec label='Hero variant="stroke" with TextContentTitle + actions'>
             <Hero variant="stroke">
               <TextContentTitle
                 align="center"
-                title="Build with monofly"
-                subtitle="A hero composition: Section + centered Flex container"
+                title="Build with gmhlab"
+                subtitle="A hero composition: Section plus a centered Flex container"
               />
               <Flex gap="300" alignPrimary="center" alignSecondary="center">
-                <Button variant="outline" onClick={() => log("Hero secondary")}>
+                <Button variant="outline">
                   Learn more
                 </Button>
-                <Button onClick={() => log("Hero primary")}>Get started</Button>
+                <Button>Get started</Button>
               </Flex>
             </Hero>
-          </div>
-        </div>
-        <div>
-          <p className="mx-auto mb-3 max-w-6xl px-4 font-mono text-xs text-muted-foreground">
-            Panel (container Flex with wrap) holding StatsCards
-          </p>
-          <div className="border-y border-dashed border-border py-6">
-            <Panel type="third" gap="400">
-              <FlexItem size="minor">
-                <StatsCard stat="99.98%" description="Uptime" />
-              </FlexItem>
-              <FlexItem size="minor">
-                <StatsCard stat="4.9/5" description="Average rating" />
-              </FlexItem>
-              <FlexItem size="minor">
-                <StatsCard stat="120+" description="Countries served" />
-              </FlexItem>
-            </Panel>
-          </div>
-        </div>
-        <div>
-          <p className="mx-auto mb-3 max-w-6xl px-4 font-mono text-xs text-muted-foreground">
-            SlideHeader (default chrome) and SlideFooter (default chrome)
-          </p>
-          <div className="border-y border-dashed border-border">
-            <SlideHeader start="VERSION 1.0" center="©2026 MONOFLY DESIGN" end="PAGE 01" />
-            <SlideFooter start="MONOFLY" center="COMPONENT GALLERY" end="JULY 2026" />
-          </div>
-        </div>
-        <div>
-          <p className="mx-auto mb-3 max-w-6xl px-4 font-mono text-xs text-muted-foreground">
-            SlideHeader bare + SlideFooter bare, embedded in a brand Section
-          </p>
-          <div className="border-y border-dashed border-border">
+          </BleedSpec>
+
+          <BleedSpec label="Panel holding StatsCards">
+            <Section variant="neutral" padding="1200">
+              <Panel type="third" gap="400">
+                <FlexItem size="minor">
+                  <StatsCard stat="99.98%" description="Uptime" />
+                </FlexItem>
+                <FlexItem size="minor">
+                  <StatsCard stat="4.9/5" description="Average rating" />
+                </FlexItem>
+                <FlexItem size="minor">
+                  <StatsCard stat="120+" description="Countries served" />
+                </FlexItem>
+              </Panel>
+            </Section>
+          </BleedSpec>
+
+          <BleedSpec label="SlideHeader / SlideFooter (default chrome)">
+            <div>
+              <SlideHeader
+                start="VERSION 1.0"
+                center="©2026 GMH LAB"
+                end="PAGE 01"
+              />
+              <SlideFooter
+                start="GMH LAB"
+                center="COMPONENT GALLERY"
+                end="AUGUST 2026"
+              />
+            </div>
+          </BleedSpec>
+
+          <BleedSpec label="SlideHeader / SlideFooter bare, on a brand Section">
             <Section variant="brand" padding="800">
-              <Flex container direction="column" gap="800" alignSecondary="stretch">
-                <SlideHeader bare start="BARE HEADER" center="ON A BRAND SURFACE" end="NO CHROME" />
+              <Flex
+                container
+                direction="column"
+                gap="800"
+                alignSecondary="stretch"
+              >
+                <SlideHeader
+                  bare
+                  start="BARE HEADER"
+                  center="ON A BRAND SURFACE"
+                  end="NO CHROME"
+                />
                 <TextHeading>Brand surface content</TextHeading>
-                <SlideFooter bare start="BARE FOOTER" center="SAME SURFACE" end="FLUSH" />
+                <SlideFooter
+                  bare
+                  start="BARE FOOTER"
+                  center="SAME SURFACE"
+                  end="FLUSH"
+                />
               </Flex>
             </Section>
-          </div>
-        </div>
-        <div className="mx-auto w-full max-w-6xl px-4">
-          <Specimen label="FormBox composition (boxed form) with Fields">
-            <FormBox
-              onSubmit={(e) => {
-                e.preventDefault();
-                log("FormBox submitted");
-              }}
-            >
-              <TextHeading>Create account</TextHeading>
-              <Field>
-                <FieldLabel htmlFor="signup-name">Name</FieldLabel>
-                <Input id="signup-name" name="name" placeholder="Ada Lovelace" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="signup-email">Email</FieldLabel>
-                <Input
-                  id="signup-email"
-                  name="signup-email"
-                  placeholder="you@example.com"
-                />
-                <FieldDescription>
-                  We'll send a confirmation link.
-                </FieldDescription>
-              </Field>
-              <Flex gap="300" alignSecondary="center">
-                <Button className="flex-1" type="submit">
-                  Sign up
-                </Button>
+          </BleedSpec>
+
+          <BleedSpec label="FormBox (boxed form) with Fields">
+            <Section variant="subtle" paddingTop="0" paddingBottom="800">
+              <Flex container>
+                <FormBox
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <TextHeading>Create account</TextHeading>
+                  <Field>
+                    <FieldLabel htmlFor="signup-name">Name</FieldLabel>
+                    <Input
+                      id="signup-name"
+                      name="name"
+                      placeholder="Ada Lovelace"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="signup-email">Email</FieldLabel>
+                    <Input
+                      id="signup-email"
+                      name="signup-email"
+                      placeholder="you@example.com"
+                    />
+                    <FieldDescription>
+                      We'll send a confirmation link.
+                    </FieldDescription>
+                  </Field>
+                  <Button type="submit">Sign up</Button>
+                </FormBox>
               </Flex>
-            </FormBox>
-          </Specimen>
-        </div>
-      </DemoSection>
+            </Section>
+          </BleedSpec>
+
+          <BleedSpec label="Footer (brand surface, quarter columns)">
+            <Footer />
+          </BleedSpec>
+        </Flex>
+      </Demo>
     </main>
   );
 }

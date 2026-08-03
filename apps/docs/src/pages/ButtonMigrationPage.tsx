@@ -412,11 +412,12 @@ export function ButtonMigrationPage() {
         <CodeBlock>{`// Before — element chosen by prop sniffing
 <Button href="/pricing">Pricing</Button>
 
-// After — element passed in
-<Button render={<a href="/pricing" />}>Pricing</Button>
+// After — element passed in. nativeButton={false} is required whenever
+// the rendered element is not a <button>.
+<Button nativeButton={false} render={<a href="/pricing" />}>Pricing</Button>
 
 // With a router link
-<Button render={<Link to="/pricing" />}>Pricing</Button>`}</CodeBlock>
+<Button nativeButton={false} render={<Link to="/pricing" />}>Pricing</Button>`}</CodeBlock>
         <Callout variant="info">
           <Text>
             The explicit form is worth the extra characters: the rendered
@@ -427,10 +428,17 @@ export function ButtonMigrationPage() {
           </Text>
         </Callout>
         <Row label="Live — rendered as an anchor">
-          <Button render={<a href="/components#buttons" />}>
+          <Button
+            nativeButton={false}
+            render={<a href="/components#buttons" />}
+          >
             Go to components
           </Button>
-          <Button variant="ghost" render={<a href="/tokens" />}>
+          <Button
+            variant="ghost"
+            nativeButton={false}
+            render={<a href="/tokens" />}
+          >
             Browse tokens
           </Button>
         </Row>
