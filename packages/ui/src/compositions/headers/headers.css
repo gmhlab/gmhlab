@@ -1,5 +1,13 @@
 .header {
   background: var(--mfy-color-background-default-default);
+  /* Figma gives both header variants (Desktop 7717:3642, Mobile 2299:23639) a
+   * bottom border and no top border. Declared here rather than via Section's
+   * `stroke` variant, whose borders are positional (`:not(:last-child)` /
+   * `:not(:first-child)`) — that happened to resolve correctly while the
+   * header was the body's first child, but would have grown a top border the
+   * moment anything rendered above it. */
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
   left: 0;
   position: sticky;
   top: 0;

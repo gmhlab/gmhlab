@@ -88,12 +88,15 @@
 
 .innovations-partner-logo {
   align-items: center;
-  background: var(--mfy-color-background-default-tertiary-hover);
+  background: var(--mfy-color-background-default-secondary);
   border-radius: var(--mfy-size-radius-100);
   color: var(--mfy-color-text-default-tertiary);
   display: flex;
   height: 2.5rem;
   justify-content: center;
+  /* Flex centering only centers the text block; "World Bank" and "Carter
+     Center" wrap to two lines inside 5rem, so the lines need this too. */
+  text-align: center;
   width: 5rem;
 }
 

@@ -1,0 +1,10 @@
+/* Figma's footer (7717:4142) sits on the default surface and uses a top
+ * border to separate itself from the page. This footer is a brand section
+ * instead — the background change already does the separating — but the
+ * border is kept so the two stay in step. It reads on both themes: gray-300
+ * against the dark brand surface in light mode, gray-600 against the light
+ * one in dark mode. */
+.footer {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+}

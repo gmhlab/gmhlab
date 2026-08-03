@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useMediaQuery } from "../../hooks";
 import { IconInstagram, IconLinkedin, IconXLogo, IconYoutube } from "../../icons";
 import { Flex, FlexItem, Section, type SectionProps } from "../../layouts";
@@ -9,6 +10,7 @@ import {
   TextListItem,
   TextStrong,
 } from "../../primitives";
+import "./footers.css";
 
 export type FooterProps = Omit<SectionProps, "variant" | "padding" | "src">;
 export function Footer({ className, ...props }: FooterProps) {
@@ -16,6 +18,7 @@ export function Footer({ className, ...props }: FooterProps) {
   const listDensity = isTabletDown ? "tight" : "default";
   return (
     <Section
+      className={clsx("footer", className)}
       elementType="footer"
       variant="brand"
       paddingTop="1600"

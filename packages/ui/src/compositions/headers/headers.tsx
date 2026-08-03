@@ -253,7 +253,6 @@ export function Header({
     <Section
       className={clsx("header", className)}
       elementType="header"
-      variant="stroke"
       padding="400"
       {...props}
     >
