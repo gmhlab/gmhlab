@@ -1,0 +1,58 @@
+.logo {
+  --border-radius: var(--mfy-size-radius-200);
+  border-radius: var(--border-radius);
+  position: relative;
+
+  &[data-focus-visible] {
+    outline: none;
+    --offset: calc(var(--mfy-size-stroke-border) * 2);
+    &::before {
+      content: "";
+      border-radius: calc(var(--border-radius) + var(--offset));
+      bottom: calc(-1 * var(--offset));
+      box-shadow: 0 0 0 var(--global-focus-ring-size)
+        var(--global-focus-ring-color);
+      left: calc(-1 * var(--offset));
+      position: absolute;
+      right: calc(-1 * var(--offset));
+      top: calc(-1 * var(--offset));
+    }
+  }
+}
+
+/* Unnested + fallback on purpose: dev-mode CSS ships un-flattened, and
+   Safari <16.5 drops nested rules — leaving the SVG at its intrinsic
+   172x247 size. */
+.logo > svg {
+  --logo-color: var(--mfy-color-icon-default-default);
+  height: auto;
+  width: var(--mfy-size-icon-small, 1.5rem);
+}
+
+/* The GMH mark is landscape (33x24.7796), not portrait like Logo/Logo2, so it
+   is sized by height — Figma specs it at 48px tall (~64px wide at this aspect).
+   There is no --mfy-size-icon-* at 48px (large tops out at 40px), so this uses
+   the same token icons.css maps .icon-size-48 to. Same specificity as the rule
+   above — it wins by source order.
+
+   Width is computed from the aspect rather than left as `auto`: the
+   AnchorOrButton wrapper (an <a> now that the logo defaults to href="/", a
+   <button> if that default is cleared) clips its content, and an auto-width
+   replaced element gives it an unreliable shrink-to-fit width — which trimmed
+   the mark's right edge. Keep this explicit. */
+.logo-gmh {
+  /* The button is a flex item in the header/footer rows; without this it can be
+     shrunk below the mark's width by its siblings and clip it. */
+  flex-shrink: 0;
+}
+.logo-gmh > svg {
+  --logo-gmh-height: var(--mfy-typography-scale-08, 3rem);
+  display: block;
+  height: var(--logo-gmh-height);
+  /* The mark's native aspect: 33 / 24.7796. */
+  width: calc(var(--logo-gmh-height) * 33 / 24.7796);
+  /* The artwork touches all four viewBox edges, so the SVG's default
+     `overflow: hidden` shaves it. The Figma export sets this for the same
+     reason. */
+  overflow: visible;
+}

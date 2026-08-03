@@ -1,0 +1,37 @@
+/* Responsive default */
+:root {
+  --mfy-responsive-display-flex-to-none: flex;
+  --mfy-responsive-display-none-to-flex: none;
+  --mfy-responsive-ratio-column-full: 1;
+  --mfy-responsive-ratio-column-half: 2;
+  --mfy-responsive-ratio-column-quarter-major: 4;
+  --mfy-responsive-ratio-column-quarter-minor: 4;
+  --mfy-responsive-ratio-column-third-major: 3;
+  --mfy-responsive-ratio-column-third-minor: 3;
+}
+/* Responsive tablet */
+@media (min-width: 600px) {
+  :root {
+    --mfy-responsive-display-flex-to-none: flex;
+    --mfy-responsive-display-none-to-flex: none;
+    --mfy-responsive-ratio-column-full: 1;
+    --mfy-responsive-ratio-column-half: 1;
+    --mfy-responsive-ratio-column-quarter-major: 2;
+    --mfy-responsive-ratio-column-quarter-minor: 2;
+    --mfy-responsive-ratio-column-third-major: 3;
+    --mfy-responsive-ratio-column-third-minor: 3;
+  }
+}
+/* Responsive desktop */
+@media (min-width: 1024px) {
+  :root {
+    --mfy-responsive-display-flex-to-none: none;
+    --mfy-responsive-display-none-to-flex: flex;
+    --mfy-responsive-ratio-column-full: 1;
+    --mfy-responsive-ratio-column-half: 1;
+    --mfy-responsive-ratio-column-quarter-major: 3;
+    --mfy-responsive-ratio-column-quarter-minor: 1;
+    --mfy-responsive-ratio-column-third-major: 2;
+    --mfy-responsive-ratio-column-third-minor: 1;
+  }
+}

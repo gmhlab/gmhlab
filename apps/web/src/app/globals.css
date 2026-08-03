@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@import "@gmhlab/ui/styles.css";
+@import "@gmhlab/blocks/styles.css";
+
+@source "../**/*.{ts,tsx}";
+@source "../../../../packages/ui/dist/**/*.js";
+@source "../../../../packages/blocks/dist/**/*.js";
+
+:root {
+  color-scheme: light dark;
+}
+
+/* The app shell lives in layout.tsx: header, <main>, footer as a full-height
+   column. Pages render sections into <main> and own no chrome of their own. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}

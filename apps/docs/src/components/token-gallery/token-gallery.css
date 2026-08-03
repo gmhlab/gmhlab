@@ -1,0 +1,784 @@
+/* ------------------------------------------------------------------ *
+ * Token gallery — the chrome uses only default-intent tokens, so the
+ * page itself is proof of the system. Everything colored is a var().
+ * ------------------------------------------------------------------ */
+
+.tg {
+  --tg-mono: var(--mfy-typography-family-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  color: var(--mfy-color-text-default-default);
+}
+
+/* zero-specificity reset so single-class rules below always win */
+:where(.tg button) {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tg :is(button, a):focus-visible {
+  outline: 2px solid var(--mfy-color-border-brand-default);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.tg code,
+.tg kbd,
+.tg pre {
+  font-family: var(--tg-mono);
+}
+
+.tg kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0.05em 0.4em;
+  text-align: center;
+  font-size: 0.85em;
+  border: 1px solid var(--mfy-color-border-default-secondary);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--mfy-color-background-default-secondary);
+}
+
+/* ---- shared type -------------------------------------------------- */
+
+.tg-eyebrow {
+  font-family: var(--tg-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mfy-color-text-brand-default);
+  margin: 0 0 0.75rem;
+}
+
+.tg-display {
+  font-family: var(--mfy-typography-title-hero-font-family, inherit);
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+}
+
+.tg-display em {
+  font-style: italic;
+  color: var(--mfy-color-text-brand-default);
+}
+
+.tg-lede {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--mfy-color-text-default-secondary);
+  max-width: 56ch;
+  margin: 0 0 1.5rem;
+}
+
+.tg-lede code {
+  font-size: 0.85em;
+  padding: 0.1em 0.4em;
+  border-radius: 5px;
+  background: var(--mfy-color-background-default-secondary);
+  color: var(--mfy-color-text-default-default);
+}
+
+/* ---- hero ---------------------------------------------------------- */
+
+.tg-hero {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.tg-hero-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+}
+
+.tg-hint {
+  font-family: var(--tg-mono);
+  font-size: 0.75rem;
+  color: var(--mfy-color-text-default-secondary);
+  padding: 0.4rem 0.75rem;
+  border: 1px dashed var(--mfy-color-border-default-default);
+  border-radius: 999px;
+}
+
+.tg-hint-button {
+  border-style: solid;
+  border-color: var(--mfy-color-border-brand-default);
+  color: var(--mfy-color-text-brand-default);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tg-hint-button:hover,
+.tg-hint-button[aria-pressed="true"] {
+  background: var(--mfy-color-background-brand-default);
+  color: var(--mfy-color-text-brand-on-brand);
+}
+
+.tg-hero-count {
+  margin-top: 1.25rem;
+  font-family: var(--tg-mono);
+  font-size: 0.75rem;
+  color: var(--mfy-color-text-default-tertiary);
+}
+
+/* the exploded surface */
+
+.tg-hero-stage-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  perspective: 1200px;
+}
+
+.tg-stage {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 16 / 10;
+  margin-inline: auto;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tilt-x, 10deg)) rotateY(var(--tilt-y, -14deg));
+  transition: transform 0.25s ease-out;
+  cursor: pointer;
+}
+
+.tg-plane {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  pointer-events: none;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.3s ease,
+    background-color 0.55s ease,
+    border-color 0.55s ease,
+    color 0.55s ease;
+}
+
+.tg-plane-background {
+  background-color: var(--st-bg, transparent);
+  transform: translateZ(0);
+  box-shadow: 0 24px 48px -24px var(--mfy-color-black-400);
+}
+
+.tg-plane-border {
+  border: 2px solid var(--st-border, currentColor);
+  transform: translateZ(34px);
+}
+
+.tg-plane-text {
+  transform: translateZ(68px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.375rem;
+  padding: 1.5rem;
+  color: var(--st-text, inherit);
+}
+
+.tg-plane-text strong {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.tg-plane-text span {
+  font-size: 0.84rem;
+  opacity: 0.85;
+}
+
+.tg-plane-icon {
+  transform: translateZ(96px);
+  padding: 1.25rem;
+  color: var(--st-icon, inherit);
+}
+
+.tg-plane-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.tg-stage[data-focus] .tg-plane {
+  opacity: 0.15;
+}
+
+.tg-stage[data-focus="background"] .tg-plane-background {
+  opacity: 1;
+  transform: translateZ(24px);
+}
+
+.tg-stage[data-focus="border"] .tg-plane-border {
+  opacity: 1;
+  transform: translateZ(58px);
+}
+
+.tg-stage[data-focus="text"] .tg-plane-text {
+  opacity: 1;
+  transform: translateZ(92px);
+}
+
+.tg-stage[data-focus="icon"] .tg-plane-icon {
+  opacity: 1;
+  transform: translateZ(120px);
+}
+
+.tg-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tg-legend-row {
+  display: grid;
+  grid-template-columns: 14px 118px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tg-legend-row:hover {
+  background: var(--mfy-color-background-default-secondary);
+  border-color: var(--mfy-color-border-default-default);
+}
+
+.tg-legend-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--mfy-color-border-utilities-swatch);
+  transition: background-color 0.55s ease;
+}
+
+.tg-legend-role {
+  font-size: 0.75rem;
+  color: var(--mfy-color-text-default-secondary);
+}
+
+.tg-legend-row code {
+  font-size: 0.72rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- role atlas ---------------------------------------------------- */
+
+.tg-role,
+.tg-recipes,
+.tg-lab {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.tg-role-head {
+  margin-bottom: 1.75rem;
+}
+
+.tg-role-title {
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.tg-role-verb {
+  font-weight: 400;
+  font-style: italic;
+  color: var(--mfy-color-text-default-tertiary);
+}
+
+.tg-role-blurb {
+  margin: 0.5rem 0 0;
+  max-width: 64ch;
+  line-height: 1.55;
+  color: var(--mfy-color-text-default-secondary);
+}
+
+.tg-role-count {
+  margin: 0.5rem 0 0;
+  font-family: var(--tg-mono);
+  font-size: 0.6875rem;
+  color: var(--mfy-color-text-default-tertiary);
+}
+
+.tg-matrix-row {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-block: 1.25rem;
+  border-top: 1px solid var(--mfy-color-border-default-default);
+}
+
+.tg-matrix-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.tg-intent-name {
+  font-family: var(--tg-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tg-intent-copy {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--mfy-color-text-default-secondary);
+}
+
+.tg-matrix-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.tg-on-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  padding-left: 0.75rem;
+  margin-left: 0.25rem;
+  border-left: 1px dashed var(--mfy-color-border-default-secondary);
+}
+
+.tg-on-label {
+  width: 100%;
+  font-family: var(--tg-mono);
+  font-size: 0.625rem;
+  color: var(--mfy-color-text-default-tertiary);
+}
+
+/* ---- swatches ------------------------------------------------------ */
+
+.tg-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 104px;
+  padding: 0.375rem;
+  border-radius: 10px;
+  text-align: left;
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+
+.tg-swatch:hover {
+  background: var(--mfy-color-background-default-secondary);
+  transform: translateY(-2px);
+}
+
+.tg-swatch:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.tg-swatch-block {
+  display: grid;
+  place-items: center;
+  height: 52px;
+  border-radius: 8px;
+  /* the system's own hairline for exactly this job */
+  box-shadow: inset 0 0 0 1px var(--mfy-color-border-utilities-swatch);
+  transition: background-color 0.2s ease;
+}
+
+.tg-swatch-background .tg-swatch-block {
+  background-color: var(--sw, transparent);
+}
+
+.tg-swatch-background.has-hover:hover .tg-swatch-block {
+  background-color: var(--sw-hover, transparent);
+}
+
+.tg-swatch-text .tg-swatch-block {
+  background-color: var(--sw-backdrop, transparent);
+}
+
+.tg-swatch-text .tg-swatch-specimen {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--sw, currentColor);
+}
+
+.tg-swatch-border .tg-swatch-block {
+  box-shadow:
+    inset 0 0 0 2px var(--sw, currentColor),
+    inset 0 0 0 1px var(--mfy-color-border-utilities-swatch, transparent);
+}
+
+.tg-swatch-icon .tg-swatch-block {
+  background-color: var(--sw-backdrop, transparent);
+  color: var(--sw, currentColor);
+}
+
+.tg-swatch-icon .tg-swatch-glyph {
+  width: 22px;
+  height: 22px;
+}
+
+.tg-swatch-variant {
+  font-family: var(--tg-mono);
+  font-size: 0.6563rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.tg-swatch-value {
+  font-family: var(--tg-mono);
+  font-size: 0.625rem;
+  color: var(--mfy-color-text-default-tertiary);
+}
+
+/* ---- recipes ------------------------------------------------------- */
+
+.tg-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+}
+
+.tg-recipe-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tg-recipe-intent {
+  font-family: var(--tg-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.25rem;
+}
+
+.tg-recipe-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 100%;
+  padding: 1rem;
+  border: 1.5px solid var(--rc-border, currentColor);
+  border-radius: 12px;
+  background-color: var(--rc-bg, transparent);
+  color: var(--rc-text, inherit);
+  text-align: left;
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+
+.tg-recipe-card:hover {
+  background-color: var(--rc-bg-hover, transparent);
+  transform: translateY(-2px);
+}
+
+.tg-recipe-card:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.tg-recipe-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.tg-recipe-glyph {
+  width: 20px;
+  height: 20px;
+  color: var(--rc-icon, currentColor);
+}
+
+.tg-recipe-prominence {
+  font-family: var(--tg-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
+.tg-recipe-title {
+  font-size: 0.9375rem;
+}
+
+.tg-recipe-body {
+  font-size: 0.8125rem;
+  opacity: 0.9;
+}
+
+/* ---- pairing lab --------------------------------------------------- */
+
+.tg-lab-body {
+  display: grid;
+  grid-template-columns: minmax(300px, 440px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.tg-lab-preview {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tg-lab-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 1.5px solid var(--lab-border, currentColor);
+  border-radius: 14px;
+  background-color: var(--lab-bg, transparent);
+  color: var(--lab-text, inherit);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.tg-lab-card strong {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.tg-lab-card > span {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.tg-lab-glyph {
+  width: 26px;
+  height: 26px;
+  color: var(--lab-icon, currentColor);
+  transition: color 0.3s ease;
+}
+
+.tg-lab-ratios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-top: 0.5rem;
+  font-family: var(--tg-mono);
+  font-size: 0.6875rem;
+  opacity: 0.9;
+}
+
+.tg-lab-ratios [data-ok="fail"] {
+  text-decoration: underline wavy;
+  text-underline-offset: 3px;
+}
+
+.tg-lab-copy {
+  align-self: flex-start;
+  font-family: var(--tg-mono);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: var(--mfy-color-background-brand-default);
+  color: var(--mfy-color-text-brand-on-brand);
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+
+.tg-lab-copy:hover {
+  background: var(--mfy-color-background-brand-hover);
+}
+
+.tg-lab-copy:active {
+  transform: scale(0.97);
+}
+
+.tg-lab-snippet {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  border: 1px solid var(--mfy-color-border-default-default);
+  border-radius: 10px;
+  background: var(--mfy-color-background-default-secondary);
+  overflow-x: auto;
+}
+
+.tg-lab-pickers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tg-lab-picker {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.tg-lab-picker legend {
+  font-family: var(--tg-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mfy-color-text-default-secondary);
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+
+.tg-lab-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid var(--mfy-color-border-default-default);
+  border-radius: 10px;
+  background: var(--mfy-color-background-default-default);
+}
+
+.tg-lab-chip {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--mfy-color-border-utilities-swatch);
+  transition: transform 0.12s ease;
+}
+
+.tg-lab-chip:hover {
+  transform: translateY(-2px);
+}
+
+.tg-lab-chip[aria-pressed="true"] {
+  outline: 2px solid var(--mfy-color-border-brand-default);
+  outline-offset: 1px;
+}
+
+.tg-lab-chip-background {
+  background-color: var(--chip, transparent);
+}
+
+.tg-lab-chip-text {
+  background-color: var(--chip-bg, var(--mfy-color-background-default-secondary));
+  color: var(--chip, currentColor);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.tg-lab-chip-border {
+  box-shadow: inset 0 0 0 2px var(--chip, currentColor);
+}
+
+.tg-lab-chip-icon {
+  background-color: var(--chip-bg, var(--mfy-color-background-default-secondary));
+  color: var(--chip, currentColor);
+}
+
+.tg-lab-chip-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---- toast --------------------------------------------------------- */
+
+.tg-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.75rem;
+  transform: translateX(-50%) translateY(8px);
+  z-index: 50;
+  padding: 0.625rem 1rem;
+  border-radius: 999px;
+  font-family: var(--tg-mono);
+  font-size: 0.75rem;
+  background: var(--mfy-color-background-neutral-default);
+  color: var(--mfy-color-text-neutral-on-neutral);
+  box-shadow: 0 8px 24px -8px var(--mfy-color-black-400);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tg-toast[data-open] {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---- reveal + motion discipline ------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .tg [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .tg [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg *,
+  .tg *::before,
+  .tg *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .tg-stage {
+    transform: none;
+  }
+}
+
+/* ---- responsive ---------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .tg-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tg-lab-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tg-lab-preview {
+    position: static;
+  }
+}
+
+@media (max-width: 639px) {
+  .tg-matrix-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .tg-lab-pickers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tg-legend-row {
+    grid-template-columns: 14px minmax(0, 1fr);
+  }
+
+  .tg-legend-row code {
+    grid-column: 1 / -1;
+  }
+}

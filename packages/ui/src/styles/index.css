@@ -1,0 +1,20 @@
+/* Design-token value layer (primitives, light/dark theme vars, responsive,
+ * icons, global base styles) now lives in @gmhlab/tokens. It is inlined into
+ * this bundle at build time so consumers get one @gmhlab/ui/styles.css. */
+@import "@gmhlab/tokens/tokens.css";
+
+/* Tailwind glue: @theme inline, @custom-variant dark, @apply, shadcn light/dark
+ * (--background etc.). Stays here so it's compiled by the consumer's Tailwind,
+ * keyed on the same `.dark` class the token theme uses. */
+@import url("./tailwind.css");
+
+/* shadcn `cn-*` component classes for the Base UI button/button-group, from
+ * shadcn-ui/ui registry/styles/style-vega.css. Consumed by Button and
+ * ButtonGroup; see components.css for the deviations from upstream.
+ *
+ * layer(base) is required and matches upstream's app/style-registry.css.
+ * Tailwind's layer order is theme, base, components, utilities, so base keeps
+ * these below utilities and a consumer's `className="bg-red-500"` still wins.
+ * Unlayered rules beat every layered rule — dropping layer(base) would silently
+ * break all consumer overrides. */
+/* @import url("./components.css") layer(base); */

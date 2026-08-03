@@ -1,0 +1,105 @@
+.section {
+  box-sizing: border-box;
+  padding: var(--padding-y-top) var(--mfy-size-space-600)
+    var(--padding-y-bottom);
+  position: relative;
+  width: 100%;
+}
+.section-padding-bottom-0 {
+  --padding-y-bottom: var(--mfy-size-space-0);
+}
+.section-padding-top-0 {
+  --padding-y-top: var(--mfy-size-space-0);
+}
+.section-padding-bottom-400 {
+  --padding-y-bottom: var(--mfy-size-space-400);
+}
+.section-padding-top-400 {
+  --padding-y-top: var(--mfy-size-space-400);
+}
+.section-padding-bottom-600 {
+  --padding-y-bottom: var(--mfy-size-space-600);
+}
+.section-padding-top-600 {
+  --padding-y-top: var(--mfy-size-space-600);
+}
+.section-padding-bottom-800 {
+  --padding-y-bottom: var(--mfy-size-space-800);
+}
+.section-padding-top-800 {
+  --padding-y-top: var(--mfy-size-space-800);
+}
+.section-padding-bottom-1200 {
+  --padding-y-bottom: var(--mfy-size-space-1200);
+}
+.section-padding-top-1200 {
+  --padding-y-top: var(--mfy-size-space-1200);
+}
+.section-padding-bottom-1600 {
+  --padding-y-bottom: var(--mfy-size-space-1600);
+}
+.section-padding-top-1600 {
+  --padding-y-top: var(--mfy-size-space-1600);
+}
+.section-padding-bottom-4000 {
+  --padding-y-bottom: var(--mfy-size-space-4000);
+}
+.section-padding-top-4000 {
+  --padding-y-top: var(--mfy-size-space-4000);
+}
+
+.section-variant-image {
+  overflow: hidden;
+  &::before {
+    content: "";
+    background-color: var(--mfy-color-background-utilities-scrim);
+    z-index: -1;
+  }
+  .section-image {
+    height: 100%;
+    width: 100%;
+    object-position: center;
+    z-index: -2;
+  }
+  &::before,
+  .section-image {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+.section-variant-brand {
+  background: var(--mfy-color-background-brand-default);
+  color: var(--mfy-color-text-brand-on-brand);
+  .logo svg {
+    --logo-color: var(--mfy-color-icon-brand-on-brand);
+  }
+  /* Icon renders <svg class="icon">, so the class is ON the svg — a
+     descendant selector (`.icon svg`) never matches and left icons at
+     their default dark brand colour on the dark brand background. */
+  .icon {
+    --icon-color: var(--mfy-color-icon-brand-on-brand);
+  }
+}
+
+.section-variant-neutral {
+  background: var(--mfy-color-background-default-tertiary);
+}
+.section-variant-stroke {
+  &:not(:last-child) {
+    border-bottom: var(--mfy-size-stroke-border) solid
+      var(--mfy-color-border-default-default);
+  }
+  &:not(:first-child) {
+    border-top: var(--mfy-size-stroke-border) solid
+      var(--mfy-color-border-default-default);
+  }
+  & + .section-variant-stroke {
+    border-top: none;
+  }
+}
+.section-variant-subtle {
+  background: transparent;
+}

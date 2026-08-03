@@ -1,0 +1,104 @@
+/* Page-local styling for InnovationsPage.
+ *
+ * Every selector here is a uniquely-prefixed class. The original
+ * `innovations.css` ships an unlayered `*` reset, a `body` rule and generic
+ * class names (`.header`, `.hero`, `.btn`), all of which leak into every
+ * consumer of @gmhlab/blocks/styles.css. Nothing below touches an element
+ * selector or a name the design system already owns.
+ *
+ * Only the things the design system has no component for live here: the
+ * centred page frame, the emoji icon tile, the three status tones, and the
+ * partner-logo placeholders. */
+
+/* Deliberately not a 75rem frame. The wireframe's `.wireframe-container`
+ * capped the whole mock at 1200px, which also capped every section
+ * *background* — so the neutral hero band and the dark brand CTA stopped
+ * short of the viewport edge, unlike every other page in the app.
+ *
+ * The design system already handles this one layer down: `.section` is
+ * width:100% and the `Flex container` inside each one caps the *content* at
+ * --global-container-max-width. Every section here already uses it, so
+ * dropping the outer cap gives full-bleed bands with the content still
+ * aligned to the same 75rem column. Background comes from `body`. */
+.innovations-page {
+  width: 100%;
+}
+
+/* The wireframe's fixed corner stamp. */
+.innovations-wireframe-label {
+  left: var(--mfy-size-space-400);
+  letter-spacing: 0.0625rem;
+  position: fixed;
+  text-transform: uppercase;
+  top: var(--mfy-size-space-400);
+  z-index: 1000;
+}
+
+/* The wireframe lifts the card on hover. Card's own `interactionProps` would
+ * give it that for free, but it renders an absolutely-positioned overlay
+ * anchor that swallows the "Learn more" link underneath — so the elevation is
+ * visual only and the link stays the click target. */
+.innovation-card {
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.innovation-card:hover {
+  box-shadow:
+    inset 0 0 0 var(--mfy-size-stroke-border)
+      var(--mfy-color-border-default-default),
+    var(--mfy-effects-shadows-drop-shadow-600);
+  transform: translateY(-2px);
+}
+
+/* Card content is a 24px-gap column; the wireframe's meta row sits on its own
+ * hairline above the link. */
+.innovation-card-meta {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  color: var(--mfy-color-text-default-tertiary);
+  padding-top: var(--mfy-size-space-400);
+}
+
+.innovation-card-icon {
+  align-items: center;
+  background: var(--mfy-color-background-default-secondary);
+  border-radius: var(--mfy-size-radius-200);
+  display: flex;
+  font-size: 1.5rem;
+  height: 3.5rem;
+  justify-content: center;
+  line-height: 1;
+  width: 3.5rem;
+}
+
+/* Colour comes from Badge's info/warning/success variants now; this only adds
+ * the wireframe's uppercase treatment. */
+.innovation-status {
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+}
+
+.innovations-partners {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+}
+
+.innovations-partner-logo {
+  align-items: center;
+  background: var(--mfy-color-background-default-tertiary-hover);
+  border-radius: var(--mfy-size-radius-100);
+  color: var(--mfy-color-text-default-tertiary);
+  display: flex;
+  height: 2.5rem;
+  justify-content: center;
+  width: 5rem;
+}
+
+/* Measure cap for the CTA paragraph only — the heading above it runs the full
+   container width so it stays on one line. */
+.innovations-cta-copy {
+  max-width: 34rem;
+}

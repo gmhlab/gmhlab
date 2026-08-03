@@ -1,0 +1,89 @@
+/*
+ * Global CSS custom properties and base element styling.
+ * Value layer only — no Tailwind directives. Depends on the --mfy-* tokens
+ * defined in ./variables.css and reacts to light/dark via the same `.dark`
+ * class the design-token theme uses.
+ */
+:root {
+  --global-focus-ring-size: var(--mfy-size-stroke-focus-ring);
+  --global-focus-ring-color: rgb(0, 106, 255);
+  --global-line-height-paragraph: 1.4;
+  --global-stack-top: 999;
+  --global-stack-focus: 999;
+  --global-stack-dialog-backdrop: 9999;
+  --global-stack-dialog-container: 99999;
+  /* Sticky site chrome (headers) must sit BELOW the shadcn/Base UI overlay
+     layer, which the primitives hardcode at Tailwind z-50. Keeping this under
+     50 lets dialogs and dropdown/menubar/navigation popups clear the header
+     without editing the (regenerable) primitives. */
+  --global-stack-header: 40;
+  --global-container-max-width: 75rem;
+  --global-dialog-max-width: 32rem;
+  --global-tooltip-max-width: calc(var(--global-dialog-max-width) / 2);
+  --global-line-height-body: 1.6;
+}
+
+.display-none-to-flex {
+  display: var(--mfy-responsive-display-none-to-flex) !important;
+}
+.display-flex-to-none {
+  display: var(--mfy-responsive-display-flex-to-none) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --global-focus-ring-color: rgb(0, 106, 255);
+  }
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background: var(--mfy-color-background-default-default);
+  color: var(--mfy-color-text-default-default);
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  min-height: 100%;
+  width: 100%;
+}
+
+body,
+button,
+textarea,
+input,
+select {
+  font: var(--mfy-font-body-base);
+}
+
+pre,
+code {
+  font: var(--mfy-font-body-code);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font: var(--mfy-font-heading);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}

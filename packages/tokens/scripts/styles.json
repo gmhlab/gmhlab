@@ -1,0 +1,1916 @@
+[
+  {
+    "type": "TEXT",
+    "name": "Title Hero",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10189"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10188"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10190"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:4b58b7baa140c55bff22dbedd297179ca1028bbf,",
+      "key": "4b58b7baa140c55bff22dbedd297179ca1028bbf",
+      "description": "",
+      "remote": false,
+      "fontSize": 72,
+      "fontName": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": -3
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 120.00000476837158
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10189"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10188"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10190"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Title Page",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10197"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:58:8569"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:58:8572"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:7625cda7003e22c9163d43053b0d4e33bc3a8f14,",
+      "key": "7625cda7003e22c9163d43053b0d4e33bc3a8f14",
+      "description": "",
+      "remote": false,
+      "fontSize": 48,
+      "fontName": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": -2
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 120.00000476837158
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10197"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:58:8569"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:58:8572"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Subtitle",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10177"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10176"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10178"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:f9cccc771baaa4551fbf8a859fb568c5eaf8bfc4,",
+      "key": "f9cccc771baaa4551fbf8a859fb568c5eaf8bfc4",
+      "description": "",
+      "remote": false,
+      "fontSize": 32,
+      "fontName": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 120.00000476837158
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10177"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10176"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10178"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Heading",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10186"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10185"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10187"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:fbdb7cb6fdaa20259a222697605eaa37722ba323,",
+      "key": "fbdb7cb6fdaa20259a222697605eaa37722ba323",
+      "description": "",
+      "remote": false,
+      "fontSize": 24,
+      "fontName": {
+        "family": "Inter",
+        "style": "Semi Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": -2
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 120.00000476837158
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10186"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10185"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10187"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Subheading",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:2103:22308"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:2103:22306"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:2103:22310"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:f52f6586895b5d9f0b52a6f49fd70bd00ce6b649,",
+      "key": "f52f6586895b5d9f0b52a6f49fd70bd00ce6b649",
+      "description": "",
+      "remote": false,
+      "fontSize": 20,
+      "fontName": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 120.00000476837158
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:2103:22308"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:2103:22306"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:2103:22310"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Base",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10180"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10181"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:abb37f92708302f33c58c56ddb641355e9643eec,",
+      "key": "abb37f92708302f33c58c56ddb641355e9643eec",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10180"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10181"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Strong",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10180"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:14844"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:653c6b451633001bbea8b397254f682708fb20a5,",
+      "key": "653c6b451633001bbea8b397254f682708fb20a5",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Inter",
+        "style": "Semi Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10180"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:14844"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Emphasis",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10180"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontStyle": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:14846"
+    },
+    "figma": {
+      "id": "S:f1dca62f8fead8df687438fdd1b3a1649cdfbfaa,",
+      "key": "f1dca62f8fead8df687438fdd1b3a1649cdfbfaa",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Inter",
+        "style": "Italic"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10180"
+        },
+        "fontStyle": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:14846"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Link",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10180"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10181"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:066ede53a0c5ca44a0294845d1cf307f28fe3b74,",
+      "key": "066ede53a0c5ca44a0294845d1cf307f28fe3b74",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "textDecoration": "UNDERLINE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10180"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10181"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Small",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10216"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10181"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:e1a5728de7db524c8d10617c2b0d884c0b673f13,",
+      "key": "e1a5728de7db524c8d10617c2b0d884c0b673f13",
+      "description": "",
+      "remote": false,
+      "fontSize": 14,
+      "fontName": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10216"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10181"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Small Strong",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10216"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:14844"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:5d8c1e8d69bb58d54aed288756fe8d1967aa9c2b,",
+      "key": "5d8c1e8d69bb58d54aed288756fe8d1967aa9c2b",
+      "description": "",
+      "remote": false,
+      "fontSize": 14,
+      "fontName": {
+        "family": "Inter",
+        "style": "Semi Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10216"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:14844"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Body Code",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10183"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10182"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10184"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:72ac3c3670b5f4c8ff24530dd76426d0e7876ffa,",
+      "key": "72ac3c3670b5f4c8ff24530dd76426d0e7876ffa",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Roboto Mono",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 129.99999523162842
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10183"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10182"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10184"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Single Line/Body Base",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10180"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10181"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:1e3312479b7a800c2af1809e0170bb4ce923d335,",
+      "key": "1e3312479b7a800c2af1809e0170bb4ce923d335",
+      "description": "Used for any text element where you need 100% line height. For example, an input field, a label.",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 100
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10180"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10181"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": "Single Line/Body Small Strong",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10216"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:10179"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:66:14844"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:3d6df12d6f7b315c82c9b6bd963fb6372c06f588,",
+      "key": "3d6df12d6f7b315c82c9b6bd963fb6372c06f588",
+      "description": "",
+      "remote": false,
+      "fontSize": 14,
+      "fontName": {
+        "family": "Inter",
+        "style": "Semi Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 100
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10216"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:10179"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:66:14844"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": ".Utilities/Component notes/Regular",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:9:11196"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:9:11201"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:9:11183"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:26acf3d493f4c9ba0efb7287d4566f5c4c90ab34,",
+      "key": "26acf3d493f4c9ba0efb7287d4566f5c4c90ab34",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Roboto Mono",
+        "style": "Regular"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9:11196"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9:11201"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9:11183"
+        }
+      }
+    }
+  },
+  {
+    "type": "TEXT",
+    "name": ".Utilities/Component notes/Bold",
+    "fontSize": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:9:11196"
+    },
+    "fontFamily": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:9:11201"
+    },
+    "fontWeight": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:9:11186"
+    },
+    "fontStyle": "normal",
+    "figma": {
+      "id": "S:0f22d4ade9462f1495bb6690d8d3755c7b8c7fd0,",
+      "key": "0f22d4ade9462f1495bb6690d8d3755c7b8c7fd0",
+      "description": "",
+      "remote": false,
+      "fontSize": 16,
+      "fontName": {
+        "family": "Roboto Mono",
+        "style": "Bold"
+      },
+      "textDecoration": "NONE",
+      "textCase": "ORIGINAL",
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "lineHeight": {
+        "unit": "PERCENT",
+        "value": 139.9999976158142
+      },
+      "leadingTrim": "NONE",
+      "paragraphIndent": 0,
+      "paragraphSpacing": 0,
+      "listSpacing": 0,
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "fontSize": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9:11196"
+        },
+        "fontFamily": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9:11201"
+        },
+        "fontWeight": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9:11186"
+        }
+      }
+    }
+  },
+  {
+    "key": "c17c314c0dc3533b48e80858f7a164fe2d04afb0",
+    "name": "Drop Shadow/100",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11281"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 1
+        },
+        "spread": 0,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d0d"
+      }
+    ],
+    "figma": {
+      "id": "S:c17c314c0dc3533b48e80858f7a164fe2d04afb0,",
+      "key": "c17c314c0dc3533b48e80858f7a164fe2d04afb0",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "96deb216009fd385b4d18b040b7f4ac5b556ea05",
+    "name": "Drop Shadow/200",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11281"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 1
+        },
+        "spread": 0,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d0d"
+      },
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11235"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11281"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.10000000149011612
+        },
+        "offset": {
+          "x": 0,
+          "y": 1
+        },
+        "spread": 0,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d1a"
+      }
+    ],
+    "figma": {
+      "id": "S:96deb216009fd385b4d18b040b7f4ac5b556ea05,",
+      "key": "96deb216009fd385b4d18b040b7f4ac5b556ea05",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "78628874e8f9fb30e105829b2a0ce77a058900ce",
+    "name": "Drop Shadow/300",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11287"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "spread": -1,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d0d"
+      },
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11235"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11287"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.10000000149011612
+        },
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "spread": -1,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d1a"
+      }
+    ],
+    "figma": {
+      "id": "S:78628874e8f9fb30e105829b2a0ce77a058900ce,",
+      "key": "78628874e8f9fb30e105829b2a0ce77a058900ce",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "32833e88421249706ec6235b80b09da7cf8b1db5",
+    "name": "Drop Shadow/400",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11288"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "spread": -4,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d0d"
+      },
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 32,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11235"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11288"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11285"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.10000000149011612
+        },
+        "offset": {
+          "x": 0,
+          "y": 16
+        },
+        "spread": -4,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d1a"
+      }
+    ],
+    "figma": {
+      "id": "S:32833e88421249706ec6235b80b09da7cf8b1db5,",
+      "key": "32833e88421249706ec6235b80b09da7cf8b1db5",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "605da9972033e9528c01067854cf5cc7bd19c5e2",
+    "name": "Drop Shadow/500",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11288"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "spread": -4,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d0d"
+      },
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 16,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11235"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11289"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.10000000149011612
+        },
+        "offset": {
+          "x": 0,
+          "y": 16
+        },
+        "spread": -8,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d1a"
+      }
+    ],
+    "figma": {
+      "id": "S:605da9972033e9528c01067854cf5cc7bd19c5e2,",
+      "key": "605da9972033e9528c01067854cf5cc7bd19c5e2",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "d750a997774c5632341a8ae68f37f167ef50d099",
+    "name": "Drop Shadow/600",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "DROP_SHADOW",
+        "visible": true,
+        "radius": 32,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11237"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11289"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11285"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.4000000059604645
+        },
+        "offset": {
+          "x": 0,
+          "y": 16
+        },
+        "spread": -8,
+        "blendMode": "NORMAL",
+        "showShadowBehindNode": false,
+        "hex": "#0c0c0d66"
+      }
+    ],
+    "figma": {
+      "id": "S:d750a997774c5632341a8ae68f37f167ef50d099,",
+      "key": "d750a997774c5632341a8ae68f37f167ef50d099",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "d52a050637e64c0ba43ec716e90ec7e4e68e712d",
+    "name": "Blur/Overlay",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "BACKGROUND_BLUR",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:228:6769"
+          }
+        },
+        "blurType": "NORMAL"
+      }
+    ],
+    "figma": {
+      "id": "S:d52a050637e64c0ba43ec716e90ec7e4e68e712d,",
+      "key": "d52a050637e64c0ba43ec716e90ec7e4e68e712d",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "073c4794b1a85d767bab7184bf893d4c1568d557",
+    "name": "Blur/Layer",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "LAYER_BLUR",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:228:6769"
+          }
+        },
+        "blurType": "NORMAL"
+      }
+    ],
+    "figma": {
+      "id": "S:073c4794b1a85d767bab7184bf893d4c1568d557,",
+      "key": "073c4794b1a85d767bab7184bf893d4c1568d557",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "33601cd16ff46720a7d23b7861b625e3c04c4fa5",
+    "name": "Blur/Glass",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "BACKGROUND_BLUR",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:228:6769"
+          }
+        },
+        "blurType": "NORMAL"
+      }
+    ],
+    "figma": {
+      "id": "S:33601cd16ff46720a7d23b7861b625e3c04c4fa5,",
+      "key": "33601cd16ff46720a7d23b7861b625e3c04c4fa5",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "34bac599e00c3aaca1cbdfef8b15270504141b3c",
+    "name": "Inner Shadow/100",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "INNER_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:228:6769"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11281"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 1
+        },
+        "spread": 0,
+        "blendMode": "NORMAL",
+        "hex": "#0c0c0d0d"
+      }
+    ],
+    "figma": {
+      "id": "S:34bac599e00c3aaca1cbdfef8b15270504141b3c,",
+      "key": "34bac599e00c3aaca1cbdfef8b15270504141b3c",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "b8e120af542836a72691ec55f1d94ff6abe96fb5",
+    "name": "Inner Shadow/200",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "INNER_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11281"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 1
+        },
+        "spread": 0,
+        "blendMode": "NORMAL",
+        "hex": "#0c0c0d0d"
+      }
+    ],
+    "figma": {
+      "id": "S:b8e120af542836a72691ec55f1d94ff6abe96fb5,",
+      "key": "b8e120af542836a72691ec55f1d94ff6abe96fb5",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "b814b92f33d3a0907f5c2d33938e9a8b2962592c",
+    "name": "Inner Shadow/300",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "INNER_SHADOW",
+        "visible": true,
+        "radius": 4,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11234"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11287"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11282"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.05000000074505806
+        },
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "spread": -1,
+        "blendMode": "NORMAL",
+        "hex": "#0c0c0d0d"
+      }
+    ],
+    "figma": {
+      "id": "S:b814b92f33d3a0907f5c2d33938e9a8b2962592c,",
+      "key": "b814b92f33d3a0907f5c2d33938e9a8b2962592c",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "f5d23bdd45c42724ac4b55c40625463168e44e84",
+    "name": "Inner Shadow/400",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "INNER_SHADOW",
+        "visible": true,
+        "radius": 32,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11235"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11288"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11285"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.10000000149011612
+        },
+        "offset": {
+          "x": 0,
+          "y": 16
+        },
+        "spread": -4,
+        "blendMode": "NORMAL",
+        "hex": "#0c0c0d1a"
+      }
+    ],
+    "figma": {
+      "id": "S:f5d23bdd45c42724ac4b55c40625463168e44e84,",
+      "key": "f5d23bdd45c42724ac4b55c40625463168e44e84",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "0747a18ff2ae7be2b0c80fc1d33de52fffa8ee9f",
+    "name": "Inner Shadow/500",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "INNER_SHADOW",
+        "visible": true,
+        "radius": 16,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11235"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11289"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.10000000149011612
+        },
+        "offset": {
+          "x": 0,
+          "y": 16
+        },
+        "spread": -8,
+        "blendMode": "NORMAL",
+        "hex": "#0c0c0d1a"
+      }
+    ],
+    "figma": {
+      "id": "S:0747a18ff2ae7be2b0c80fc1d33de52fffa8ee9f,",
+      "key": "0747a18ff2ae7be2b0c80fc1d33de52fffa8ee9f",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "key": "c7ad8f2e25d1e695f60b6eb2305bf976e16cb1a5",
+    "name": "Inner Shadow/600",
+    "styleType": "EFFECT",
+    "remote": false,
+    "description": "",
+    "type": "EFFECT",
+    "effects": [
+      {
+        "type": "INNER_SHADOW",
+        "visible": true,
+        "radius": 32,
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11237"
+          },
+          "spread": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11289"
+          },
+          "radius": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11285"
+          },
+          "offsetX": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11280"
+          },
+          "offsetY": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:9:11284"
+          }
+        },
+        "color": {
+          "r": 0.0470588244497776,
+          "g": 0.0470588244497776,
+          "b": 0.05098039284348488,
+          "a": 0.4000000059604645
+        },
+        "offset": {
+          "x": 0,
+          "y": 16
+        },
+        "spread": -8,
+        "blendMode": "NORMAL",
+        "hex": "#0c0c0d66"
+      }
+    ],
+    "figma": {
+      "id": "S:c7ad8f2e25d1e695f60b6eb2305bf976e16cb1a5,",
+      "key": "c7ad8f2e25d1e695f60b6eb2305bf976e16cb1a5",
+      "description": "",
+      "remote": false
+    }
+  },
+  {
+    "type": "PAINT",
+    "name": "Image Placeholder",
+    "figma": {
+      "id": "S:0ff199662371190dc5aed85cf84f356b84f69066,",
+      "key": "0ff199662371190dc5aed85cf84f356b84f69066",
+      "description": "",
+      "remote": false,
+      "paints": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8918150663375854,
+            "g": 0.8918150663375854,
+            "b": 0.8918150663375854
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3919:36535"
+            }
+          }
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "scaleMode": "FIT",
+          "scalingFactor": 0.1599999964237213,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1.990167260169983,
+              -4.874504146067864e-16,
+              -0.47582322359085083
+            ],
+            [
+              4.874504146067864e-16,
+              1.990167260169983,
+              -0.5024272203445435
+            ]
+          ],
+          "imageHash": "0707e6b2022462187b7b2dab43ed95bab6b24a66",
+          "boundVariables": {}
+        }
+      ]
+    }
+  }
+]

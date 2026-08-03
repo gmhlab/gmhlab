@@ -1,0 +1,48 @@
+.slide-footer {
+  margin-top: auto;
+}
+
+/* Bare mode: drop the Section's fixed horizontal padding so labels sit flush
+   against the parent surface's own edges. */
+.section.slide-footer-bare {
+  padding-inline: 0;
+}
+
+/* Hairline rule above the footer row — mirrors the brand slide. */
+.slide-footer-rule {
+  height: 0;
+  border: none;
+  border-top: var(--mfy-size-stroke-border, 1px) solid
+    color-mix(in srgb, currentColor 65%, transparent);
+  margin: 0;
+}
+
+/* Flanking cells share the leftover space equally regardless of their own
+   label widths (an empty `start` vs. a long `end`). `size="fill"` only sets
+   flex-grow, leaving flex-basis at `auto` (content width), which would push the
+   centre label off-centre — zeroing the basis makes the two sides truly equal
+   so the centre stays centred. */
+.slide-footer-side {
+  flex-basis: 0;
+  min-width: 0;
+}
+
+/* Slide micro-labels — mirrors the brand slide footer row. */
+.slide-footer-meta {
+  margin: 0;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.slide-footer-meta-start {
+  text-align: left;
+}
+.slide-footer-meta-center {
+  text-align: center;
+}
+.slide-footer-meta-end {
+  text-align: right;
+}

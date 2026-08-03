@@ -1,0 +1,58 @@
+{
+  "name": "@gmhlab/blocks",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "type": "module",
+
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/index.css"
+  },
+
+  "files": [
+    "dist"
+  ],
+
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:"
+  },
+
+  "dependencies": {
+    "@gmhlab/tokens": "workspace:*",
+    "@gmhlab/ui": "workspace:*",
+    
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "lucide-react": "catalog:",
+    "motion": "catalog:",
+    "radix-ui": "catalog:",
+    "react-aria-components": "catalog:",
+    "tailwind-merge": "catalog:"
+  },
+
+  "devDependencies": {
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:"
+  },
+
+  "sideEffects": [
+    "*.css"
+  ]
+  
+}

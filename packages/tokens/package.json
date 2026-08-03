@@ -1,0 +1,38 @@
+{
+  "name": "@gmhlab/tokens",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "type": "module",
+  "private": true,
+
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/index.css"
+  },
+
+  "files": [
+    "dist"
+  ],
+
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "script:tokens": "cd scripts && node app.mjs"
+  },
+
+  "devDependencies": {
+    "typescript": "catalog:",
+    "tsup": "catalog:"
+  },
+
+  "sideEffects": [
+    "*.css"
+  ]
+}

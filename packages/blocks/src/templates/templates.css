@@ -1,0 +1,64 @@
+.template-page-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Shared surface block — used for rail, main content area, and feature cards */
+.template-block {
+  background: var(--sds-color-background-default-default);
+  border: var(--sds-size-stroke-border) solid var(--sds-color-border-default-default);
+  border-radius: var(--sds-size-radius-400);
+  padding: var(--sds-size-space-600);
+}
+
+.template-block--brand {
+  background: var(--sds-color-background-brand-default);
+  border-color: var(--sds-color-border-brand-default);
+  color: var(--sds-color-text-brand-on-brand);
+}
+
+/* Left rail within app shell */
+.template-rail {
+  position: sticky;
+  top: var(--sds-size-space-400);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-300);
+}
+
+/* Skeleton placeholder rows (app shell) */
+.template-skeleton-row {
+  background: var(--sds-color-background-default-secondary);
+  border-radius: var(--sds-size-radius-100);
+  height: var(--sds-size-space-600);
+}
+
+/* Auth benefits panel stretches to match form panel height via flex parent */
+.auth-benefits {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Template showcase (Templates.tsx) */
+.template-showcase-page {
+  background: var(--sds-color-background-default-default);
+  min-height: 100vh;
+}
+
+.template-showcase-intro {
+  display: grid;
+  gap: var(--sds-size-space-400);
+  margin: 0 auto;
+  max-width: 72rem;
+}
+
+.template-showcase-meta {
+  max-width: 40rem;
+}
+
+.template-showcase-preview {
+  border-top: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+}

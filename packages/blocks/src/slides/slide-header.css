@@ -1,0 +1,33 @@
+.slide-header {
+  background: var(--mfy-color-background-default-default);
+  left: 0;
+  position: sticky;
+  top: 0;
+  z-index: var(--global-stack-header, 40);
+}
+
+/* Bare mode: drop the Section's fixed horizontal padding so labels sit flush
+   against the parent surface's own edges. */
+.section.slide-header-bare {
+  padding-inline: 0;
+}
+
+/* Slide micro-labels — mirrors the brand slide header row. */
+.slide-header-meta {
+  margin: 0;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.slide-header-meta-start {
+  text-align: left;
+}
+.slide-header-meta-center {
+  text-align: center;
+}
+.slide-header-meta-end {
+  text-align: right;
+}

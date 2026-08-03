@@ -1,0 +1,7 @@
+/**
+ * @gmhlab/blocks — block-level styles.
+ *
+ * Composed blocks lean on @gmhlab/ui + @gmhlab/tokens for their styling;
+ * use this file only for layout/spacing that is specific to a block.
+ * Exposed to consumers as `@gmhlab/blocks/styles.css`.
+ */

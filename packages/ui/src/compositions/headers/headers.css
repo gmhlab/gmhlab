@@ -1,0 +1,145 @@
+.header {
+  background: var(--mfy-color-background-default-default);
+  left: 0;
+  position: sticky;
+  top: 0;
+  z-index: var(--global-stack-header, 40);
+}
+
+/* 600px is the one breakpoint in this composition: below it the header is
+ * Figma's Mobile variant (24px padding, 40px mark, hamburger), at or above it
+ * the Desktop variant (32px padding, 48px mark, inline nav). It must stay in
+ * step with the `isMobile` branch in headers.tsx — the two halves of the same
+ * switch. */
+
+/* `.section` hard-codes the inline padding to space-600, so the desktop 32px
+ * needs `.header.section` to outspecify it. */
+@media (min-width: 600px) {
+  .header.section {
+    padding: var(--mfy-size-space-800);
+  }
+}
+
+/* The mark is 40px tall on the mobile header and in the open sheet, 48px on
+ * desktop. Both rules outspecify the 48px default in logo.css. */
+.header .logo-gmh > svg,
+.navigation-dialog .logo-gmh > svg {
+  --logo-gmh-height: var(--mfy-size-icon-large, 2.5rem);
+}
+@media (min-width: 600px) {
+  .header .logo-gmh > svg {
+    --logo-gmh-height: var(--mfy-typography-scale-08, 3rem);
+  }
+}
+
+/* Desktop row: logo · nav · auth. The nav takes the slack between the two
+ * fixed blocks and centres inside it, which is what puts the links off
+ * page-centre exactly the way Figma has them. NavigationMenu ships
+ * `max-w-max`, so the growth has to be re-enabled here. */
+.header-actions {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-actions > [data-slot="navigation-menu"] {
+  flex: 1;
+  justify-content: center;
+  max-width: none;
+
+  /* Seven items at tablet width would otherwise push the auth buttons off the
+   * row; wrapping is what makes the < 600px hamburger viable. */
+  [data-slot="navigation-menu-list"] {
+    flex-wrap: wrap;
+  }
+}
+
+.header-auth-avatar-button {
+  --border-radius: var(--mfy-size-radius-200);
+  align-items: center;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  gap: var(--mfy-size-space-200);
+  padding: var(--mfy-size-space-100) var(--mfy-size-space-200);
+  position: relative;
+
+  &[data-hovered] {
+    background-color: var(--mfy-color-background-default-default-hover);
+  }
+
+  &[data-focus-visible] {
+    outline: none;
+    --offset: calc(var(--mfy-size-stroke-border) * 2);
+    &::before {
+      content: "";
+      border-radius: calc(var(--border-radius) + var(--offset));
+      bottom: calc(-1 * var(--offset));
+      box-shadow: 0 0 0 var(--global-focus-ring-size)
+        var(--global-focus-ring-color);
+      left: calc(-1 * var(--offset));
+      position: absolute;
+      right: calc(-1 * var(--offset));
+      top: calc(-1 * var(--offset));
+    }
+  }
+
+  > .logo {
+    --icon-color: var(--mfy-color-icon-default-default);
+  }
+}
+
+/* Full-bleed override of the shadcn dialog's centered card. Its utilities are
+ * layered, this file is not, so these win — but `inset`/`translate` have to be
+ * reset explicitly or the panel keeps the top/left 50% offset.
+ *
+ * Figma's Mobile/Open variant is a 375x812 column: 32px block padding, 24px
+ * inline, a 64px gap between the three rows, and the nav row absorbing the
+ * remaining height so the logo bar sits at the top, the links centre, and the
+ * auth buttons land on the bottom edge. */
+.navigation-dialog {
+  border: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-1600);
+  height: 100%;
+  inset: 0;
+  max-width: 100%;
+  padding: var(--mfy-size-space-800) var(--mfy-size-space-600);
+  translate: none;
+  width: 100%;
+}
+
+.navigation-dialog-bar {
+  width: 100%;
+}
+
+.navigation-dialog-nav {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
+
+  /* NavigationMenu/List are inline-ish by default; the sheet wants the links
+   * to span the full width so their centred labels line up with each other. */
+  > [data-slot="navigation-menu"] {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+.navigation-dialog-actions {
+  width: 100%;
+
+  /* Figma gives both buttons flex-[1_0_0]; Button ships `shrink-0`, but that
+   * utility is layered and this shorthand is not. */
+  > * {
+    flex: 1;
+  }
+}
+
+.navigation-dialog-user {
+  width: 100%;
+}

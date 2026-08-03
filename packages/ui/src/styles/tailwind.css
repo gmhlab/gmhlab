@@ -1,0 +1,143 @@
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    
+    --font-sans: var(--mfy-typography-family-sans);
+    --font-mono: var(--mfy-typography-family-mono);
+    --font-serif: var(--mfy-typography-family-serif);
+    --font-heading: var(--font-sans);
+    --font-body: var(--font-sans);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* shadcn semantic vars are a thin ALIAS layer over @gmhlab/tokens' --mfy-*
+   semantic tokens. Because those tokens already carry their own light/dark
+   values (see @gmhlab/tokens variables.css .dark block), every aliased var
+   below inherits dark mode for free — so the .dark block here only needs to
+   override what has no MFY source (the chart ramp). */
+:root {
+    --radius: 0.625rem;
+
+    --background: var(--mfy-color-background-default-default);
+    --foreground: var(--mfy-color-text-default-default);
+    --card: var(--mfy-color-background-default-default);
+    --card-foreground: var(--mfy-color-text-default-default);
+    --popover: var(--mfy-color-background-default-default);
+    --popover-foreground: var(--mfy-color-text-default-default);
+    --primary: var(--mfy-color-background-brand-default);
+    --primary-foreground: var(--mfy-color-text-brand-on-brand);
+    --secondary: var(--mfy-color-background-default-secondary);
+    --secondary-foreground: var(--mfy-color-text-default-default);
+    --muted: var(--mfy-color-background-default-secondary);
+    --muted-foreground: var(--mfy-color-text-default-secondary);
+    --accent: var(--mfy-color-background-default-secondary);
+    --accent-foreground: var(--mfy-color-text-default-default);
+    --destructive: var(--mfy-color-background-danger-default);
+
+    /* Status tones for Badge (and Alert, when it lands). Note the asymmetry
+       with --destructive above, which is the *solid* danger surface by shadcn
+       convention: these three are the *subtle* pair — a tinted surface plus
+       readable on-surface text — because that is the shape a status pill
+       needs. The solid steps stay reachable as
+       --mfy-color-background-{positive,warning}-default if a filled variant is
+       ever added. Both halves flip in dark via their --mfy-* sources. */
+    --info: var(--mfy-color-blue-200);
+    --info-foreground: var(--mfy-color-blue-800);
+    --warning: var(--mfy-color-background-warning-secondary);
+    --warning-foreground: var(--mfy-color-text-warning-default);
+    --success: var(--mfy-color-background-positive-secondary);
+    --success-foreground: var(--mfy-color-text-positive-default);
+
+    --border: var(--mfy-color-border-default-default);
+    --input: var(--mfy-color-border-default-default);
+    --ring: var(--mfy-color-border-brand-tertiary);
+
+    /* No MFY semantic source — kept as literals; dark values live in .dark below. */
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+
+    --sidebar: var(--mfy-color-background-default-default);
+    --sidebar-foreground: var(--mfy-color-text-default-default);
+    --sidebar-primary: var(--mfy-color-background-brand-default);
+    --sidebar-primary-foreground: var(--mfy-color-text-brand-on-brand);
+    --sidebar-accent: var(--mfy-color-background-default-secondary);
+    --sidebar-accent-foreground: var(--mfy-color-text-default-default);
+    --sidebar-border: var(--mfy-color-border-default-default);
+    --sidebar-ring: var(--mfy-color-border-brand-tertiary);
+}
+
+.dark {
+    /* MFY has danger/warning/positive semantic sets but no `info` one, so the
+       blue tone aliases the raw ramp — and raw ramps are single-valued, so
+       unlike --warning/--success these two do not flip on their own. */
+    --info: var(--mfy-color-blue-800);
+    --info-foreground: var(--mfy-color-blue-200);
+
+    /* Charts have no MFY semantic source, so their dark values are set here.
+       Everything else flips automatically via the aliased --mfy-* tokens. */
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+}
+

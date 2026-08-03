@@ -1,0 +1,125 @@
+.sidebar {
+  box-sizing: border-box;
+  background: var(--mfy-color-background-default-secondary);
+  border-right: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: var(--mfy-size-space-600);
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  padding: var(--mfy-size-space-600) var(--mfy-size-space-400);
+  position: sticky;
+  top: 0;
+  width: 16rem;
+}
+
+.sidebar-brand {
+  align-items: center;
+  display: flex;
+  gap: var(--mfy-size-space-300);
+  padding-inline: var(--mfy-size-space-300);
+}
+
+/* Nav fills the middle so the footer pins to the bottom of the rail. */
+.sidebar-nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--mfy-size-space-600);
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-300);
+  padding-inline: var(--mfy-size-space-300);
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-100);
+}
+
+/* Micro-label — mirrors the header/footer slide labels. */
+.sidebar-section-title {
+  color: var(--mfy-color-text-default-tertiary);
+  font-size: 0.75rem; /* 12px */
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  margin: 0;
+  padding-inline: var(--mfy-size-space-300);
+  text-transform: uppercase;
+}
+
+.sidebar-section-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+}
+
+.sidebar-item {
+  box-sizing: border-box;
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--mfy-size-radius-200);
+  color: var(--mfy-color-text-default-secondary);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: var(--mfy-size-space-300);
+  padding: var(--mfy-size-space-200) var(--mfy-size-space-300);
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+
+.sidebar-item:hover {
+  background: var(--mfy-color-background-default-tertiary);
+  color: var(--mfy-color-text-default-default);
+}
+
+.sidebar-item:focus-visible {
+  outline: var(--mfy-size-stroke-focus-ring) solid
+    var(--mfy-color-border-brand-default);
+  outline-offset: 1px;
+}
+
+.sidebar-item-selected {
+  background: var(--mfy-color-background-brand-tertiary);
+  color: var(--mfy-color-text-default-default);
+  font-weight: 600;
+}
+
+.sidebar-item-selected:hover {
+  background: var(--mfy-color-background-brand-tertiary-hover);
+}
+
+.sidebar-item-icon {
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.sidebar-item-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Small screens: static full-width bar stacked above the main column. */
+@media (max-width: 48em) {
+  .sidebar {
+    border-bottom: var(--mfy-size-stroke-border) solid
+      var(--mfy-color-border-default-default);
+    border-right: none;
+    height: auto;
+    position: static;
+    width: 100%;
+  }
+}

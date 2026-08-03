@@ -1,0 +1,42 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  esbuild: true
+  msw: false
+  sharp: true
+
+ignoredBuiltDependencies:
+  - unrs-resolver
+
+catalog:
+
+  # runtime (safe shared deps)
+  react: "^19.0.0"
+  react-dom: "^19.0.0"
+  react-router: "^8.0.0"
+  react-aria-components: "^1.19.0"
+  radix-ui: "^1.6.0"
+  class-variance-authority: "^0.7.1"
+  clsx: "^2.1.1"
+  tailwind-merge: "^3.6.0"
+  lucide-react: "^1.23.0"
+  motion: "^12.42.2"
+  "@base-ui/react": "^1.6.0"
+
+  # tooling (dev-only shared)
+  next: "^16.0.0"
+  turbo: "^2.0.0"
+  tsup: "^8.0.0"
+  tsx: "^4.0.0"
+  typescript: "^6.0.0"
+  vitest: "^4.0.0"
+  vite: "^8.0.0"
+  tailwindcss: "^4.0.0"
+  "@vitejs/plugin-react": "^6.0.0"
+  "@tailwindcss/postcss": "^4.0.0"
+  "@tailwindcss/vite": "^4.0.0"
+  "@types/react": "^19.0.0"
+  "@types/react-dom": "^19.0.0"
+  "@types/node": "^26.0.0"

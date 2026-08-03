@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "@gmhlab/ui/styles.css";
+@import "@gmhlab/blocks/styles.css";
+
+@source "../**/*.{ts,tsx}";
+@source "../../../../packages/ui/dist/**/*.js";
+@source "../../../../packages/blocks/dist/**/*.js";

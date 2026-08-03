@@ -1,0 +1,86 @@
+/**
+ * BrandSlide — a brand-guidelines "slide chrome" block.
+ *
+ * Reproduces the Figma "Page layout" frame: a full-bleed coloured slide with
+ * micro-labels in a header row (version / credit / page) and a footer row
+ * (— / brand name / section) sitting below a hairline rule, wrapped around a
+ * free content area.
+ *
+ * The colour treatment is chosen with the `variant` prop, which maps to the
+ * `.brand-slide-variant-*` classes below (each only overrides the fg/bg custom
+ * properties). Individual colours and spacing can still be overridden per
+ * instance via the `--brand-slide-*` custom properties, e.g.
+ *   <BrandSlide style={{ "--brand-slide-bg": "var(--mfy-color-brand-800)" }} />
+ */
+.brand-slide {
+  /* Fallback colours; the .brand-slide-variant-* classes set the real values. */
+  /*
+   * Slide insets from the MFY spacing scale (was the Figma frame's percentage
+   * margins). The block inset is fixed; the inline inset steps up at the MFY
+   * tablet/desktop breakpoints below so it stays readable on narrow screens
+   * instead of swallowing the content.
+   */
+  --brand-slide-inline-padding: var(--mfy-size-space-800); /* 32px */
+  --brand-slide-block-padding: var(--mfy-size-space-1600); /* 64px */
+  --brand-slide-font: inherit;
+
+  aspect-ratio: 16/9;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  width: 100%;
+  max-width: var(--global-container-max-width);
+  min-width: 800px;
+  margin-inline: auto;
+  padding: var(--brand-slide-block-padding) var(--brand-slide-inline-padding);
+  background: var(--brand-slide-bg);
+  color: var(--brand-slide-fg);
+  font-family: var(--brand-slide-font);
+  border: 1px solid var(--brand-slide-border-color);
+}
+.brand-slide:hover {
+  background: var(--brand-slide-bg-hover);
+}
+
+/* Inline inset scales up with the MFY tablet/desktop breakpoints (matches the
+   `min-width` queries in @gmhlab/tokens' responsive.css). */
+@media (min-width: 600px) {
+  .brand-slide {
+    --brand-slide-inline-padding: var(--mfy-size-space-1600); /* 64px */
+  }
+}
+@media (min-width: 1024px) {
+  .brand-slide {
+    --brand-slide-inline-padding: var(--mfy-size-space-4000); /* 160px */
+  }
+}
+
+/* Colour treatments — each variant only remaps the fg/bg tokens. */
+.brand-slide-variant-brand {
+  /* The Figma frame is a raw cyan fill. */
+  --brand-slide-bg: var(--mfy-color-background-brand-default);
+  --brand-slide-bg-hover: var(--mfy-color-background-brand-hover);
+  --brand-slide-fg: var(--mfy-color-text-brand-on-brand);
+  --brand-slide-border-size: var(--mfy-size-stroke-border);
+  --brand-slide-border-color: var(--mfy-color-border-brand-default);
+}
+.brand-slide-variant-neutral {
+  --brand-slide-bg: var(--mfy-color-background-neutral-secondary);
+  --brand-slide-bg-hover: var(--mfy-color-background-neutral-secondary-hover);
+  --brand-slide-fg: var(--mfy-color-text-neutral-on-neutral-secondary);
+  --brand-slide-border-size: var(--mfy-size-stroke-border);
+  --brand-slide-border-color: var(--mfy-color-border-neutral-default);
+}
+
+/*
+ * The frame grows to fit its content, so stacked content can't overflow the
+ * header/footer. The consumer owns the height (e.g. the demo pins it with
+ * `min-h-screen`/`md:h-screen`); pick a size there rather than here.
+ */
+
+/* Free content area between the Header and Footer. */
+.brand-slide-content {
+  flex: 1 1 auto;
+  min-height: 0;
+}
