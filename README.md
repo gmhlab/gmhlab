@@ -97,37 +97,49 @@ Stay on `0.x` until the component API stops churning. Avoid `0.0.x` specifically
 
 ### Cutting a release
 
-The three packages are versioned **in lockstep** — one version number, always published together. The release steps:
+The three packages are versioned **in lockstep** — one version number, always published together. **Releases run in CI**: pushing a `v*` tag triggers `.github/workflows/release.yml`, which builds, type-checks, publishes all three with provenance, and opens a GitHub Release. You do not publish from your machine.
 
 ```bash
-pnpm version:patch       # bump all three (see the table above for which bump)
-pnpm version:show        # confirm they agree
-                         # -> edit CHANGELOG.md: rename [Unreleased] to the new version
+pnpm version:patch          # bump all three (see the table above for which bump)
+pnpm version:show           # confirm they agree
+                            # -> edit CHANGELOG.md: rename [Unreleased] to the new version
 git commit -am "release: v0.1.1"
-git tag v0.1.1
-pnpm release:check       # build + typecheck + publish --dry-run
-pnpm release             # publish for real
-git push --follow-tags
+git tag -a v0.1.1 -m "v0.1.1"
+git push --follow-tags      # the tag push is what publishes
 ```
+
+Then watch the run in the repo's **Actions** tab.
+
+**The tag must be annotated — `git tag -a`, not `git tag`.** `git push --follow-tags` pushes *only* annotated tags, so a lightweight tag stays on your machine, GitHub never sees it, no workflow fires, and nothing is published. It fails silently in both directions: the push reports success and Actions simply shows no new run. If a release seems not to have started, check `git ls-remote --tags origin` before anything else.
 
 `version:*` passes `--no-git-tag-version`, so npm bumps the manifests without creating three separate commits and three colliding tags — you make one commit and one tag by hand, covering all three packages. The filter keeps `apps/*` out of it.
 
 Write the changelog entry **before** committing, while the changes are fresh. `CHANGELOG.md` has an `[Unreleased]` section with the Keep a Changelog headings to fill in.
 
+#### Rehearsing a release
+
+The workflow can also be run manually from the Actions tab, where it takes a **dry run** checkbox that defaults to on. That path resolves, installs, builds, type-checks, verifies the npm credentials and packs all three packages without publishing anything — useful after touching the workflow, the token, or the build. A tag push always publishes for real; only a manual run can dry-run.
+
+Note that `pnpm publish --dry-run` never contacts the registry, which is why the workflow runs `npm whoami` as a separate step — otherwise a rehearsal would say nothing about whether `NPM_TOKEN` still works.
+
 ### Reference
 
 ```bash
 pnpm release:check   # build + typecheck + `pnpm publish --dry-run` for all three
-pnpm release         # the real thing
+pnpm release         # publish locally — the fallback path, not the normal one
 ```
 
-Four things to know:
+`pnpm release` still works and is the escape hatch if CI is unavailable, but the account runs `auth-and-writes` 2FA, so it needs an OTP: `pnpm release --otp=<code>`. Codes rotate every 30 seconds and the three builds plus uploads take longer than that, so prefer publishing one package at a time with a fresh code, in the order tokens → ui → blocks. A local publish also produces **no provenance attestation**, since that requires CI's OIDC token.
+
+Five things to know:
 
 **Always publish with `pnpm`, never `npm`.** The manifests use the `workspace:*` and `catalog:` protocols; `pnpm publish` rewrites those to real semver ranges in the published tarball, and `npm publish` does not — it would ship `"@gmhlab/tokens": "workspace:*"` and produce an uninstallable package. Each package carries a `prepublishOnly` guard that fails the publish if it isn't running under pnpm.
 
 **All three packages must be published together, at the same version.** `@gmhlab/ui`'s stylesheet contains a literal `@import "@gmhlab/tokens/tokens.css"`, so tokens is a genuine runtime dependency — it cannot be `private`. `pnpm publish` pins it exactly (`"@gmhlab/tokens": "0.1.0"`), so a `ui` release with no matching `tokens` release on the registry will fail to install.
 
-**Auth comes from outside the repo.** The project's `.npmrc` is tracked on purpose — it pins the registry and holds no secrets. Locally, `npm login` writes your credentials to `~/.npmrc`; in CI, let `actions/setup-node` generate one from `registry-url` plus a `NODE_AUTH_TOKEN` secret. Never commit a token either way.
+**Auth comes from outside the repo.** The project's `.npmrc` is tracked on purpose — it pins the registry and holds no secrets. Locally, `npm login` writes your credentials to `~/.npmrc`. In CI, `actions/setup-node` generates one from `registry-url` plus the `NPM_TOKEN` repository secret, exposed to the publish step as `NODE_AUTH_TOKEN`. Never commit a token either way.
+
+That secret is a **granular** npm access token scoped to the `@gmhlab` scope (not to individual package names, which cannot cover a package's first publish), with read+write on packages, no organization access, no IP allowlist, and **Bypass Two-Factor Authentication enabled** — without that last setting every CI publish fails waiting for an OTP that no one can type. Granular tokens expire; when releases start failing at the `npm whoami` step with a `401`, regenerate the token and update the secret.
 
 **Never add an `@gmhlab:registry=` line to any `.npmrc`.** A scope mapping overrides `publishConfig.registry` *and* an explicit `--registry` flag, silently redirecting both installs and publishes. A stale mapping to a private registry lived in this repo and did exactly that.
 
