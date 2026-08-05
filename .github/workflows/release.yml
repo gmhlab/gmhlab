@@ -53,6 +53,17 @@ jobs:
       # the manifests have drifted apart rather than silently re-resolving.
       - run: pnpm install --frozen-lockfile
 
+      # Fail fast on a bad credential. `publish --dry-run` never contacts the
+      # registry, so without this a dispatch run says nothing about whether
+      # NPM_TOKEN works — the first real signal would be a 404 at publish time,
+      # after a full build. whoami is a read: it cannot publish anything, and it
+      # succeeds only if the token is valid, unexpired, and permitted to bypass
+      # the account's auth-and-writes 2FA.
+      - name: Verify npm credentials
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm whoami
+
       # Guard against a mistyped tag. The three packages release in lockstep, so
       # any one of them can stand in for the version; publishing a v0.1.2 tag from
       # a tree still at 0.1.1 would otherwise silently republish the old version
