@@ -34,4 +34,6 @@ Light and dark are driven by a **`.dark` class on `<html>`** (not `prefers-color
 
 ## License
 
-UNLICENSED — proprietary. All rights reserved. See the repository root for terms.
+Proprietary. Copyright (c) 2026 The George Washington University. All rights reserved.
+
+Developed and maintained by the GW Center of Global Mental Health, The George Washington University School of Medicine and Health Sciences. Publication to npm is a distribution convenience and grants no right to use this software. See [LICENSE](./LICENSE) for the full terms; direct licensing inquiries to terrancebrunner@gmail.com.

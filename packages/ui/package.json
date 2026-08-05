@@ -2,7 +2,7 @@
   "name": "@gmhlab/ui",
   "version": "0.1.0",
   "description": "React 19 component library for the GMH Lab design system — shadcn/Tailwind primitives plus MFY layout primitives, built on Base UI and React Aria.",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "GMH Lab",
   "homepage": "https://github.com/gmhlab/gmhlab#readme",
   "repository": {
@@ -38,7 +38,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",

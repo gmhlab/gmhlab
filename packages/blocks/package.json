@@ -2,7 +2,7 @@
   "name": "@gmhlab/blocks",
   "version": "0.1.0",
   "description": "Composed page sections, templates, and slides for the GMH Lab design system, built on @gmhlab/ui and @gmhlab/tokens.",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "GMH Lab",
   "homepage": "https://github.com/gmhlab/gmhlab#readme",
   "repository": {
@@ -37,7 +37,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",

@@ -127,7 +127,7 @@ Four things to know:
 
 **All three packages must be published together, at the same version.** `@gmhlab/ui`'s stylesheet contains a literal `@import "@gmhlab/tokens/tokens.css"`, so tokens is a genuine runtime dependency — it cannot be `private`. `pnpm publish` pins it exactly (`"@gmhlab/tokens": "0.1.0"`), so a `ui` release with no matching `tokens` release on the registry will fail to install.
 
-**Auth comes from outside the repo, and `.npmrc` is gitignored.** Locally, `npm login` writes your credentials to `~/.npmrc` — the project needs no `.npmrc` of its own. In CI, let `actions/setup-node` generate one from `registry-url` plus a `NODE_AUTH_TOKEN` secret. Never commit a token either way.
+**Auth comes from outside the repo.** The project's `.npmrc` is tracked on purpose — it pins the registry and holds no secrets. Locally, `npm login` writes your credentials to `~/.npmrc`; in CI, let `actions/setup-node` generate one from `registry-url` plus a `NODE_AUTH_TOKEN` secret. Never commit a token either way.
 
 **Never add an `@gmhlab:registry=` line to any `.npmrc`.** A scope mapping overrides `publishConfig.registry` *and* an explicit `--registry` flag, silently redirecting both installs and publishes. A stale mapping to a private registry lived in this repo and did exactly that.
 
@@ -136,3 +136,19 @@ Four things to know:
 ## Dependency versions
 
 Shared versions are pinned centrally in `pnpm-workspace.yaml` under `catalog:`. In a package's `package.json`, reference them as `"<dep>": "catalog:"` rather than hardcoding, so React, Tailwind, tsup, Vite, etc. stay aligned across the monorepo.
+
+## License
+
+**Proprietary.** Copyright (c) 2026 The George Washington University. All rights reserved.
+
+Developed and maintained by the GW Center of Global Mental Health, The George Washington University School of Medicine and Health Sciences.
+
+The three `@gmhlab/*` packages publish to **public npm**, but that is a distribution convenience only — it grants no right to use the software. Use requires a separate written agreement with GW. See [LICENSE](./LICENSE) for the full terms; direct licensing inquiries to terrancebrunner@gmail.com.
+
+`LICENSE` is duplicated into each of `packages/*/` so it ships inside the published tarballs. **Edit the root copy and re-sync**, or the three will drift:
+
+```bash
+for p in tokens ui blocks; do cp LICENSE packages/$p/LICENSE; done
+```
+
+The manifests declare `"license": "SEE LICENSE IN LICENSE"` — npm's convention for a custom license with no SPDX identifier. Don't replace it with an SPDX id.

@@ -44,3 +44,5 @@ next-env.d.ts
 
 # working files
 .files
+# npm pack output
+*.tgz
