@@ -131,7 +131,11 @@ Four things to know:
 
 **Never add an `@gmhlab:registry=` line to any `.npmrc`.** A scope mapping overrides `publishConfig.registry` *and* an explicit `--registry` flag, silently redirecting both installs and publishes. A stale mapping to a private registry lived in this repo and did exactly that.
 
-**The lockfile is not tracked**, so a release build resolves dependencies fresh against the `catalog:` ranges. Run `pnpm release:check` before every release and treat the diff in resolved versions as something to actually look at.
+**The lockfile is tracked**, so a release build uses the versions that were actually tested rather than re-resolving the `catalog:` ranges. The release workflow installs with `--frozen-lockfile` and fails if the lockfile and the manifests have drifted apart.
+
+This does not change what consumers install — the packages externalize their runtime dependencies and publish version *ranges*, which each consumer resolves independently. What it pins is the build toolchain, and some of that ships: `typescript` floats on `^6` and the emitted `.d.ts` is a published artifact, so an unpinned compiler can change the types consumers see.
+
+Commit the lockfile whenever dependencies change, and still run `pnpm release:check` before a release.
 
 ## Dependency versions
 

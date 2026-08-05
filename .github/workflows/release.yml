@@ -15,6 +15,11 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Resolve, build and pack without publishing"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -40,13 +45,13 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
-          # No `cache: pnpm` here on purpose: that cache keys off a hash of
-          # pnpm-lock.yaml, which this repo deliberately gitignores. Enabling it
-          # fails the step outright rather than degrading to a miss.
+          cache: pnpm # keys off a hash of the (tracked) pnpm-lock.yaml
 
-      # --no-frozen-lockfile because the lockfile is untracked. CI defaults to
-      # --frozen-lockfile, which aborts when there is no lockfile to freeze.
-      - run: pnpm install --no-frozen-lockfile
+      # --frozen-lockfile is CI's default, but state it explicitly: it is the
+      # whole reason the lockfile is tracked. A release must build against the
+      # versions that were tested, and this fails the run if the lockfile and
+      # the manifests have drifted apart rather than silently re-resolving.
+      - run: pnpm install --frozen-lockfile
 
       # Guard against a mistyped tag. The three packages release in lockstep, so
       # any one of them can stand in for the version; publishing a v0.1.2 tag from
@@ -77,10 +82,24 @@ jobs:
       #
       # --provenance signs the release with the OIDC token above. It requires a
       # public package whose repository.url matches this repo — both hold here.
+      # It is dropped on the dry-run path, which never reaches the registry and
+      # so has nothing to attest.
+      #
+      # A tag push always publishes for real. Only workflow_dispatch can dry-run,
+      # and it defaults to doing so — dispatch skips the tag-vs-version guard
+      # above (there is no tag), so an unguarded manual run would otherwise
+      # publish whatever version happened to be sitting in package.json.
       - name: Publish to npm
-        run: pnpm -r --filter "./packages/*" publish --access public --no-git-checks --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "::notice::dry run — resolving and packing only, nothing is published"
+            pnpm -r --filter "./packages/*" publish --access public --no-git-checks --dry-run
+          else
+            pnpm -r --filter "./packages/*" publish --access public --no-git-checks --provenance
+          fi
 
       - name: Create GitHub Release
         if: github.event_name == 'push'
