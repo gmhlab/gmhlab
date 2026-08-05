@@ -2,6 +2,10 @@ packages:
   - "apps/*"
   - "packages/*"
 
+# Enforce each package's `engines.node` (>=20) instead of warning. pnpm reads
+# this here, not from .npmrc — the .npmrc copy is for plain `npm`/`npx` callers.
+engineStrict: true
+
 allowBuilds:
   esbuild: true
   msw: false

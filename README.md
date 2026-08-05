@@ -11,7 +11,7 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | Package | Name | What it is |
 | --- | --- | --- |
 | `packages/tokens` | `@gmhlab/tokens` | The design-token value layer (`--mfy-*` CSS variables). CSS-only — consume the tokens as CSS vars, there is no JS export. CSS at `@gmhlab/tokens/tokens.css`. |
-| `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Inlines the tokens value layer; styles at `@gmhlab/ui/styles.css`. |
+| `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
 | `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`, plus a mock data layer (`AllProviders`, `useAuth`, …). Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes `@gmhlab/ui`, `@gmhlab/blocks`, and `@gmhlab/tokens`. |
 | `apps/web` | `web` | Next.js 16 App Router site consuming all three packages. Tailwind runs via `@tailwindcss/postcss`. |
@@ -69,13 +69,69 @@ Two things a consuming app has to do beyond that:
 @source "../../../../packages/blocks/dist/**/*.js";
 ```
 
-**Mind the `"use client"` asymmetry in React Server Component apps.** `@gmhlab/blocks` is bundled with a `"use client"` banner, so its providers drop into a Next server layout directly. `@gmhlab/ui` is **not**, so any `ui` component that uses hooks (`Header`, `Footer`, anything calling `useMediaQuery`) needs a thin client wrapper before a server component can render it — see `apps/web/src/components/site-header.tsx`.
+**`"use client"` in React Server Component apps.** Both `@gmhlab/blocks` and `@gmhlab/ui` are bundled with a `"use client"` banner, so their components drop into a Next server layout directly. `apps/web` still routes the ui `Header`/`Footer` through thin wrappers (`apps/web/src/components/site-header.tsx`) as its own client boundary, but that is a convention rather than a requirement.
 
 ## The `apps/web` app shell
 
 `src/app/layout.tsx` owns the site chrome — header, `<main>`, footer — and pages render sections into it. **A page should not include its own header or footer.**
 
 The layout wraps everything in `AllProviders` from `@gmhlab/blocks` (auth/pricing/products context + mock services). It renders no DOM of its own, so the header, `<main>` and footer are the `<body>`'s flex children; `globals.css` makes `body` a full-height flex column so the footer settles at the bottom on short pages.
+
+## Publishing
+
+The three `packages/*` publish to **public npm** under the `@gmhlab` scope. `apps/*` are `private: true` and never publish.
+
+### Versioning
+
+The packages are on the **`0.x` line**, which inverts the usual semver bump rules — npm treats a `0.x` minor bump as breaking, so the minor slot is where breaking changes go and everything else is a patch:
+
+| Change | Command | `0.1.0` → |
+| --- | --- | --- |
+| Bug fix | `pnpm version:patch` | `0.1.1` |
+| New feature, backwards-compatible | `pnpm version:patch` | `0.1.1` |
+| **Breaking change** | `pnpm version:minor` | `0.2.0` |
+
+A consumer writing `^0.1.0` therefore receives every `0.1.x` release automatically but is held back from `0.2.0` until they opt in. **Do not use `version:major` while on `0.x`** — that publishes `1.0.0` and declares the API stable, which switches the table above to the conventional rules (features become minor, breaking becomes major).
+
+Stay on `0.x` until the component API stops churning. Avoid `0.0.x` specifically: `^0.0.1` matches only `0.0.1` exactly, so consumers would receive no updates at all.
+
+### Cutting a release
+
+The three packages are versioned **in lockstep** — one version number, always published together. The release steps:
+
+```bash
+pnpm version:patch       # bump all three (see the table above for which bump)
+pnpm version:show        # confirm they agree
+                         # -> edit CHANGELOG.md: rename [Unreleased] to the new version
+git commit -am "release: v0.1.1"
+git tag v0.1.1
+pnpm release:check       # build + typecheck + publish --dry-run
+pnpm release             # publish for real
+git push --follow-tags
+```
+
+`version:*` passes `--no-git-tag-version`, so npm bumps the manifests without creating three separate commits and three colliding tags — you make one commit and one tag by hand, covering all three packages. The filter keeps `apps/*` out of it.
+
+Write the changelog entry **before** committing, while the changes are fresh. `CHANGELOG.md` has an `[Unreleased]` section with the Keep a Changelog headings to fill in.
+
+### Reference
+
+```bash
+pnpm release:check   # build + typecheck + `pnpm publish --dry-run` for all three
+pnpm release         # the real thing
+```
+
+Four things to know:
+
+**Always publish with `pnpm`, never `npm`.** The manifests use the `workspace:*` and `catalog:` protocols; `pnpm publish` rewrites those to real semver ranges in the published tarball, and `npm publish` does not — it would ship `"@gmhlab/tokens": "workspace:*"` and produce an uninstallable package. Each package carries a `prepublishOnly` guard that fails the publish if it isn't running under pnpm.
+
+**All three packages must be published together, at the same version.** `@gmhlab/ui`'s stylesheet contains a literal `@import "@gmhlab/tokens/tokens.css"`, so tokens is a genuine runtime dependency — it cannot be `private`. `pnpm publish` pins it exactly (`"@gmhlab/tokens": "0.1.0"`), so a `ui` release with no matching `tokens` release on the registry will fail to install.
+
+**Auth comes from outside the repo, and `.npmrc` is gitignored.** Locally, `npm login` writes your credentials to `~/.npmrc` — the project needs no `.npmrc` of its own. In CI, let `actions/setup-node` generate one from `registry-url` plus a `NODE_AUTH_TOKEN` secret. Never commit a token either way.
+
+**Never add an `@gmhlab:registry=` line to any `.npmrc`.** A scope mapping overrides `publishConfig.registry` *and* an explicit `--registry` flag, silently redirecting both installs and publishes. A stale mapping to a private registry lived in this repo and did exactly that.
+
+**The lockfile is not tracked**, so a release build resolves dependencies fresh against the `catalog:` ranges. Run `pnpm release:check` before every release and treat the diff in resolved versions as something to actually look at.
 
 ## Dependency versions
 

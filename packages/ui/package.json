@@ -1,8 +1,31 @@
 {
   "name": "@gmhlab/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "React 19 component library for the GMH Lab design system — shadcn/Tailwind primitives plus MFY layout primitives, built on Base UI and React Aria.",
   "license": "UNLICENSED",
+  "author": "GMH Lab",
+  "homepage": "https://github.com/gmhlab/gmhlab#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmhlab/gmhlab.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/gmhlab/gmhlab/issues"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "design-system",
+    "tailwindcss",
+    "shadcn",
+    "base-ui"
+  ],
   "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,11 +37,14 @@
     "./styles.css": "./dist/index.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "tsup",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepack": "pnpm run build",
+    "prepublishOnly": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||''))throw new Error('Use pnpm publish, not npm: npm does not resolve the workspace:/catalog: protocols and will publish a broken manifest.')\""
   },
   "peerDependencies": {
     "react": "catalog:",
@@ -43,6 +69,9 @@
     "@types/react-dom": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "sideEffects": [
     "*.css"

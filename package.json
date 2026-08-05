@@ -6,7 +6,13 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "typecheck": "turbo typecheck",
-    "tarball": "pnpm --filter @gmhlab/ui pack --dry-run"
+    "tarball": "pnpm --filter @gmhlab/ui pack --dry-run",
+    "version:patch": "pnpm -r --filter \"./packages/*\" exec npm version patch --no-git-tag-version",
+    "version:minor": "pnpm -r --filter \"./packages/*\" exec npm version minor --no-git-tag-version",
+    "version:major": "pnpm -r --filter \"./packages/*\" exec npm version major --no-git-tag-version",
+    "version:show": "pnpm -r --filter \"./packages/*\" exec node -p \"require('./package.json').name + ' ' + require('./package.json').version\"",
+    "release:check": "pnpm build && pnpm typecheck && pnpm -r --filter \"./packages/*\" publish --dry-run --no-git-checks",
+    "release": "pnpm build && pnpm typecheck && pnpm -r --filter \"./packages/*\" publish --access public"
   },
   "devDependencies": {
     "turbo": "2.10.5",
