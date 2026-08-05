@@ -1,0 +1,93 @@
+name: Release
+
+# Publishes @gmhlab/tokens, @gmhlab/ui and @gmhlab/blocks to public npm.
+#
+# Trigger is a version tag, which matches the documented flow in README
+# "Cutting a release": bump -> changelog -> commit -> tag -> `git push --follow-tags`.
+# The push of the tag is what starts this job.
+#
+# Requires one repository secret: NPM_TOKEN — a *granular* access token scoped to
+# the @gmhlab org with read+write on the three packages. Granular tokens bypass
+# the account's auth-and-writes 2FA, which is what makes an unattended publish
+# possible at all; an interactive OTP cannot work here.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the GitHub Release
+      id-token: write # mint the OIDC token npm provenance is signed with
+    steps:
+      - uses: actions/checkout@v7
+
+      # Reads the version from `packageManager` in the root package.json (pnpm 11.18.0),
+      # so the CI pnpm can never drift from the local one.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          # No `cache: pnpm` here on purpose: that cache keys off a hash of
+          # pnpm-lock.yaml, which this repo deliberately gitignores. Enabling it
+          # fails the step outright rather than degrading to a miss.
+
+      # --no-frozen-lockfile because the lockfile is untracked. CI defaults to
+      # --frozen-lockfile, which aborts when there is no lockfile to freeze.
+      - run: pnpm install --no-frozen-lockfile
+
+      # Guard against a mistyped tag. The three packages release in lockstep, so
+      # any one of them can stand in for the version; publishing a v0.1.2 tag from
+      # a tree still at 0.1.1 would otherwise silently republish the old version
+      # and fail late with EPUBLISHCONFLICT.
+      - name: Verify tag matches package version
+        if: github.event_name == 'push'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./packages/ui/package.json').version")"
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error::tag v$tag does not match package version $pkg"
+            exit 1
+          fi
+          echo "tag v$tag matches package version $pkg"
+
+      # Same order as `pnpm release`: typecheck needs the built dist/ .d.ts of
+      # tokens and ui, because blocks and the apps type-check against the built
+      # packages rather than source.
+      - run: pnpm build
+      - run: pnpm typecheck
+
+      # `pnpm -r` walks the workspace in topological order, so tokens lands before
+      # ui (whose manifest pins @gmhlab/tokens exactly) and ui before blocks.
+      #
+      # --no-git-checks: pnpm otherwise refuses to publish from a detached HEAD,
+      # which is exactly what a tag checkout is.
+      #
+      # --provenance signs the release with the OIDC token above. It requires a
+      # public package whose repository.url matches this repo — both hold here.
+      - name: Publish to npm
+        run: pnpm -r --filter "./packages/*" publish --access public --no-git-checks --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes "See [CHANGELOG.md](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CHANGELOG.md)." \
+            --verify-tag

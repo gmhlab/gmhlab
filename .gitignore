@@ -18,9 +18,6 @@ dist-ssr
 # NOTE: .npmrc is deliberately TRACKED. It holds project registry config and no
 # secrets — auth lives in ~/.npmrc (npm login) or CI env. Never add a token to it.
 
-# lockfile is intentionally untracked (see README "Publishing")
-pnpm-lock.yaml
-
 # turbo
 .turbo
 

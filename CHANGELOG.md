@@ -40,7 +40,7 @@ First published release. Prior work was unpublished; this entry describes the pa
 
 - `@gmhlab/ui/styles.css` `@import`s `@gmhlab/tokens/tokens.css` rather than inlining it, so `@gmhlab/tokens` must be resolvable by your CSS toolchain. It installs automatically as a dependency.
 - Tailwind must be pointed at the built packages with `@source`, or the utility classes used inside them are silently dropped. See each package's README.
-- Both packages ship a `"use client"` banner, so they render directly inside React Server Component apps.
+- `@gmhlab/ui` and `@gmhlab/blocks` each ship a `"use client"` banner on the whole bundle, so their components and providers render directly inside React Server Component apps.
 
 [Unreleased]: https://github.com/gmhlab/gmhlab/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/gmhlab/gmhlab/releases/tag/v0.1.0
