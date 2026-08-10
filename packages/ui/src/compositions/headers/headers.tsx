@@ -75,10 +75,10 @@ export function HeaderAuth({
 
   const userButtons = (
     <>
-      <Button variant="ghost" size="sm" onClick={onLogin}>
+      <Button variant="outline" size="sm" onClick={onLogin}>
         Sign in
       </Button>
-      <Button size="sm" onClick={onRegister}>
+      <Button variant="ghost" size="sm" onClick={onRegister}>
         Register
       </Button>
     </>
@@ -253,6 +253,7 @@ export function Header({
     <Section
       className={clsx("header", className)}
       elementType="header"
+      variant="brand"
       padding="400"
       {...props}
     >

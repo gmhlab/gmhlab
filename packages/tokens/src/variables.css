@@ -3,6 +3,21 @@
 
 /* CSS Variables generated from Kigen.design */
 
+/* Astronaut Blue — the GMH brand ramp (Figma "Color Primitives").
+ * Deliberately outside the --mfy-color-* namespace, matching the generated
+ * theme.css. The --mfy-color-brand-* gray ramp below is retained because the
+ * disabled tokens still key off it. */
+  --mfy-color-brand-50: oklch(0.9567433030448986 0.02108770263761858 252.4952078182589);
+  --mfy-color-brand-100: oklch(0.8931517568820593 0.05220916514433538 251.06207238911827);
+  --mfy-color-brand-200: oklch(0.7972228332173676 0.10783570753255824 245.44953995215292);
+  --mfy-color-brand-300: oklch(0.7094707254090482 0.15694887760644177 239.60328597847155);
+  --mfy-color-brand-400: oklch(0.6316807321342734 0.13900579926734186 239.2834859038008);
+  --mfy-color-brand-500: oklch(0.5549685160517823 0.12186080081920725 239.11797594200146);
+  --mfy-color-brand-600: oklch(0.47987248445745 0.10652501015240616 239.86284666194288);
+  --mfy-color-brand-700: oklch(0.4101013082380879 0.08937938990836782 238.5387135338292);
+  --mfy-color-brand-800: oklch(0.3392783938273923 0.07482300861290903 239.36685558989788);
+  --mfy-color-brand-900: oklch(0.24403734060606508 0.05405960042820241 239.46340634705268);
+  --mfy-color-brand-950: oklch(0.1739767888550536 0.04027330373426935 240.61316170468567);     
   --mfy-color-black-100: #0c0c0d0d;
   --mfy-color-black-1000: #0c0c0d;
   --mfy-color-black-200: #0c0c0d1a;
@@ -23,7 +38,7 @@
   --mfy-color-blue-700: #2a61ba;
   --mfy-color-blue-800: #224a8a;
   --mfy-color-blue-900: #183057;
-  --mfy-color-brand-100: #f5f5f5;
+/*  --mfy-color-brand-100: #f5f5f5;
   --mfy-color-brand-1000: #111111;
   --mfy-color-brand-200: #e6e6e6;
   --mfy-color-brand-300: #d9d9d9;
@@ -32,7 +47,7 @@
   --mfy-color-brand-600: #444444;
   --mfy-color-brand-700: #383838;
   --mfy-color-brand-800: #2c2c2c;
-  --mfy-color-brand-900: #1e1e1e;
+  --mfy-color-brand-900: #1e1e1e; */
   --mfy-color-gray-100: #f5f5f5;
   --mfy-color-gray-1000: #111111;
   --mfy-color-gray-200: #e6e6e6;
@@ -431,8 +446,8 @@
 /* typography_primitives: default (default) */
 :root {
   --mfy-typography-family-mono: "Roboto Mono", monospace;
-  --mfy-typography-family-sans: "Helvetica Neue", "Helvetica", sans-serif;
-  --mfy-typography-family-serif: "Noto Serif", serif;
+  --mfy-typography-family-sans: "Avenir Next", "Inter", sans-serif;
+  --mfy-typography-family-serif: "Baskerville", "Noto Serif", serif;
   --mfy-typography-scale-01: 0.75rem;
   --mfy-typography-scale-02: 0.875rem;
   --mfy-typography-scale-03: 1rem;
@@ -491,11 +506,11 @@
   --mfy-typography-subtitle-size-base: var(--mfy-typography-scale-06);
   --mfy-typography-subtitle-size-large: var(--mfy-typography-scale-07);
   --mfy-typography-subtitle-size-small: var(--mfy-typography-scale-05);
-  --mfy-typography-title-hero-font-family: var(--mfy-typography-family-sans);
-  --mfy-typography-title-hero-font-weight: var(--mfy-typography-weight-bold);
+  --mfy-typography-title-hero-font-family: var(--mfy-typography-family-serif);
+  --mfy-typography-title-hero-font-weight: var(--mfy-typography-weight-regular);
   --mfy-typography-title-hero-size: var(--mfy-typography-scale-10);
-  --mfy-typography-title-page-font-family: var(--mfy-typography-family-sans);
-  --mfy-typography-title-page-font-weight: var(--mfy-typography-weight-bold);
+  --mfy-typography-title-page-font-family: var(--mfy-typography-family-serif);
+  --mfy-typography-title-page-font-weight: var(--mfy-typography-weight-regular);
   --mfy-typography-title-page-size-base: var(--mfy-typography-scale-08);
   --mfy-typography-title-page-size-large: var(--mfy-typography-scale-09);
   --mfy-typography-title-page-size-small: var(--mfy-typography-scale-07);

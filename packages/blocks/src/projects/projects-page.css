@@ -1,0 +1,365 @@
+/* Page-local styling for ProjectsPage.
+ *
+ * Every selector here is a uniquely-prefixed class under `.projects-page`, so
+ * nothing can leak into other consumers of @gmhlab/blocks/styles.css. Only the
+ * things the design system has no component for live here: the hero stat row,
+ * the toolbar and facet chrome, the card status rail and metadata list, the
+ * EQUIP spotlight, and the partner word marks.
+ *
+ * A note on text colour, because it is easy to get wrong here. Two different
+ * surfaces are in play and they do NOT take the same muted token:
+ *
+ *   - Card surfaces are `background-default-default` — white in light. There
+ *     `text-default-secondary` (#757575) is 4.6:1 and passes AA.
+ *   - The hero/toolbar/partner bands are `section-variant-neutral`, i.e.
+ *     `background-default-tertiary` — #d9d9d9 in light. There the same
+ *     #757575 is only 3.1:1 and FAILS AA, so band text uses
+ *     `text-default-default`.
+ *
+ * `text-default-tertiary` (#b3b3b3) is ~2:1 on white and must not carry text
+ * on either surface — it is a hairline/disabled tone, not a label tone. */
+
+/* No max-width cap here on purpose. `.section` is width:100% and the
+ * `Flex container` inside each one caps the *content* at
+ * --global-container-max-width, which is what gives full-bleed neutral and
+ * brand bands with the content still on a common column. */
+.projects-page {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- hero stats
+ * Portfolio scale, sitting under the page title on the neutral band. */
+.projects-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+}
+
+.projects-stat-value {
+  color: var(--mfy-color-text-brand-default);
+  font-size: var(--mfy-typography-scale-07);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Band surface — see the contrast note above. */
+.projects-stat-label {
+  color: var(--mfy-color-text-default-default);
+}
+
+/* ------------------------------------------------------------------- toolbar
+ * Shares the hero's neutral surface and closes it with a hairline, so header,
+ * search and facets read as one band rather than three stacked sections. */
+.projects-toolbar {
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  /* Above the cards, whose status rail is painted with a pseudo-element. */
+  position: relative;
+  z-index: 1;
+}
+
+/* Wide enough for the placeholder, but yields to the result count on one row
+ * before wrapping. */
+.projects-search {
+  flex: 1 1 18rem;
+  max-width: 26rem;
+}
+
+/* `Input` ships `bg-transparent` (and `dark:bg-input/30`), which is fine on a
+ * page background but disappears against the toolbar's neutral band — the
+ * field reads as plain text with no affordance. Give it the card surface so it
+ * looks like something you can type into.
+ *
+ * Targeted by `data-slot`: shadcn primitives emit no semantic class. The
+ * `.projects-page` prefix is deliberate — it lifts specificity to 0,3,0 so
+ * this wins against Tailwind's own `dark:bg-input/30` (0,2,0) regardless of
+ * which stylesheet the consumer's bundler emits first. */
+.projects-page .projects-search [data-slot="input"] {
+  background: var(--mfy-color-background-default-default);
+  border-color: var(--mfy-color-border-default-default);
+}
+
+.projects-result-count {
+  color: var(--mfy-color-text-default-default);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fixed inline-size on the facet label so Status and Region chips start on a
+ * common left edge, which makes the two rows read as one control block. */
+.projects-facet-label {
+  color: var(--mfy-color-text-default-default);
+  flex: 0 0 auto;
+  font-weight: 600;
+  min-width: 4rem;
+}
+
+/* The count that rides inside each facet button. Tinted from the button's own
+ * text colour, so it works on both the selected (solid) and unselected
+ * (outline) variants without needing a rule per state. */
+.projects-facet-count {
+  background: color-mix(in oklch, currentColor 12%, transparent);
+  border-radius: var(--mfy-size-radius-full);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin-inline-start: var(--mfy-size-space-100);
+  padding: 0.1875rem var(--mfy-size-space-150);
+}
+
+/* ----------------------------------------------------------------- spotlight
+ * The featured platform card, sitting on the brand band under the hero. The
+ * *section* is the solid brand surface; the card is repainted below as a
+ * brand-secondary tint. Only the eyebrow sits directly on the section. */
+/* `inherit`, not `text-default-default`: this label sits directly on the brand
+ * section, which already sets `text-brand-on-brand`. A hardcoded default colour
+ * would paint it dark-on-navy. */
+.projects-spotlight-eyebrow {
+  color: inherit;
+  font-weight: 600;
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
+}
+
+/* Card has no brand-secondary variant, so the surface is painted here. The
+ * background/text pair is the semantic one and survives the theme flip in both
+ * directions:
+ *   light — bg brand-200 (pale blue) + text brand-800 (navy)
+ *   dark  — bg brand-600 (mid navy)  + text brand-100 (pale blue)
+ * Card's own `.card-variant-default` rule is 0,1,0, so the `.projects-page`
+ * prefix is required to win regardless of stylesheet order. Colour is set
+ * alongside background deliberately: `background` does not inherit but `color`
+ * does, so repainting one without the other leaves the card inheriting the
+ * brand section's on-brand text. */
+.projects-page .projects-spotlight {
+  background: var(--mfy-color-background-brand-secondary);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-brand-secondary);
+  color: var(--mfy-color-text-brand-default);
+}
+
+/* Separates the dependents from the lead column. A vertical rule on desktop,
+ * horizontal once `Flex type="third"` has stacked the two FlexItems. */
+.projects-spotlight-aside {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-brand-secondary);
+  padding-top: var(--mfy-size-space-600);
+}
+
+@media (min-width: 600px) {
+  .projects-spotlight-aside {
+    border-inline-start: var(--mfy-size-stroke-border) solid
+      var(--mfy-color-border-brand-secondary);
+    border-top: none;
+    padding-inline-start: var(--mfy-size-space-800);
+    padding-top: 0;
+  }
+}
+
+.projects-spotlight-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+  list-style: none;
+  margin: var(--mfy-size-space-400) 0 0;
+  padding: 0;
+}
+
+.projects-spotlight-list li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+}
+
+/* Inherit the card's own text colour and let the underline carry the
+ * affordance, so the three dependents read as a list rather than as a stack of
+ * brand-coloured links. */
+.projects-spotlight-list a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.1875rem;
+}
+
+/* Full-strength inherited colour: size alone sets these back from the link
+ * above them. The brand-secondary card gives only 4.70:1 in dark mode, so the
+ * `opacity: 0.85` this used to carry pushed it to 3.86:1 and under AA. Nor is
+ * there a muted token to reach for — `text-brand-on-brand-secondary` is a trap
+ * (not a quieter on-brand tone but `brand-900` in light, navy-on-navy). */
+.projects-spotlight-list small {
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------- card grid */
+
+.project-card {
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+/* The grid stretches the cards to a common row height (see the CardGrid's
+ * `alignSecondary="stretch"`), but `.card` is itself a column flex box and its
+ * `.card-content` child has no flex-grow — so without this the content keeps
+ * its intrinsic height and `margin-top: auto` on the card footer has no free
+ * space to push into. */
+.project-card .card-content {
+  flex: 1;
+}
+
+/* Status rail. Ties each card to the facet chip that selects it, and gives the
+ * grid something to scan by at a glance.
+ *
+ * Not `overflow: hidden` to clip it — that would also clip the focus ring
+ * `.card-interaction::before` draws outside the card. Matching the top corner
+ * radii does the same job and keeps the ring intact. */
+.project-card::before {
+  background: var(--project-rail, var(--mfy-color-border-default-default));
+  border-start-end-radius: var(--mfy-size-radius-200);
+  border-start-start-radius: var(--mfy-size-radius-200);
+  content: "";
+  height: var(--mfy-size-space-050);
+  inset-block-start: 0;
+  inset-inline: 0;
+  position: absolute;
+}
+
+.project-card-status-active {
+  --project-rail: var(--mfy-color-background-positive-default);
+}
+.project-card-status-ongoing {
+  --project-rail: var(--mfy-color-background-brand-default);
+}
+.project-card-status-closed {
+  --project-rail: var(--mfy-color-border-default-default);
+}
+
+/* Card already handles the hover *surface* via
+ * `:has(.card-interaction[data-hovered])`; this adds the lift. */
+.project-card:hover {
+  box-shadow:
+    inset 0 0 0 var(--mfy-size-stroke-border)
+      var(--mfy-color-border-default-default),
+    var(--mfy-effects-shadows-drop-shadow-600);
+  transform: translateY(-2px);
+}
+
+.project-status {
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+}
+
+.project-design,
+.project-tagline {
+  color: var(--mfy-color-text-default-secondary);
+}
+
+.project-design {
+  text-align: end;
+}
+
+/* Two-column definition list: label gutter + value. `auto` on the labels keeps
+ * the values aligned to the longest label in *that* card, which is steadier
+ * than a fixed gutter across cards with different rows. */
+.project-meta {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  column-gap: var(--mfy-size-space-400);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  padding-top: var(--mfy-size-space-400);
+  row-gap: var(--mfy-size-space-100);
+}
+
+/* Defensive: every row is conditional, and a project with none of the four
+ * would otherwise still paint the hairline and top padding. */
+.project-meta:empty {
+  display: none;
+}
+
+.project-meta dt {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+}
+
+.project-meta dd {
+  color: var(--mfy-color-text-default-default);
+  font-size: var(--mfy-typography-scale-01);
+  margin: 0;
+}
+
+/* `.card-content` is a 24px-gap column with `justify-content` unset, so this
+ * pushes the footer to the card's bottom edge. */
+.project-card-footer {
+  margin-top: auto;
+}
+
+.project-card-cta {
+  color: var(--mfy-color-text-brand-default);
+}
+
+.project-card-arrow {
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.project-card:hover .project-card-arrow {
+  transform: translateX(0.125rem);
+}
+
+/* The portfolio-spine marker. Quiet by design — it is a relationship, not a
+ * status. */
+/* `default`, not `secondary`: the chip's own gray-100 surface drops #757575 to
+ * 4.23:1, just under AA. Size keeps it quiet instead of colour. */
+.project-buildson {
+  background: var(--mfy-color-background-default-secondary);
+  border-radius: var(--mfy-size-radius-full);
+  color: var(--mfy-color-text-default-default);
+  font-size: var(--mfy-typography-scale-01);
+  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+}
+
+/* --------------------------------------------------------------- empty state */
+.projects-empty {
+  border: var(--mfy-size-stroke-border) dashed
+    var(--mfy-color-border-brand-secondary);
+  border-radius: var(--mfy-size-radius-200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+  max-width: 34rem;
+  padding: var(--mfy-size-space-1200);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ partners
+ * Word marks, not logos — the Center's partner logos are not ours to ship.
+ * The chip carries its own white surface, so `secondary` text is on white
+ * here and clears AA even though the band behind it does not. */
+.projects-partner {
+  background: var(--mfy-color-background-default-default);
+  border: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  border-radius: var(--mfy-size-radius-full);
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+  padding: var(--mfy-size-space-150) var(--mfy-size-space-400);
+}
+
+/* Measure cap for the CTA paragraph only — the heading above it runs the full
+   container width so it stays on one line. */
+.projects-cta-copy {
+  max-width: 34rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card-arrow {
+    transition: none;
+  }
+  .project-card:hover,
+  .project-card:hover .project-card-arrow {
+    transform: none;
+  }
+}

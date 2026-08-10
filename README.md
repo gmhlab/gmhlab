@@ -12,9 +12,9 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | --- | --- | --- |
 | `packages/tokens` | `@gmhlab/tokens` | The design-token value layer (`--mfy-*` CSS variables). CSS-only — consume the tokens as CSS vars, there is no JS export. CSS at `@gmhlab/tokens/tokens.css`. |
 | `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
-| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`, plus a mock data layer (`AllProviders`, `useAuth`, …). Styles at `@gmhlab/blocks/styles.css`. |
+| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: marketing sections, page templates, slides, a mock data layer (`AllProviders`, `useAuth`, …), and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes `@gmhlab/ui`, `@gmhlab/blocks`, and `@gmhlab/tokens`. |
-| `apps/web` | `web` | Next.js 16 App Router site consuming all three packages. Tailwind runs via `@tailwindcss/postcss`. |
+| `apps/web` | `web` | Next.js 16 App Router site consuming all three packages — the MonoFly marketing page at `/`, plus the GW pages at `/projects`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
 
 The three `packages/*` are built with tsup (ESM bundle + `.d.ts`, CSS copied into `dist/`).
 
@@ -35,7 +35,10 @@ Per-package (via `pnpm --filter <name> <script>`):
 pnpm --filter @gmhlab/ui build       # build just the UI package
 pnpm --filter docs build              # the docs app's production build (tsc -b && vite build)
 pnpm --filter docs preview            # serve the built docs app
+pnpm tarball                          # preview the @gmhlab/ui tarball contents (pack --dry-run)
 ```
+
+There is no test runner, linter or formatter configured (`vitest` sits in the catalog but is unused), so `build` and `typecheck` are the only automated checks.
 
 > **The docs app's `typecheck` script is a no-op.** `apps/docs` uses a solution-style tsconfig (`"files": []` + references), so `tsc --noEmit` checks nothing there — the real check is the `tsc -b` inside its `build`. `apps/web` has a normal tsconfig, so its `typecheck` is a genuine check.
 
@@ -76,6 +79,74 @@ Two things a consuming app has to do beyond that:
 `src/app/layout.tsx` owns the site chrome — header, `<main>`, footer — and pages render sections into it. **A page should not include its own header or footer.**
 
 The layout wraps everything in `AllProviders` from `@gmhlab/blocks` (auth/pricing/products context + mock services). It renders no DOM of its own, so the header, `<main>` and footer are the `<body>`'s flex children; `globals.css` makes `body` a full-height flex column so the footer settles at the bottom on short pages.
+
+## Site pages
+
+`@gmhlab/blocks` ships the GW Center for Global Mental Health pages as whole-page
+components, rebuilt from the live site onto the design system. Each is page
+content only — no header or footer, per the shell rule above — so mounting one is
+a one-line route:
+
+```tsx
+"use client";
+import { ProjectsPage } from "@gmhlab/blocks";
+
+export default function Page() {
+  return <ProjectsPage basePath="/projects" />;
+}
+```
+
+| Export | Mounted at | Notes |
+| --- | --- | --- |
+| `ProjectsPage` | `/projects` | Eleven research projects, filterable by status and region. Takes `basePath` (default `/projects`) for the per-project detail links. |
+| `PublicationsPage` | `/publications` | 99 publications, filterable by year, theme, project and open access, sortable by date or citations. |
+| `InnovationsPage` | `/innovations` | The innovations index. |
+| `InnovationDetailPage` | `/innovations/equip` | The EQUIP detail page. |
+
+Both `ProjectsPage` and `PublicationsPage` accept a `contactEmail` prop for their
+closing call to action. Their content lives in sibling data modules — `PROJECTS`,
+`PUBLICATIONS` and friends are exported from the package too, so a detail page or
+a home-page teaser can read the same records rather than restating them. Each data
+module's header documents where the content came from and which fields are derived.
+
+Two conventions worth keeping if you add a fourth page: keep the page's CSS scoped
+under a page-level class so it cannot leak into other consumers of
+`@gmhlab/blocks/styles.css`, and drive outbound links from props rather than
+hardcoding a path. `CLAUDE.md` covers both, along with the token traps that make
+muted text fail contrast in light mode.
+
+## Deploying `apps/web` to Vercel
+
+One dashboard setting is required and cannot be committed: **Root Directory must be
+`apps/web`**, with *Include source files outside of the Root Directory* left on (the
+default) so Vercel can reach the workspace packages. Everything else lives in
+`apps/web/vercel.json`.
+
+That file overrides the build command, and the override is the whole point. Vercel's
+default for a Next.js app is `next build` inside the root directory — but `apps/web`
+imports `@gmhlab/{tokens,ui,blocks}` from their **`dist/`**, which does not exist on a
+fresh clone, so the default fails. The build must run through turbo from the repo root:
+
+```
+cd ../.. && pnpm turbo run build --filter=web
+```
+
+`build` is `dependsOn: ["^build"]` in `turbo.json`, so filtering to `web` still builds
+tokens → ui → blocks first, in order.
+
+Install is left to Vercel, which detects `pnpm-workspace.yaml` and the root
+`packageManager: pnpm@11.18.0` and installs from the repo root. Two settings it depends
+on are already in place: `pnpm-workspace.yaml`'s `allowBuilds` approves `esbuild`
+(tsup will not build without it), and the tracked `pnpm-lock.yaml` lets the install be
+frozen.
+
+`next.config.ts` sets `outputFileTracingRoot` to the repo root. The `@gmhlab/*` packages
+are pnpm symlinks into `../../node_modules`, and without this Next roots its file
+tracing at `apps/web` and omits them from the serverless output.
+
+**Before launch, remove the crawler block**: `src/app/robots.ts`, the `robots` key in
+`src/app/layout.tsx`'s `metadata`, and the `X-Robots-Tag` header in `next.config.ts`.
+All three currently apply to production, not just previews.
 
 ## Publishing
 

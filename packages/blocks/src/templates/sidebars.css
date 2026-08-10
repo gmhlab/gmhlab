@@ -46,7 +46,11 @@
 
 /* Micro-label — mirrors the header/footer slide labels. */
 .sidebar-section-title {
-  color: var(--mfy-color-text-default-tertiary);
+  /* `default`: the sidebar's own gray-100 surface drops `secondary` to
+     4.23:1 and `tertiary` (#b3b3b3) to ~1.9:1. At 12px this is not "large
+     text", so it needs the full 4.5:1. Size and letter-spacing keep it quiet
+     instead of colour. */
+  color: var(--mfy-color-text-default-default);
   font-size: 0.75rem; /* 12px */
   font-weight: 700;
   letter-spacing: 0.6px;

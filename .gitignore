@@ -21,6 +21,9 @@ dist-ssr
 # turbo
 .turbo
 
+# vercel (created by `vercel link` / the CLI; holds the project + org id)
+.vercel
+
 # next
 .next
 

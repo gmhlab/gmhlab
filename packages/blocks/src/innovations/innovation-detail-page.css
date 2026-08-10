@@ -1,0 +1,264 @@
+/* Page-local styling for InnovationDetailPage.
+ *
+ * Same rules as `innovations-page.css`: every selector is a uniquely-prefixed
+ * class, so nothing here can leak into other consumers of
+ * @gmhlab/blocks/styles.css the way the wireframe's `*` reset, `body` rule and
+ * generic `.header`/`.hero`/`.btn` names would. No element selectors, no names
+ * the design system already owns.
+ *
+ * Only the things the design system has no component for live here: the
+ * placeholder tiles, the numbered process steps, the country list, and the
+ * journal-logo tile. */
+
+/* Deliberately not the wireframe's 75rem `.wireframe-container` frame — that
+ * capped every section *background* too, so the neutral bands and the brand
+ * CTA stopped short of the viewport edge. `.section` is width:100% and the
+ * `Flex container` inside each one caps the *content* at
+ * --global-container-max-width, which gives full-bleed bands with the content
+ * still aligned to one column. */
+.innovation-detail-page {
+  width: 100%;
+}
+
+/* The wireframe's fixed corner stamp. */
+.innovation-detail-wireframe-label {
+  left: var(--mfy-size-space-400);
+  letter-spacing: 0.0625rem;
+  position: fixed;
+  text-transform: uppercase;
+  top: var(--mfy-size-space-400);
+  z-index: 1000;
+}
+
+/* Breadcrumb and hero are both `variant="neutral"`, so the divider between
+   them has to come from here. */
+.innovation-detail-breadcrumb {
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+}
+
+.innovation-detail-badge {
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+}
+
+/* Hero ------------------------------------------------------------------ */
+
+.innovation-detail-hero-copy {
+  color: var(--mfy-color-text-default-secondary);
+  max-width: 38rem;
+}
+
+/* Stands in for the screenshot/demo slot. Same treatment as the map tile
+   below, minus the tint. */
+.innovation-detail-visual {
+  align-items: center;
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow:
+    inset 0 0 0 var(--mfy-size-stroke-border)
+      var(--mfy-color-border-default-default),
+    var(--mfy-effects-shadows-drop-shadow-300);
+  /* `secondary`, not `tertiary`: tertiary is #b3b3b3, ~2:1 on this white
+     surface. See the contrast note in ../projects/projects-page.css. */
+  color: var(--mfy-color-text-default-secondary);
+  display: flex;
+  justify-content: center;
+  min-height: 13.75rem;
+  padding: var(--mfy-size-space-600);
+  text-align: center;
+}
+
+.innovation-detail-stat {
+  align-items: center;
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-100);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+  padding: var(--mfy-size-space-400);
+  text-align: center;
+}
+
+.innovation-detail-stat-value {
+  color: var(--mfy-color-text-brand-default);
+  font-size: var(--mfy-typography-scale-05);
+  font-weight: var(--mfy-typography-weight-bold);
+  line-height: 1.2;
+}
+
+.innovation-detail-stat-label {
+  /* White tile surface — `secondary` is 4.61:1, `tertiary` would be ~2:1. */
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+  letter-spacing: 0.03125rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* How it works ---------------------------------------------------------- */
+
+.innovation-detail-step {
+  position: relative;
+}
+
+.innovation-detail-step-number {
+  align-items: center;
+  background: var(--mfy-color-background-brand-default);
+  border-radius: var(--mfy-size-radius-full);
+  color: var(--mfy-color-text-brand-on-brand);
+  display: flex;
+  flex-shrink: 0;
+  font-size: var(--mfy-typography-scale-03);
+  font-weight: var(--mfy-typography-weight-semibold);
+  height: 3rem;
+  justify-content: center;
+  line-height: 1;
+  width: 3rem;
+}
+
+/* The wireframe's connector between steps. Only drawn where the row is
+   actually 4-up — below 1024px `flex-type-quarter` collapses to 2-up and then
+   1-up (see --mfy-responsive-ratio-column-quarter-*), where an arrow pointing
+   into the next row would be nonsense. */
+@media (min-width: 1024px) {
+  .innovation-detail-step:not(:last-child)::after {
+    color: var(--mfy-color-icon-default-tertiary);
+    content: "→";
+    /* Centred in the 24px (space-600) gutter between steps. */
+    position: absolute;
+    right: calc(-1 * var(--mfy-size-space-600) / 2 - 0.375rem);
+    top: 1.5rem;
+    transform: translateY(-50%);
+  }
+}
+
+/* Core components ------------------------------------------------------- */
+
+.innovation-detail-icon {
+  align-items: center;
+  background: var(--mfy-color-background-brand-tertiary);
+  border-radius: var(--mfy-size-radius-200);
+  display: flex;
+  font-size: 1.25rem;
+  height: 2.75rem;
+  justify-content: center;
+  line-height: 1;
+  width: 2.75rem;
+}
+
+/* Where it's used ------------------------------------------------------- */
+
+.innovation-detail-map {
+  align-items: center;
+  background: var(--mfy-color-background-brand-tertiary);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-brand-tertiary);
+  color: var(--mfy-color-text-brand-default);
+  display: flex;
+  justify-content: center;
+  min-height: 22.5rem;
+  padding: var(--mfy-size-space-600);
+  text-align: center;
+}
+
+.innovation-detail-countries {
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  /* Clips the header's fill and the rows' hairlines to the rounded corner. */
+  overflow: hidden;
+}
+
+.innovation-detail-countries-header {
+  background: var(--mfy-color-background-default-secondary);
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  padding: var(--mfy-size-space-400) var(--mfy-size-space-600);
+}
+
+.innovation-detail-country-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.innovation-detail-country {
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  padding: var(--mfy-size-space-300) var(--mfy-size-space-600);
+}
+.innovation-detail-country:last-child {
+  border-bottom: none;
+}
+
+.innovation-detail-flag {
+  font-size: var(--mfy-typography-scale-02);
+  line-height: 1;
+}
+
+/* Evidence base --------------------------------------------------------- */
+
+/* Card horizontal only sets flex-direction; the content column has to be told
+   to take the rest of the row or it shrinks to its text. */
+.innovation-detail-publication > .card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.innovation-detail-publication > .card-asset {
+  flex-shrink: 0;
+}
+
+.innovation-detail-publication-body {
+  min-width: 0;
+}
+
+.innovation-detail-journal {
+  align-items: center;
+  background: var(--mfy-color-background-default-secondary);
+  border-radius: var(--mfy-size-radius-100);
+  /* `default`, not `secondary`: this tile's own gray-100 surface drops
+     #757575 to 4.23:1, just under AA. (`tertiary` here was ~1.9:1.) */
+  color: var(--mfy-color-text-default-default);
+  display: flex;
+  font-size: var(--mfy-typography-scale-01);
+  height: 3.75rem;
+  justify-content: center;
+  padding: var(--mfy-size-space-100);
+  /* "Lancet Psychiatry" and "BJPsych Open" wrap to two lines inside 3.75rem,
+     so the lines need centering as well as the box. */
+  text-align: center;
+  width: 3.75rem;
+}
+
+/* Related projects ------------------------------------------------------ */
+
+/* The wireframe lifts the card on hover. Card's own `interactionProps` would
+ * give it that for free, but it renders an absolutely-positioned overlay
+ * anchor that swallows the "View Project" link underneath — so the elevation
+ * is visual only and the link stays the click target. */
+.innovation-detail-related {
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.innovation-detail-related:hover {
+  box-shadow:
+    inset 0 0 0 var(--mfy-size-stroke-border)
+      var(--mfy-color-border-default-default),
+    var(--mfy-effects-shadows-drop-shadow-600);
+  transform: translateY(-2px);
+}
+
+/* CTA ------------------------------------------------------------------- */
+
+/* Measure cap for the CTA paragraph only — the heading above it runs the full
+   container width so it stays on one line. */
+.innovation-detail-cta-copy {
+  max-width: 34rem;
+}

@@ -8,3 +8,6 @@
  * @gmhlab/blocks/styles.css. Both are deleted; innovations.html is kept as the
  * reference render of the original design. */
 export * from "./innovations-page"
+/* The detail-level counterpart, rebuilt from
+ * `.files/gw-innovation-detail-wireframe.html` on the same terms. */
+export * from "./innovation-detail-page"

@@ -73,7 +73,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <Hero variant="brand" padding={sectionPadding} flexProps={{ gap: "400" }}>
+      <Hero variant="stroke" padding={sectionPadding} flexProps={{ gap: "400" }}>
         <TextTitleHero>Design once. Ship everywhere.</TextTitleHero>
         <TextSubheading>
           Monofly is a token-driven design system — this whole site is built
@@ -90,7 +90,7 @@ export default function HomePage() {
       </Hero>
 
       {/* Stats strip */}
-      <Section padding="800">
+      <Section variant="brand" padding="800">
         <Panel type="quarter" gap="600">
           {STATS.map((s) => (
             <FlexItem key={s.description} size="minor">

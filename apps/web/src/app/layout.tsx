@@ -7,9 +7,11 @@ import { ThemeProvider } from "../components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MonoFly",
+  title: "GW Global Mental Health Lab",
   description:
-    "Design once, ship everywhere — tokens, components and blocks in one system.",
+    "Supporting Wellbeing Worldwide.",
+  // Pre-launch. Drop this alongside app/robots.ts to open the site to indexing.
+  robots: { index: false, follow: false },
 };
 
 // Applies the stored theme class before first paint so there is no flash.

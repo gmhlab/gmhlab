@@ -56,7 +56,9 @@
 .innovation-card-meta {
   border-top: var(--mfy-size-stroke-border) solid
     var(--mfy-color-border-default-secondary);
-  color: var(--mfy-color-text-default-tertiary);
+  /* `secondary`, not `tertiary`: tertiary is #b3b3b3, ~2:1 on the card's white
+     surface. See the contrast note in ../projects/projects-page.css. */
+  color: var(--mfy-color-text-default-secondary);
   padding-top: var(--mfy-size-space-400);
 }
 
@@ -90,7 +92,9 @@
   align-items: center;
   background: var(--mfy-color-background-default-secondary);
   border-radius: var(--mfy-size-radius-100);
-  color: var(--mfy-color-text-default-tertiary);
+  /* `default`, not `secondary`: this tile's own gray-100 surface drops
+     #757575 to 4.23:1, just under AA. (`tertiary` here was ~1.9:1.) */
+  color: var(--mfy-color-text-default-default);
   display: flex;
   height: 2.5rem;
   justify-content: center;

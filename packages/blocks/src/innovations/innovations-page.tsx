@@ -88,6 +88,20 @@ const INNOVATIONS: Innovation[] = [
 
 const PARTNERS = ["WHO", "UNICEF", "NIMH", "World Bank", "Carter Center"];
 
+/**
+ * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
+ * serves one fixed photo per numeric id, so the URL is stable rather than
+ * random, but it is stock imagery standing in for a real photograph and it
+ * makes the page depend on a third-party host at runtime. Swap it for a Center
+ * image (or a local file in the consuming app) before this goes live.
+ *
+ * Section's `image` variant lays a scrim over it that **inverts with the
+ * theme** — 80% white in light, 80% black in dark — so the hero's existing
+ * text tokens (which invert the same way) stay readable without an on-image
+ * colour of their own.
+ */
+const HERO_IMAGE = "https://picsum.photos/id/36/1920/1080";
+
 function InnovationCard({
   icon,
   status,
@@ -134,7 +148,8 @@ export function InnovationsPage() {
       <Badge className="innovations-wireframe-label">Wireframe v1.0</Badge>
 
       <Hero
-        variant="neutral"
+        variant="image"
+        src={HERO_IMAGE}
         flexProps={{ direction: "column", alignSecondary: "start" }}
       >
         <TextContentTitle
@@ -143,7 +158,11 @@ export function InnovationsPage() {
         />
       </Hero>
 
-      <Section padding="1600">
+      {/* Brand band directly under the hero. The cards inside stay
+          `variant="stroke"` and reset their own colour, so they read as light
+          panels on the brand surface; the CardGrid heading has no colour of its
+          own and inherits the section's `text-brand-on-brand`. */}
+      <Section variant="brand" padding="1600">
         <CardGrid
           container
           type="half"
@@ -173,7 +192,7 @@ export function InnovationsPage() {
         </Flex>
       </Section>
 
-      <Section variant="brand" padding="1600">
+      <Section padding="1600">
         <Flex
           container
           direction="column"
@@ -200,10 +219,10 @@ export function InnovationsPage() {
             </TextSubheading>
           </Flex>
           <Flex wrap gap="400" alignPrimary="center">
-            <Button variant="secondary" nativeButton={false} render={<a href="#" />}>
+            <Button nativeButton={false} render={<a href="#" />}>
               Request Training
             </Button>
-            <Button variant="outline" nativeButton={false} render={<a href="#" />}>
+            <Button variant="secondary" nativeButton={false} render={<a href="#" />}>
               Contact Us
             </Button>
           </Flex>

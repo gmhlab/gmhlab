@@ -14,9 +14,9 @@ Workspaces are `apps/*` and `packages/*` (see `pnpm-workspace.yaml`). Internal p
 
 - `packages/tokens` (`@gmhlab/tokens`) — the **design-token value layer** (the `--mfy-*` namespace). `src/index.css` chains `responsive.css` → `variables.css` → `icons.css` → `globals.css` (`reset.css` exists but is currently commented out). This is a pure value/theme layer — it carries **no** Tailwind directives. `variables.css` is the full token set and is **hand-maintained** — it began as generator output but has since been edited (a Kigen brand ramp prepended and `@media (prefers-color-scheme: dark)` swapped for the `.dark` class). The generator now writes `src/theme.css` *alongside* it as a drift report; see "Design tokens from Figma" below. `src/index.ts` is now **CSS-only** (`import "./index.css"`) — the former typed `tokens` JS object was removed as an unused stub that drifted from `variables.css`; consume tokens as CSS vars. CSS is exposed to consumers as **`@gmhlab/tokens/tokens.css`** (physical file is `dist/index.css`). `private: true`; has no runtime/peer deps.
 - `packages/ui` (`@gmhlab/ui`) — the component library. `src/styles/index.css` is just two imports: `@gmhlab/tokens/tokens.css` (the value layer) followed by `./tailwind.css` (the Tailwind glue). The tokens CSS is **not** inlined: because tsup's `.css` loader is `copy`, esbuild never parses the file, so `dist/index.css` ships a literal `@import "@gmhlab/tokens/tokens.css"` on line 1 (its *relative* imports do get inlined). `@gmhlab/tokens` is therefore a genuine runtime dependency that must be published and resolvable by the consumer's CSS toolchain — it cannot be made `private`. The barrel (`src/index.ts`) imports `./styles/index.css` and re-exports `compositions` (cards, footers, forms, headers, sections), `data/types` (`Product`, `PricingPlan`, …), `hooks` (`useMediaQuery`), `icons`, `images` (SVGs bundled as data URLs via tsup's `.svg` `dataurl` loader), `layouts`, `lib/utils`, and `primitives`. `src/types/react.d.ts` is an ambient-only augmentation (not exported) that widens `React.CSSProperties` to accept `--*` keys — this is what lets the MFY layout/primitive components pass custom properties via `style={{ "--flex-gap": … }}` without a cast. Deleting it breaks typecheck across the repo.
-- `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all five re-exported from the barrel**: `sections/` (e.g. `WelcomeHero`, plus the data-bound `PricingGrid`/`ProductGrid`), `templates/` (AppShell/Auth/Marketing page templates + `templates.css`), `innovations/` (the GMH Innovations page — see below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
+- `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all seven re-exported from the barrel**: `sections/` (e.g. `WelcomeHero`, `FAQs`, `PanelSections`, `ProductDetails`, plus the data-bound `PricingGrid`/`ProductGrid`), `templates/` (AppShell/Auth/Marketing page templates + `templates.css`), `innovations/`, `projects/`, `publications/` (the three GW site pages — see "GW page blocks" below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
 - `apps/docs` (`docs`) — Vite + React 19 reference app that consumes all three packages. Uses `react-router` (`createBrowserRouter` in `src/App.tsx`, pages under `src/pages/`, shared `RootLayout`).
-- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Two routes: `/` (marketing) and `/gmh` (`InnovationsPage`). Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
+- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the MonoFly marketing page, assembled from `blocks` sections), plus four GW pages that are each a one-line wrapper around a block — `/projects`, `/publications`, `/innovations`, and `/innovations/equip` (`InnovationDetailPage`). Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
 
 All three packages share the same build shape: tsup (`esm` + `.d.ts`, `.css` "copy" loader), a `build` + `typecheck` script, `files: ["dist"]`, `sideEffects: ["*.css"]`, and a `src/globals.d.ts` ambient `declare module "*.css"` (required, or the DTS/typecheck step fails with TS2882). `ui`/`blocks` tsup `external`s `react`/`react-dom` (blocks also externals the two workspace deps); `tokens` externals nothing. Runtime deps are referenced via `catalog:`; `react`/`react-dom` are `peerDependencies` (blocks also peers `tailwindcss`).
 
@@ -31,6 +31,20 @@ pnpm dev         # turbo dev — runs both apps' dev servers (docs Vite, web nex
 pnpm typecheck   # turbo typecheck — tsc --noEmit across all packages
 pnpm tarball     # pnpm --filter @gmhlab/ui pack --dry-run — preview the ui package tarball contents
 ```
+
+Release scripts operate on `./packages/*` only (the apps are never published):
+
+```bash
+pnpm version:show    # print each package's name + current version
+pnpm version:patch   # npm version patch --no-git-tag-version, across all packages
+pnpm release:check   # build + typecheck + publish --dry-run — rehearse without publishing
+pnpm release         # build + typecheck + publish --access public
+```
+
+`prepublishOnly` in each package hard-fails under plain `npm`: npm does not resolve
+the `workspace:`/`catalog:` protocols and would publish a broken manifest. Always
+use `pnpm publish`. `README.md` documents the CI release flow and an annotated-tag
+trap that the scripts alone do not cover.
 
 There is no single-test command — no test runner is configured (see "What this is").
 
@@ -114,6 +128,65 @@ Two traps:
 
 `scripts/plugins/figma-plugin-token-json/code.js` must keep `NAMESPACE` identical to `app.mjs` (`com.figma.monofly`) — a mismatch collapses every token to a single `default` mode and drops all light/dark data, again silently.
 
+## Muted text colour depends on the surface (an accessibility trap)
+
+Token names describe a step on a ramp, not a contrast level, so the "quiet" tone
+that is safe on one surface fails on another. Two tokens are actively dangerous:
+
+- **`--mfy-color-text-default-tertiary` must never carry text.** It is
+  `gray-400` (#b3b3b3) in light — roughly **2:1 on white**. It is a
+  hairline/disabled tone. Six call sites across `blocks` were failing on this.
+- **`--mfy-color-text-brand-on-brand-secondary` is not a muted `on-brand`.** The
+  pair *inverts*: on-brand is `brand-100` light / `brand-900` dark, while
+  on-brand-secondary is `brand-900` light / `brand-100` dark. It is for text on a
+  light brand *tint*. On a solid `variant="brand"` surface it renders
+  navy-on-navy at **1.03:1**. Use `color: inherit` (the brand Section/Card
+  already sets `text-brand-on-brand`) and quiet it with `opacity`.
+
+The safe muted tone by surface:
+
+| Surface | Token | Safe muted text |
+| --- | --- | --- |
+| Card / default | `background-default-default` (white) | `text-default-secondary` — 4.6:1 |
+| Neutral band (`Section variant="neutral"`) | `background-default-tertiary` (#d9d9d9) | `text-default-default` — `secondary` is only 3.1:1 here |
+| Tinted chip/tile | `background-default-secondary` (#f5f5f5) | `text-default-default` — `secondary` drops to 4.2:1 |
+
+Anything painting its own tinted surface loses roughly half a step of headroom,
+which is what pushes `secondary` under AA. **Light mode is where these break;
+dark mode passes on every surface and hides the bug**, so never verify in dark
+alone. Measure rather than eyeball: the tokens compute to `lab()`/`oklch()`, so a
+naive `match(/[\d.]+/g)` RGB parser silently reports nonsense — convert through a
+canvas 2d `fillStyle` first.
+
+## GW page blocks (`innovations/`, `projects/`, `publications/`)
+
+These three are full GW Center for Global Mental Health pages, rebuilt from the
+live site onto the design system. They share one deliberate shape — follow it
+when adding a fourth:
+
+- **Three files per page**: `<name>-page.tsx`, a co-located `<name>-page.css`,
+  and (for projects/publications) a `<name>-data.ts` holding the content as
+  typed records. The data module is exported from the barrel too, so a detail
+  page or teaser can read the same records instead of restating them.
+- **Page content only.** No header or footer — the site chrome belongs to
+  `apps/web`'s layout (see "The `apps/web` app shell").
+- **CSS is scoped under a page-level class** (`.projects-page`, …) and uses only
+  uniquely-prefixed class names. The deleted `innovations.css` leaked a `*`
+  reset and generic names like `.header`/`.btn` into every consumer of
+  `@gmhlab/blocks/styles.css`; don't reintroduce that.
+- **Links are prop-driven, not hardcoded** — `ProjectsPage` takes a `basePath`
+  so the block travels with whatever site mounts it. If you move a route in
+  `apps/web`, update the `basePath` passed at the call site.
+- **Faceted filtering convention**: counts for each facet are computed against
+  the *other* active facets (never the whole set), and zero-count options are
+  rendered `disabled`, so a chip can never advertise a number and land on an
+  empty list. The active option stays enabled so a filter is always reversible.
+- **Data provenance is documented in the data module's header**, including which
+  fields are derived rather than sourced. `publications-data.ts` merges the
+  Center's own listing with the OpenAlex record for Brandon A. Kohrt (Google
+  Scholar has no API and blocks scraping); its `theme` field is keyword-derived
+  and labelled as a navigation aid, not an authoritative classification.
+
 ## Two component styling systems coexist in `@gmhlab/ui`
 
 Be deliberate about which one you're extending. `src/primitives/` components are now mostly **flat single files** (`src/primitives/button.tsx`) — only `icon`, `image`, `logo`, and `text` keep their own subdir; the `layouts/` and `compositions/` groups still use per-component directories (`src/<group>/<name>/<name>.tsx`):
@@ -121,12 +194,15 @@ Be deliberate about which one you're extending. `src/primitives/` components are
 1. **shadcn/Tailwind primitives** (most of `src/primitives/` — button, dialog, dropdown-menu, input, navigation, accordion, …) — Tailwind v4 utility classes via `class-variance-authority` (`cva`), merged with `cn()` (`clsx` + `tailwind-merge`) from `src/lib/utils.ts`. Built on `@base-ui/react` (`button`, `dialog`, `dropdown-menu` — composition via the `render` prop) plus `radix-ui`/`react-aria-components` elsewhere, with `data-slot`/`data-variant`/`data-size` attributes for styling hooks. Theme is driven by the Tailwind color vars in `tailwind.css`.
 2. **MFY layout/primitive components** (`src/layouts/` — `flex`, `grid`, `section`; plus `src/primitives/image`) — plain co-located `*.css` files imported directly by each `.tsx`, driven by `--mfy-*` tokens and component-local CSS custom properties (e.g. `--flex-*`). Props map to BEM-ish class names (`flex-gap-600`, `section-variant-stroke`). Not Tailwind-based.
 
-**Selector traps when writing CSS against these**, both of which fail silently — the rule simply never matches:
+**Selector traps when writing CSS against these**, all of which fail silently — the rule simply never matches, or the layout quietly does the wrong thing:
 
 - `Flex` emits **`flex-mfy`**, not `flex` (`Grid` emits `grid-mfy`). A `> .flex` child selector matches nothing. Three dead rules in `headers.css` came from exactly this.
 - shadcn primitives emit `data-slot` attributes plus Tailwind utilities and **no semantic class**. There is no `.navigation`, `.badge`, etc. — target `[data-slot="navigation-menu"]`.
 - `FlexItem`'s `size` prop (`major`/`minor`/`half`) only does anything when the parent `Flex` has `type="half" | "quarter" | "third"`. Under the default `type="auto"` it is inert.
 - `.card-content > *` is forced to `width: 100%`, so an intrinsically-sized child (a `Badge` pill) stretches across the card unless you wrap it.
+- **Cards in a row are not equal height by default.** `Flex` maps `alignSecondary` straight onto `align-items`, and it defaults to `start` — so a `CardGrid` needs an explicit `alignSecondary="stretch"`. Even then, `.card` is itself a column flex box whose `.card-content` has no `flex-grow`, so pinning anything to a card's bottom edge (`margin-top: auto`) also needs `.card-content { flex: 1 }` from the calling page.
+- `.card-asset` is a flex container that **stretches its child to the card's full height**. An asset meant to be a compact tile needs `align-items: flex-start` on `.card-asset`, or it becomes a full-height rail.
+- `Card`'s `interactionProps` renders an absolutely-positioned overlay anchor (`z-index: 1`) covering the whole card. It gives you a card-wide click target and hover/focus states for free, but it **swallows any other link inside the card** — so a card cannot have both a card-wide target and working inner links. Pick one.
 
 ## Adding shadcn components
 

@@ -1,6 +1,13 @@
 .card {
   --border-radius: var(--mfy-size-radius-200);
   background: var(--mfy-color-background-default-default);
+  /* Paired with the background on purpose. `background` doesn't inherit but
+   * `color` does, and nothing between here and the glyphs declares one — so
+   * without this a card inside `.section-variant-brand` keeps its own white
+   * surface while inheriting that section's `text-brand-on-brand`, i.e.
+   * near-white type on white. Any rule below that changes `background` must
+   * also set `color`, the way `.card-variant-brand` does. */
+  color: var(--mfy-color-text-default-default);
   border-radius: var(--border-radius);
   gap: var(--mfy-size-space-600);
   display: flex;
