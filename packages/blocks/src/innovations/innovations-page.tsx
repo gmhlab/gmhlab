@@ -145,8 +145,6 @@ function InnovationCard({
 export function InnovationsPage() {
   return (
     <div className="innovations-page">
-      <Badge className="innovations-wireframe-label">Wireframe v1.0</Badge>
-
       <Hero
         variant="image"
         src={HERO_IMAGE}

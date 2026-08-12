@@ -20,16 +20,6 @@
   width: 100%;
 }
 
-/* The wireframe's fixed corner stamp. */
-.innovation-detail-wireframe-label {
-  left: var(--mfy-size-space-400);
-  letter-spacing: 0.0625rem;
-  position: fixed;
-  text-transform: uppercase;
-  top: var(--mfy-size-space-400);
-  z-index: 1000;
-}
-
 /* Breadcrumb and hero are both `variant="neutral"`, so the divider between
    them has to come from here. */
 .innovation-detail-breadcrumb {

@@ -483,10 +483,6 @@ function CtaSection() {
 export function InnovationDetailPage() {
   return (
     <div className="innovation-detail-page">
-      <Badge className="innovation-detail-wireframe-label">
-        Wireframe — Detail Page
-      </Badge>
-
       <Breadcrumb />
       <HeroSection />
       <HowItWorksSection />

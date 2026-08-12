@@ -24,16 +24,6 @@
   width: 100%;
 }
 
-/* The wireframe's fixed corner stamp. */
-.innovations-wireframe-label {
-  left: var(--mfy-size-space-400);
-  letter-spacing: 0.0625rem;
-  position: fixed;
-  text-transform: uppercase;
-  top: var(--mfy-size-space-400);
-  z-index: 1000;
-}
-
 /* The wireframe lifts the card on hover. Card's own `interactionProps` would
  * give it that for free, but it renders an absolutely-positioned overlay
  * anchor that swallows the "Learn more" link underneath — so the elevation is
