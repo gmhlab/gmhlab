@@ -110,10 +110,10 @@ export function HeaderAuth({
 
   const userButtons = (
     <>
-      <Button variant="outline" size="sm" onClick={onLogin}>
+      <Button size="sm" onClick={onLogin}>
         Sign in
       </Button>
-      <Button variant="ghost" size="sm" onClick={onRegister}>
+      <Button variant="secondary" size="sm" onClick={onRegister}>
         Register
       </Button>
     </>
