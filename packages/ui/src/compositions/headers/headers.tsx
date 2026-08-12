@@ -24,22 +24,44 @@ import {
   TextSmall,
   TextStrong,
 } from "../../primitives";
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import "./headers.css";
+
+export type HeaderNavItem = {
+  /** Visible label. */
+  label: string;
+  /**
+   * Destination. Omit for a non-navigating item — it renders as a `<button>`
+   * that only sets the local active highlight, which is what the Figma-derived
+   * default set does.
+   */
+  href?: string;
+  /**
+   * Element to render the link as — a framework `Link` (`next/link`,
+   * react-router) for client-side navigation. ui stays router-agnostic by
+   * taking the element ready-made rather than importing any router itself.
+   * Still set `href` alongside it: that is what {@link HeaderNavProps.activeHref}
+   * compares against.
+   */
+  render?: ReactElement;
+  /** Dropped from the mobile sheet, matching Figma's Mobile/Open variant. */
+  desktopOnly?: boolean;
+};
 
 /**
  * Nav items, in Figma's order (Header, node 2287:22651). `Link` is on the
- * desktop variant only — the mobile sheet drops it.
+ * desktop variant only — the mobile sheet drops it. None carry an `href`: this
+ * is the design-system default, and a real site passes its own `navItems`.
  */
-const NAV_ITEMS = [
-  "Products",
-  "Solutions",
-  "Community",
-  "Resources",
-  "Pricing",
-  "Contact",
+export const DEFAULT_NAV_ITEMS: HeaderNavItem[] = [
+  { label: "Products" },
+  { label: "Solutions" },
+  { label: "Community" },
+  { label: "Resources" },
+  { label: "Pricing" },
+  { label: "Contact" },
+  { label: "Link", desktopOnly: true },
 ];
-const DESKTOP_NAV_ITEMS = [...NAV_ITEMS, "Link"];
 
 /**
  * The signed-in user shown in the header. Kept structural (not imported from
@@ -59,12 +81,25 @@ export type HeaderAuthProps = {
   onLogout?: () => void;
 };
 
+export type HeaderNavProps = {
+  /** Defaults to {@link DEFAULT_NAV_ITEMS}. */
+  navItems?: HeaderNavItem[];
+  /**
+   * Marks the current route active. Only applies to items that carry an
+   * `href` — ui has no router, so the consumer supplies the current path
+   * (`usePathname()`, `useLocation().pathname`, …).
+   */
+  activeHref?: string;
+};
+
 export function HeaderAuth({
   user,
   onLogin,
   onRegister,
   onLogout,
-}: HeaderAuthProps) {
+  navItems = DEFAULT_NAV_ITEMS,
+  activeHref,
+}: HeaderAuthProps & HeaderNavProps) {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState("products");
 
@@ -93,7 +128,7 @@ export function HeaderAuth({
     stacked,
     onNavigate,
   }: {
-    items: string[];
+    items: HeaderNavItem[];
     stacked?: boolean;
     onNavigate?: () => void;
   }) => (
@@ -101,24 +136,42 @@ export function HeaderAuth({
       <NavigationMenuList
         className={stacked ? "w-full flex-col items-stretch" : ""}
       >
-        {items.map((item) => (
-          <NavigationMenuItem key={item}>
-            <NavigationMenuLink
-              render={<button type="button" />}
-              active={page === item.toLowerCase()}
-              onClick={() => {
-                setPage(item.toLowerCase());
-                onNavigate?.();
-              }}
-              className={clsx(
-                "cursor-pointer",
-                stacked && "w-full justify-center",
-              )}
-            >
-              {item}
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        ))}
+        {items.map((item) => {
+          /* Three ways to render, in precedence order: a consumer-supplied
+           * element (a router Link), a plain anchor, or — for the label-only
+           * default set — a button, since an anchor with no destination is
+           * neither focusable nor announced as a control. Base UI's Link
+           * renders an `<a>` by default, so the href case needs no `render`. */
+          const elementProps = item.render
+            ? { render: item.render }
+            : item.href
+              ? { href: item.href }
+              : { render: <button type="button" /> };
+          const navigates = Boolean(item.render ?? item.href);
+
+          return (
+            <NavigationMenuItem key={item.label}>
+              <NavigationMenuLink
+                {...elementProps}
+                active={
+                  navigates
+                    ? item.href !== undefined && item.href === activeHref
+                    : page === item.label.toLowerCase()
+                }
+                onClick={() => {
+                  if (!navigates) setPage(item.label.toLowerCase());
+                  onNavigate?.();
+                }}
+                className={clsx(
+                  "cursor-pointer",
+                  stacked && "w-full justify-center",
+                )}
+              >
+                {item.label}
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          );
+        })}
       </NavigationMenuList>
     </NavigationMenu>
   );
@@ -162,7 +215,7 @@ export function HeaderAuth({
           </Flex>
           <div className="navigation-dialog-nav">
             {renderNavigation({
-              items: NAV_ITEMS,
+              items: navItems.filter((item) => !item.desktopOnly),
               stacked: true,
               onNavigate: () => setOpen(false),
             })}
@@ -202,7 +255,7 @@ export function HeaderAuth({
 
   return (
     <Flex className="header-actions" alignSecondary="center" gap="600">
-      {renderNavigation({ items: DESKTOP_NAV_ITEMS })}
+      {renderNavigation({ items: navItems })}
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger className="header-auth-avatar-button">
@@ -240,13 +293,16 @@ export function HeaderAuth({
 }
 
 export type HeaderProps = Omit<SectionProps, "variant" | "padding" | "src"> &
-  HeaderAuthProps;
+  HeaderAuthProps &
+  HeaderNavProps;
 export function Header({
   className,
   user,
   onLogin,
   onRegister,
   onLogout,
+  navItems,
+  activeHref,
   ...props
 }: HeaderProps) {
   return (
@@ -272,6 +328,8 @@ export function Header({
           onLogin={onLogin}
           onRegister={onRegister}
           onLogout={onLogout}
+          navItems={navItems}
+          activeHref={activeHref}
         />
       </Flex>
     </Section>

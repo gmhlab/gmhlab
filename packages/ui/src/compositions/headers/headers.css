@@ -57,6 +57,15 @@
    * row; wrapping is what makes the < 600px hamburger viable. */
   [data-slot="navigation-menu-list"] {
     flex-wrap: wrap;
+
+    /* A deliberate deviation from Figma (Header, node 2287:22651), which lays
+     * the links out flush — its default state paints exactly one pill, so
+     * touching neighbours never show there. A consumer passing `activeHref`
+     * keeps a pill lit permanently, and hovering the item beside it butts two
+     * filled rectangles together with no seam. 4px is the smallest gap that
+     * restores the seam. Don't "fix" this back to 0 to match the spec without
+     * also solving that case. */
+    gap: var(--mfy-size-space-100);
   }
 
   /* navigation-menu.tsx styles the link with Tailwind's `hover:bg-muted`,
@@ -68,8 +77,8 @@
   [data-slot="navigation-menu-link"] {
     &:hover,
     &:focus,
-    &[data-active="true"]:hover,
-    &[data-active="true"]:focus {
+    &[data-active]:hover,
+    &[data-active]:focus {
       background-color: var(--mfy-color-background-brand-secondary-hover);
     }
   }
