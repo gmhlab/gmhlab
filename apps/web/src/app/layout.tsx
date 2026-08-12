@@ -7,7 +7,7 @@ import { ThemeProvider } from "../components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GW Global Mental Health Lab",
+  title: "GW Global Mental Health",
   description:
     "Supporting Wellbeing Worldwide.",
   // Pre-launch. Drop this alongside app/robots.ts to open the site to indexing.
