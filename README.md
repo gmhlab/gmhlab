@@ -99,7 +99,7 @@ export default function Page() {
 | Export | Mounted at | Notes |
 | --- | --- | --- |
 | `ProjectsPage` | `/projects` | Eleven research projects, filterable by status and region. Takes `basePath` (default `/projects`) for the per-project detail links. |
-| `PublicationsPage` | `/publications` | 99 publications, filterable by year, theme, project and open access, sortable by date or citations. |
+| `PublicationsPage` | `/publications` | 343 publications (2015–2026), filterable by free text, year, theme, project and open access, sortable by date or citations. |
 | `InnovationsPage` | `/innovations` | The innovations index. |
 | `InnovationDetailPage` | `/innovations/equip` | The EQUIP detail page. |
 
@@ -108,6 +108,14 @@ closing call to action. Their content lives in sibling data modules — `PROJECT
 `PUBLICATIONS` and friends are exported from the package too, so a detail page or
 a home-page teaser can read the same records rather than restating them. Each data
 module's header documents where the content came from and which fields are derived.
+
+`PUBLICATIONS` is the one **generated** dataset — a merge of the Center's own
+listing with the full OpenAlex records of two Center researchers, so it is a
+two-author merge rather than a complete Center archive. There is no generator
+script in the repo, and several of its conventions (how `slug` is derived, the
+precedence order behind `theme`, how records are deduplicated) fail silently when
+broken. Read its header and the `publications-data.ts` section of `CLAUDE.md`
+before adding or editing records by hand.
 
 Two conventions worth keeping if you add a fourth page: keep the page's CSS scoped
 under a page-level class so it cannot leak into other consumers of

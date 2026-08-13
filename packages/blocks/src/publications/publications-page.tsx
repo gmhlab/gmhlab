@@ -37,9 +37,10 @@ import "./publications-page.css";
  *
  * This rebuild:
  *
- *   - **Widens the record.** 103 publications (2023–2026) instead of 19, by
- *     merging the Center's listing with the director's OpenAlex record. See
- *     `publications-data.ts` for provenance and the Google Scholar caveat.
+ *   - **Widens the record.** 343 publications (2015–2026) instead of 19, by
+ *     merging the Center's listing with the full OpenAlex records of Brandon A.
+ *     Kohrt and Sauharda Rai. See `publications-data.ts` for provenance, the
+ *     Google Scholar caveat, and how `theme` is derived.
  *   - **Filters on five axes**: free-text search, year, theme, Center project,
  *     and an open-access toggle — with counts computed against the *other*
  *     active facets so a chip is never a dead end.
@@ -78,7 +79,7 @@ const INITIAL_FILTERS: Filters = {
   openOnly: false,
 };
 
-/** How many rows to render before "Show more". 103 records is a long page. */
+/** How many rows to render before "Show more". 343 records is a long page. */
 const PAGE_SIZE = 24;
 
 /**
@@ -410,14 +411,17 @@ export function PublicationsPage({
             ))}
           </Flex>
           {/* Says plainly what the numbers cover. "Citations" is the total for
-              the 99 works listed here, not a career figure, and a reader
-              comparing this against a Scholar profile deserves to know that
-              before they wonder why it is lower. */}
+              the works listed here, not a career figure, and a reader comparing
+              this against a Scholar profile deserves to know that before they
+              wonder why it is lower. Naming the two authors is the honest
+              framing: this is a merge of two people's records, not a complete
+              Center archive, and a reader should not have to infer that from a
+              gap in the year facet. */}
           <TextSmall className="publications-note">
             Covers {YEARS[YEARS.length - 1]}–{YEARS[0]}: the Center&rsquo;s own
-            listing merged with the OpenAlex record for Brandon A. Kohrt.
-            Citation counts are for these {PUBLICATIONS.length} works and were
-            captured in August 2026.
+            listing merged with the full OpenAlex records for Brandon A. Kohrt
+            and Sauharda Rai. Citation counts are for these{" "}
+            {PUBLICATIONS.length} works and were captured in August 2026.
           </TextSmall>
         </Flex>
       </Hero>

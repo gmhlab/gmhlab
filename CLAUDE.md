@@ -43,8 +43,10 @@ pnpm release         # build + typecheck + publish --access public
 
 `prepublishOnly` in each package hard-fails under plain `npm`: npm does not resolve
 the `workspace:`/`catalog:` protocols and would publish a broken manifest. Always
-use `pnpm publish`. `README.md` documents the CI release flow and an annotated-tag
-trap that the scripts alone do not cover.
+use `pnpm publish`. CI releases from `.github/workflows/release.yml`, which fires
+on `v*` tags (plus a `dry_run` manual dispatch) and runs `pnpm build` +
+`pnpm typecheck` before publishing. `README.md` documents that flow and an
+annotated-tag trap that the scripts alone do not cover.
 
 There is no single-test command — no test runner is configured (see "What this is").
 
@@ -182,10 +184,52 @@ when adding a fourth:
   rendered `disabled`, so a chip can never advertise a number and land on an
   empty list. The active option stays enabled so a filter is always reversible.
 - **Data provenance is documented in the data module's header**, including which
-  fields are derived rather than sourced. `publications-data.ts` merges the
-  Center's own listing with the OpenAlex record for Brandon A. Kohrt (Google
-  Scholar has no API and blocks scraping); its `theme` field is keyword-derived
-  and labelled as a navigation aid, not an authoritative classification.
+  fields are derived rather than sourced. Read that header before touching the
+  records — it is the spec, and it carries detail this file does not repeat.
+
+### `publications-data.ts` is generated data with hand-maintained conventions
+
+It is ~5,300 lines and **343 records** (as of 2026-08-13), merging the Center's
+own listing with the *full* OpenAlex records of Brandon A. Kohrt and Sauharda
+Rai. Google Scholar has no API and blocks scraping, so OpenAlex is the
+substitute — don't reach for Scholar. There is **no generator script in the
+repo**: the records were produced by throwaway scripts, so anything added by
+hand has to match the existing shape exactly. Five conventions, all of which
+fail silently:
+
+- **Both author pulls are unwindowed (2015 onward).** Kohrt was originally
+  pulled 2023+ and backfilled. Adding a third author means pulling them
+  unwindowed too, or the early years quietly become one author's back
+  catalogue while the year facet implies a full archive.
+- **`slug` is a pure function of `title`**: Unicode-normalise, drop combining
+  marks, map every non-alphanumeric run (including en dashes and apostrophes,
+  *not* just spaces) to `-`, lowercase, truncate to **70 chars**, strip the
+  trailing `-`. An ASCII-fold that *deletes* punctuation instead of mapping it
+  reproduces most slugs but silently breaks the handful containing en dashes.
+  Verify a change by regenerating all slugs from titles and diffing.
+- **`theme` is precedence-ordered keyword matching**, not best-match: maternal →
+  stigma → training → measurement → adolescent, falling back to care-delivery.
+  Order is load-bearing because titles routinely hit several buckets
+  ("stigma reduction *training*"). This order reproduces 96% of the assignments
+  that were hand-checked at 119 records; reordering silently reclassifies the
+  corpus.
+- **Dedupe is by DOI, and the stored value is a full `https://doi.org/…` URL**
+  while OpenAlex returns a bare DOI. Comparing the two forms directly matches
+  nothing and lets duplicates through — this happened once and added 18. Records
+  with no DOI (4 of them) dedupe on a normalised title instead.
+- **OpenAlex `type` is filtered, then mapped onto `kind`.** Excluded: preprints
+  (published versions are already present), peer-review records, datasets,
+  errata, paratext, supplementary materials, conference abstracts. Kept and
+  mapped: article/conference-paper → `Article`, review → `Review`,
+  book-chapter/reference-entry → `Chapter`, editorial/letter → `Editorial`,
+  book → `Book`. OpenAlex venue names need cleaning (`null` for chapters,
+  `"Elsevier eBooks"`); resolve the real book title via Crossref rather than
+  falling back to `"Unlisted"`.
+
+Titles never end in a period (APA venues include one), `authors` holds at most
+six names with the true total in `authorCount`, and the array is sorted **date
+descending** — the page relies on that order. `citations`/`openAccess` are
+point-in-time and never re-fetched at runtime.
 
 ## Two component styling systems coexist in `@gmhlab/ui`
 
