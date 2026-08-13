@@ -187,6 +187,49 @@ when adding a fourth:
   fields are derived rather than sourced. Read that header before touching the
   records — it is the spec, and it carries detail this file does not repeat.
 
+### The project *detail* page is one component driven by records
+
+`projects/project-detail-page.{tsx,css}` renders a `ProjectDetail` record from
+`project-detail-data.ts` and **names no project**. Adding a project detail page
+is adding a record plus a one-line route wrapper — never editing the component.
+`RESHAPE_DETAIL` is the first instance and the reference to copy.
+
+The record models a **study protocol** (arms, objectives ranked
+primary/secondary with their instruments, a two-track assessment schedule,
+eligibility criteria), because that is what these projects actually are. Every
+field except the identity block is optional and each section is conditional on
+its data, so a platform project with no eligibility criteria renders no
+eligibility section rather than an empty heading.
+
+Four things worth knowing before extending it:
+
+- **Publications are slugs into `PUBLICATIONS`, not restated citations.**
+  `resolveProjectPublications` resolves them at render time, so journal, DOI,
+  citation count and open-access status come from the real bibliography. The
+  per-slug `note` records what a work *is* to the project ("Trial protocol") —
+  a relationship the bibliography does not carry. Unknown slugs are dropped,
+  so a typo shortens the list rather than breaking a row.
+- **Related projects are slugs into `PROJECTS`**, and a card only renders a
+  link when `hasProjectDetail(slug)` is true. Ten of the eleven projects have
+  no detail record yet; linking them all would ship ten 404s.
+- **The timeline is chronological across both tracks, not grouped by track.**
+  That ordering is the point — it shows patient enrollment opening while
+  providers are still being reassessed. Timepoint codes (T0, T1, …) are the
+  protocol's own nomenclature; `phase` entries carry no code because nothing is
+  measured at them.
+- **The desktop timeline must not use `display: contents`** on the entry
+  wrapper — sparse grid auto-flow then pushes each card one row below its own
+  timepoint chip. The media query documents this inline; keep each entry as its
+  own three-column grid.
+
+Two design-system traps this page hit, both of which fail silently:
+`--mfy-color-border-default-default` is the *same* value as
+`--mfy-color-background-default-tertiary`, so hairlines drawn on a
+`Section variant="neutral"` are invisible in **both** themes (use
+`border-default-secondary`); and grid children of a `Flex container` need
+`min-width: 0`, since flex items default to `min-width: auto` and let a grid
+push the whole page into horizontal scroll.
+
 ### `publications-data.ts` is generated data with hand-maintained conventions
 
 It is ~5,300 lines and **343 records** (as of 2026-08-13), merging the Center's

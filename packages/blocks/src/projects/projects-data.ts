@@ -125,6 +125,10 @@ export const PROJECTS: Project[] = [
     status: "closed",
     design: "R01 cluster-randomized trial",
     method: "Photo narrative stigma reduction",
+    /* Not on the live project page, which names no funder for RESHAPE. From
+       the Center's own RESHAPE specification — see the provenance note in
+       `project-detail-data.ts`. */
+    funder: "National Institute of Mental Health",
     locations: ["Nepal"],
     regions: ["South Asia"],
     publications: 3,

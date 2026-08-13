@@ -1,0 +1,870 @@
+/* Page-local styling for ProjectDetailPage.
+ *
+ * Same rules as the other GW page blocks: every selector is a uniquely
+ * prefixed class (`pd-`), scoped under `.project-detail-page`, so nothing here
+ * can leak into other consumers of @gmhlab/blocks/styles.css. No element
+ * selectors at the top level, no names the design system already owns.
+ *
+ * Only what the design system has no component for lives here: the identity
+ * rail, the figure strip, the objective/measure matrix, and the two-track
+ * assessment timeline.
+ *
+ * ## Contrast
+ *
+ * `--mfy-color-text-default-tertiary` is #b3b3b3 — roughly 2:1 on white — and
+ * carries no text anywhere in this file. The muted tone is chosen per surface,
+ * as the repo's accessibility note requires:
+ *
+ *   - on white cards      -> --mfy-color-text-default-secondary
+ *   - on a neutral band   -> --mfy-color-text-default-default (the band is
+ *                            #d9d9d9; `secondary` falls to ~3.1:1 there)
+ *   - on the brand band   -> color: inherit, quieted with opacity
+ */
+
+.project-detail-page {
+  width: 100%;
+}
+
+/* Guard, not a fix for an observed break. Flex items default to
+   `min-width: auto`, so a grid child is permitted to grow to its own
+   min-content width and push the Flex container past the viewport — which
+   scrolls the *whole page* sideways, not just the offending block. Every grid
+   and prose block below is a child of a `Flex container`, so they all opt out
+   up front. Paired with the `minmax(min(…, 100%), 1fr)` floors on the grids
+   themselves, which keep a track from demanding more than its container. */
+.project-detail-page .pd-facts,
+.project-detail-page .pd-figures,
+.project-detail-page .pd-prose,
+.project-detail-page .pd-arms,
+.project-detail-page .pd-elements,
+.project-detail-page .pd-objectives,
+.project-detail-page .pd-objective,
+.project-detail-page .pd-hypotheses,
+.project-detail-page .pd-tl,
+.project-detail-page .pd-tl-entry,
+.project-detail-page .pd-tl-body,
+.project-detail-page .pd-pubs,
+.project-detail-page .pd-pub,
+.project-detail-page .pd-pub-body,
+.project-detail-page .pd-resources,
+.project-detail-page .pd-panel {
+  min-width: 0;
+}
+
+/* Publication and resource titles are the only unbroken long strings on the
+   page; without this a DOI-linked title can still push a track wide. */
+.project-detail-page .pd-pub-title,
+.project-detail-page .pd-resource {
+  overflow-wrap: anywhere;
+}
+
+/* Breadcrumb and hero are both `variant="neutral"`, so the divider between
+   them has to come from here. */
+.project-detail-page .pd-breadcrumb {
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+}
+
+.project-detail-page .pd-badge {
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+}
+
+/* A small-caps utility label. Used above every panel and sub-block so the
+   page has one consistent signpost treatment rather than five. */
+.project-detail-page .pd-panel-label,
+.project-detail-page .pd-arms-label,
+.project-detail-page .pd-hypotheses-label {
+  color: var(--mfy-color-text-default-default);
+  display: block;
+  font-weight: var(--mfy-typography-weight-semibold);
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
+}
+
+/* Hero -------------------------------------------------------------------- */
+
+.project-detail-page .pd-expanded-name {
+  color: var(--mfy-color-text-default-default);
+}
+
+.project-detail-page .pd-lede {
+  font-size: var(--mfy-typography-scale-04);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+/* The identity rail. A definition list rather than a stat block: these are
+   categorical facts about the study, not quantities, and rendering them as
+   big numbers would overstate them. */
+.project-detail-page .pd-facts {
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  padding: var(--mfy-size-space-600);
+}
+
+.project-detail-page .pd-facts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+  margin: 0;
+}
+
+.project-detail-page .pd-fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+}
+
+.project-detail-page .pd-fact + .pd-fact {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  padding-top: var(--mfy-size-space-400);
+}
+
+.project-detail-page .pd-fact-term {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
+}
+
+.project-detail-page .pd-fact-detail {
+  color: var(--mfy-color-text-default-default);
+  font-weight: var(--mfy-typography-weight-semibold);
+  margin: 0;
+}
+
+/* The figure strip. Every figure carries a `note` qualifying it as a target
+   rather than a result — the number alone would read as an outcome. */
+.project-detail-page .pd-figures {
+  display: grid;
+  gap: var(--mfy-size-space-400);
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-detail-page .pd-figure {
+  align-items: flex-start;
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-100);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+  padding: var(--mfy-size-space-600);
+}
+
+.project-detail-page .pd-figure-value {
+  color: var(--mfy-color-text-brand-default);
+  font-size: var(--mfy-typography-scale-06);
+  font-weight: var(--mfy-typography-weight-bold);
+  line-height: 1.1;
+}
+
+.project-detail-page .pd-figure-label {
+  color: var(--mfy-color-text-default-default);
+  font-weight: var(--mfy-typography-weight-medium);
+}
+
+.project-detail-page .pd-figure-note {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+}
+
+/* Prose ------------------------------------------------------------------- */
+
+.project-detail-page .pd-prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+  max-width: 44rem;
+}
+
+.project-detail-page .pd-prose > * {
+  color: var(--mfy-color-text-default-secondary);
+}
+
+/* On the #d9d9d9 neutral band, `secondary` drops to ~3.1:1. */
+.project-detail-page .pd-prose-on-band > * {
+  color: var(--mfy-color-text-default-default);
+}
+
+/* Arms -------------------------------------------------------------------- */
+
+.project-detail-page .pd-arms {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+}
+
+/* `.card-content` has no flex-grow of its own, so the two arm cards would
+   size to their text even under alignSecondary="stretch". */
+.project-detail-page .pd-arm .card-content {
+  flex: 1;
+}
+
+/* The arm under test. A left rule rather than a filled surface: the pair is a
+   comparison, and tinting one side implies a result the trial has not
+   reported. */
+.project-detail-page .pd-arm-intervention {
+  border-left: var(--mfy-size-space-050) solid
+    var(--mfy-color-border-brand-default);
+}
+
+.project-detail-page .pd-arm-abbr {
+  background: var(--mfy-color-background-default-secondary);
+  border-radius: var(--mfy-size-radius-full);
+  color: var(--mfy-color-text-default-default);
+  font-size: var(--mfy-typography-scale-01);
+  font-weight: var(--mfy-typography-weight-semibold);
+  letter-spacing: 0.0625rem;
+  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+}
+
+/* Strategy elements ------------------------------------------------------- */
+
+.project-detail-page .pd-elements {
+  display: grid;
+  gap: var(--mfy-size-space-600);
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  margin: 0;
+}
+
+.project-detail-page .pd-element {
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  padding: var(--mfy-size-space-600);
+}
+
+.project-detail-page .pd-element-term {
+  color: var(--mfy-color-text-default-default);
+  font-weight: var(--mfy-typography-weight-semibold);
+  margin-bottom: var(--mfy-size-space-200);
+}
+
+.project-detail-page .pd-element-body {
+  color: var(--mfy-color-text-default-secondary);
+  margin: 0;
+}
+
+/* Objectives -------------------------------------------------------------- */
+
+.project-detail-page .pd-objectives {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-detail-page .pd-objective {
+  border-bottom: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  display: grid;
+  gap: var(--mfy-size-space-400) var(--mfy-size-space-800);
+  grid-template-columns: minmax(min(14rem, 100%), 1fr) 2fr;
+  padding: var(--mfy-size-space-800) 0;
+}
+
+.project-detail-page .pd-objective-head {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--mfy-size-space-400);
+}
+
+/* The objective's own number. Ordered because the protocol orders them, and
+   because the rank chip below reads against it. */
+.project-detail-page .pd-objective-index {
+  color: var(--mfy-color-text-default-secondary);
+  flex-shrink: 0;
+  font-size: var(--mfy-typography-scale-05);
+  font-weight: var(--mfy-typography-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.project-detail-page .pd-objective-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-150);
+}
+
+.project-detail-page .pd-objective-rank {
+  border-radius: var(--mfy-size-radius-full);
+  font-size: var(--mfy-typography-scale-01);
+  font-weight: var(--mfy-typography-weight-bold);
+  letter-spacing: 0.0625rem;
+  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+/* Primary carries the trial's power; secondary is supporting. The filled
+   versus outlined treatment encodes that difference rather than decorating
+   it. */
+.project-detail-page .pd-objective-rank-primary {
+  background: var(--mfy-color-background-brand-default);
+  color: var(--mfy-color-text-brand-on-brand);
+}
+
+.project-detail-page .pd-objective-rank-secondary {
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  color: var(--mfy-color-text-default-secondary);
+}
+
+.project-detail-page .pd-objective-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+}
+
+.project-detail-page .pd-objective-note {
+  background: var(--mfy-color-background-default-secondary);
+  border-radius: var(--mfy-size-radius-100);
+  /* On this #f5f5f5 tint `secondary` drops to ~4.2:1. */
+  color: var(--mfy-color-text-default-default);
+  margin: 0;
+  padding: var(--mfy-size-space-400);
+}
+
+.project-detail-page .pd-measures {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-300);
+  margin: 0;
+}
+
+.project-detail-page .pd-measure-term {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mfy-size-space-200);
+}
+
+/* The instrument acronym is how the field refers to these, so it leads. */
+.project-detail-page .pd-measure-abbr {
+  background: var(--mfy-color-background-brand-tertiary);
+  border-radius: var(--mfy-size-radius-100);
+  color: var(--mfy-color-text-brand-default);
+  font-size: var(--mfy-typography-scale-01);
+  font-weight: var(--mfy-typography-weight-bold);
+  letter-spacing: 0.03125rem;
+  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  white-space: nowrap;
+}
+
+.project-detail-page .pd-measure-name {
+  color: var(--mfy-color-text-default-default);
+}
+
+.project-detail-page .pd-measure-detail {
+  color: var(--mfy-color-text-default-secondary);
+  margin: var(--mfy-size-space-050) 0 0;
+}
+
+.project-detail-page .pd-hypotheses {
+  background: var(--mfy-color-background-default-secondary);
+  border-radius: var(--mfy-size-radius-200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-300);
+  padding: var(--mfy-size-space-800);
+}
+
+.project-detail-page .pd-hypotheses-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-200);
+  margin: 0;
+  padding-left: var(--mfy-size-space-600);
+}
+
+.project-detail-page .pd-hypothesis {
+  color: var(--mfy-color-text-default-default);
+}
+
+/* Assessment timeline ----------------------------------------------------- */
+
+.project-detail-page .pd-tl-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mfy-size-space-600);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-detail-page .pd-tl-legend-item {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mfy-size-space-200);
+}
+
+.project-detail-page .pd-tl-legend-swatch {
+  background: var(--pd-track-color);
+  border-radius: var(--mfy-size-radius-full);
+  flex-shrink: 0;
+  height: 0.75rem;
+  width: 0.75rem;
+}
+
+.project-detail-page .pd-tl-legend-label {
+  color: var(--mfy-color-text-default-default);
+  font-weight: var(--mfy-typography-weight-semibold);
+}
+
+.project-detail-page .pd-tl-legend-population {
+  color: var(--mfy-color-text-default-default);
+}
+
+/* Two tracks are distinguished by a single custom property, set once per
+   track and read by the legend swatch, the node ring and the code chip. */
+.project-detail-page .pd-tl-legend-provider,
+.project-detail-page .pd-tl-provider {
+  --pd-track-color: var(--mfy-color-background-brand-default);
+  --pd-track-text: var(--mfy-color-text-brand-on-brand);
+}
+
+.project-detail-page .pd-tl-legend-patient,
+.project-detail-page .pd-tl-patient {
+  --pd-track-color: var(--mfy-color-background-neutral-default);
+  --pd-track-text: var(--mfy-color-text-neutral-on-neutral);
+}
+
+/* The spine. Desktop lays out [provider | spine | patient]; the rail itself
+   is a background gradient on the grid, so it spans the full column height
+   without a spacer element per row. */
+.project-detail-page .pd-tl {
+  display: grid;
+  gap: var(--mfy-size-space-400);
+  grid-template-columns: 1fr;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.project-detail-page .pd-tl-entry {
+  display: grid;
+  gap: var(--mfy-size-space-400);
+  grid-template-columns: auto 1fr;
+  position: relative;
+}
+
+.project-detail-page .pd-tl-marker {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-100);
+  position: relative;
+  width: 3rem;
+}
+
+/* The connector between markers. Drawn on the marker column so it tracks the
+   entry's own height rather than needing a measured rail.
+   `border-default-secondary` (gray-500), not `-default`: the timeline sits on
+   a `variant="neutral"` band, and `border-default-default` resolves to
+   gray-300 — the *same* value as `background-default-tertiary`, so the rail
+   would be invisible. gray-500 reads against the band in both themes. */
+.project-detail-page .pd-tl-marker::after {
+  background: var(--mfy-color-border-default-secondary);
+  bottom: calc(var(--mfy-size-space-400) * -1);
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 2.25rem;
+  transform: translateX(-50%);
+  width: var(--mfy-size-stroke-border);
+}
+
+.project-detail-page .pd-tl-entry:last-child .pd-tl-marker::after {
+  display: none;
+}
+
+/* An assessment timepoint: the protocol's own code, on the track's colour. */
+.project-detail-page .pd-tl-code {
+  align-items: center;
+  background: var(--pd-track-color);
+  border-radius: var(--mfy-size-radius-full);
+  color: var(--pd-track-text);
+  display: flex;
+  flex-shrink: 0;
+  font-size: var(--mfy-typography-scale-01);
+  font-weight: var(--mfy-typography-weight-bold);
+  height: 2.25rem;
+  justify-content: center;
+  letter-spacing: 0.03125rem;
+  width: 2.25rem;
+}
+
+/* A phase measures nothing, so it gets no code and no filled node — just a
+   tick on the rail. */
+.project-detail-page .pd-tl-phase-dash {
+  background: var(--mfy-color-border-default-secondary);
+  border-radius: var(--mfy-size-radius-full);
+  height: var(--mfy-size-space-150);
+  margin-top: 1rem;
+  width: var(--mfy-size-space-150);
+}
+
+.project-detail-page .pd-tl-body {
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-100);
+  padding: var(--mfy-size-space-600);
+}
+
+/* Phases read as the connective tissue they are: no card, just a tinted band
+   so the eye skips them on the way between assessments. */
+.project-detail-page .pd-tl-kind-phase .pd-tl-body {
+  background: var(--mfy-color-background-default-secondary);
+  box-shadow: none;
+  padding: var(--mfy-size-space-400) var(--mfy-size-space-600);
+}
+
+.project-detail-page .pd-tl-when {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+}
+
+.project-detail-page .pd-tl-title {
+  color: var(--mfy-color-text-default-default);
+  font-weight: var(--mfy-typography-weight-semibold);
+}
+
+.project-detail-page .pd-tl-kind-phase .pd-tl-title {
+  font-weight: var(--mfy-typography-weight-medium);
+}
+
+.project-detail-page .pd-tl-detail {
+  color: var(--mfy-color-text-default-secondary);
+  margin: var(--mfy-size-space-100) 0 0;
+}
+
+.project-detail-page .pd-tl-cohorts {
+  color: var(--mfy-color-text-default-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-100);
+  margin: var(--mfy-size-space-200) 0 0;
+  padding-left: var(--mfy-size-space-600);
+}
+
+/* The track name. Redundant with column position on desktop, where it is
+   hidden visually but kept for screen readers; the only cue on mobile, where
+   both tracks share one column. */
+.project-detail-page .pd-tl-track-tag {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* Publications ------------------------------------------------------------ */
+
+.project-detail-page .pd-pubs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-300);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-detail-page .pd-pub {
+  background: var(--mfy-color-background-default-default);
+  border-radius: var(--mfy-size-radius-200);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-default-default);
+  display: grid;
+  gap: var(--mfy-size-space-400);
+  grid-template-columns: 7rem 1fr;
+  padding: var(--mfy-size-space-600);
+}
+
+.project-detail-page .pd-pub-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-150);
+}
+
+.project-detail-page .pd-pub-year {
+  color: var(--mfy-color-text-default-default);
+  font-size: var(--mfy-typography-scale-04);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--mfy-typography-weight-bold);
+  line-height: 1;
+}
+
+/* What this work is to this project — a relationship the bibliography does
+   not carry, so it is worth the visual weight of a chip. */
+.project-detail-page .pd-pub-note {
+  background: var(--mfy-color-background-brand-tertiary);
+  border-radius: var(--mfy-size-radius-100);
+  color: var(--mfy-color-text-brand-default);
+  font-size: var(--mfy-typography-scale-01);
+  font-weight: var(--mfy-typography-weight-semibold);
+  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  text-align: center;
+  width: fit-content;
+}
+
+.project-detail-page .pd-pub-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-100);
+}
+
+.project-detail-page .pd-pub-title {
+  color: var(--mfy-color-text-default-default);
+  font-weight: var(--mfy-typography-weight-semibold);
+}
+
+.project-detail-page .pd-pub-source {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-02);
+}
+
+.project-detail-page .pd-pub-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mfy-size-space-200);
+  margin-top: var(--mfy-size-space-100);
+}
+
+.project-detail-page .pd-pub-tag {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+}
+
+.project-detail-page .pd-pub-tag-oa {
+  color: var(--mfy-color-text-positive-default);
+  font-weight: var(--mfy-typography-weight-semibold);
+}
+
+/* Eligibility, partners, resources ---------------------------------------- */
+
+.project-detail-page .pd-eligibility .card-content {
+  flex: 1;
+}
+
+.project-detail-page .pd-criteria,
+.project-detail-page .pd-partners,
+.project-detail-page .pd-resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-300);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-detail-page .pd-criterion,
+.project-detail-page .pd-partner {
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  color: var(--mfy-color-text-default-secondary);
+  padding-top: var(--mfy-size-space-300);
+}
+
+.project-detail-page .pd-panel,
+.project-detail-page .pd-resources {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+}
+
+.project-detail-page .pd-resource {
+  align-items: baseline;
+  border-top: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mfy-size-space-200);
+  justify-content: space-between;
+  padding-top: var(--mfy-size-space-300);
+}
+
+.project-detail-page .pd-resource-kind {
+  color: var(--mfy-color-text-default-secondary);
+  font-size: var(--mfy-typography-scale-01);
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
+}
+
+.project-detail-page .pd-contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mfy-size-space-050);
+}
+
+.project-detail-page .pd-contact-role {
+  color: var(--mfy-color-text-default-secondary);
+}
+
+.project-detail-page .pd-related .card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--mfy-size-space-400);
+}
+
+/* Pins the link to the card's bottom edge across a row of uneven cards. */
+.project-detail-page .pd-related .card-content > .flex-mfy:last-child {
+  margin-top: auto;
+}
+
+.project-detail-page .pd-related-pending {
+  color: var(--mfy-color-text-default-secondary);
+  font-style: italic;
+}
+
+/* CTA --------------------------------------------------------------------- */
+
+/* `--mfy-color-text-brand-on-brand-secondary` inverts on a solid brand
+   surface and renders navy-on-navy at ~1.03:1. Inherit and quiet with
+   opacity instead. */
+.project-detail-page .pd-cta-copy {
+  color: inherit;
+  max-width: 38rem;
+  opacity: 0.85;
+}
+
+/* Desktop ----------------------------------------------------------------- */
+
+/* 900px, not the 600px the design system's components pivot at: the two-track
+   layout needs room for two columns of prose either side of the spine, and
+   collapses to the single-column rail below that. */
+@media (min-width: 900px) {
+  .project-detail-page .pd-tl {
+    gap: 0;
+  }
+
+  /* Each entry is its own three-column row — deliberately NOT
+     `display: contents` on the entry. With contents, the marker and the body
+     become siblings in the outer grid, and `grid-auto-flow: row` refuses to
+     place the body back into the column the marker already advanced past, so
+     every card landed one row below its own timepoint chip. Keeping the entry
+     as a grid of its own pins the two together by construction. */
+  .project-detail-page .pd-tl-entry {
+    align-items: start;
+    grid-template-columns: 1fr auto 1fr;
+    padding-block: var(--mfy-size-space-200);
+  }
+
+  /* The marker always holds the centre column; the body swaps sides by
+     track. Both are pinned to row 1 so neither can drift. */
+  .project-detail-page .pd-tl-marker {
+    grid-column: 2;
+    grid-row: 1;
+    width: 4.5rem;
+  }
+
+  .project-detail-page .pd-tl-provider .pd-tl-body {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: right;
+  }
+
+  .project-detail-page .pd-tl-patient .pd-tl-body {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  /* One continuous spine drawn on the container rather than a segment per
+     marker: per-marker segments leave a seam at every entry boundary. The
+     code chips are opaque and sit above it. */
+  .project-detail-page .pd-tl::before {
+    background: var(--mfy-color-border-default-secondary);
+    bottom: 0;
+    content: "";
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    width: var(--mfy-size-stroke-border);
+  }
+
+  .project-detail-page .pd-tl-marker::after {
+    display: none;
+  }
+
+  .project-detail-page .pd-tl-code,
+  .project-detail-page .pd-tl-phase-dash {
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-detail-page .pd-tl-phase-dash {
+    margin-top: 0.75rem;
+  }
+
+  /* Right-aligned prose needs its lists aligned too, or the bullets hang off
+     the wrong edge. */
+  .project-detail-page .pd-tl-provider .pd-tl-cohorts {
+    padding-left: 0;
+    padding-right: var(--mfy-size-space-600);
+  }
+}
+
+/* Mobile ------------------------------------------------------------------ */
+
+@media (max-width: 899px) {
+  /* The only place the track is named on mobile, where both tracks share one
+     column. Un-hides the screen-reader label. */
+  .project-detail-page .pd-tl-track-tag {
+    clip-path: none;
+    color: var(--mfy-color-text-default-secondary);
+    font-size: var(--mfy-typography-scale-01);
+    font-weight: var(--mfy-typography-weight-bold);
+    height: auto;
+    letter-spacing: 0.0625rem;
+    overflow: visible;
+    position: static;
+    text-transform: uppercase;
+    white-space: normal;
+    width: auto;
+  }
+
+  /* The card gets the track's colour as a left edge, since there is no
+     column position to read it from. */
+  .project-detail-page .pd-tl-kind-point .pd-tl-body {
+    border-left: var(--mfy-size-space-050) solid var(--pd-track-color);
+  }
+}
+
+@media (max-width: 600px) {
+  .project-detail-page .pd-objective {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail-page .pd-pub {
+    grid-template-columns: 1fr;
+    gap: var(--mfy-size-space-300);
+  }
+
+  .project-detail-page .pd-pub-meta {
+    align-items: baseline;
+    flex-direction: row;
+    gap: var(--mfy-size-space-300);
+  }
+}
