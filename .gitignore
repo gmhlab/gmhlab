@@ -46,3 +46,9 @@ next-env.d.ts
 .files
 # npm pack output
 *.tgz
+# Claude design sync — all generated from packages/* on demand (component
+# previews, a compiled CSS bundle, vendored font binaries). Regenerate rather
+# than commit; the packages are the source of truth.
+.design-sync/
+.ds-sync/
+ds-bundle/

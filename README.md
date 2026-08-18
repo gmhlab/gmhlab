@@ -14,7 +14,7 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
 | `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: marketing sections, page templates, slides, a mock data layer (`AllProviders`, `useAuth`, …), and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes `@gmhlab/ui`, `@gmhlab/blocks`, and `@gmhlab/tokens`. |
-| `apps/web` | `web` | Next.js 16 App Router site consuming all three packages — the MonoFly marketing page at `/`, plus the GW pages at `/projects`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
+| `apps/web` | `web` | Next.js 16 App Router site consuming all three packages — the MonoFly marketing page at `/`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
 
 The three `packages/*` are built with tsup (ESM bundle + `.d.ts`, CSS copied into `dist/`).
 
@@ -53,6 +53,8 @@ pnpm dlx shadcn@latest add button -c apps/docs
 ```
 
 Keep the component as a **flat** `src/primitives/<name>.tsx` file — only `icon`, `image`, `logo`, and `text` retain their own subdirectories. After adding, export it from `packages/ui/src/primitives/index.ts` and rebuild `@gmhlab/ui`.
+
+Two things to fix up in generated components: rewrite shadcn's `@/lib/utils` import to the relative `../lib/utils` every other primitive uses, and replace any bare `data-horizontal:` / `data-vertical:` variant with `data-[orientation=horizontal]:` — Base UI emits `data-orientation`, so the bare form silently never matches. `CLAUDE.md` has the longer list of traps.
 
 ## Using components
 
@@ -99,6 +101,7 @@ export default function Page() {
 | Export | Mounted at | Notes |
 | --- | --- | --- |
 | `ProjectsPage` | `/projects` | Eleven research projects, filterable by status and region. Takes `basePath` (default `/projects`) for the per-project detail links. |
+| `ProjectDetailPage` | `/projects/reshape` | One project's detail page. Takes a `ProjectDetail` record — see below. |
 | `PublicationsPage` | `/publications` | 343 publications (2015–2026), filterable by free text, year, theme, project and open access, sortable by date or citations. |
 | `InnovationsPage` | `/innovations` | The innovations index. |
 | `InnovationDetailPage` | `/innovations/equip` | The EQUIP detail page. |
@@ -108,6 +111,15 @@ closing call to action. Their content lives in sibling data modules — `PROJECT
 `PUBLICATIONS` and friends are exported from the package too, so a detail page or
 a home-page teaser can read the same records rather than restating them. Each data
 module's header documents where the content came from and which fields are derived.
+
+`ProjectDetailPage` is **data-driven and names no project**: it renders whichever
+`ProjectDetail` record you hand it, so adding a project detail page is adding a
+record to `project-detail-data.ts` plus a one-line route — never editing the
+component. `RESHAPE_DETAIL` is the only record so far and is the one to copy.
+Its publications and related projects are stored as **slugs** resolved against
+`PUBLICATIONS`/`PROJECTS` at render time, so citations and metadata stay in one
+place; related-project cards call `hasProjectDetail()` before linking, which is
+why the ten projects without records render as plain cards rather than 404s.
 
 `PUBLICATIONS` is the one **generated** dataset — a merge of the Center's own
 listing with the full OpenAlex records of two Center researchers, so it is a

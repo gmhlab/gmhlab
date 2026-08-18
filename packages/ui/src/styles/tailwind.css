@@ -1,12 +1,112 @@
 @custom-variant dark (&:is(.dark *));
 
+/* Tailwind's view of @gmhlab/tokens.
+ *
+ * Every key below is an ALIAS onto a --mfy-* token, and the block is
+ * `@theme inline` on purpose: inline means Tailwind substitutes the var()
+ * reference into each utility instead of emitting its own copy into :root. So
+ * `bg-surface-brand` compiles to `background-color: var(--mfy-color-background-brand-default)`,
+ * which is resolved at the element — and therefore flips with the .dark class
+ * for free, exactly like the shadcn aliases further down. It also means unused
+ * keys cost nothing: with inline, nothing is emitted until a utility is used.
+ *
+ * COLOR NAMING. MFY carries a dimension Tailwind's flat color namespace does
+ * not: the same group/step means different values per ROLE — text-default-secondary
+ * is gray-500 while background-default-secondary is gray-100. One key cannot be
+ * both, so the role is encoded as the prefix, chosen to read well in the utility
+ * it belongs to:
+ *
+ *     --mfy-color-background-*  ->  surface-*   bg-surface-brand
+ *     --mfy-color-text-*        ->  content-*   text-content-secondary
+ *     --mfy-color-border-*      ->  line-*      border-line-default
+ *     --mfy-color-icon-*        ->  icon-*      text-icon-brand, fill-icon-brand
+ *
+ * The rest of the name is mechanical — drop the role word, drop every occurrence
+ * of `default`, drop the `utilities` group word, and collapse a restated
+ * `{group}-on-{group}` to `on-{group}`:
+ *
+ *     background-brand-default        -> surface-brand
+ *     background-default-default      -> surface-default
+ *     background-default-default-hover-> surface-hover
+ *     text-default-secondary          -> content-secondary
+ *     text-brand-on-brand-secondary   -> content-on-brand-secondary
+ *     background-utilities-overlay    -> surface-overlay
+ *
+ * That rule is collision-free across all 136 semantic tokens with exactly one
+ * exception, marked inline below. Adding a token to variables.css? Apply the
+ * same rule and add it here — nothing generates this file.
+ *
+ * NOT MAPPED, deliberately:
+ *   - Spacing. MFY's space scale is already stock Tailwind: --mfy-size-space-N
+ *     equals Tailwind's N/100 step exactly (space-400 = 1rem = p-4,
+ *     space-050 = p-0.5, space-4000 = p-40). Adding --spacing-100 would not add
+ *     a value, it would silently REDEFINE p-100 from 25rem to 4px, because
+ *     Tailwind derives numeric spacing from the single --spacing multiplier.
+ *     Use the stock step and divide the token number by 100. The pre-negated
+ *     --mfy-size-space-negative-* tokens are likewise unnecessary: Tailwind
+ *     negates on demand (-mt-4).
+ *   - Font weights. MFY's numeric weights are value-identical to Tailwind's
+ *     (regular = font-normal, extra-bold = font-extrabold); aliasing them would
+ *     only add a second name for each. The --mfy-typography-weight-*-italic
+ *     tokens are `700 italic` style shorthands, not font-weight values, and
+ *     would emit invalid CSS.
+ *   - Icon sizes. --mfy-size-icon-small/medium/large are 24/32/40px, i.e.
+ *     size-6 / size-8 / size-10. Tailwind has no --size-* theme namespace to
+ *     put them in anyway.
+ *   - --mfy-size-radius-full (624.9375rem) — `rounded-full` already exists as a
+ *     static utility and would conflict.
+ */
 @theme inline {
-    
+
     --font-sans: var(--mfy-typography-family-sans);
     --font-mono: var(--mfy-typography-family-mono);
     --font-serif: var(--mfy-typography-family-serif);
     --font-heading: var(--font-sans);
     --font-body: var(--font-sans);
+
+    /* Type scale: the raw ramp, then the semantic sizes that sit on it.
+       MFY defines no line-height tokens, so none of these carry the paired
+       --text-*--line-height value Tailwind supports.
+
+       The semantic ones are deliberately behind a `size` segment
+       (text-size-heading-large, not text-heading-large) because the Text
+       primitive already OWNS the bare text-<semantic> namespace: text.tsx emits
+       text-heading, text-subtitle, text-title-page, text-body-small and a dozen
+       more as plain class names backed by text.css. Without the prefix,
+       --text-body-small and --text-title-hero generate Tailwind utilities with
+       the exact names two of those classes already use, and the two rules mean
+       different things — text.css sets the full `font` shorthand, the utility
+       only font-size. Reach for type-* below when you want the whole shorthand. */
+    --text-scale-01: var(--mfy-typography-scale-01);
+    --text-scale-02: var(--mfy-typography-scale-02);
+    --text-scale-03: var(--mfy-typography-scale-03);
+    --text-scale-04: var(--mfy-typography-scale-04);
+    --text-scale-05: var(--mfy-typography-scale-05);
+    --text-scale-06: var(--mfy-typography-scale-06);
+    --text-scale-07: var(--mfy-typography-scale-07);
+    --text-scale-08: var(--mfy-typography-scale-08);
+    --text-scale-09: var(--mfy-typography-scale-09);
+    --text-scale-10: var(--mfy-typography-scale-10);
+
+    --text-size-body-small: var(--mfy-typography-body-size-small);
+    --text-size-body-medium: var(--mfy-typography-body-size-medium);
+    --text-size-body-large: var(--mfy-typography-body-size-large);
+    --text-size-code-small: var(--mfy-typography-code-size-small);
+    --text-size-code-base: var(--mfy-typography-code-size-base);
+    --text-size-code-large: var(--mfy-typography-code-size-large);
+    --text-size-heading-small: var(--mfy-typography-heading-size-small);
+    --text-size-heading-base: var(--mfy-typography-heading-size-base);
+    --text-size-heading-large: var(--mfy-typography-heading-size-large);
+    --text-size-subheading-small: var(--mfy-typography-subheading-size-small);
+    --text-size-subheading-medium: var(--mfy-typography-subheading-size-medium);
+    --text-size-subheading-large: var(--mfy-typography-subheading-size-large);
+    --text-size-subtitle-small: var(--mfy-typography-subtitle-size-small);
+    --text-size-subtitle-base: var(--mfy-typography-subtitle-size-base);
+    --text-size-subtitle-large: var(--mfy-typography-subtitle-size-large);
+    --text-size-title-page-small: var(--mfy-typography-title-page-size-small);
+    --text-size-title-page-base: var(--mfy-typography-title-page-size-base);
+    --text-size-title-page-large: var(--mfy-typography-title-page-size-large);
+    --text-size-title-hero: var(--mfy-typography-title-hero-size);
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -32,7 +132,7 @@
     --color-border: var(--border);
     --color-ring: var(--ring);
     --color-input: var(--input);
-    
+
     --color-sidebar: var(--sidebar);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
@@ -41,13 +141,300 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
-    
+
     --color-chart-5: var(--chart-5);
     --color-chart-4: var(--chart-4);
     --color-chart-3: var(--chart-3);
     --color-chart-2: var(--chart-2);
     --color-chart-1: var(--chart-1);
 
+    /* Backgrounds -> surface-*. Note surface-default is the page/card white and
+       surface-hover is its hover step; the group word `default` is dropped, so
+       the bare names always belong to the neutral default group. */
+    --color-surface-brand:                    var(--mfy-color-background-brand-default);
+    --color-surface-brand-hover:              var(--mfy-color-background-brand-hover);
+    --color-surface-brand-secondary:          var(--mfy-color-background-brand-secondary);
+    --color-surface-brand-secondary-hover:    var(--mfy-color-background-brand-secondary-hover);
+    --color-surface-brand-tertiary:           var(--mfy-color-background-brand-tertiary);
+    --color-surface-brand-tertiary-hover:     var(--mfy-color-background-brand-tertiary-hover);
+    --color-surface-danger:                   var(--mfy-color-background-danger-default);
+    --color-surface-danger-hover:             var(--mfy-color-background-danger-hover);
+    --color-surface-danger-secondary:         var(--mfy-color-background-danger-secondary);
+    --color-surface-danger-secondary-hover:   var(--mfy-color-background-danger-secondary-hover);
+    --color-surface-danger-tertiary:          var(--mfy-color-background-danger-tertiary);
+    --color-surface-danger-tertiary-hover:    var(--mfy-color-background-danger-tertiary-hover);
+    --color-surface-default:                  var(--mfy-color-background-default-default);
+    --color-surface-hover:                    var(--mfy-color-background-default-default-hover);
+    --color-surface-secondary:                var(--mfy-color-background-default-secondary);
+    --color-surface-secondary-hover:          var(--mfy-color-background-default-secondary-hover);
+    --color-surface-tertiary:                 var(--mfy-color-background-default-tertiary);
+    --color-surface-tertiary-hover:           var(--mfy-color-background-default-tertiary-hover);
+    --color-surface-disabled:                 var(--mfy-color-background-disabled-default);
+    --color-surface-neutral:                  var(--mfy-color-background-neutral-default);
+    --color-surface-neutral-hover:            var(--mfy-color-background-neutral-hover);
+    --color-surface-neutral-secondary:        var(--mfy-color-background-neutral-secondary);
+    --color-surface-neutral-secondary-hover:  var(--mfy-color-background-neutral-secondary-hover);
+    --color-surface-neutral-tertiary:         var(--mfy-color-background-neutral-tertiary);
+    --color-surface-neutral-tertiary-hover:   var(--mfy-color-background-neutral-tertiary-hover);
+    --color-surface-positive:                 var(--mfy-color-background-positive-default);
+    --color-surface-positive-hover:           var(--mfy-color-background-positive-hover);
+    --color-surface-positive-secondary:       var(--mfy-color-background-positive-secondary);
+    --color-surface-positive-secondary-hover: var(--mfy-color-background-positive-secondary-hover);
+    --color-surface-positive-tertiary:        var(--mfy-color-background-positive-tertiary);
+    --color-surface-positive-tertiary-hover:  var(--mfy-color-background-positive-tertiary-hover);
+    --color-surface-blanket:                  var(--mfy-color-background-utilities-blanket);
+    --color-surface-measurement:              var(--mfy-color-background-utilities-measurement);
+    --color-surface-overlay:                  var(--mfy-color-background-utilities-overlay);
+    --color-surface-scrim:                    var(--mfy-color-background-utilities-scrim);
+    --color-surface-warning:                  var(--mfy-color-background-warning-default);
+    --color-surface-warning-hover:            var(--mfy-color-background-warning-hover);
+    --color-surface-warning-secondary:        var(--mfy-color-background-warning-secondary);
+    --color-surface-warning-secondary-hover:  var(--mfy-color-background-warning-secondary-hover);
+    --color-surface-warning-tertiary:         var(--mfy-color-background-warning-tertiary);
+    --color-surface-warning-tertiary-hover:   var(--mfy-color-background-warning-tertiary-hover);
+
+    /* Text -> content-*. The accessibility trap documented in CLAUDE.md applies
+       to these names too: content-tertiary is a hairline tone (~2:1 on white)
+       and must never carry text, and content-on-brand-secondary INVERTS rather
+       than muting, so it is navy-on-navy on a solid brand surface. */
+    --color-content-brand:                 var(--mfy-color-text-brand-default);
+    --color-content-on-brand:              var(--mfy-color-text-brand-on-brand);
+    --color-content-on-brand-secondary:    var(--mfy-color-text-brand-on-brand-secondary);
+    --color-content-on-brand-tertiary:     var(--mfy-color-text-brand-on-brand-tertiary);
+    --color-content-brand-secondary:       var(--mfy-color-text-brand-secondary);
+    --color-content-brand-tertiary:        var(--mfy-color-text-brand-tertiary);
+    --color-content-danger:                var(--mfy-color-text-danger-default);
+    --color-content-on-danger:             var(--mfy-color-text-danger-on-danger);
+    --color-content-on-danger-secondary:   var(--mfy-color-text-danger-on-danger-secondary);
+    --color-content-on-danger-tertiary:    var(--mfy-color-text-danger-on-danger-tertiary);
+    --color-content-danger-secondary:      var(--mfy-color-text-danger-secondary);
+    --color-content-danger-tertiary:       var(--mfy-color-text-danger-tertiary);
+    --color-content-default:               var(--mfy-color-text-default-default);
+    --color-content-secondary:             var(--mfy-color-text-default-secondary);
+    --color-content-tertiary:              var(--mfy-color-text-default-tertiary);
+    --color-content-disabled:              var(--mfy-color-text-disabled-default);
+    --color-content-on-disabled:           var(--mfy-color-text-disabled-on-disabled);
+    --color-content-neutral:               var(--mfy-color-text-neutral-default);
+    --color-content-on-neutral:            var(--mfy-color-text-neutral-on-neutral);
+    --color-content-on-neutral-secondary:  var(--mfy-color-text-neutral-on-neutral-secondary);
+    --color-content-on-neutral-tertiary:   var(--mfy-color-text-neutral-on-neutral-tertiary);
+    --color-content-neutral-secondary:     var(--mfy-color-text-neutral-secondary);
+    --color-content-neutral-tertiary:      var(--mfy-color-text-neutral-tertiary);
+    --color-content-positive:              var(--mfy-color-text-positive-default);
+    --color-content-on-positive:           var(--mfy-color-text-positive-on-positive);
+    --color-content-on-positive-secondary: var(--mfy-color-text-positive-on-positive-secondary);
+    --color-content-on-positive-tertiary:  var(--mfy-color-text-positive-on-positive-tertiary);
+    --color-content-positive-secondary:    var(--mfy-color-text-positive-secondary);
+    --color-content-positive-tertiary:     var(--mfy-color-text-positive-tertiary);
+    --color-content-on-measurement:        var(--mfy-color-text-utilities-text-on-measurement);
+    --color-content-on-overlay:            var(--mfy-color-text-utilities-text-on-overlay);
+    --color-content-warning:               var(--mfy-color-text-warning-default);
+    --color-content-on-warning:            var(--mfy-color-text-warning-on-warning);
+    --color-content-on-warning-secondary:  var(--mfy-color-text-warning-on-warning-secondary);
+    --color-content-on-warning-tertiary:   var(--mfy-color-text-warning-on-warning-tertiary);
+    --color-content-warning-secondary:     var(--mfy-color-text-warning-secondary);
+    --color-content-warning-tertiary:      var(--mfy-color-text-warning-tertiary);
+
+    /* Borders -> line-*. line-default is the same value as surface-tertiary, so
+       a hairline drawn with border-line-default is invisible on a neutral band
+       in BOTH themes — reach for border-line-secondary there. */
+    --color-line-brand:              var(--mfy-color-border-brand-default);
+    --color-line-brand-secondary:    var(--mfy-color-border-brand-secondary);
+    --color-line-brand-tertiary:     var(--mfy-color-border-brand-tertiary);
+    --color-line-danger:             var(--mfy-color-border-danger-default);
+    --color-line-danger-secondary:   var(--mfy-color-border-danger-secondary);
+    --color-line-danger-tertiary:    var(--mfy-color-border-danger-tertiary);
+    --color-line-default:            var(--mfy-color-border-default-default);
+    --color-line-secondary:          var(--mfy-color-border-default-secondary);
+    --color-line-tertiary:           var(--mfy-color-border-default-tertiary);
+    --color-line-disabled:           var(--mfy-color-border-disabled-default);
+    --color-line-neutral:            var(--mfy-color-border-neutral-default);
+    --color-line-neutral-secondary:  var(--mfy-color-border-neutral-secondary);
+    --color-line-neutral-tertiary:   var(--mfy-color-border-neutral-tertiary);
+    --color-line-positive:           var(--mfy-color-border-positive-default);
+    --color-line-positive-secondary: var(--mfy-color-border-positive-secondary);
+    --color-line-positive-tertiary:  var(--mfy-color-border-positive-tertiary);
+    --color-line-measurement:        var(--mfy-color-border-utilities-measurement);
+    --color-line-swatch:             var(--mfy-color-border-utilities-swatch);
+    --color-line-warning:            var(--mfy-color-border-warning-default);
+    --color-line-warning-secondary:  var(--mfy-color-border-warning-secondary);
+    --color-line-warning-tertiary:   var(--mfy-color-border-warning-tertiary);
+
+    /* Icons -> icon-*. Usable from any color utility, so text-icon-brand tints
+       a stroked icon and fill-icon-brand a filled one.
+       The one exception to the naming rule: --mfy-color-icon-utilities-icon
+       reduces to nothing once the role word and `utilities` are dropped, so it
+       is named for what it is — a redline/measurement annotation mark. */
+    --color-icon-brand:                 var(--mfy-color-icon-brand-default);
+    --color-icon-on-brand:              var(--mfy-color-icon-brand-on-brand);
+    --color-icon-on-brand-secondary:    var(--mfy-color-icon-brand-on-brand-secondary);
+    --color-icon-on-brand-tertiary:     var(--mfy-color-icon-brand-on-brand-tertiary);
+    --color-icon-brand-secondary:       var(--mfy-color-icon-brand-secondary);
+    --color-icon-brand-tertiary:        var(--mfy-color-icon-brand-tertiary);
+    --color-icon-danger:                var(--mfy-color-icon-danger-default);
+    --color-icon-on-danger:             var(--mfy-color-icon-danger-on-danger);
+    --color-icon-on-danger-secondary:   var(--mfy-color-icon-danger-on-danger-secondary);
+    --color-icon-on-danger-tertiary:    var(--mfy-color-icon-danger-on-danger-tertiary);
+    --color-icon-danger-secondary:      var(--mfy-color-icon-danger-secondary);
+    --color-icon-danger-tertiary:       var(--mfy-color-icon-danger-tertiary);
+    --color-icon-default:               var(--mfy-color-icon-default-default);
+    --color-icon-secondary:             var(--mfy-color-icon-default-secondary);
+    --color-icon-tertiary:              var(--mfy-color-icon-default-tertiary);
+    --color-icon-disabled:              var(--mfy-color-icon-disabled-default);
+    --color-icon-on-disabled:           var(--mfy-color-icon-disabled-on-disabled);
+    --color-icon-neutral:               var(--mfy-color-icon-neutral-default);
+    --color-icon-on-neutral:            var(--mfy-color-icon-neutral-on-neutral);
+    --color-icon-on-neutral-secondary:  var(--mfy-color-icon-neutral-on-neutral-secondary);
+    --color-icon-on-neutral-tertiary:   var(--mfy-color-icon-neutral-on-neutral-tertiary);
+    --color-icon-neutral-secondary:     var(--mfy-color-icon-neutral-secondary);
+    --color-icon-neutral-tertiary:      var(--mfy-color-icon-neutral-tertiary);
+    --color-icon-positive:              var(--mfy-color-icon-positive-default);
+    --color-icon-on-positive:           var(--mfy-color-icon-positive-on-positive);
+    --color-icon-on-positive-secondary: var(--mfy-color-icon-positive-on-positive-secondary);
+    --color-icon-on-positive-tertiary:  var(--mfy-color-icon-positive-on-positive-tertiary);
+    --color-icon-positive-secondary:    var(--mfy-color-icon-positive-secondary);
+    --color-icon-positive-tertiary:     var(--mfy-color-icon-positive-tertiary);
+    --color-icon-annotation:            var(--mfy-color-icon-utilities-icon);
+    --color-icon-on-measurement:        var(--mfy-color-icon-utilities-icon-on-measurement);
+    --color-icon-warning:               var(--mfy-color-icon-warning-default);
+    --color-icon-on-warning:            var(--mfy-color-icon-warning-on-warning);
+    --color-icon-on-warning-secondary:  var(--mfy-color-icon-warning-on-warning-secondary);
+    --color-icon-on-warning-tertiary:   var(--mfy-color-icon-warning-on-warning-tertiary);
+    --color-icon-warning-secondary:     var(--mfy-color-icon-warning-secondary);
+    --color-icon-warning-tertiary:      var(--mfy-color-icon-warning-tertiary);
+
+    /* The brand ramp (Astronaut Blue). Tailwind ships no `brand` palette, so
+       this one keeps a clean name. Prefer the semantic aliases above; a raw step
+       is the escape hatch, not the default. */
+    --color-brand-50:  var(--mfy-color-brand-50);
+    --color-brand-100: var(--mfy-color-brand-100);
+    --color-brand-200: var(--mfy-color-brand-200);
+    --color-brand-300: var(--mfy-color-brand-300);
+    --color-brand-400: var(--mfy-color-brand-400);
+    --color-brand-500: var(--mfy-color-brand-500);
+    --color-brand-600: var(--mfy-color-brand-600);
+    --color-brand-700: var(--mfy-color-brand-700);
+    --color-brand-800: var(--mfy-color-brand-800);
+    --color-brand-900: var(--mfy-color-brand-900);
+    --color-brand-950: var(--mfy-color-brand-950);
+
+    /* The remaining raw ramps, prefixed `mfy-` because Tailwind already ships
+       gray/blue/red/green/pink/yellow/slate and this repo uses them
+       (bg-blue-300, bg-green-300, bg-yellow-300, bg-red-500). Aliasing onto the
+       stock names would silently repaint those call sites. Note the black-* and
+       white-* ramps are ALPHA ramps (black-100 is black at 5%), not lightness
+       ramps — `bg-black/5` is usually the clearer way to say the same thing. */
+    /* black */
+    --color-mfy-black-100:  var(--mfy-color-black-100);
+    --color-mfy-black-1000: var(--mfy-color-black-1000);
+    --color-mfy-black-200:  var(--mfy-color-black-200);
+    --color-mfy-black-300:  var(--mfy-color-black-300);
+    --color-mfy-black-400:  var(--mfy-color-black-400);
+    --color-mfy-black-500:  var(--mfy-color-black-500);
+    --color-mfy-black-600:  var(--mfy-color-black-600);
+    --color-mfy-black-700:  var(--mfy-color-black-700);
+    --color-mfy-black-800:  var(--mfy-color-black-800);
+    --color-mfy-black-900:  var(--mfy-color-black-900);
+
+    /* blue */
+    --color-mfy-blue-100:  var(--mfy-color-blue-100);
+    --color-mfy-blue-1000: var(--mfy-color-blue-1000);
+    --color-mfy-blue-200:  var(--mfy-color-blue-200);
+    --color-mfy-blue-300:  var(--mfy-color-blue-300);
+    --color-mfy-blue-400:  var(--mfy-color-blue-400);
+    --color-mfy-blue-500:  var(--mfy-color-blue-500);
+    --color-mfy-blue-600:  var(--mfy-color-blue-600);
+    --color-mfy-blue-700:  var(--mfy-color-blue-700);
+    --color-mfy-blue-800:  var(--mfy-color-blue-800);
+    --color-mfy-blue-900:  var(--mfy-color-blue-900);
+
+    /* gray */
+    --color-mfy-gray-100:  var(--mfy-color-gray-100);
+    --color-mfy-gray-1000: var(--mfy-color-gray-1000);
+    --color-mfy-gray-200:  var(--mfy-color-gray-200);
+    --color-mfy-gray-300:  var(--mfy-color-gray-300);
+    --color-mfy-gray-400:  var(--mfy-color-gray-400);
+    --color-mfy-gray-500:  var(--mfy-color-gray-500);
+    --color-mfy-gray-600:  var(--mfy-color-gray-600);
+    --color-mfy-gray-700:  var(--mfy-color-gray-700);
+    --color-mfy-gray-800:  var(--mfy-color-gray-800);
+    --color-mfy-gray-900:  var(--mfy-color-gray-900);
+
+    /* green */
+    --color-mfy-green-100:  var(--mfy-color-green-100);
+    --color-mfy-green-1000: var(--mfy-color-green-1000);
+    --color-mfy-green-200:  var(--mfy-color-green-200);
+    --color-mfy-green-300:  var(--mfy-color-green-300);
+    --color-mfy-green-400:  var(--mfy-color-green-400);
+    --color-mfy-green-500:  var(--mfy-color-green-500);
+    --color-mfy-green-600:  var(--mfy-color-green-600);
+    --color-mfy-green-700:  var(--mfy-color-green-700);
+    --color-mfy-green-800:  var(--mfy-color-green-800);
+    --color-mfy-green-900:  var(--mfy-color-green-900);
+
+    /* pink */
+    --color-mfy-pink-100:  var(--mfy-color-pink-100);
+    --color-mfy-pink-1000: var(--mfy-color-pink-1000);
+    --color-mfy-pink-200:  var(--mfy-color-pink-200);
+    --color-mfy-pink-300:  var(--mfy-color-pink-300);
+    --color-mfy-pink-400:  var(--mfy-color-pink-400);
+    --color-mfy-pink-500:  var(--mfy-color-pink-500);
+    --color-mfy-pink-600:  var(--mfy-color-pink-600);
+    --color-mfy-pink-700:  var(--mfy-color-pink-700);
+    --color-mfy-pink-800:  var(--mfy-color-pink-800);
+    --color-mfy-pink-900:  var(--mfy-color-pink-900);
+
+    /* red */
+    --color-mfy-red-100:  var(--mfy-color-red-100);
+    --color-mfy-red-1000: var(--mfy-color-red-1000);
+    --color-mfy-red-200:  var(--mfy-color-red-200);
+    --color-mfy-red-300:  var(--mfy-color-red-300);
+    --color-mfy-red-400:  var(--mfy-color-red-400);
+    --color-mfy-red-500:  var(--mfy-color-red-500);
+    --color-mfy-red-600:  var(--mfy-color-red-600);
+    --color-mfy-red-700:  var(--mfy-color-red-700);
+    --color-mfy-red-800:  var(--mfy-color-red-800);
+    --color-mfy-red-900:  var(--mfy-color-red-900);
+
+    /* slate */
+    --color-mfy-slate-100:  var(--mfy-color-slate-100);
+    --color-mfy-slate-1000: var(--mfy-color-slate-1000);
+    --color-mfy-slate-200:  var(--mfy-color-slate-200);
+    --color-mfy-slate-300:  var(--mfy-color-slate-300);
+    --color-mfy-slate-400:  var(--mfy-color-slate-400);
+    --color-mfy-slate-500:  var(--mfy-color-slate-500);
+    --color-mfy-slate-600:  var(--mfy-color-slate-600);
+    --color-mfy-slate-700:  var(--mfy-color-slate-700);
+    --color-mfy-slate-800:  var(--mfy-color-slate-800);
+    --color-mfy-slate-900:  var(--mfy-color-slate-900);
+
+    /* white */
+    --color-mfy-white-100:  var(--mfy-color-white-100);
+    --color-mfy-white-1000: var(--mfy-color-white-1000);
+    --color-mfy-white-200:  var(--mfy-color-white-200);
+    --color-mfy-white-300:  var(--mfy-color-white-300);
+    --color-mfy-white-400:  var(--mfy-color-white-400);
+    --color-mfy-white-500:  var(--mfy-color-white-500);
+    --color-mfy-white-600:  var(--mfy-color-white-600);
+    --color-mfy-white-700:  var(--mfy-color-white-700);
+    --color-mfy-white-800:  var(--mfy-color-white-800);
+    --color-mfy-white-900:  var(--mfy-color-white-900);
+
+    /* yellow */
+    --color-mfy-yellow-100:  var(--mfy-color-yellow-100);
+    --color-mfy-yellow-1000: var(--mfy-color-yellow-1000);
+    --color-mfy-yellow-200:  var(--mfy-color-yellow-200);
+    --color-mfy-yellow-300:  var(--mfy-color-yellow-300);
+    --color-mfy-yellow-400:  var(--mfy-color-yellow-400);
+    --color-mfy-yellow-500:  var(--mfy-color-yellow-500);
+    --color-mfy-yellow-600:  var(--mfy-color-yellow-600);
+    --color-mfy-yellow-700:  var(--mfy-color-yellow-700);
+    --color-mfy-yellow-800:  var(--mfy-color-yellow-800);
+    --color-mfy-yellow-900:  var(--mfy-color-yellow-900);
+
+    /* --radius itself is declared in :root below, NOT here: @theme inline does
+       not emit its keys as custom properties, so a --radius defined in this
+       block would leave every calc() below resolving against nothing. */
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -55,6 +442,35 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    /* MFY's own radius steps, alongside the shadcn ramp above. Numeric
+       `rounded-*` names are free — Tailwind's stock radii are all t-shirt
+       sizes. --mfy-size-radius-full is omitted; `rounded-full` already exists. */
+    --radius-100: var(--mfy-size-radius-100);
+    --radius-200: var(--mfy-size-radius-200);
+    --radius-400: var(--mfy-size-radius-400);
+
+    /* Elevation. MFY's inner-shadow values already lead with the `inset`
+       keyword, which is exactly the shape Tailwind's --inset-shadow-* namespace
+       expects, so they map across cleanly. These values reference --mfy-color-black-*
+       directly, so the `shadow-<color>` composition utilities do not apply. */
+    --shadow-100: var(--mfy-effects-shadows-drop-shadow-100);
+    --shadow-200: var(--mfy-effects-shadows-drop-shadow-200);
+    --shadow-300: var(--mfy-effects-shadows-drop-shadow-300);
+    --shadow-400: var(--mfy-effects-shadows-drop-shadow-400);
+    --shadow-500: var(--mfy-effects-shadows-drop-shadow-500);
+    --shadow-600: var(--mfy-effects-shadows-drop-shadow-600);
+    --inset-shadow-100: var(--mfy-effects-shadows-inner-shadow-100);
+    --inset-shadow-200: var(--mfy-effects-shadows-inner-shadow-200);
+    --inset-shadow-300: var(--mfy-effects-shadows-inner-shadow-300);
+    --inset-shadow-400: var(--mfy-effects-shadows-inner-shadow-400);
+    --inset-shadow-500: var(--mfy-effects-shadows-inner-shadow-500);
+    --inset-shadow-600: var(--mfy-effects-shadows-inner-shadow-600);
+
+    /* The --mfy-effects-*-blur-* tokens are complete blur() functions, which the
+       --blur-* namespace cannot take (it wants a bare length, and wraps it).
+       Only the underlying size token maps. */
+    --blur-100: var(--mfy-size-blur-100);
 }
 
 /* shadcn semantic vars are a thin ALIAS layer over @gmhlab/tokens' --mfy-*
@@ -132,6 +548,63 @@
     --chart-5: oklch(0.645 0.246 16.439);
 }
 
+/* The --mfy-font-* composites are `font` SHORTHAND values (weight + size +
+   family in one string), not font families, so they cannot go in the --font-*
+   namespace — Tailwind would emit them as font-family and produce nothing.
+   They become static utilities instead, one per token.
+
+   Because these use the font shorthand, they reset line-height to `normal`
+   along with font-variant and font-stretch. Pair with a leading-* utility where
+   that matters. */
+@utility type-title-hero {
+    font: var(--mfy-font-title-hero);
+}
+@utility type-title-page {
+    font: var(--mfy-font-title-page);
+}
+@utility type-subtitle {
+    font: var(--mfy-font-subtitle);
+}
+@utility type-heading {
+    font: var(--mfy-font-heading);
+}
+@utility type-subheading {
+    font: var(--mfy-font-subheading);
+}
+@utility type-body-base {
+    font: var(--mfy-font-body-base);
+}
+@utility type-body-strong {
+    font: var(--mfy-font-body-strong);
+}
+@utility type-body-emphasis {
+    font: var(--mfy-font-body-emphasis);
+}
+@utility type-body-link {
+    font: var(--mfy-font-body-link);
+}
+@utility type-body-small {
+    font: var(--mfy-font-body-small);
+}
+@utility type-body-small-strong {
+    font: var(--mfy-font-body-small-strong);
+}
+@utility type-body-code {
+    font: var(--mfy-font-body-code);
+}
+@utility type-single-line-body-base {
+    font: var(--mfy-font-single-line-body-base);
+}
+@utility type-single-line-body-small-strong {
+    font: var(--mfy-font-single-line-body-small-strong);
+}
+@utility type-component-notes-regular {
+    font: var(--mfy-font-utilities-component-notes-regular);
+}
+@utility type-component-notes-bold {
+    font: var(--mfy-font-utilities-component-notes-bold);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -140,4 +613,3 @@
     @apply bg-background text-foreground;
     }
 }
-

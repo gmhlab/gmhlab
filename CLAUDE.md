@@ -16,7 +16,7 @@ Workspaces are `apps/*` and `packages/*` (see `pnpm-workspace.yaml`). Internal p
 - `packages/ui` (`@gmhlab/ui`) — the component library. `src/styles/index.css` is just two imports: `@gmhlab/tokens/tokens.css` (the value layer) followed by `./tailwind.css` (the Tailwind glue). The tokens CSS is **not** inlined: because tsup's `.css` loader is `copy`, esbuild never parses the file, so `dist/index.css` ships a literal `@import "@gmhlab/tokens/tokens.css"` on line 1 (its *relative* imports do get inlined). `@gmhlab/tokens` is therefore a genuine runtime dependency that must be published and resolvable by the consumer's CSS toolchain — it cannot be made `private`. The barrel (`src/index.ts`) imports `./styles/index.css` and re-exports `compositions` (cards, footers, forms, headers, sections), `data/types` (`Product`, `PricingPlan`, …), `hooks` (`useMediaQuery`), `icons`, `images` (SVGs bundled as data URLs via tsup's `.svg` `dataurl` loader), `layouts`, `lib/utils`, and `primitives`. `src/types/react.d.ts` is an ambient-only augmentation (not exported) that widens `React.CSSProperties` to accept `--*` keys — this is what lets the MFY layout/primitive components pass custom properties via `style={{ "--flex-gap": … }}` without a cast. Deleting it breaks typecheck across the repo.
 - `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all seven re-exported from the barrel**: `sections/` (e.g. `WelcomeHero`, `FAQs`, `PanelSections`, `ProductDetails`, plus the data-bound `PricingGrid`/`ProductGrid`), `templates/` (AppShell/Auth/Marketing page templates + `templates.css`), `innovations/`, `projects/`, `publications/` (the three GW site pages — see "GW page blocks" below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
 - `apps/docs` (`docs`) — Vite + React 19 reference app that consumes all three packages. Uses `react-router` (`createBrowserRouter` in `src/App.tsx`, pages under `src/pages/`, shared `RootLayout`).
-- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the MonoFly marketing page, assembled from `blocks` sections), plus four GW pages that are each a one-line wrapper around a block — `/projects`, `/publications`, `/innovations`, and `/innovations/equip` (`InnovationDetailPage`). Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
+- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the MonoFly marketing page, assembled from `blocks` sections), plus five GW pages that are each a one-line wrapper around a block — `/projects`, `/projects/reshape` (`ProjectDetailPage` + `RESHAPE_DETAIL`), `/publications`, `/innovations`, and `/innovations/equip` (`InnovationDetailPage`). Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
 
 All three packages share the same build shape: tsup (`esm` + `.d.ts`, `.css` "copy" loader), a `build` + `typecheck` script, `files: ["dist"]`, `sideEffects: ["*.css"]`, and a `src/globals.d.ts` ambient `declare module "*.css"` (required, or the DTS/typecheck step fails with TS2882). `ui`/`blocks` tsup `external`s `react`/`react-dom` (blocks also externals the two workspace deps); `tokens` externals nothing. Runtime deps are referenced via `catalog:`; `react`/`react-dom` are `peerDependencies` (blocks also peers `tailwindcss`).
 
@@ -88,15 +88,73 @@ Two things make the shell work:
 The split is deliberate — know which side you're editing:
 
 - **`@gmhlab/tokens` = values only.** All `--mfy-*` primitives, light/dark theme vars, responsive vars, icon sizing, and global base styles (`--global-*`). No Tailwind directives.
-- **`@gmhlab/ui/src/styles/tailwind.css` = Tailwind glue, compiled by the *consumer's* Tailwind.** Holds `@custom-variant dark (&:is(.dark *))`, `@theme inline` (maps Tailwind color/radius/font vars onto shadcn `--background`/`--primary`/… vars), the shadcn `:root` + `.dark` OKLCH color definitions, and an `@layer base` block. Because this is shipped as CSS (via the `.css` copy loader, not compiled by tsup), the app's Tailwind is what processes `@theme`/`@apply`.
+- **`@gmhlab/ui/src/styles/tailwind.css` = Tailwind glue, compiled by the *consumer's* Tailwind.** Holds `@custom-variant dark (&:is(.dark *))`, `@theme inline` (maps Tailwind color/radius/font vars onto shadcn `--background`/`--primary`/… vars, *and* onto the full `--mfy-*` set — see below), the shadcn `:root` + `.dark` OKLCH color definitions, the `type-*` `@utility` block, and an `@layer base` block. Because this is shipped as CSS (via the `.css` copy loader, not compiled by tsup), the app's Tailwind is what processes `@theme`/`@apply`.
 
 Both light/dark systems key off the **same `.dark` class** on `<html>`, so the `--mfy-*` token theme and the shadcn/Tailwind theme switch together.
+
+**There is no `--sds-*` namespace.** The repo descends from SDS and the prefix was
+renamed to `--mfy-*`; `blocks/src/templates/templates.css` was the last file still
+referencing the old names, so every rule in it resolved to nothing (unset custom
+properties fail silently — no border, no padding, transparent background). It is
+now converted and the repo is at zero `sds-` references. Anything pasted in from
+an SDS source needs the same rename.
 
 The shadcn vars in `tailwind.css` are a thin **alias layer** over `--mfy-*` semantic tokens, which is why almost nothing needs a `.dark` entry — the aliased token already flips. Only vars with no MFY source live in `.dark`: the chart ramp, and `--info`. Beyond the stock shadcn set the file also defines three **status tones** consumed by `Badge`'s `info`/`warning`/`success` variants:
 
 - `--warning` / `--success` alias `--mfy-color-background-{warning,positive}-secondary` + `--mfy-color-text-{warning,positive}-default`, so they theme for free.
 - `--info` has **no MFY semantic set** (there is no `info` alongside danger/warning/positive — only the raw `--mfy-color-blue-*` ramp), so it aliases `blue-200`/`blue-800` and needs the explicit `.dark` override. Adding an `info` set to `variables.css` would let those two lines go.
 - Note the asymmetry with `--destructive`, which is the *solid* danger surface: these three are **subtle pairs** (tinted surface + readable on-surface text) because that is what a status pill needs. `bg-destructive/10` works for red but 10% of `yellow-400` is not a readable pill, so the status variants do not use that alpha trick.
+
+### The full `--mfy-*` token set is reachable from Tailwind utilities
+
+Beyond the shadcn aliases, `tailwind.css` maps essentially every `--mfy-*` token
+into `@theme inline`, so `bg-surface-brand` and `text-content-secondary` work
+without an arbitrary `[var(--mfy-…)]` value. Because the block is `inline`, the
+keys are **substituted into utilities rather than emitted to `:root`** — unused
+keys cost zero bytes, and every utility resolves its `var()` at the element, so
+dark mode flips for free. The file's own header comment is the reference; the
+essentials:
+
+- **Colors carry a role dimension Tailwind's flat namespace lacks** — `text-default-secondary`
+  is `gray-500` while `background-default-secondary` is `gray-100`, so one key
+  cannot serve both. The role becomes the prefix: `background-*` → **`surface-*`**,
+  `text-*` → **`content-*`**, `border-*` → **`line-*`**, `icon-*` → **`icon-*`**.
+  The rest is mechanical — drop the role word, drop every `default`, drop the
+  `utilities` group word, collapse `{group}-on-{group}` to `on-{group}`. So
+  `background-default-default` → `surface-default`, `text-default-secondary` →
+  `content-secondary`, `text-brand-on-brand` → `content-on-brand`. Collision-free
+  across all 136 semantic tokens with one marked exception (`icon-annotation`).
+- **The accessibility traps above apply under the new names too**: `content-tertiary`
+  is the ~2:1 hairline tone, `content-on-brand-secondary` inverts, and
+  `line-default` is the same value as `surface-tertiary` (so it is invisible on a
+  neutral band — use `line-secondary`).
+- **Raw ramps are namespaced `mfy-`** (`bg-mfy-gray-300`) because Tailwind ships
+  its own gray/blue/red/green/pink/yellow/slate and this repo uses them. Only
+  `brand-*` gets a clean name, since Tailwind has no brand palette.
+- **Semantic type sizes sit behind a `size` segment** — `text-size-heading-large`,
+  not `text-heading-large` — because the `Text` primitive already owns the bare
+  `text-<semantic>` namespace (`text.tsx` emits `text-heading`, `text-subtitle`,
+  `text-body-small` … as plain classes backed by `text.css`). Two of those
+  collided before the prefix went in. The raw ramp is unprefixed (`text-scale-05`).
+  The **shadcn alias layer claims names in that namespace too**: `--color-input`
+  makes Tailwind generate a `text-input` utility, which collided with the `Text`
+  primitive's own `.text-input` class — hence `TextInput` now emits
+  **`.text-input-value`**. Whichever rule Tailwind orders last wins, so the
+  symptom is a font that silently becomes a colour. Check any new
+  `text-<word>` class in `text.css` against both the `@theme inline` keys *and*
+  the shadcn aliases.
+- **`--mfy-font-*` are `font` shorthands, not families**, so they cannot live in
+  the `--font-*` namespace (Tailwind would emit them as `font-family`). They are
+  static utilities instead: `type-title-hero`, `type-body-small-strong`. Being
+  the shorthand, they reset `line-height` to `normal`.
+- **Spacing is deliberately not mapped.** MFY's scale is already stock Tailwind:
+  `--mfy-size-space-N` equals Tailwind's `N/100` step exactly (`space-400` = 1rem
+  = `p-4`, `space-050` = `p-0.5`). Adding `--spacing-100` would not add a value,
+  it would silently redefine `p-100` from 25rem to 4px. Font weights and icon
+  sizes are skipped for the same reason (value-identical to stock).
+
+Nothing generates `tailwind.css` — it is hand-maintained like `variables.css`.
+Adding a token to `variables.css` means applying the rule above by hand.
 
 ## The two Figma files
 
@@ -159,6 +217,18 @@ dark mode passes on every surface and hides the bug**, so never verify in dark
 alone. Measure rather than eyeball: the tokens compute to `lab()`/`oklch()`, so a
 naive `match(/[\d.]+/g)` RGB parser silently reports nonsense — convert through a
 canvas 2d `fillStyle` first.
+
+## Generating section mockups (Nano Banana Pro)
+
+`docs/nano-banana-prompts.md` is the method; `docs/prompts/` is the reusable
+material (start at its `README.md`) — the canonical design-system block with this
+repo's real hex values, blank section/page templates, eight ready-made section
+patterns, edit-loop snippets, and the render→token→Tailwind mapping with its trap
+checklist. Two things to know before using any of it: generate **one section per
+image at 3:2** (the model caps at 4096², so a full-page render is illegible at the
+bottom), and treat every measurement in the output as fiction — it will look like
+a grid and won't be. Note also that `docs/` is repo documentation, unrelated to
+the `apps/docs` workspace.
 
 ## GW page blocks (`innovations/`, `projects/`, `publications/`)
 
@@ -283,6 +353,22 @@ Be deliberate about which one you're extending. `src/primitives/` components are
 
 **Selector traps when writing CSS against these**, all of which fail silently — the rule simply never matches, or the layout quietly does the wrong thing:
 
+- **Bare `data-horizontal:` / `data-vertical:` variants never match.** Base UI
+  emits only `data-orientation="horizontal|vertical"` — there is no bare
+  attribute anywhere in its dist — but shadcn's `base-vega` templates ship
+  `data-horizontal:h-px` style classes. Write
+  `data-[orientation=horizontal]:…` instead. Nothing errors — the style just
+  never applies. `slider`, `separator`, `button-group` and `field` are all
+  converted, and no bare variant left in `src/` is unemitted; re-check against
+  Base UI's dist rather than assuming, since it is the only source of truth for
+  which attributes exist.
+- **`group-has-*` and `group-data-*` are not interchangeable.** `field.tsx`
+  carried `group-has-data-horizontal/field:` where the orientation attribute
+  lives on the **group element itself** (`Field` sets both `group/field` and
+  `data-orientation`), so even the corrected bracket form would have missed —
+  `group-has-*` looks for a *descendant*. It is now
+  `group-data-[orientation=horizontal]/field:`, matching the
+  `group-data-[disabled=true]/field:` pattern already in the same file.
 - `Flex` emits **`flex-mfy`**, not `flex` (`Grid` emits `grid-mfy`). A `> .flex` child selector matches nothing. Three dead rules in `headers.css` came from exactly this.
 - shadcn primitives emit `data-slot` attributes plus Tailwind utilities and **no semantic class**. There is no `.navigation`, `.badge`, etc. — target `[data-slot="navigation-menu"]`.
 - `FlexItem`'s `size` prop (`major`/`minor`/`half`) only does anything when the parent `Flex` has `type="half" | "quarter" | "third"`. Under the default `type="auto"` it is inert.
@@ -304,7 +390,7 @@ shadcn config (`style: base-vega` — the Base UI variant, which is what `button
 Three wrinkles when adding or editing exports:
 
 - **`Button` with a non-`<button>` `render` prop needs `nativeButton={false}`.** `Button` spreads into Base UI's button primitive, whose `nativeButton` defaults to `true`; swapping the element (`render={<a href="…" />}`, or a router `<Link>`) without also passing `nativeButton={false}` makes Base UI keep native button semantics it can no longer rely on, and it logs a `console.error` **on every render**. This is invisible to `tsc` *and* to server rendering — it only shows up in a real browser, so neither `pnpm typecheck` nor `next build` will catch it. `SocialButtons` in `footers.tsx` and the CTAs in `blocks/src/innovations/innovations-page.tsx` are the reference call sites. `Badge` is unaffected: it calls `useRender` directly rather than going through the Base UI button.
-- **`cn()` import path is not uniform.** 22 primitives use `../lib/utils`; `slider.tsx` uses `@/lib/utils`, which resolves via the `"@/*": ["./src/*"]` path mapping in `packages/ui/tsconfig.json`. Both compile — `@/` is what shadcn emits, so don't "fix" it, but don't add the alias to `lib/` code either.
+- **`cn()` is imported relatively everywhere — keep it that way.** All 22 primitives that use it import `../lib/utils`. `packages/ui/tsconfig.json` still carries a `"@/*": ["./src/*"]` path mapping, but **nothing in `src/` uses it**; shadcn emits `@/lib/utils`, so rewrite that import when you add a component. The alias resolves under `tsc`, but it is not in the tsup/consumer resolution path a published `dist` relies on.
 - **Barrels under `compositions/` are maintained in two places.** `compositions/index.ts` re-exports *individual files* (`./sections/card-grids`, `./sections/heroes`, `./sections/panels`), and `compositions/sections/index.ts` is a separate list. A new file under `sections/` must be added to **both** or it won't reach the package barrel.
 
 ## Icons

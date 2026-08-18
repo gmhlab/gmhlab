@@ -142,7 +142,7 @@ export function TextCode({ className, ...props }: TextCodeProps) {
 
 export type TextInputProps = RACTextProps;
 export function TextInput({ className, ...props }: TextInputProps) {
-  const classNames = clsx(className, "text-input");
+  const classNames = clsx(className, "text-input-value");
   return <RACText className={classNames} {...props} />;
 }
 
