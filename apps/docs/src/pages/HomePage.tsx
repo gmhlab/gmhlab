@@ -20,7 +20,12 @@ const demos = [
   {
     to: "/components",
     title: "Components",
-    body: "The full gallery — every primitive, layout, and composition exported from @gmhlab/ui, with variants and states.",
+    body: "The full @gmhlab/ui gallery — every primitive, layout, and composition, with variants and states.",
+  },
+  {
+    to: "/blocks",
+    title: "Blocks",
+    body: "Everything in @gmhlab/blocks — the MonoFly example sections rendered live, and the five record-driven page blocks on their own demo routes.",
   },
   {
     to: "/tokens",
