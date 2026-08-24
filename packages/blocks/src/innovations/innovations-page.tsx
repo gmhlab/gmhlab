@@ -14,6 +14,7 @@ import {
   TextSubheading,
   TextTitlePage,
 } from "@gmhlab/ui";
+import type { Innovation } from "./innovations-types";
 import "./innovations-page.css";
 
 /**
@@ -34,83 +35,23 @@ import "./innovations-page.css";
  * does.
  */
 
-/** Maps onto Badge's status variants. */
-type InnovationStatus = "info" | "warning" | "success";
-
-type Innovation = {
-  icon: string;
-  status: string;
-  statusTone: InnovationStatus;
-  heading: string;
-  body: string;
-  reach: string;
-  publications: string;
-};
-
-const INNOVATIONS: Innovation[] = [
-  {
-    icon: "📋",
-    status: "WHO/UNICEF Partnership",
-    statusTone: "info",
-    heading: "EQUIP Platform",
-    body: "Competency-based training and supervision system for non-specialist mental health providers. Standardizes quality assessment across diverse healthcare settings.",
-    reach: "25+ countries",
-    publications: "12 publications",
-  },
-  {
-    icon: "📱",
-    status: "In Development",
-    statusTone: "warning",
-    heading: "Passive Sensing Technology",
-    body: "Smartphone-based behavioral monitoring that uses GPS, accelerometer, and usage patterns to personalize depression interventions for new mothers.",
-    reach: "Nepal",
-    publications: "3 publications",
-  },
-  {
-    icon: "✓",
-    status: "Active",
-    statusTone: "success",
-    heading: "Validated Assessment Tools",
-    body: "Culturally adapted and psychometrically validated mental health screening instruments (PHQ-9, GAD-7, EPDS) for use in LMIC contexts.",
-    reach: "8+ countries",
-    publications: "6 publications",
-  },
-  {
-    icon: "🤝",
-    status: "Active",
-    statusTone: "success",
-    heading: "RESHAPE Stigma Toolkit",
-    body: "Evidence-based interventions combining social contact, education, and skills training to reduce mental health stigma among healthcare providers.",
-    reach: "Nepal, Ethiopia, India",
-    publications: "5 publications",
-  },
-];
-
-const PARTNERS = ["WHO", "UNICEF", "NIMH", "World Bank", "Carter Center"];
-
-/**
- * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
- * serves one fixed photo per numeric id, so the URL is stable rather than
- * random, but it is stock imagery standing in for a real photograph and it
- * makes the page depend on a third-party host at runtime. Swap it for a Center
- * image (or a local file in the consuming app) before this goes live.
- *
- * Section's `image` variant lays a scrim over it that **inverts with the
- * theme** — 80% white in light, 80% black in dark — so the hero's existing
- * text tokens (which invert the same way) stay readable without an on-image
- * colour of their own.
- */
-const HERO_IMAGE = "https://picsum.photos/id/36/1920/1080";
-
 function InnovationCard({
-  icon,
-  status,
-  statusTone,
-  heading,
-  body,
-  reach,
-  publications,
-}: Innovation) {
+  innovation: {
+    slug,
+    icon,
+    status,
+    statusTone,
+    heading,
+    body,
+    reach,
+    publications,
+  },
+  href,
+}: {
+  innovation: Innovation;
+  /** Set only when the innovation has a detail page. */
+  href?: string;
+}) {
   return (
     <Card
       className="innovation-card"
@@ -135,19 +76,61 @@ function InnovationCard({
         <TextSmall>🌍 {reach}</TextSmall>
         <TextSmall>📄 {publications}</TextSmall>
       </Flex>
-      <Flex>
-        <TextLink href="#">Learn more →</TextLink>
-      </Flex>
+      {/* Only innovations with a detail record get a link — the rest have no
+          page yet, and a card that offers a 404 is worse than one that offers
+          nothing. Wrapped because `.card-content > *` is forced to width:100%,
+          which would stretch the link's hit area across the card. */}
+      {href ? (
+        <Flex>
+          <TextLink href={href}>Learn more →</TextLink>
+        </Flex>
+      ) : (
+        <Flex>
+          <TextSmall className="innovation-card-pending">
+            Page in progress
+          </TextSmall>
+        </Flex>
+      )}
     </Card>
   );
 }
 
-export function InnovationsPage() {
+export type InnovationsPageProps = {
+  /** The innovations to render. Supplied by the consuming app. */
+  innovations: Innovation[];
+  /**
+   * Slugs that have a detail page. A card links only when its slug is here,
+   * so an index with few detail records ships no 404s.
+   */
+  detailSlugs?: string[];
+  /** Funder and partner word marks. Omit to render no partner strip. */
+  partners?: string[];
+  /** Hero background image. Required: the hero is an image variant. */
+  heroImage: string;
+  /**
+   * Base path detail links are built from, so the block travels with the site
+   * that hosts it.
+   */
+  basePath?: string;
+  /** Where the closing CTA buttons point. */
+  trainingHref?: string;
+  contactHref?: string;
+};
+
+export function InnovationsPage({
+  innovations,
+  detailSlugs = [],
+  partners = [],
+  heroImage,
+  basePath = "/innovations",
+  trainingHref = "#",
+  contactHref = "#",
+}: InnovationsPageProps) {
   return (
     <div className="innovations-page">
       <Hero
         variant="image"
-        src={HERO_IMAGE}
+        src={heroImage}
         flexProps={{ direction: "column", alignSecondary: "start" }}
       >
         <TextContentTitle
@@ -168,8 +151,16 @@ export function InnovationsPage() {
           heading="Our Tools & Technologies"
           subheading="Evidence-based solutions designed for low-resource settings worldwide"
         >
-          {INNOVATIONS.map((innovation) => (
-            <InnovationCard key={innovation.heading} {...innovation} />
+          {innovations.map((innovation) => (
+            <InnovationCard
+              key={innovation.slug}
+              href={
+                detailSlugs.includes(innovation.slug)
+                  ? `${basePath}/${innovation.slug}`
+                  : undefined
+              }
+              innovation={innovation}
+            />
           ))}
         </CardGrid>
       </Section>
@@ -182,7 +173,7 @@ export function InnovationsPage() {
           alignSecondary="center"
           gap="1200"
         >
-          {PARTNERS.map((partner) => (
+          {partners.map((partner) => (
             <div className="innovations-partner-logo" key={partner}>
               <TextSmall>{partner}</TextSmall>
             </div>
@@ -217,10 +208,14 @@ export function InnovationsPage() {
             </TextSubheading>
           </Flex>
           <Flex wrap gap="400" alignPrimary="center">
-            <Button nativeButton={false} render={<a href="#" />}>
+            <Button nativeButton={false} render={<a href={trainingHref} />}>
               Request Training
             </Button>
-            <Button variant="secondary" nativeButton={false} render={<a href="#" />}>
+            <Button
+              variant="secondary"
+              nativeButton={false}
+              render={<a href={contactHref} />}
+            >
               Contact Us
             </Button>
           </Flex>

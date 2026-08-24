@@ -99,3 +99,11 @@
 .innovations-cta-copy {
   max-width: 34rem;
 }
+
+/* Shown instead of "Learn more" on an innovation with no detail record yet.
+   `secondary`, not `tertiary`: the card resets to its own white surface, where
+   secondary is 4.6:1 — tertiary would be ~2:1 and fail AA. */
+.innovation-card-pending {
+  color: var(--mfy-color-text-default-secondary);
+  font-style: italic;
+}

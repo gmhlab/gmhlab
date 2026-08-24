@@ -23,41 +23,7 @@
  * so the block is portable across the site that hosts it.
  */
 
-/** The three states the Center publishes, normalised for filtering. */
-export type ProjectStatus = "active" | "ongoing" | "closed";
-
-/** Coarse geography, grouped from the countries each abstract names. */
-export type ProjectRegion =
-  | "Global"
-  | "Sub-Saharan Africa"
-  | "South Asia"
-  | "Latin America"
-  | "North America";
-
-export type Project = {
-  /** URL segment under the projects base path. */
-  slug: string;
-  name: string;
-  /** The one-line descriptor used on the index. */
-  tagline: string;
-  /** Condensed from the project page's abstract. */
-  summary: string;
-  status: ProjectStatus;
-  /** Study design or vehicle, as the project page describes it. */
-  design: string;
-  /** The named intervention delivered, where the page names one. */
-  method?: string;
-  /** Only set where the project page names the funder. */
-  funder?: string;
-  /** Only set where the abstract names a place. */
-  locations?: string[];
-  /** Absent where no country is named (EQUIP-SU). */
-  regions?: ProjectRegion[];
-  /** Set where the project lists another project in its Resources panel. */
-  buildsOn?: string;
-  /** Peer-reviewed publications listed on the project page. */
-  publications: number;
-};
+import type { Project, ProjectRegion } from "@gmhlab/blocks";
 
 /** The platform the portfolio's other work hangs off; featured on its own. */
 export const FEATURED_SLUG = "equip";
@@ -237,19 +203,11 @@ export const PROJECT_REGIONS: ProjectRegion[] = [
   "North America",
 ];
 
-/** The free-text fields search runs against, lower-cased once per project. */
-export function projectSearchText(project: Project): string {
-  return [
-    project.name,
-    project.tagline,
-    project.summary,
-    project.design,
-    project.method,
-    project.funder,
-    ...(project.locations ?? []),
-    ...(project.regions ?? []),
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-}
+/**
+ * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
+ * serves one fixed photo per numeric id, so the URL is stable rather than
+ * random, but it is stock imagery standing in for a real photograph and it
+ * makes the page depend on a third-party host at runtime. Swap it for a Center
+ * image (or a local file in this app) before this goes live.
+ */
+export const PROJECTS_HERO_IMAGE = "https://picsum.photos/id/17/1920/1080";

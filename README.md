@@ -86,40 +86,54 @@ The layout wraps everything in `AllProviders` from `@gmhlab/blocks` (auth/pricin
 
 `@gmhlab/blocks` ships the GW Center for Global Mental Health pages as whole-page
 components, rebuilt from the live site onto the design system. Each is page
-content only — no header or footer, per the shell rule above — so mounting one is
-a one-line route:
+content only — no header or footer, per the shell rule above.
+
+They are **record-driven renderers**: the components name no project,
+publication or innovation, and take their records as props. The records are the
+site's content and live in `apps/web/src/content/`, not in the package — this is
+a published design system, and one organization's bibliography is not library
+code. Mounting a page is a thin wrapper:
 
 ```tsx
 "use client";
 import { ProjectsPage } from "@gmhlab/blocks";
+import { PROJECTS, PROJECTS_HERO_IMAGE, FEATURED_SLUG } from "@/content";
 
 export default function Page() {
-  return <ProjectsPage basePath="/projects" />;
+  return (
+    <ProjectsPage
+      basePath="/projects"
+      featuredSlug={FEATURED_SLUG}
+      heroImage={PROJECTS_HERO_IMAGE}
+      projects={PROJECTS}
+    />
+  );
 }
 ```
 
 | Export | Mounted at | Notes |
 | --- | --- | --- |
-| `ProjectsPage` | `/projects` | Eleven research projects, filterable by status and region. Takes `basePath` (default `/projects`) for the per-project detail links. |
+| `ProjectsPage` | `/projects` | Eleven research projects, filterable by status and region. Takes `projects`, plus `basePath` (default `/projects`) for the per-project detail links. |
 | `ProjectDetailPage` | `/projects/reshape` | One project's detail page. Takes a `ProjectDetail` record — see below. |
 | `PublicationsPage` | `/publications` | 343 publications (2015–2026), filterable by free text, year, theme, project and open access, sortable by date or citations. |
-| `InnovationsPage` | `/innovations` | The innovations index. |
-| `InnovationDetailPage` | `/innovations/equip` | The EQUIP detail page. |
+| `InnovationsPage` | `/innovations` | The innovations index. Takes `innovations`. |
+| `InnovationDetailPage` | `/innovations/equip` | One innovation's detail page. Takes an `InnovationDetail` record. |
 
 Both `ProjectsPage` and `PublicationsPage` accept a `contactEmail` prop for their
-closing call to action. Their content lives in sibling data modules — `PROJECTS`,
-`PUBLICATIONS` and friends are exported from the package too, so a detail page or
-a home-page teaser can read the same records rather than restating them. Each data
-module's header documents where the content came from and which fields are derived.
+closing call to action. The package exports the record *types* and the pure
+helpers that read them (`projectSearchText`, `resolvePublicationRefs`,
+`resolveRelatedProjects`); `apps/web/src/content/` holds the records themselves,
+and each content module's header documents where it came from and which fields
+are derived.
 
-`ProjectDetailPage` is **data-driven and names no project**: it renders whichever
-`ProjectDetail` record you hand it, so adding a project detail page is adding a
-record to `project-detail-data.ts` plus a one-line route — never editing the
-component. `RESHAPE_DETAIL` is the only record so far and is the one to copy.
-Its publications and related projects are stored as **slugs** resolved against
+`ProjectDetailPage` and `InnovationDetailPage` are **record-driven and name
+nothing**: each renders whichever record you hand it, so adding a detail page is
+adding a record plus a route wrapper — never editing the component.
+`RESHAPE_DETAIL` and `EQUIP_DETAIL` are the first of each and the ones to copy.
+Their publications and related projects are stored as **slugs** resolved against
 `PUBLICATIONS`/`PROJECTS` at render time, so citations and metadata stay in one
-place; related-project cards call `hasProjectDetail()` before linking, which is
-why the ten projects without records render as plain cards rather than 404s.
+place; a card links only when its slug is in the `detailSlugs` prop, which is why
+the ten projects without records render as plain cards rather than 404s.
 
 `PUBLICATIONS` is the one **generated** dataset — a merge of the Center's own
 listing with the full OpenAlex records of two Center researchers, so it is a

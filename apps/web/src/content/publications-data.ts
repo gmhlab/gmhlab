@@ -54,45 +54,10 @@
  * total, which reaches 150 on one meta-analysis.
  */
 
-/** Coarse, keyword-derived subject buckets. See the note above. */
-export type PublicationTheme =
-  | "Training & competency"
-  | "Adolescent & child"
-  | "Stigma & discrimination"
-  | "Measurement & validation"
-  | "Maternal & perinatal"
-  | "Care delivery & systems";
-
-export type PublicationKind =
-  | "Article"
-  | "Review"
-  | "Chapter"
-  | "Editorial"
-  | "Book";
-
-export type Publication = {
-  slug: string;
-  title: string;
-  /** At most six names; see `authorCount` for the true total. */
-  authors: string[];
-  authorCount: number;
-  journal: string;
-  /** ISO date, `YYYY-MM-DD`. */
-  date: string;
-  year: number;
-  doi?: string;
-  /** OpenAlex citation count, captured 2026-08-09. */
-  citations: number;
-  openAccess: boolean;
-  kind: PublicationKind;
-  /** Appears on the Center's own publications listing. */
-  center: boolean;
-  /** Center projects this work belongs to, where the listing names them. */
-  projects?: string[];
-  /** The Center's curated description; only present for `center` entries. */
-  summary?: string;
-  theme: PublicationTheme;
-};
+import type {
+  Publication,
+  PublicationTheme,
+} from "@gmhlab/blocks";
 
 /** Facet order: most-published first, matching the portfolio's weight. */
 export const PUBLICATION_THEMES: PublicationTheme[] = [
@@ -5278,17 +5243,8 @@ export const PUBLICATIONS: Publication[] = [
   },
 ];
 
-/** The free-text fields search runs against, lower-cased once per record. */
-export function publicationSearchText(publication: Publication): string {
-  return [
-    publication.title,
-    publication.journal,
-    publication.summary,
-    publication.theme,
-    ...publication.authors,
-    ...(publication.projects ?? []),
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-}
+/**
+ * Hero background — a **demo placeholder**, not a Center asset. See the note in
+ * `./projects-data`; swap it for a Center image before this goes live.
+ */
+export const PUBLICATIONS_HERO_IMAGE = "https://picsum.photos/id/24/1920/1080";

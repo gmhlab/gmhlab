@@ -17,12 +17,10 @@ import {
   TextTitlePage,
 } from "@gmhlab/ui";
 import {
-  PUBLICATIONS,
-  PUBLICATION_THEMES,
   publicationSearchText,
   type Publication,
   type PublicationTheme,
-} from "./publications-data";
+} from "./publications-types";
 import "./publications-page.css";
 
 /**
@@ -39,7 +37,7 @@ import "./publications-page.css";
  *
  *   - **Widens the record.** 343 publications (2015–2026) instead of 19, by
  *     merging the Center's listing with the full OpenAlex records of Brandon A.
- *     Kohrt and Sauharda Rai. See `publications-data.ts` for provenance, the
+ *     Kohrt and Sauharda Rai. See the consuming app's `publications-data.ts` for provenance, the
  *     Google Scholar caveat, and how `theme` is derived.
  *   - **Filters on five axes**: free-text search, year, theme, Center project,
  *     and an open-access toggle — with counts computed against the *other*
@@ -82,53 +80,16 @@ const INITIAL_FILTERS: Filters = {
 /** How many rows to render before "Show more". 343 records is a long page. */
 const PAGE_SIZE = 24;
 
-/**
- * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
- * serves one fixed photo per numeric id, so the URL is stable rather than
- * random, but it is stock imagery standing in for a real photograph and it
- * makes the page depend on a third-party host at runtime. Swap it for a Center
- * image (or a local file in the consuming app) before this goes live.
- *
- * Section's `image` variant lays a scrim over it that **inverts with the
- * theme** — 80% white in light, 80% black in dark — so the hero's existing
- * text tokens (which invert the same way) stay readable without an on-image
- * colour of their own.
- */
-const HERO_IMAGE = "https://picsum.photos/id/24/1920/1080";
+/* Stable identities for the optional list props. A fresh `[]` default on every
+   render would land in the filter memo's dep array and defeat it — over 343
+   records that is the whole point of the memo. */
+const NO_THEMES: PublicationTheme[] = [];
 
-/** Built once: PUBLICATIONS is static, so re-deriving per keystroke is waste. */
-const SEARCH_INDEX = new Map(
-  PUBLICATIONS.map((p) => [p.slug, publicationSearchText(p)]),
-);
-
-const YEARS = [...new Set(PUBLICATIONS.map((p) => p.year))].sort((a, b) => b - a);
-const PROJECTS = [
-  ...new Set(PUBLICATIONS.flatMap((p) => p.projects ?? [])),
-].sort();
-
-const STATS = [
-  { value: String(PUBLICATIONS.length), label: "Publications" },
-  {
-    value: String(new Set(PUBLICATIONS.map((p) => p.journal)).size),
-    label: "Journals",
-  },
-  {
-    value: PUBLICATIONS.reduce((n, p) => n + p.citations, 0).toLocaleString(
-      "en-US",
-    ),
-    label: "Citations",
-  },
-  {
-    value: `${Math.round(
-      (PUBLICATIONS.filter((p) => p.openAccess).length / PUBLICATIONS.length) *
-        100,
-    )}%`,
-    label: "Open access",
-  },
-];
-
-const matchesQuery = (p: Publication, q: string) =>
-  !q || (SEARCH_INDEX.get(p.slug) ?? "").includes(q);
+const matchesQuery = (
+  p: Publication,
+  q: string,
+  index: Map<string, string>,
+) => !q || (index.get(p.slug) ?? "").includes(q);
 const matchesYear = (p: Publication, y: YearFilter) => y === "all" || p.year === y;
 const matchesTheme = (p: Publication, t: ThemeFilter) =>
   t === "all" || p.theme === t;
@@ -287,16 +248,71 @@ function PublicationRow({ publication }: { publication: Publication }) {
 }
 
 export type PublicationsPageProps = {
+  /** The bibliography to render. Supplied by the consuming app. */
+  publications: Publication[];
+  /** Theme facet order. Omit to show only the "All" chip. */
+  themes?: PublicationTheme[];
+  /** Hero background image. Required: the hero is an image variant. */
+  heroImage: string;
+  /** Where the "browse projects" CTA points. */
+  projectsHref?: string;
   /** Where the CTA sends collaboration enquiries. */
   contactEmail?: string;
 };
 
 export function PublicationsPage({
+  publications,
+  themes = NO_THEMES,
+  heroImage,
+  projectsHref = "/projects",
   contactEmail = "info@gwglobalmentalhealth.com",
-}: PublicationsPageProps = {}) {
+}: PublicationsPageProps) {
   const [filters, setFilters] = useState<Filters>(INITIAL_FILTERS);
   const [sort, setSort] = useState<SortKey>("newest");
   const [limit, setLimit] = useState(PAGE_SIZE);
+
+  /* Derived from the corpus, not from the filters: rebuilding the haystack on
+     every keystroke would be pure waste. Keyed on `publications` so a consuming
+     app that swaps the corpus gets a fresh index. */
+  const searchIndex = useMemo(
+    () => new Map(publications.map((p) => [p.slug, publicationSearchText(p)])),
+    [publications],
+  );
+
+  const years = useMemo(
+    () => [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a),
+    [publications],
+  );
+
+  const projectNames = useMemo(
+    () => [...new Set(publications.flatMap((p) => p.projects ?? []))].sort(),
+    [publications],
+  );
+
+  const stats = useMemo(
+    () => [
+      { value: String(publications.length), label: "Publications" },
+      {
+        value: String(new Set(publications.map((p) => p.journal)).size),
+        label: "Journals",
+      },
+      {
+        value: publications
+          .reduce((n, p) => n + p.citations, 0)
+          .toLocaleString("en-US"),
+        label: "Citations",
+      },
+      {
+        value: `${Math.round(
+          (publications.filter((p) => p.openAccess).length /
+            (publications.length || 1)) *
+            100,
+        )}%`,
+        label: "Open access",
+      },
+    ],
+    [publications],
+  );
 
   // Every filter change collapses the list back to one page — otherwise a
   // narrowed result set would keep a scroll position that no longer exists.
@@ -316,9 +332,9 @@ export function PublicationsPage({
   const { visible, yearOptions, themeOptions, projectOptions } = useMemo(() => {
     const { year, theme, project, openOnly } = filters;
 
-    const visible = PUBLICATIONS.filter(
+    const visible = publications.filter(
       (p) =>
-        matchesQuery(p, query) &&
+        matchesQuery(p, query, searchIndex) &&
         matchesYear(p, year) &&
         matchesTheme(p, theme) &&
         matchesProject(p, project) &&
@@ -332,11 +348,11 @@ export function PublicationsPage({
     // Each facet counts against the *other* active facets, never against the
     // whole set — otherwise a chip can advertise a number and land on nothing.
     const countWith = (predicate: (p: Publication) => boolean) =>
-      PUBLICATIONS.filter((p) => matchesQuery(p, query) && predicate(p)).length;
+      publications.filter((p) => matchesQuery(p, query, searchIndex) && predicate(p)).length;
 
     const yearOptions: FacetOption<YearFilter>[] = [
       { value: "all" as const, label: "All" },
-      ...YEARS.map((value) => ({ value, label: String(value) })),
+      ...years.map((value) => ({ value, label: String(value) })),
     ].map((option) => ({
       ...option,
       count: countWith(
@@ -350,7 +366,7 @@ export function PublicationsPage({
 
     const themeOptions: FacetOption<ThemeFilter>[] = [
       { value: "all" as const, label: "All" },
-      ...PUBLICATION_THEMES.map((value) => ({ value, label: value })),
+      ...themes.map((value) => ({ value, label: value })),
     ].map((option) => ({
       ...option,
       count: countWith(
@@ -364,7 +380,7 @@ export function PublicationsPage({
 
     const projectOptions: FacetOption<ProjectFilter>[] = [
       { value: "all" as const, label: "All" },
-      ...PROJECTS.map((value) => ({ value, label: value })),
+      ...projectNames.map((value) => ({ value, label: value })),
     ].map((option) => ({
       ...option,
       count: countWith(
@@ -377,7 +393,7 @@ export function PublicationsPage({
     }));
 
     return { visible, yearOptions, themeOptions, projectOptions };
-  }, [filters, query, sort]);
+  }, [filters, query, sort, publications, searchIndex, themes, years, projectNames]);
 
   const shown = visible.slice(0, limit);
 
@@ -391,7 +407,7 @@ export function PublicationsPage({
     <div className="publications-page">
       <Hero
         variant="image"
-        src={HERO_IMAGE}
+        src={heroImage}
         paddingBottom="800"
         flexProps={{ direction: "column", alignSecondary: "start", gap: "1200" }}
       >
@@ -401,7 +417,7 @@ export function PublicationsPage({
         />
         <Flex direction="column" alignSecondary="stretch" gap="400">
           <Flex className="publications-stats" wrap gap="1200">
-            {STATS.map((stat) => (
+            {stats.map((stat) => (
               <div className="publications-stat" key={stat.label}>
                 <span className="publications-stat-value">{stat.value}</span>
                 <TextSmall className="publications-stat-label">
@@ -418,10 +434,10 @@ export function PublicationsPage({
               Center archive, and a reader should not have to infer that from a
               gap in the year facet. */}
           <TextSmall className="publications-note">
-            Covers {YEARS[YEARS.length - 1]}–{YEARS[0]}: the Center&rsquo;s own
+            Covers {years[years.length - 1]}–{years[0]}: the Center&rsquo;s own
             listing merged with the full OpenAlex records for Brandon A. Kohrt
             and Sauharda Rai. Citation counts are for these{" "}
-            {PUBLICATIONS.length} works and were captured in August 2026.
+            {publications.length} works and were captured in August 2026.
           </TextSmall>
         </Flex>
       </Hero>
@@ -444,8 +460,8 @@ export function PublicationsPage({
             <Flex alignSecondary="center" gap="400" wrap>
               <TextSmall className="publications-result-count" aria-live="polite">
                 {isFiltered
-                  ? `${visible.length} of ${PUBLICATIONS.length} publications`
-                  : `All ${PUBLICATIONS.length} publications`}
+                  ? `${visible.length} of ${publications.length} publications`
+                  : `All ${publications.length} publications`}
               </TextSmall>
               {isFiltered && (
                 <Button
@@ -563,7 +579,7 @@ export function PublicationsPage({
                 <TextHeading>No publications match those filters</TextHeading>
                 <Text>
                   Try a different year or theme, or clear the filters to see all{" "}
-                  {PUBLICATIONS.length} publications.
+                  {publications.length} publications.
                 </Text>
                 <Flex alignPrimary="center">
                   <Button
@@ -613,7 +629,7 @@ export function PublicationsPage({
             <Button
               variant="secondary"
               nativeButton={false}
-              render={<a href="/projects" />}
+              render={<a href={projectsHref} />}
             >
               Browse our projects
             </Button>

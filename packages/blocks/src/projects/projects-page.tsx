@@ -20,15 +20,11 @@ import {
   TextTitlePage,
 } from "@gmhlab/ui";
 import {
-  FEATURED_SLUG,
-  PROJECTS,
-  PROJECT_PARTNERS,
-  PROJECT_REGIONS,
   projectSearchText,
   type Project,
   type ProjectRegion,
   type ProjectStatus,
-} from "./projects-data";
+} from "./projects-types";
 import "./projects-page.css";
 
 /**
@@ -41,7 +37,8 @@ import "./projects-page.css";
  * unrelated tile, and the only way to learn anything is to open eleven pages.
  * This rebuild keeps the same eleven projects and their copy, and adds the
  * structure that makes a portfolio legible — all of it derived from the
- * Center's own project pages (see `projects-data.ts`), none of it invented:
+ * Center's own project pages (see the consuming app's `projects-data.ts`),
+ * none of it invented:
  *
  *   - **Faceted filtering that works.** Free-text search over every field,
  *     plus status and region facets. Counts are computed against the *other*
@@ -78,44 +75,16 @@ const STATUS_META: Record<
 
 const STATUS_ORDER: ProjectStatus[] = ["active", "ongoing", "closed"];
 
-/**
- * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
- * serves one fixed photo per numeric id, so the URL is stable rather than
- * random, but it is stock imagery standing in for a real photograph and it
- * makes the page depend on a third-party host at runtime. Swap it for a Center
- * image (or a local file in the consuming app) before this goes live.
- *
- * Section's `image` variant lays a scrim over it that **inverts with the
- * theme** — 80% white in light, 80% black in dark — so the hero's existing
- * text tokens (which invert the same way) stay readable without an on-image
- * colour of their own.
- */
-const HERO_IMAGE = "https://picsum.photos/id/17/1920/1080";
+/* Stable identities for the optional list props: a fresh `[]` default on every
+   render would land in the filter memo's dep array and defeat it. */
+const NO_REGIONS: ProjectRegion[] = [];
+const NO_PARTNERS: string[] = [];
 
-/** Built once: PROJECTS is static, so re-deriving the haystack per keystroke
- *  would be pure waste. */
-const SEARCH_INDEX = new Map(
-  PROJECTS.map((project) => [project.slug, projectSearchText(project)]),
-);
-
-const FEATURED = PROJECTS.find((p) => p.slug === FEATURED_SLUG);
-/** Projects that name the featured project in their own Resources panel. */
-const DEPENDENTS = PROJECTS.filter((p) => p.buildsOn === FEATURED?.name);
-
-const STATS = [
-  { value: String(PROJECTS.length), label: "Projects" },
-  {
-    value: String(PROJECTS.filter((p) => p.status !== "closed").length),
-    label: "Open or ongoing",
-  },
-  {
-    value: String(PROJECTS.reduce((total, p) => total + p.publications, 0)),
-    label: "Peer-reviewed publications",
-  },
-];
-
-const matchesQuery = (project: Project, query: string) =>
-  !query || (SEARCH_INDEX.get(project.slug) ?? "").includes(query);
+const matchesQuery = (
+  project: Project,
+  query: string,
+  index: Map<string, string>,
+) => !query || (index.get(project.slug) ?? "").includes(query);
 const matchesStatus = (project: Project, status: StatusFilter) =>
   status === "all" || project.status === status;
 const matchesRegion = (project: Project, region: RegionFilter) =>
@@ -258,7 +227,16 @@ function ProjectCard({ project, href }: { project: Project; href: string }) {
  * Note it only appears in the unfiltered view: once the reader filters, the
  * grid follows the toolbar directly and no brand band shows.
  */
-function Spotlight({ project, basePath }: { project: Project; basePath: string }) {
+function Spotlight({
+  project,
+  dependents,
+  basePath,
+}: {
+  project: Project;
+  /** Projects that name this one in their own Resources panel. */
+  dependents: Project[];
+  basePath: string;
+}) {
   return (
     <Section
       className="projects-spotlight-section"
@@ -306,7 +284,7 @@ function Spotlight({ project, basePath }: { project: Project; basePath: string }
               <div className="projects-spotlight-aside">
                 <TextStrong>Projects built on {project.name}</TextStrong>
                 <ul className="projects-spotlight-list">
-                  {DEPENDENTS.map((dependent) => (
+                  {dependents.map((dependent) => (
                     <li key={dependent.slug}>
                       <TextLink href={`${basePath}/${dependent.slug}`}>
                         {dependent.name}
@@ -325,31 +303,82 @@ function Spotlight({ project, basePath }: { project: Project; basePath: string }
 }
 
 export type ProjectsPageProps = {
+  /** The portfolio to render. Supplied by the consuming app. */
+  projects: Project[];
+  /** Slug of the project given its own spotlight above the grid. */
+  featuredSlug?: string;
+  /** Funder and partner word marks. Omit to render no partner strip. */
+  partners?: string[];
+  /** Region facet order. Omit to show only the "All" chip. */
+  regions?: ProjectRegion[];
+  /** Hero background image. Required: the hero is an image variant. */
+  heroImage: string;
   /**
    * Base path project links are built from, so the block travels with the
    * site that hosts it instead of hardcoding a domain.
    */
   basePath?: string;
+  /** Where the "all publications" CTA points. */
+  publicationsHref?: string;
   /** Where the CTA sends collaboration enquiries. */
   contactEmail?: string;
 };
 
 export function ProjectsPage({
+  projects,
+  featuredSlug,
+  partners = NO_PARTNERS,
+  regions = NO_REGIONS,
+  heroImage,
   basePath = "/projects",
+  publicationsHref = "/publications",
   contactEmail = "info@gwglobalmentalhealth.com",
-}: ProjectsPageProps = {}) {
+}: ProjectsPageProps) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
   const [region, setRegion] = useState<RegionFilter>("all");
+
+  /* Derived from the portfolio, not from the filters: re-deriving the haystack
+     on every keystroke would be pure waste. */
+  const searchIndex = useMemo(
+    () => new Map(projects.map((p) => [p.slug, projectSearchText(p)])),
+    [projects],
+  );
+
+  const featured = useMemo(
+    () => projects.find((p) => p.slug === featuredSlug),
+    [projects, featuredSlug],
+  );
+
+  /** Projects that name the featured project in their own Resources panel. */
+  const dependents = useMemo(
+    () => projects.filter((p) => p.buildsOn === featured?.name),
+    [projects, featured],
+  );
+
+  const stats = useMemo(
+    () => [
+      { value: String(projects.length), label: "Projects" },
+      {
+        value: String(projects.filter((p) => p.status !== "closed").length),
+        label: "Open or ongoing",
+      },
+      {
+        value: String(projects.reduce((total, p) => total + p.publications, 0)),
+        label: "Peer-reviewed publications",
+      },
+    ],
+    [projects],
+  );
 
   const normalisedQuery = query.trim().toLowerCase();
   const isFiltered =
     normalisedQuery !== "" || status !== "all" || region !== "all";
 
   const { visible, statusOptions, regionOptions } = useMemo(() => {
-    const visible = PROJECTS.filter(
+    const visible = projects.filter(
       (p) =>
-        matchesQuery(p, normalisedQuery) &&
+        matchesQuery(p, normalisedQuery, searchIndex) &&
         matchesStatus(p, status) &&
         matchesRegion(p, region),
     );
@@ -365,9 +394,9 @@ export function ProjectsPage({
       })),
     ].map((option) => ({
       ...option,
-      count: PROJECTS.filter(
+      count: projects.filter(
         (p) =>
-          matchesQuery(p, normalisedQuery) &&
+          matchesQuery(p, normalisedQuery, searchIndex) &&
           matchesRegion(p, region) &&
           matchesStatus(p, option.value),
       ).length,
@@ -375,19 +404,19 @@ export function ProjectsPage({
 
     const regionOptions: FacetOption<RegionFilter>[] = [
       { value: "all" as const, label: "All" },
-      ...PROJECT_REGIONS.map((value) => ({ value, label: value })),
+      ...regions.map((value) => ({ value, label: value })),
     ].map((option) => ({
       ...option,
-      count: PROJECTS.filter(
+      count: projects.filter(
         (p) =>
-          matchesQuery(p, normalisedQuery) &&
+          matchesQuery(p, normalisedQuery, searchIndex) &&
           matchesStatus(p, status) &&
           matchesRegion(p, option.value),
       ).length,
     }));
 
     return { visible, statusOptions, regionOptions };
-  }, [normalisedQuery, status, region]);
+  }, [normalisedQuery, status, region, projects, searchIndex, regions]);
 
   const clearAll = () => {
     setQuery("");
@@ -398,16 +427,16 @@ export function ProjectsPage({
   // The spotlight is the unfiltered view's editorial lead. Once the reader is
   // filtering they have asked a specific question, so the grid answers it
   // without a fixed card at the top — and EQUIP rejoins the grid.
-  const showSpotlight = !isFiltered && FEATURED !== undefined;
+  const showSpotlight = !isFiltered && featured !== undefined;
   const gridProjects = showSpotlight
-    ? visible.filter((p) => p.slug !== FEATURED_SLUG)
+    ? visible.filter((p) => p.slug !== featuredSlug)
     : visible;
 
   return (
     <div className="projects-page">
       <Hero
         variant="image"
-        src={HERO_IMAGE}
+        src={heroImage}
         paddingBottom="800"
         flexProps={{ direction: "column", alignSecondary: "start", gap: "1200" }}
       >
@@ -416,7 +445,7 @@ export function ProjectsPage({
           subtitle="Research and implementation initiatives building mental health care that works where specialists are scarce — from cluster-randomized trials to a global training platform."
         />
         <Flex className="projects-stats" wrap gap="1200">
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <div className="projects-stat" key={stat.label}>
               <span className="projects-stat-value">{stat.value}</span>
               <TextSmall className="projects-stat-label">
@@ -445,8 +474,8 @@ export function ProjectsPage({
             <Flex alignSecondary="center" gap="400" wrap>
               <TextSmall className="projects-result-count" aria-live="polite">
                 {isFiltered
-                  ? `Showing ${visible.length} of ${PROJECTS.length} projects`
-                  : `Showing all ${PROJECTS.length} projects`}
+                  ? `Showing ${visible.length} of ${projects.length} projects`
+                  : `Showing all ${projects.length} projects`}
               </TextSmall>
               {isFiltered && (
                 <Button size="sm" variant="ghost" onClick={clearAll}>
@@ -473,8 +502,12 @@ export function ProjectsPage({
         </Flex>
       </Section>
 
-      {showSpotlight && FEATURED && (
-        <Spotlight project={FEATURED} basePath={basePath} />
+      {showSpotlight && featured && (
+        <Spotlight
+          project={featured}
+          dependents={dependents}
+          basePath={basePath}
+        />
       )}
 
       {/* Brand band, continuing the spotlight's surface above it — with the
@@ -506,7 +539,7 @@ export function ProjectsPage({
               <TextHeading>No projects match those filters</TextHeading>
               <Text>
                 Try a different region or status, or clear the filters to see
-                all {PROJECTS.length} projects.
+                all {projects.length} projects.
               </Text>
               <Flex alignPrimary="center">
                 {/* `secondary`, not `outline`: this sits on the brand surface,
@@ -528,7 +561,7 @@ export function ProjectsPage({
             subheading="The organizations funding and delivering this work alongside the Center"
           />
           <Flex wrap gap="400">
-            {PROJECT_PARTNERS.map((partner) => (
+            {partners.map((partner) => (
               <span className="projects-partner" key={partner}>
                 {partner}
               </span>
@@ -572,7 +605,7 @@ export function ProjectsPage({
             <Button
               variant="secondary"
               nativeButton={false}
-              render={<a href="/publications" />}
+              render={<a href={publicationsHref} />}
             >
               Read our publications
             </Button>

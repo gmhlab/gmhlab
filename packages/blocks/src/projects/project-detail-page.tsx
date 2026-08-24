@@ -16,20 +16,21 @@ import {
   TextTitlePage,
 } from "@gmhlab/ui";
 import {
-  hasProjectDetail,
   resolveProjectPublications,
   resolveRelatedProjects,
   type Objective,
   type ProjectDetail,
   type TimelineEntry,
-} from "./project-detail-data";
+} from "./project-detail-types";
+import type { Project } from "./projects-types";
+import type { Publication } from "../publications/publications-types";
 import "./project-detail-page.css";
 
 /**
  * The GW Center for Global Mental Health **project detail** page — the
  * template the portfolio's other projects are built from.
  *
- * It renders a `ProjectDetail` record (see `project-detail-data.ts`) and
+ * It renders a `ProjectDetail` record (see `./project-detail-types`) and
  * nothing else: no project is named in this file. Adding a second project
  * means adding a record, not editing this component.
  *
@@ -70,6 +71,21 @@ import "./project-detail-page.css";
 
 export type ProjectDetailPageProps = {
   detail: ProjectDetail;
+  /**
+   * The portfolio, for resolving `detail.relatedSlugs` into cards. Omit and
+   * the related section renders nothing rather than a row of broken names.
+   */
+  projects?: Project[];
+  /**
+   * The bibliography, for resolving `detail.publications` into real citations.
+   * Omit and the evidence section is skipped.
+   */
+  publications?: Publication[];
+  /**
+   * Slugs that have a detail page. A related card links only when its slug is
+   * here, so a portfolio with few detail records ships no 404s.
+   */
+  detailSlugs?: string[];
   /** Base path the projects index is mounted at. */
   basePath?: string;
   /** Where "all publications" links to. */
@@ -477,12 +493,14 @@ function Eligibility({ detail }: { detail: ProjectDetail }) {
 
 function Evidence({
   detail,
+  publications,
   publicationsHref,
 }: {
   detail: ProjectDetail;
+  publications: Publication[];
   publicationsHref: string;
 }) {
-  const entries = resolveProjectPublications(detail);
+  const entries = resolveProjectPublications(detail, publications);
   if (!entries.length) return null;
 
   return (
@@ -610,12 +628,17 @@ function Collaborate({ detail }: { detail: ProjectDetail }) {
 
 function Related({
   detail,
+  projects,
+  detailSlugs,
   basePath,
 }: {
   detail: ProjectDetail;
+  projects: Project[];
+  /** Slugs that have a detail page of their own. */
+  detailSlugs: string[];
   basePath: string;
 }) {
-  const related = resolveRelatedProjects(detail);
+  const related = resolveRelatedProjects(detail, projects);
   if (!related.length) return null;
 
   return (
@@ -642,7 +665,7 @@ function Related({
                   card that offers nothing. Wrapped in a Flex because
                   `.card-content > *` is forced to width:100%, which would
                   stretch the link's hit area across the card. */}
-              {hasProjectDetail(project.slug) ? (
+              {detailSlugs.includes(project.slug) ? (
                 <Flex>
                   <TextLink href={`${basePath}/${project.slug}`}>
                     View project →
@@ -713,6 +736,9 @@ function Cta({ detail }: { detail: ProjectDetail }) {
 
 export function ProjectDetailPage({
   detail,
+  projects = [],
+  publications = [],
+  detailSlugs = [],
   basePath = "/projects",
   publicationsHref = "/publications",
 }: ProjectDetailPageProps) {
@@ -734,9 +760,18 @@ export function ProjectDetailPage({
       ) : null}
       {detail.timeline?.length ? <Timeline detail={detail} /> : null}
       {detail.eligibility?.length ? <Eligibility detail={detail} /> : null}
-      <Evidence detail={detail} publicationsHref={publicationsHref} />
+      <Evidence
+        detail={detail}
+        publications={publications}
+        publicationsHref={publicationsHref}
+      />
       <Collaborate detail={detail} />
-      <Related basePath={basePath} detail={detail} />
+      <Related
+        basePath={basePath}
+        detail={detail}
+        detailSlugs={detailSlugs}
+        projects={projects}
+      />
       <Cta detail={detail} />
     </div>
   );

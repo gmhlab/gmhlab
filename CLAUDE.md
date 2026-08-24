@@ -14,9 +14,9 @@ Workspaces are `apps/*` and `packages/*` (see `pnpm-workspace.yaml`). Internal p
 
 - `packages/tokens` (`@gmhlab/tokens`) — the **design-token value layer** (the `--mfy-*` namespace). `src/index.css` chains `responsive.css` → `variables.css` → `icons.css` → `globals.css` (`reset.css` exists but is currently commented out). This is a pure value/theme layer — it carries **no** Tailwind directives. `variables.css` is the full token set and is **hand-maintained** — it began as generator output but has since been edited (a Kigen brand ramp prepended and `@media (prefers-color-scheme: dark)` swapped for the `.dark` class). The generator now writes `src/theme.css` *alongside* it as a drift report; see "Design tokens from Figma" below. `src/index.ts` is now **CSS-only** (`import "./index.css"`) — the former typed `tokens` JS object was removed as an unused stub that drifted from `variables.css`; consume tokens as CSS vars. CSS is exposed to consumers as **`@gmhlab/tokens/tokens.css`** (physical file is `dist/index.css`). `private: true`; has no runtime/peer deps.
 - `packages/ui` (`@gmhlab/ui`) — the component library. `src/styles/index.css` is just two imports: `@gmhlab/tokens/tokens.css` (the value layer) followed by `./tailwind.css` (the Tailwind glue). The tokens CSS is **not** inlined: because tsup's `.css` loader is `copy`, esbuild never parses the file, so `dist/index.css` ships a literal `@import "@gmhlab/tokens/tokens.css"` on line 1 (its *relative* imports do get inlined). `@gmhlab/tokens` is therefore a genuine runtime dependency that must be published and resolvable by the consumer's CSS toolchain — it cannot be made `private`. The barrel (`src/index.ts`) imports `./styles/index.css` and re-exports `compositions` (cards, footers, forms, headers, sections), `data/types` (`Product`, `PricingPlan`, …), `hooks` (`useMediaQuery`), `icons`, `images` (SVGs bundled as data URLs via tsup's `.svg` `dataurl` loader), `layouts`, `lib/utils`, and `primitives`. `src/types/react.d.ts` is an ambient-only augmentation (not exported) that widens `React.CSSProperties` to accept `--*` keys — this is what lets the MFY layout/primitive components pass custom properties via `style={{ "--flex-gap": … }}` without a cast. Deleting it breaks typecheck across the repo.
-- `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all seven re-exported from the barrel**: `sections/` (e.g. `WelcomeHero`, `FAQs`, `PanelSections`, `ProductDetails`, plus the data-bound `PricingGrid`/`ProductGrid`), `templates/` (AppShell/Auth/Marketing page templates + `templates.css`), `innovations/`, `projects/`, `publications/` (the three GW site pages — see "GW page blocks" below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
+- `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all seven re-exported from the barrel**: `sections/` (e.g. `WelcomeHero`, `FAQs`, `PanelSections`, `ProductDetails`, plus the data-bound `PricingGrid`/`ProductGrid`), `templates/` (AppShell/Auth/Marketing page templates + `templates.css`), `innovations/`, `projects/`, `publications/` (the GW site pages — **record-driven renderers only**; the records live in `apps/web/src/content/`, see "GW page blocks" below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
 - `apps/docs` (`docs`) — Vite + React 19 reference app that consumes all three packages. Uses `react-router` (`createBrowserRouter` in `src/App.tsx`, pages under `src/pages/`, shared `RootLayout`).
-- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the MonoFly marketing page, assembled from `blocks` sections), plus five GW pages that are each a one-line wrapper around a block — `/projects`, `/projects/reshape` (`ProjectDetailPage` + `RESHAPE_DETAIL`), `/publications`, `/innovations`, and `/innovations/equip` (`InnovationDetailPage`). Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
+- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the MonoFly marketing page, assembled from `blocks` sections), plus five GW pages that are each a thin wrapper passing content records into a block — `/projects`, `/projects/reshape`, `/publications`, `/innovations`, and `/innovations/equip`. **`src/content/` holds those records** (the portfolio, the 343-work bibliography, the innovations, and the RESHAPE/EQUIP detail records) — see "GW page blocks" below. Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
 
 All three packages share the same build shape: tsup (`esm` + `.d.ts`, `.css` "copy" loader), a `build` + `typecheck` script, `files: ["dist"]`, `sideEffects: ["*.css"]`, and a `src/globals.d.ts` ambient `declare module "*.css"` (required, or the DTS/typecheck step fails with TS2882). `ui`/`blocks` tsup `external`s `react`/`react-dom` (blocks also externals the two workspace deps); `tokens` externals nothing. Runtime deps are referenced via `catalog:`; `react`/`react-dom` are `peerDependencies` (blocks also peers `tailwindcss`).
 
@@ -232,14 +232,21 @@ the `apps/docs` workspace.
 
 ## GW page blocks (`innovations/`, `projects/`, `publications/`)
 
-These three are full GW Center for Global Mental Health pages, rebuilt from the
-live site onto the design system. They share one deliberate shape — follow it
-when adding a fourth:
+These are full GW Center for Global Mental Health pages, rebuilt from the live
+site onto the design system. They share one deliberate shape — follow it when
+adding a fourth:
 
+- **The content is not in this package.** `@gmhlab/blocks` is published
+  publicly, and one organization's portfolio and bibliography are not library
+  code. Every page here is a **record-driven renderer**: it takes its records as
+  props and names no project, publication or innovation. The records live in
+  **`apps/web/src/content/`**. This split is what keeps the package generic —
+  it also cut the blocks bundle from 408KB to 161KB.
 - **Three files per page**: `<name>-page.tsx`, a co-located `<name>-page.css`,
-  and (for projects/publications) a `<name>-data.ts` holding the content as
-  typed records. The data module is exported from the barrel too, so a detail
-  page or teaser can read the same records instead of restating them.
+  and a `<name>-types.ts` holding the *contract* — the record types plus the
+  pure helpers that read them (`projectSearchText`, `resolvePublicationRefs`,
+  `resolveRelatedProjects`). All are exported from the barrel, so the consuming
+  app writes its records against them.
 - **Page content only.** No header or footer — the site chrome belongs to
   `apps/web`'s layout (see "The `apps/web` app shell").
 - **CSS is scoped under a page-level class** (`.projects-page`, …) and uses only
@@ -248,21 +255,33 @@ when adding a fourth:
   `@gmhlab/blocks/styles.css`; don't reintroduce that.
 - **Links are prop-driven, not hardcoded** — `ProjectsPage` takes a `basePath`
   so the block travels with whatever site mounts it. If you move a route in
-  `apps/web`, update the `basePath` passed at the call site.
+  `apps/web`, update the `basePath` passed at the call site. Cross-page CTAs
+  take their own prop too (`publicationsHref`, `projectsHref`): two of these
+  had drifted back to hardcoded `/projects` and `/publications`, which is the
+  failure this convention exists to prevent.
 - **Faceted filtering convention**: counts for each facet are computed against
   the *other* active facets (never the whole set), and zero-count options are
   rendered `disabled`, so a chip can never advertise a number and land on an
   empty list. The active option stays enabled so a filter is always reversible.
-- **Data provenance is documented in the data module's header**, including which
-  fields are derived rather than sourced. Read that header before touching the
-  records — it is the spec, and it carries detail this file does not repeat.
+- **Data provenance is documented in each content module's header** (in
+  `apps/web/src/content/`), including which fields are derived rather than
+  sourced. Read that header before touching the records — it is the spec, and it
+  carries detail this file does not repeat.
+- **An index page derives nothing at module scope.** Search indexes, facet
+  lists and stat strips are `useMemo`d on the records prop, because the corpus
+  is no longer a module-level constant. A new derived value goes in a memo keyed
+  on the records, never at file scope.
 
 ### The project *detail* page is one component driven by records
 
-`projects/project-detail-page.{tsx,css}` renders a `ProjectDetail` record from
-`project-detail-data.ts` and **names no project**. Adding a project detail page
-is adding a record plus a one-line route wrapper — never editing the component.
-`RESHAPE_DETAIL` is the first instance and the reference to copy.
+`projects/project-detail-page.{tsx,css}` renders a `ProjectDetail` record (the
+type lives in `project-detail-types.ts`) and **names no project**. Adding a
+project detail page is adding a record in `apps/web/src/content/` plus a route
+wrapper — never editing the component. `RESHAPE_DETAIL` is the first instance
+and the reference to copy.
+
+The same is true of `innovations/innovation-detail-page.{tsx,css}`, which was
+converted to this shape at the same time; `EQUIP_DETAIL` is its first record.
 
 The record models a **study protocol** (arms, objectives ranked
 primary/secondary with their instruments, a two-track assessment schedule,
@@ -274,14 +293,17 @@ eligibility section rather than an empty heading.
 Four things worth knowing before extending it:
 
 - **Publications are slugs into `PUBLICATIONS`, not restated citations.**
-  `resolveProjectPublications` resolves them at render time, so journal, DOI,
-  citation count and open-access status come from the real bibliography. The
+  `resolveProjectPublications(detail, publications)` resolves them at render
+  time against the bibliography passed in as a prop, so journal, DOI, citation
+  count and open-access status come from the real records. The
   per-slug `note` records what a work *is* to the project ("Trial protocol") —
   a relationship the bibliography does not carry. Unknown slugs are dropped,
   so a typo shortens the list rather than breaking a row.
 - **Related projects are slugs into `PROJECTS`**, and a card only renders a
-  link when `hasProjectDetail(slug)` is true. Ten of the eleven projects have
-  no detail record yet; linking them all would ship ten 404s.
+  link when its slug is in the `detailSlugs` prop (the app passes
+  `PROJECT_DETAIL_SLUGS`). Ten of the eleven projects have no detail record
+  yet; linking them all would ship ten 404s. `InnovationsPage` uses the same
+  prop for the same reason.
 - **The timeline is chronological across both tracks, not grouped by track.**
   That ordering is the point — it shows patient enrollment opening while
   providers are still being reassessed. Timepoint codes (T0, T1, …) are the
@@ -302,7 +324,9 @@ push the whole page into horizontal scroll.
 
 ### `publications-data.ts` is generated data with hand-maintained conventions
 
-It is ~5,300 lines and **343 records** (as of 2026-08-13), merging the Center's
+It lives in **`apps/web/src/content/`** (it is the Center's bibliography, not
+library code — see "GW page blocks" above). It is ~5,200 lines and **343
+records** (as of 2026-08-13), merging the Center's
 own listing with the *full* OpenAlex records of Brandon A. Kohrt and Sauharda
 Rai. Google Scholar has no API and blocks scraping, so OpenAlex is the
 substitute — don't reach for Scholar. There is **no generator script in the

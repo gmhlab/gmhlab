@@ -1,43 +1,28 @@
 /**
- * The content model for a GW Center for Global Mental Health *project detail*
- * page, and the RESHAPE record that is its first instance.
+ * Project detail records for the GW Center for Global Mental Health.
  *
- * ## Why this shape
- *
- * The Center's live project pages publish four things — a status line, an
- * abstract, a partner list and a publication list. That is a *summary* of a
- * study, and it is the same shape whether the project is a clinical trial, a
- * measurement-validation effort or a global training platform.
- *
- * The projects in this portfolio are, almost without exception, **studies with
- * protocols**: they randomize something, enroll a population against written
- * criteria, run a schedule of assessments, and measure named outcomes with
- * named instruments. `ProjectDetail` models that protocol directly, so a
- * detail page can show how a study is designed rather than only asserting that
- * it exists. Every field below is optional except the identity block, and the
- * page omits the whole section when a field is absent — a platform project
- * with no eligibility criteria simply renders no eligibility section rather
- * than an empty heading.
+ * The shape they are written against — `ProjectDetail` and the resolvers that
+ * read it — lives in `@gmhlab/blocks`, which documents why the model looks the
+ * way it does. This module is the content.
  *
  * ## Provenance
  *
  * The RESHAPE record is transcribed from the Center's own RESHAPE project
  * specification (Google Doc `1WXn0VBFaiDH0r1621TGrIpIg1865LkosrAPn6eKYxJA`,
  * read 2026-08-13), which supersedes the shorter abstract on the live
- * `/projects/reshape` page. The funder (NIMH / R01), the enrollment targets, the
- * eligibility criteria, the assessment schedule and all four objectives with
- * their instruments come from that document. Partner and resource links come
- * from the live page, which is the only source for them.
+ * `/projects/reshape` page. The funder (NIMH / R01), the enrollment targets,
+ * the eligibility criteria, the assessment schedule and all four objectives
+ * with their instruments come from that document. Partner and resource links
+ * come from the live page, which is the only source for them.
  *
  * Two things are deliberately *not* stored here:
  *
  *   - **Publications.** `publications` holds slugs into `PUBLICATIONS`
- *     (`../publications/publications-data`), so the evidence section renders
- *     real journals, DOIs, citation counts and open-access status from the
- *     Center's actual bibliography instead of a restated list that drifts. The
- *     optional `note` records what a work *is* to this project (its trial
- *     protocol, its pilot, its primary outcomes) — a relationship the
- *     bibliography itself does not carry.
+ *     (`./publications-data`), so the evidence section renders real journals,
+ *     DOIs, citation counts and open-access status from the Center's actual
+ *     bibliography instead of a restated list that drifts. The optional `note`
+ *     records what a work *is* to this project (its trial protocol, its pilot,
+ *     its primary outcomes) — a relationship the bibliography does not carry.
  *   - **Related projects.** `relatedSlugs` indexes `PROJECTS`
  *     (`./projects-data`), so a related card's name and tagline stay in step
  *     with the portfolio.
@@ -46,141 +31,7 @@
  * never rendered as a broken row.
  */
 
-import { PROJECTS, type Project, type ProjectStatus } from "./projects-data";
-import {
-  PUBLICATIONS,
-  type Publication,
-} from "../publications/publications-data";
-
-/** A headline quantity — enrollment targets, sites, duration. */
-export type ProjectFigure = {
-  value: string;
-  label: string;
-  /** Qualifies the number so it is never read as a result. */
-  note?: string;
-};
-
-/** A term/detail pair in the hero's identity rail. */
-export type ProjectFact = { term: string; detail: string };
-
-/** One arm of a randomized comparison. */
-export type ProjectArm = {
-  name: string;
-  abbr?: string;
-  body: string;
-  /** The arm under test, styled as the emphasis of the pair. */
-  isIntervention?: boolean;
-};
-
-/** A named component of the implementation strategy. */
-export type StrategyElement = { term: string; body: string };
-
-/** An instrument used to assess an objective. */
-export type Measure = {
-  /** The acronym the field uses, where there is one. */
-  abbr?: string;
-  name: string;
-  detail?: string;
-};
-
-/**
- * A study objective. `rank` is the protocol's own primary/secondary
- * designation, not an editorial ordering — it governs statistical power, so it
- * is rendered as a label rather than implied by position.
- */
-export type Objective = {
-  rank: "primary" | "secondary";
-  title: string;
-  /** A hypothesis qualifier, e.g. a non-inferiority statement. */
-  note?: string;
-  measures: Measure[];
-};
-
-/** A population followed through the study on its own schedule. */
-export type StudyTrack = {
-  id: string;
-  label: string;
-  /** Who is enrolled on this track. */
-  population: string;
-};
-
-/**
- * One row of the assessment schedule. `point` is an assessment timepoint and
- * carries the protocol's own code (T0, T1, …); `phase` is the interval of
- * activity between two timepoints and has no code because nothing is measured
- * at it.
- */
-export type TimelineEntry = {
-  kind: "point" | "phase";
-  /** Matches a `StudyTrack.id`. */
-  track: string;
-  /** Present on `point` entries only. */
-  code?: string;
-  when: string;
-  title: string;
-  detail?: string;
-  /** Sub-populations an assessment is completed with. */
-  cohorts?: string[];
-};
-
-export type EligibilityGroup = {
-  group: string;
-  criteria: string[];
-};
-
-/** A publication slug plus what that work is to this project. */
-export type ProjectPublicationRef = {
-  /** A `Publication.slug` in `PUBLICATIONS`. */
-  slug: string;
-  note?: string;
-};
-
-export type ProjectResource = {
-  label: string;
-  href: string;
-  /** Distinguishes a PDF download from an outbound page. */
-  kind?: "document" | "site";
-};
-
-export type ProjectContact = {
-  name: string;
-  role?: string;
-  email: string;
-};
-
-export type ProjectDetail = {
-  /** Matches a `Project.slug` in `PROJECTS`. */
-  slug: string;
-  name: string;
-  /** Expansion of the acronym, where the name is one. */
-  expandedName?: string;
-  tagline: string;
-  status: ProjectStatus;
-  /** The Center's own wording, e.g. "Enrollment closed". */
-  statusLabel: string;
-  /** The opening paragraph: what the study is, in one breath. */
-  lede: string;
-  facts: ProjectFact[];
-  figures?: ProjectFigure[];
-  /** Paragraphs establishing the problem the study addresses. */
-  rationale?: string[];
-  arms?: ProjectArm[];
-  strategy?: {
-    heading: string;
-    body: string[];
-    elements?: StrategyElement[];
-  };
-  objectives?: Objective[];
-  hypotheses?: string[];
-  tracks?: StudyTrack[];
-  timeline?: TimelineEntry[];
-  eligibility?: EligibilityGroup[];
-  publications?: ProjectPublicationRef[];
-  partners?: string[];
-  resources?: ProjectResource[];
-  contact?: ProjectContact;
-  relatedSlugs?: string[];
-};
+import type { ProjectDetail } from "@gmhlab/blocks";
 
 /* -------------------------------------------------------------------------- */
 /* RESHAPE                                                                     */
@@ -523,46 +374,14 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
   [RESHAPE_DETAIL.slug]: RESHAPE_DETAIL,
 };
 
+/**
+ * The slugs that have a detail page, passed to the blocks so a related-project
+ * card links only where a route exists. The portfolio lists eleven projects and
+ * only some have records yet; as records are added the links appear on their
+ * own.
+ */
+export const PROJECT_DETAIL_SLUGS = Object.keys(PROJECT_DETAILS);
+
 export function getProjectDetail(slug: string): ProjectDetail | undefined {
   return PROJECT_DETAILS[slug];
-}
-
-/**
- * Whether a project has a detail page to link to. The portfolio lists eleven
- * projects and only some have records yet, so a related-project card checks
- * this before rendering a link rather than pointing at a route that 404s. As
- * records are added the links appear on their own.
- */
-export function hasProjectDetail(slug: string): boolean {
-  return slug in PROJECT_DETAILS;
-}
-
-/**
- * Resolve a detail record's publication slugs against the Center's
- * bibliography, newest first. Unknown slugs are dropped rather than rendered
- * as an empty row, so a typo degrades to a shorter list.
- */
-export type ResolvedProjectPublication = {
-  publication: Publication;
-  note?: string;
-};
-
-export function resolveProjectPublications(
-  detail: ProjectDetail,
-): ResolvedProjectPublication[] {
-  const bySlug = new Map(PUBLICATIONS.map((p) => [p.slug, p]));
-  return (detail.publications ?? [])
-    .flatMap<ResolvedProjectPublication>((ref) => {
-      const publication = bySlug.get(ref.slug);
-      return publication ? [{ publication, note: ref.note }] : [];
-    })
-    .sort((a, b) => b.publication.date.localeCompare(a.publication.date));
-}
-
-/** Resolve related project slugs against the portfolio, preserving order. */
-export function resolveRelatedProjects(detail: ProjectDetail): Project[] {
-  const bySlug = new Map(PROJECTS.map((p) => [p.slug, p]));
-  return (detail.relatedSlugs ?? [])
-    .map((slug) => bySlug.get(slug))
-    .filter((project): project is Project => Boolean(project));
 }
