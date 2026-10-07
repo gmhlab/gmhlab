@@ -1,10 +1,50 @@
-/* Figma's footer (7717:4142) sits on the default surface and uses a top
- * border to separate itself from the page. This footer is a brand section
- * instead — the background change already does the separating — but the
- * border is kept so the two stay in step. It reads on both themes: gray-300
- * against the dark brand surface in light mode, gray-600 against the light
- * one in dark mode. */
+/* GW footer: navy brand band (with Section's gold bloom), small-caps gold
+ * column titles, gold-300 links that brighten to white, and a hairline-ruled
+ * base row. gold-300 is 7.4:1 on navy; the titles use gold-400 (5.6:1) because
+ * at 11px uppercase they need the full AA margin, not the large-text one.
+ *
+ * The top border stays from Figma's footer (7717:4142), which sits on the
+ * default surface; here it is the gold hairline. */
 .footer {
   border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
+    color-mix(in oklch, var(--mfy-color-gold-500) 35%, transparent);
+
+  .footer-columns > * {
+    min-width: 0;
+  }
+
+  .footer-column-title {
+    color: var(--mfy-color-gold-400);
+    display: block;
+    font: var(--mfy-font-body-small-strong);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .text-body-link {
+    color: var(--mfy-color-gold-300);
+    text-decoration-color: transparent;
+    transition:
+      color var(--global-duration-fast) ease,
+      text-decoration-color var(--global-duration-fast) ease;
+    &:hover {
+      color: var(--mfy-color-white-1000);
+      text-decoration-color: currentColor;
+      text-decoration-thickness: 1px;
+    }
+  }
+}
+
+.footer-legal {
+  border-top: var(--mfy-size-stroke-border) solid
+    color-mix(in oklch, var(--mfy-color-gold-500) 28%, transparent);
+  color: color-mix(in oklch, var(--mfy-color-gold-300) 78%, transparent);
+  display: flex;
+  flex-wrap: wrap;
+  font: var(--mfy-font-body-small);
+  font-size: 0.8125rem;
+  gap: var(--mfy-size-space-300) var(--mfy-size-space-600);
+  justify-content: space-between;
+  padding-top: var(--mfy-size-space-600);
 }

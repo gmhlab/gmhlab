@@ -14,9 +14,9 @@ Workspaces are `apps/*` and `packages/*` (see `pnpm-workspace.yaml`). Internal p
 
 - `packages/tokens` (`@gmhlab/tokens`) — the **design-token value layer** (the `--mfy-*` namespace). `src/index.css` chains `responsive.css` → `variables.css` → `icons.css` → `globals.css` (`reset.css` exists but is currently commented out). This is a pure value/theme layer — it carries **no** Tailwind directives. `variables.css` is the full token set and is **hand-maintained** — it began as generator output but has since been edited (a Kigen brand ramp prepended and `@media (prefers-color-scheme: dark)` swapped for the `.dark` class). The generator now writes `src/theme.css` *alongside* it as a drift report; see "Design tokens from Figma" below. `src/index.ts` is now **CSS-only** (`import "./index.css"`) — the former typed `tokens` JS object was removed as an unused stub that drifted from `variables.css`; consume tokens as CSS vars. CSS is exposed to consumers as **`@gmhlab/tokens/tokens.css`** (physical file is `dist/index.css`). `private: true`; has no runtime/peer deps.
 - `packages/ui` (`@gmhlab/ui`) — the component library. `src/styles/index.css` is just two imports: `@gmhlab/tokens/tokens.css` (the value layer) followed by `./tailwind.css` (the Tailwind glue). The tokens CSS is **not** inlined: because tsup's `.css` loader is `copy`, esbuild never parses the file, so `dist/index.css` ships a literal `@import "@gmhlab/tokens/tokens.css"` on line 1 (its *relative* imports do get inlined). `@gmhlab/tokens` is therefore a genuine runtime dependency that must be published and resolvable by the consumer's CSS toolchain — it cannot be made `private`. The barrel (`src/index.ts`) imports `./styles/index.css` and re-exports `compositions` (cards, footers, forms, headers, sections), `data/types` (`Product`, `PricingPlan`, …), `hooks` (`useMediaQuery`), `icons`, `images` (SVGs bundled as data URLs via tsup's `.svg` `dataurl` loader), `layouts`, `lib/utils`, and `primitives`. `src/types/react.d.ts` is an ambient-only augmentation (not exported) that widens `React.CSSProperties` to accept `--*` keys — this is what lets the MFY layout/primitive components pass custom properties via `style={{ "--flex-gap": … }}` without a cast. Deleting it breaks typecheck across the repo.
-- `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all six re-exported from the barrel**: `examples/` (the demo sections that make up the MonoFly marketing page in `apps/web` — `WelcomeHero`, `FAQs`, `PanelSections`, `ProductDetails`, plus the data-bound `PricingGrid`/`ProductGrid`; they take no props and carry their own hardcoded content, which is what separates them from the record-driven page blocks below), `innovations/`, `projects/`, `publications/` (the GW site pages — **record-driven renderers only**; the records live in `apps/web/src/content/`, see "GW page blocks" below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
-- `apps/docs` (`docs`) — Vite + React 19 reference app that consumes all three packages. Uses `react-router` (`createBrowserRouter` in `src/App.tsx`, pages under `src/pages/`, shared `RootLayout`). `ComponentsPage` is the `@gmhlab/ui` gallery and `BlocksPage` is its `@gmhlab/blocks` counterpart; the five **record-driven page blocks** get live demo routes under `/blocks/*` (`src/pages/blocks/`), fed by the synthetic corpus in **`src/fixtures/sample-content.ts`** — an invented institute, since a block that could only render the GW Center's records would not be library code. Those routes are mounted a level down from where `apps/web` mounts the same blocks, which is what exercises the `basePath` prop; the fixture also carries one deliberately unresolvable publication slug so the fail-soft reference resolution is visible. Each demo route wrapper passes its own `basePath`, so moving a route means editing the wrapper too.
-- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the MonoFly marketing page, assembled from `blocks` sections), plus five GW pages that are each a thin wrapper passing content records into a block — `/projects`, `/projects/reshape`, `/publications`, `/innovations`, and `/innovations/equip`. **`src/content/` holds those records** (the portfolio, the 343-work bibliography, the innovations, and the RESHAPE/EQUIP detail records) — see "GW page blocks" below. Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
+- `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all seven re-exported from the barrel**: `home/` (`HomePage`, the record-driven landing page — see "The GW landing page" below), `examples/` (the demo sections that make up the MonoFly showcase page at `/showcase` in `apps/web` — `WelcomeHero`, `FAQs`, `PanelSections`, `ProductDetails`, plus the data-bound `PricingGrid`/`ProductGrid`; they take no props and carry their own hardcoded content, which is what separates them from the record-driven page blocks below), `innovations/`, `projects/`, `publications/` (the GW site pages — **record-driven renderers only**; the records live in `apps/web/src/content/`, see "GW page blocks" below), `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS), and `data/` — the SDS-style mock data layer (auth/pricing/products contexts, providers, hooks, and mock services — `AllProviders`, `useAuth`, etc.). Domain types like `Product`/`PricingPlan` live in `@gmhlab/ui` (`src/data/types/`) because the `cards.tsx` compositions need them; the blocks data layer re-exports them and adds the context types. blocks is bundled with a `"use client"` banner, so its providers work directly in Next.js apps. tsup `external`s `react`, `react-dom`, `@gmhlab/ui`, and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. CSS exposed as `@gmhlab/blocks/styles.css`.
+- `apps/docs` (`docs`) — Vite + React 19 reference app that consumes all three packages. Uses `react-router` (`createBrowserRouter` in `src/App.tsx`, pages under `src/pages/`, shared `RootLayout`). `ComponentsPage` is the `@gmhlab/ui` gallery and `BlocksPage` is its `@gmhlab/blocks` counterpart; the six **record-driven page blocks** get live demo routes under `/blocks/*` (`src/pages/blocks/`), fed by the synthetic corpus in **`src/fixtures/sample-content.ts`** — an invented institute, since a block that could only render the GW Center's records would not be library code. Those routes are mounted a level down from where `apps/web` mounts the same blocks, which is what exercises the `basePath` prop; the fixture also carries one deliberately unresolvable publication slug so the fail-soft reference resolution is visible. Each demo route wrapper passes its own `basePath`, so moving a route means editing the wrapper too.
+- `apps/web` (`web`) — Next.js 16 App Router site consuming all three packages (own copy of `theme-provider`). Routes: `/` (the GW landing page — `HomePage` fed `HOME_CONTENT`), `/showcase` (the former MonoFly marketing page, assembled from the `blocks` `examples/` sections and linked from nowhere), plus five GW pages that are each a thin wrapper passing content records into a block — `/projects`, `/projects/reshape`, `/publications`, `/innovations`, and `/innovations/equip`. **`src/content/` holds those records** (the landing page, the portfolio, the 343-work bibliography, the innovations, and the RESHAPE/EQUIP detail records) — see "GW page blocks" below. Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
 
 All three packages share the same build shape: tsup (`esm` + `.d.ts`, `.css` "copy" loader), a `build` + `typecheck` script, `files: ["dist"]`, `sideEffects: ["*.css"]`, and a `src/globals.d.ts` ambient `declare module "*.css"` (required, or the DTS/typecheck step fails with TS2882). `ui`/`blocks` tsup `external`s `react`/`react-dom` (blocks also externals the two workspace deps); `tokens` externals nothing. Runtime deps are referenced via `catalog:`; `react`/`react-dom` are `peerDependencies` (blocks also peers `tailwindcss`).
 
@@ -81,7 +81,7 @@ The apps import `@gmhlab/ui`/`@gmhlab/blocks`, which resolve through package.jso
 Two things make the shell work:
 
 - **`AllProviders` renders no DOM** (it is only nested context providers), so the header, `<main>` and footer are the `<body>`'s own flex children. `globals.css` makes `body` a `min-height: 100vh` flex column with `.site-main { flex: 1 }` — that is what lets the ui `Footer`'s `margin-top: auto` actually pin to the bottom.
-- **`site-header.tsx` / `site-footer.tsx` are thin client wrappers around the ui `Header`/`Footer`.** `layout.tsx` is a server component (it exports `metadata`). Note that **both** `@gmhlab/ui` and `@gmhlab/blocks` now ship a `"use client"` banner on the whole bundle (see each `tsup.config.ts`), so the wrappers are no longer strictly required for the directive's sake — they are kept as the app's own boundary. Don't cite the banner's absence as the reason they exist; that was true of an earlier build config.
+- **`site-header.tsx` / `site-footer.tsx` are thin client wrappers around the ui `Header`/`Footer`.** `site-header.tsx` also exports `SiteUtilityBar` (the ui `UtilityBar`, a non-sticky deep-navy strip rendered *above* the sticky header) and passes the header a `wordmark`. `Header` is no longer a brand section: it is translucent paper over a backdrop blur with gold-underline nav links, and its scroll shadow is a CSS scroll-driven animation (no JS). `Footer` takes `columns`, `aside` and `legal`; its defaults are Figma's placeholder content (and social links to Figma's accounts), so the site passes its own and `aside={null}`. `layout.tsx` is a server component (it exports `metadata`). Note that **both** `@gmhlab/ui` and `@gmhlab/blocks` now ship a `"use client"` banner on the whole bundle (see each `tsup.config.ts`), so the wrappers are no longer strictly required for the directive's sake — they are kept as the app's own boundary. Don't cite the banner's absence as the reason they exist; that was true of an earlier build config.
 
 ## Styling architecture: value layer vs. Tailwind glue
 
@@ -91,6 +91,18 @@ The split is deliberate — know which side you're editing:
 - **`@gmhlab/ui/src/styles/tailwind.css` = Tailwind glue, compiled by the *consumer's* Tailwind.** Holds `@custom-variant dark (&:is(.dark *))`, `@theme inline` (maps Tailwind color/radius/font vars onto shadcn `--background`/`--primary`/… vars, *and* onto the full `--mfy-*` set — see below), the shadcn `:root` + `.dark` OKLCH color definitions, the `type-*` `@utility` block, and an `@layer base` block. Because this is shipped as CSS (via the `.css` copy loader, not compiled by tsup), the app's Tailwind is what processes `@theme`/`@apply`.
 
 Both light/dark systems key off the **same `.dark` class** on `<html>`, so the `--mfy-*` token theme and the shadcn/Tailwind theme switch together.
+
+### The GW palette (since 2026-10-07)
+
+The system was re-skinned to the GW reference design (`.files/gw-global-mental-health.html`). What changed in `variables.css`, and why:
+
+- **Primary is unchanged** — `brand-800` already was GW navy `#033c5a`.
+- **Secondary brand colour = GW gold `#aa9868`**, primitive ramp `--mfy-color-gold-50…950` (anchored at 500; 100/300 pinned to the reference's `#f0ebe0`/`#d8cdb2`), semantic group **`accent`** mirroring the brand group step for step (`background-accent-*`, `text-accent-*`, `on-accent`, …; Tailwind `surface-accent`, `content-accent`, `line-accent`, `icon-accent`, plus clean `gold-*`). Not called "secondary": that word is already a *step* name (`surface-secondary`). `#aa9868` is **2.7:1 on paper** — rules, fills, borders and solid buttons only (with navy text, 5.8:1). Gold *text* is `text-accent-default` = gold-700 (AA on all light surfaces); display italics use gold-600. The reference HTML's own 12px gold eyebrows fail AA — don't copy its colours literally.
+- **The `default` group sits on a new `stone` ramp** (warm paper at the light end, GW navy-ink at the dark end) instead of `gray`. Dark mode is navy-ink, not charcoal.
+- **Brand surfaces stay navy after dark.** `background-brand-default/hover` and `text/icon-brand-on-brand` no longer flip to a pale tint in `.dark`; instead the shadcn `--primary` turns gold in `.dark` (in `tailwind.css`), since a navy button on a navy-ink page has no affordance.
+- Radii are crisper (`radius-100/200/400` = 2/4/8px; shadcn `--radius` tracks `radius-200`), headings (`heading-font-*`) are Baskerville regular, and family stacks put the macOS faces first with a web fallback reachable through an optional hook: `var(--mfy-typography-family-{serif,sans}-web, "Libre Baskerville" | "Nunito Sans")`. `apps/web` fills the hook from `next/font`; `apps/docs` loads the literal families from Google Fonts.
+- **Heading colour** is navy via `--text-heading-color` (set in `globals.css`, consumed by the Text title/heading classes). **Any surface that paints its own foreground must reset it to `currentColor`** — `Section`/`Card` brand variants do, as do the two hand-painted brand panels in blocks. Forget it and a heading goes navy-on-navy.
+- **`globals.css` element defaults are in `@layer base`.** Unlayered, `button { font: … }` beat every Tailwind utility on a `<button>` — `Button`'s `text-sm font-semibold` was silently ignored, and only Buttons rendered as `<a>` looked right. Never move element rules back out of the layer.
 
 **There is no `--sds-*` namespace.** The repo descends from SDS and the prefix
 was renamed to `--mfy-*`. The repo is at zero `sds-` references; anything pasted
@@ -122,11 +134,11 @@ essentials:
   `utilities` group word, collapse `{group}-on-{group}` to `on-{group}`. So
   `background-default-default` → `surface-default`, `text-default-secondary` →
   `content-secondary`, `text-brand-on-brand` → `content-on-brand`. Collision-free
-  across all 136 semantic tokens with one marked exception (`icon-annotation`).
+  across all 157 semantic tokens (accent included) with one marked exception (`icon-annotation`).
 - **The accessibility traps above apply under the new names too**: `content-tertiary`
-  is the ~2:1 hairline tone, `content-on-brand-secondary` inverts, and
-  `line-default` is the same value as `surface-tertiary` (so it is invisible on a
-  neutral band — use `line-secondary`).
+  is the ~2:1 hairline tone and `content-on-brand-secondary` inverts.
+  (`line-default` is now an alpha hairline that reads on every surface; it no
+  longer equals `surface-tertiary`.)
 - **Raw ramps are namespaced `mfy-`** (`bg-mfy-gray-300`) because Tailwind ships
   its own gray/blue/red/green/pink/yellow/slate and this repo uses them. Only
   `brand-*` gets a clean name, since Tailwind has no brand palette.
@@ -187,34 +199,27 @@ Two traps:
 
 `scripts/plugins/figma-plugin-token-json/code.js` must keep `NAMESPACE` identical to `app.mjs` (`com.figma.monofly`) — a mismatch collapses every token to a single `default` mode and drops all light/dark data, again silently.
 
-## Muted text colour depends on the surface (an accessibility trap)
+## Muted text and the remaining contrast traps
 
-Token names describe a step on a ramp, not a contrast level, so the "quiet" tone
-that is safe on one surface fails on another. Two tokens are actively dangerous:
+Since the 2026-10-07 re-skin, `text-default-secondary` is `stone-600` (#5e676e),
+picked by measurement to pass AA on **every** light surface: 5.5:1 on paper
+(`background-default-default`), 5.2:1 on tint (`-secondary`), 4.6:1 on the
+neutral band (`-tertiary`). The old per-surface table (secondary failing at 3.1:1
+on the #d9d9d9 band) no longer applies; blocks CSS comments that still cite
+#757575/#d9d9d9 are conservative, not wrong. Two tokens remain dangerous:
 
 - **`--mfy-color-text-default-tertiary` must never carry text.** It is
-  `gray-400` (#b3b3b3) in light — roughly **2:1 on white**. It is a
-  hairline/disabled tone. Six call sites across `blocks` were failing on this.
+  `stone-400` (#b9b4a9) in light — roughly **2:1 on paper**. A hairline/disabled tone.
 - **`--mfy-color-text-brand-on-brand-secondary` is not a muted `on-brand`.** The
-  pair *inverts*: on-brand is `brand-100` light / `brand-900` dark, while
-  on-brand-secondary is `brand-900` light / `brand-100` dark. It is for text on a
-  light brand *tint*. On a solid `variant="brand"` surface it renders
-  navy-on-navy at **1.03:1**. Use `color: inherit` (the brand Section/Card
-  already sets `text-brand-on-brand`) and quiet it with `opacity`.
+  pair *inverts*: on-brand-secondary is `brand-900` in light. On a solid
+  `variant="brand"` surface it renders navy-on-navy at **1.03:1**. Use
+  `color: inherit` (the brand Section/Card already sets `text-brand-on-brand`)
+  and quiet it with `opacity`, or use `gold-300` (7.4:1 on navy).
 
-The safe muted tone by surface:
-
-| Surface | Token | Safe muted text |
-| --- | --- | --- |
-| Card / default | `background-default-default` (white) | `text-default-secondary` — 4.6:1 |
-| Neutral band (`Section variant="neutral"`) | `background-default-tertiary` (#d9d9d9) | `text-default-default` — `secondary` is only 3.1:1 here |
-| Tinted chip/tile | `background-default-secondary` (#f5f5f5) | `text-default-default` — `secondary` drops to 4.2:1 |
-
-Anything painting its own tinted surface loses roughly half a step of headroom,
-which is what pushes `secondary` under AA. **Light mode is where these break;
-dark mode passes on every surface and hides the bug**, so never verify in dark
-alone. Measure rather than eyeball: the tokens compute to `lab()`/`oklch()`, so a
-naive `match(/[\d.]+/g)` RGB parser silently reports nonsense — convert through a
+`border-default-default` is now an **alpha hairline** (navy 16% light, gold-tint
+16% dark), so it reads on every surface — the old "borders vanish on the neutral
+band" trap is retired. Light mode is still where contrast breaks; never verify in
+dark alone. Measure rather than eyeball, converting `lab()`/`oklch()` through a
 canvas 2d `fillStyle` first.
 
 ## Generating section mockups (Nano Banana Pro)
@@ -313,13 +318,34 @@ Four things worth knowing before extending it:
   timepoint chip. The media query documents this inline; keep each entry as its
   own three-column grid.
 
-Two design-system traps this page hit, both of which fail silently:
-`--mfy-color-border-default-default` is the *same* value as
-`--mfy-color-background-default-tertiary`, so hairlines drawn on a
-`Section variant="neutral"` are invisible in **both** themes (use
-`border-default-secondary`); and grid children of a `Flex container` need
+A design-system trap this page hit, which fails silently (a second one —
+the default border matching the neutral band — was retired by the 2026-10-07
+re-skin; the `border-default-secondary` call sites it left are still fine): grid children of a `Flex container` need
 `min-width: 0`, since flex items default to `min-width: auto` and let a grid
 push the whole page into horizontal scroll.
+
+### The GW landing page (`home/`)
+
+`HomePage` takes one `HomeContent` record (`home-types.ts`); every section after
+`hero`/`stats` is optional and conditional on its record. `apps/web/src/content/home-data.ts`
+**derives every figure** (stat band, per-theme publication counts on the cards,
+the funder wall) from `PROJECTS`/`PUBLICATIONS` — don't type numbers in. The one
+sourced figure (the care-gap field, 24 of 100) carries its WHO citation on the
+page. The live site deliberately has **no pull quote**: the reference's quote is
+unattributed design copy and must not be put under a real GW role; the docs demo
+exercises that section with the synthetic institute. Placeholder photos have
+`alt=""` because describing a random picsum scene would be false.
+
+Motion is progressive and server-safe: `useReveal` marks on-screen elements
+visible *before* enabling the hidden state, and `StatsCard countUp` only counts
+cards that mount below the fold, so SSR HTML never blinks to 0. Everything is off
+under `prefers-reduced-motion`.
+
+New ui pieces it introduced, all reusable: `TextEyebrow`, `TextBlockquote`, the
+`eyebrow` prop on `TextContentHeading`/`TextContentTitle`, `Image treatment="duotone"`
+(navy shadows, gold highlights), `Button`/`Badge` `variant="accent"`,
+`Section variant="tint"`, the restyled `StatsCard`, and the brand-band gold glow
+on every `Section variant="brand"`.
 
 ### `publications-data.ts` is generated data with hand-maintained conventions
 

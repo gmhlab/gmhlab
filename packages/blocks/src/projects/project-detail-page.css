@@ -311,6 +311,7 @@
    versus outlined treatment encodes that difference rather than decorating
    it. */
 .project-detail-page .pd-objective-rank-primary {
+  --text-heading-color: currentColor; /* brand panel: headings follow on-brand */
   background: var(--mfy-color-background-brand-default);
   color: var(--mfy-color-text-brand-on-brand);
 }

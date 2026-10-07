@@ -32,7 +32,7 @@
  *     text-brand-on-brand-secondary   -> content-on-brand-secondary
  *     background-utilities-overlay    -> surface-overlay
  *
- * That rule is collision-free across all 136 semantic tokens with exactly one
+ * That rule is collision-free across all 157 semantic tokens (accent included) with exactly one
  * exception, marked inline below. Adding a token to variables.css? Apply the
  * same rule and add it here — nothing generates this file.
  *
@@ -193,6 +193,14 @@
     --color-surface-warning-tertiary:         var(--mfy-color-background-warning-tertiary);
     --color-surface-warning-tertiary-hover:   var(--mfy-color-background-warning-tertiary-hover);
 
+    /* The accent group — GW gold, the secondary brand colour. */
+    --color-surface-accent:                   var(--mfy-color-background-accent-default);
+    --color-surface-accent-hover:             var(--mfy-color-background-accent-hover);
+    --color-surface-accent-secondary:         var(--mfy-color-background-accent-secondary);
+    --color-surface-accent-secondary-hover:   var(--mfy-color-background-accent-secondary-hover);
+    --color-surface-accent-tertiary:          var(--mfy-color-background-accent-tertiary);
+    --color-surface-accent-tertiary-hover:    var(--mfy-color-background-accent-tertiary-hover);
+
     /* Text -> content-*. The accessibility trap documented in CLAUDE.md applies
        to these names too: content-tertiary is a hairline tone (~2:1 on white)
        and must never carry text, and content-on-brand-secondary INVERTS rather
@@ -234,10 +242,19 @@
     --color-content-on-warning-tertiary:   var(--mfy-color-text-warning-on-warning-tertiary);
     --color-content-warning-secondary:     var(--mfy-color-text-warning-secondary);
     --color-content-warning-tertiary:      var(--mfy-color-text-warning-tertiary);
+    /* content-accent is gold-700 and AA on every light surface; the
+       -secondary/-tertiary steps are large/decorative only. on-accent is navy. */
+    --color-content-accent:                var(--mfy-color-text-accent-default);
+    --color-content-on-accent:             var(--mfy-color-text-accent-on-accent);
+    --color-content-on-accent-secondary:   var(--mfy-color-text-accent-on-accent-secondary);
+    --color-content-on-accent-tertiary:    var(--mfy-color-text-accent-on-accent-tertiary);
+    --color-content-accent-secondary:      var(--mfy-color-text-accent-secondary);
+    --color-content-accent-tertiary:       var(--mfy-color-text-accent-tertiary);
 
-    /* Borders -> line-*. line-default is the same value as surface-tertiary, so
-       a hairline drawn with border-line-default is invisible on a neutral band
-       in BOTH themes — reach for border-line-secondary there. */
+    /* Borders -> line-*. line-default is an ALPHA hairline (navy 16% in light,
+       gold-tint 16% in dark), so it reads on paper, tint and the neutral band
+       alike. Reach for border-line-secondary when a line must be clearly
+       structural (a timeline spine), not merely present. */
     --color-line-brand:              var(--mfy-color-border-brand-default);
     --color-line-brand-secondary:    var(--mfy-color-border-brand-secondary);
     --color-line-brand-tertiary:     var(--mfy-color-border-brand-tertiary);
@@ -259,6 +276,9 @@
     --color-line-warning:            var(--mfy-color-border-warning-default);
     --color-line-warning-secondary:  var(--mfy-color-border-warning-secondary);
     --color-line-warning-tertiary:   var(--mfy-color-border-warning-tertiary);
+    --color-line-accent:             var(--mfy-color-border-accent-default);
+    --color-line-accent-secondary:   var(--mfy-color-border-accent-secondary);
+    --color-line-accent-tertiary:    var(--mfy-color-border-accent-tertiary);
 
     /* Icons -> icon-*. Usable from any color utility, so text-icon-brand tints
        a stroked icon and fill-icon-brand a filled one.
@@ -302,6 +322,12 @@
     --color-icon-on-warning-tertiary:   var(--mfy-color-icon-warning-on-warning-tertiary);
     --color-icon-warning-secondary:     var(--mfy-color-icon-warning-secondary);
     --color-icon-warning-tertiary:      var(--mfy-color-icon-warning-tertiary);
+    --color-icon-accent:                var(--mfy-color-icon-accent-default);
+    --color-icon-on-accent:             var(--mfy-color-icon-accent-on-accent);
+    --color-icon-on-accent-secondary:   var(--mfy-color-icon-accent-on-accent-secondary);
+    --color-icon-on-accent-tertiary:    var(--mfy-color-icon-accent-on-accent-tertiary);
+    --color-icon-accent-secondary:      var(--mfy-color-icon-accent-secondary);
+    --color-icon-accent-tertiary:       var(--mfy-color-icon-accent-tertiary);
 
     /* The brand ramp (Astronaut Blue). Tailwind ships no `brand` palette, so
        this one keeps a clean name. Prefer the semantic aliases above; a raw step
@@ -317,6 +343,20 @@
     --color-brand-800: var(--mfy-color-brand-800);
     --color-brand-900: var(--mfy-color-brand-900);
     --color-brand-950: var(--mfy-color-brand-950);
+
+    /* GW gold, the secondary brand ramp. Tailwind ships no `gold` palette
+       either, so it gets a clean name like brand: bg-gold-500 is #aa9868. */
+    --color-gold-50:  var(--mfy-color-gold-50);
+    --color-gold-100: var(--mfy-color-gold-100);
+    --color-gold-200: var(--mfy-color-gold-200);
+    --color-gold-300: var(--mfy-color-gold-300);
+    --color-gold-400: var(--mfy-color-gold-400);
+    --color-gold-500: var(--mfy-color-gold-500);
+    --color-gold-600: var(--mfy-color-gold-600);
+    --color-gold-700: var(--mfy-color-gold-700);
+    --color-gold-800: var(--mfy-color-gold-800);
+    --color-gold-900: var(--mfy-color-gold-900);
+    --color-gold-950: var(--mfy-color-gold-950);
 
     /* The remaining raw ramps, prefixed `mfy-` because Tailwind already ships
        gray/blue/red/green/pink/yellow/slate and this repo uses them
@@ -408,6 +448,21 @@
     --color-mfy-slate-800:  var(--mfy-color-slate-800);
     --color-mfy-slate-900:  var(--mfy-color-slate-900);
 
+    /* stone — the warm-paper-to-navy-ink neutral behind the `default` group.
+       Prefixed because Tailwind ships its own `stone`. */
+    --color-mfy-stone-50:   var(--mfy-color-stone-50);
+    --color-mfy-stone-100:  var(--mfy-color-stone-100);
+    --color-mfy-stone-200:  var(--mfy-color-stone-200);
+    --color-mfy-stone-300:  var(--mfy-color-stone-300);
+    --color-mfy-stone-400:  var(--mfy-color-stone-400);
+    --color-mfy-stone-500:  var(--mfy-color-stone-500);
+    --color-mfy-stone-600:  var(--mfy-color-stone-600);
+    --color-mfy-stone-700:  var(--mfy-color-stone-700);
+    --color-mfy-stone-800:  var(--mfy-color-stone-800);
+    --color-mfy-stone-900:  var(--mfy-color-stone-900);
+    --color-mfy-stone-950:  var(--mfy-color-stone-950);
+    --color-mfy-stone-1000: var(--mfy-color-stone-1000);
+
     /* white */
     --color-mfy-white-100:  var(--mfy-color-white-100);
     --color-mfy-white-1000: var(--mfy-color-white-1000);
@@ -479,7 +534,8 @@
    below inherits dark mode for free — so the .dark block here only needs to
    override what has no MFY source (the chart ramp). */
 :root {
-    --radius: 0.625rem;
+    /* Tracks --mfy-size-radius-200 (4px): GW's edges are crisp, not pillowy. */
+    --radius: var(--mfy-size-radius-200);
 
     --background: var(--mfy-color-background-default-default);
     --foreground: var(--mfy-color-text-default-default);
@@ -513,7 +569,7 @@
 
     --border: var(--mfy-color-border-default-default);
     --input: var(--mfy-color-border-default-default);
-    --ring: var(--mfy-color-border-brand-tertiary);
+    --ring: var(--mfy-color-border-accent-default);
 
     /* No MFY semantic source — kept as literals; dark values live in .dark below. */
     --chart-1: oklch(0.646 0.222 41.116);
@@ -529,7 +585,7 @@
     --sidebar-accent: var(--mfy-color-background-default-secondary);
     --sidebar-accent-foreground: var(--mfy-color-text-default-default);
     --sidebar-border: var(--mfy-color-border-default-default);
-    --sidebar-ring: var(--mfy-color-border-brand-tertiary);
+    --sidebar-ring: var(--mfy-color-border-accent-default);
 }
 
 .dark {
@@ -538,6 +594,13 @@
        unlike --warning/--success these two do not flip on their own. */
     --info: var(--mfy-color-blue-800);
     --info-foreground: var(--mfy-color-blue-200);
+
+    /* Brand surfaces stay navy after dark (see variables.css), which leaves a
+       navy button at ~1.6:1 against the navy-ink page — present, but with no
+       affordance. The primary action turns gold instead: the secondary brand
+       colour doing the job it is best at on a dark field. */
+    --primary: var(--mfy-color-background-accent-default);
+    --primary-foreground: var(--mfy-color-text-accent-on-accent);
 
     /* Charts have no MFY semantic source, so their dark values are set here.
        Everything else flips automatically via the aliased --mfy-* tokens. */

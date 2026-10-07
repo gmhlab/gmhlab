@@ -1,8 +1,8 @@
 /**
  * A synthetic corpus for the `@gmhlab/blocks` page blocks.
  *
- * The page blocks (`ProjectsPage`, `PublicationsPage`, `InnovationsPage` and
- * the two detail pages) are **record-driven renderers**: they take their
+ * The page blocks (`HomePage`, `ProjectsPage`, `PublicationsPage`,
+ * `InnovationsPage` and the two detail pages) are **record-driven renderers**: they take their
  * records as props and name no organization. `apps/web` feeds them the GW
  * Center's real content; this file feeds them an invented one, which is the
  * point — if a block could not render this corpus, it would not be a library
@@ -24,6 +24,7 @@
  */
 
 import type {
+  HomeContent,
   Innovation,
   InnovationDetail,
   Project,
@@ -707,4 +708,69 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
 
 export const INNOVATION_DETAILS: Record<string, InnovationDetail> = {
   [ATLAS_DETAIL.slug]: ATLAS_DETAIL,
+};
+
+/**
+ * The landing page for the invented centre. Unlike `apps/web`, this carries a
+ * pull quote — the live site has no real one to give it, and a demo that hid
+ * a section would not exercise it. The quote and its speaker are fiction.
+ * Counts come from the corpus above, as the web app's do from its own.
+ */
+export const HOME_CONTENT: HomeContent = {
+  hero: {
+    eyebrow: "Halden Centre for Community Mental Health",
+    title: "Research that stays where it is needed.",
+    emphasis: "stays",
+    lede: "An invented centre, used to prove that HomePage renders any organisation's records — not one site's hardcoded copy.",
+    primary: { label: "Explore the portfolio", href: "/blocks/projects" },
+    secondary: { label: "Browse publications", href: "/blocks/publications" },
+    image: { src: img("gmhlab-home", 1000, 1250), alt: "", caption: "Placeholder photography, duotone treatment" },
+  },
+  stats: [
+    { value: String(PROJECTS.length), label: "Projects in the sample portfolio" },
+    { value: String(PUBLICATIONS.length), label: "Publications in the sample bibliography" },
+    { value: String(INNOVATIONS.length), label: "Innovations" },
+    { value: "2,400+", label: "A comma-grouped figure, to exercise the count-up" },
+  ],
+  gap: {
+    eyebrow: "The signature figure",
+    heading: "One in five, made visible.",
+    body: "A field of figures with a minority lit. The record carries the total, the lit count and the citation; the renderer scatters the lit figures deterministically, so server and client agree.",
+    total: 100,
+    reached: 20,
+    reachedLabel: "Reached",
+    unreachedLabel: "Not reached",
+    source: "Fictional figure for the demo.",
+  },
+  focus: {
+    eyebrow: "What we work on",
+    heading: "Three lines of work",
+    lede: "Cards are links: the whole card is the target, and it lifts on hover.",
+    items: PUBLICATION_THEMES.slice(0, 3).map((theme, i) => ({
+      tag: `${PUBLICATIONS.filter((p) => p.theme === theme).length} publications`,
+      heading: theme,
+      body: "Placeholder copy for a research theme in the invented centre's bibliography.",
+      href: "/blocks/publications",
+      image: { src: img(`gmhlab-focus-${i}`, 900, 560), alt: "" },
+    })),
+  },
+  quote: {
+    eyebrow: "Education",
+    quote: "A trial that ends when the grant does was only ever a rehearsal.",
+    name: "Dr. Imke Varga",
+    role: "Director of Training, Halden Centre (fictional)",
+    body: "The quote block is a figure with a real figcaption, so the attribution is announced with the quote.",
+    action: { label: "See the projects", href: "/blocks/projects" },
+    image: { src: img("gmhlab-faculty", 900, 900), alt: "" },
+  },
+  partners: {
+    eyebrow: "Who we work with",
+    heading: "Partners",
+    items: PROJECT_PARTNERS.map((name) => ({ name, detail: "Sample partner" })),
+  },
+  cta: {
+    heading: "Bring us a problem worth solving.",
+    body: "The closing band mirrors the stat band's gold bloom from the opposite corner.",
+    action: { label: "Start with the portfolio", href: "/blocks/projects" },
+  },
 };

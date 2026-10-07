@@ -128,6 +128,13 @@ const GROUPS = [
 /** One live demo route, with the props its wrapper passes. */
 const PAGE_BLOCKS = [
   {
+    to: "/blocks/home",
+    name: "HomePage",
+    blurb:
+      "A landing page after the GW reference design: hero, counting stats, the care-gap figure, duotone cards, pull quote, partners, CTA. One record; every section after the stats is optional.",
+    props: "content",
+  },
+  {
     to: "/blocks/projects",
     name: "ProjectsPage",
     blurb:

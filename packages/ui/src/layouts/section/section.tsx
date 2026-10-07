@@ -12,7 +12,7 @@ export type SectionProps = ComponentPropsWithoutRef<
   paddingBottom?: "0" | "400" | "600" | "800" | "1200" | "1600" | "4000";
 } & (
     | {
-        variant?: "brand" | "neutral" | "stroke" | "subtle";
+        variant?: "brand" | "neutral" | "stroke" | "subtle" | "tint";
         src?: undefined;
       }
     | {

@@ -70,8 +70,26 @@
     top: 0;
   }
 }
+/* The brand band carries GW's signature light: a warm gold bloom from the
+   top-left, and a fall into deeper navy at the bottom edge. Both are
+   color-mix()es over tokens, so they track the theme — and because brand
+   surfaces stay navy after dark, the same glow works in both. */
 .section-variant-brand {
-  background: var(--mfy-color-background-brand-default);
+  --text-heading-color: currentColor;
+  --text-heading-em-color: var(--mfy-color-gold-300);
+  --text-eyebrow-color: var(--mfy-color-gold-300);
+  background:
+    radial-gradient(
+      80% 130% at 12% 0%,
+      color-mix(in oklch, var(--mfy-color-gold-500) 30%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(
+      175deg,
+      transparent 45%,
+      color-mix(in oklch, var(--mfy-color-brand-950) 80%, transparent)
+    ),
+    var(--mfy-color-background-brand-default);
   color: var(--mfy-color-text-brand-on-brand);
   .logo svg {
     --logo-color: var(--mfy-color-icon-brand-on-brand);
@@ -86,6 +104,11 @@
 
 .section-variant-neutral {
   background: var(--mfy-color-background-default-tertiary);
+}
+/* The quiet alternate band — GW's `panel`. Lighter than `neutral`, for
+   alternating long pages without the weight of a full tone change. */
+.section-variant-tint {
+  background: var(--mfy-color-background-default-secondary);
 }
 .section-variant-stroke {
   &:not(:last-child) {

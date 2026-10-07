@@ -18,6 +18,51 @@
   --mfy-color-brand-800: oklch(0.3392783938273923 0.07482300861290903 239.36685558989788);
   --mfy-color-brand-900: oklch(0.24403734060606508 0.05405960042820241 239.46340634705268);
   --mfy-color-brand-950: oklch(0.1739767888550536 0.04027330373426935 240.61316170468567);     
+
+/* GW Gold — the SECONDARY brand colour (#aa9868, anchored at step 500).
+ * Steps 100 and 300 are pinned to the tints the GW reference design derives
+ * from it (#f0ebe0 wash, #d8cdb2 rule-on-navy); the rest are interpolated in
+ * OKLCH at the anchor's hue. Semantic group: `accent` (see below) — it is not
+ * called "secondary" because that word is already a STEP name in this scheme
+ * (background-brand-secondary, surface-secondary).
+ *
+ * #aa9868 itself is 2.7:1 on paper: it is for rules, fills, focus-adjacent
+ * decoration and display type. Body-size gold TEXT uses gold-700 (#71623d),
+ * which clears AA on paper, tint and band alike — that is what
+ * text-accent-default points at. */
+  --mfy-color-gold-50: #faf6ee;
+  --mfy-color-gold-100: #f0ebe0;
+  --mfy-color-gold-200: #e8ddc2;
+  --mfy-color-gold-300: #d8cdb2;
+  --mfy-color-gold-400: #c4b387;
+  --mfy-color-gold-500: #aa9868;
+  --mfy-color-gold-600: #907f51;
+  --mfy-color-gold-700: #71623d;
+  --mfy-color-gold-800: #5b4e30;
+  --mfy-color-gold-900: #403722;
+  --mfy-color-gold-950: #272113;
+
+/* Stone — the warm neutral the `default` semantic group now sits on, replacing
+ * the flat gray ramp. Warm paper at the light end, settling into GW navy-ink at
+ * the dark end, so dark mode reads as the same institution after hours rather
+ * than as generic charcoal. The gray-* ramp below is kept for raw use.
+ *
+ * Measured, not eyeballed — text-default-secondary (stone-600) is AA on all
+ * three light surfaces: 5.5:1 on stone-50, 5.2:1 on stone-100, 4.6:1 on the
+ * stone-200 band. stone-400 is still a hairline tone (~2:1) and must not carry
+ * text. */
+  --mfy-color-stone-50: #fbfaf8;
+  --mfy-color-stone-100: #f4f2ed;
+  --mfy-color-stone-200: #eae6de;
+  --mfy-color-stone-300: #dcd7cc;
+  --mfy-color-stone-400: #b9b4a9;
+  --mfy-color-stone-500: #8b9196;
+  --mfy-color-stone-600: #5e676e;
+  --mfy-color-stone-700: #434c53;
+  --mfy-color-stone-800: #2a3138;
+  --mfy-color-stone-900: #1a262f;
+  --mfy-color-stone-950: #121d25;
+  --mfy-color-stone-1000: #0b151c;
   --mfy-color-black-100: #0c0c0d0d;
   --mfy-color-black-1000: #0c0c0d;
   --mfy-color-black-200: #0c0c0d1a;
@@ -122,6 +167,31 @@
 
 /* color: mfy_light (default) */
 :root {
+  /* accent — the secondary brand colour (gold). Mirrors the brand group
+     step-for-step. on-accent is navy, not white: white on #aa9868 is 2.8:1,
+     navy-900 is 5.8:1. text-accent-secondary/tertiary are large/decorative
+     only (gold-600 is 3.8:1 on paper). */
+  --mfy-color-background-accent-default: var(--mfy-color-gold-500);
+  --mfy-color-background-accent-hover: var(--mfy-color-gold-600);
+  --mfy-color-background-accent-secondary: var(--mfy-color-gold-200);
+  --mfy-color-background-accent-secondary-hover: var(--mfy-color-gold-300);
+  --mfy-color-background-accent-tertiary: var(--mfy-color-gold-100);
+  --mfy-color-background-accent-tertiary-hover: var(--mfy-color-gold-200);
+  --mfy-color-border-accent-default: var(--mfy-color-gold-500);
+  --mfy-color-border-accent-secondary: var(--mfy-color-gold-400);
+  --mfy-color-border-accent-tertiary: var(--mfy-color-gold-300);
+  --mfy-color-icon-accent-default: var(--mfy-color-gold-700);
+  --mfy-color-icon-accent-on-accent: var(--mfy-color-brand-900);
+  --mfy-color-icon-accent-on-accent-secondary: var(--mfy-color-gold-900);
+  --mfy-color-icon-accent-on-accent-tertiary: var(--mfy-color-gold-800);
+  --mfy-color-icon-accent-secondary: var(--mfy-color-gold-600);
+  --mfy-color-icon-accent-tertiary: var(--mfy-color-gold-500);
+  --mfy-color-text-accent-default: var(--mfy-color-gold-700);
+  --mfy-color-text-accent-on-accent: var(--mfy-color-brand-900);
+  --mfy-color-text-accent-on-accent-secondary: var(--mfy-color-gold-900);
+  --mfy-color-text-accent-on-accent-tertiary: var(--mfy-color-gold-800);
+  --mfy-color-text-accent-secondary: var(--mfy-color-gold-600);
+  --mfy-color-text-accent-tertiary: var(--mfy-color-gold-500);
   --mfy-color-background-brand-default: var(--mfy-color-brand-800);
   --mfy-color-background-brand-hover: var(--mfy-color-brand-900);
   --mfy-color-background-brand-secondary: var(--mfy-color-brand-200);
@@ -134,13 +204,13 @@
   --mfy-color-background-danger-secondary-hover: var(--mfy-color-red-300);
   --mfy-color-background-danger-tertiary: var(--mfy-color-red-100);
   --mfy-color-background-danger-tertiary-hover: var(--mfy-color-red-200);
-  --mfy-color-background-default-default: var(--mfy-color-white-1000);
-  --mfy-color-background-default-default-hover: var(--mfy-color-gray-100);
-  --mfy-color-background-default-secondary: var(--mfy-color-gray-100);
-  --mfy-color-background-default-secondary-hover: var(--mfy-color-gray-200);
-  --mfy-color-background-default-tertiary: var(--mfy-color-gray-300);
-  --mfy-color-background-default-tertiary-hover: var(--mfy-color-gray-400);
-  --mfy-color-background-disabled-default: var(--mfy-color-gray-300);
+  --mfy-color-background-default-default: var(--mfy-color-stone-50);
+  --mfy-color-background-default-default-hover: var(--mfy-color-stone-100);
+  --mfy-color-background-default-secondary: var(--mfy-color-stone-100);
+  --mfy-color-background-default-secondary-hover: var(--mfy-color-stone-200);
+  --mfy-color-background-default-tertiary: var(--mfy-color-stone-200);
+  --mfy-color-background-default-tertiary-hover: var(--mfy-color-stone-300);
+  --mfy-color-background-disabled-default: var(--mfy-color-stone-300);
   --mfy-color-background-neutral-default: var(--mfy-color-slate-700);
   --mfy-color-background-neutral-hover: var(--mfy-color-slate-800);
   --mfy-color-background-neutral-secondary: var(--mfy-color-slate-300);
@@ -169,10 +239,10 @@
   --mfy-color-border-danger-default: var(--mfy-color-red-700);
   --mfy-color-border-danger-secondary: var(--mfy-color-red-600);
   --mfy-color-border-danger-tertiary: var(--mfy-color-red-500);
-  --mfy-color-border-default-default: var(--mfy-color-gray-300);
-  --mfy-color-border-default-secondary: var(--mfy-color-gray-500);
-  --mfy-color-border-default-tertiary: var(--mfy-color-gray-700);
-  --mfy-color-border-disabled-default: var(--mfy-color-gray-400);
+  --mfy-color-border-default-default: rgb(3 60 90 / 0.16);
+  --mfy-color-border-default-secondary: var(--mfy-color-stone-500);
+  --mfy-color-border-default-tertiary: var(--mfy-color-stone-700);
+  --mfy-color-border-disabled-default: var(--mfy-color-stone-400);
   --mfy-color-border-neutral-default: var(--mfy-color-slate-900);
   --mfy-color-border-neutral-secondary: var(--mfy-color-slate-600);
   --mfy-color-border-neutral-tertiary: var(--mfy-color-slate-400);
@@ -196,11 +266,11 @@
   --mfy-color-icon-danger-on-danger-tertiary: var(--mfy-color-red-700);
   --mfy-color-icon-danger-secondary: var(--mfy-color-red-600);
   --mfy-color-icon-danger-tertiary: var(--mfy-color-red-500);
-  --mfy-color-icon-default-default: var(--mfy-color-gray-900);
-  --mfy-color-icon-default-secondary: var(--mfy-color-gray-500);
-  --mfy-color-icon-default-tertiary: var(--mfy-color-gray-400);
-  --mfy-color-icon-disabled-default: var(--mfy-color-gray-400);
-  --mfy-color-icon-disabled-on-disabled: var(--mfy-color-gray-400);
+  --mfy-color-icon-default-default: var(--mfy-color-stone-800);
+  --mfy-color-icon-default-secondary: var(--mfy-color-stone-600);
+  --mfy-color-icon-default-tertiary: var(--mfy-color-stone-400);
+  --mfy-color-icon-disabled-default: var(--mfy-color-stone-400);
+  --mfy-color-icon-disabled-on-disabled: var(--mfy-color-stone-400);
   --mfy-color-icon-neutral-default: var(--mfy-color-slate-900);
   --mfy-color-icon-neutral-on-neutral: var(--mfy-color-slate-100);
   --mfy-color-icon-neutral-on-neutral-secondary: var(--mfy-color-slate-900);
@@ -233,11 +303,11 @@
   --mfy-color-text-danger-on-danger-tertiary: var(--mfy-color-red-700);
   --mfy-color-text-danger-secondary: var(--mfy-color-red-600);
   --mfy-color-text-danger-tertiary: var(--mfy-color-red-500);
-  --mfy-color-text-default-default: var(--mfy-color-gray-900);
-  --mfy-color-text-default-secondary: var(--mfy-color-gray-500);
-  --mfy-color-text-default-tertiary: var(--mfy-color-gray-400);
-  --mfy-color-text-disabled-default: var(--mfy-color-gray-400);
-  --mfy-color-text-disabled-on-disabled: var(--mfy-color-gray-400);
+  --mfy-color-text-default-default: var(--mfy-color-stone-800);
+  --mfy-color-text-default-secondary: var(--mfy-color-stone-600);
+  --mfy-color-text-default-tertiary: var(--mfy-color-stone-400);
+  --mfy-color-text-disabled-default: var(--mfy-color-stone-400);
+  --mfy-color-text-disabled-on-disabled: var(--mfy-color-stone-400);
   --mfy-color-text-neutral-default: var(--mfy-color-slate-900);
   --mfy-color-text-neutral-on-neutral: var(--mfy-color-slate-100);
   --mfy-color-text-neutral-on-neutral-secondary: var(--mfy-color-slate-900);
@@ -261,8 +331,32 @@
 }
 
 .dark {
-    --mfy-color-background-brand-default: var(--mfy-color-brand-100);
-    --mfy-color-background-brand-hover: var(--mfy-color-brand-300);
+    /* Brand surfaces deliberately do NOT flip to a pale tint after dark —
+       an identity band should not become the brightest slab on the page.
+       background-brand-default stays navy and on-brand stays light. */
+    --mfy-color-background-accent-default: var(--mfy-color-gold-500);
+    --mfy-color-background-accent-hover: var(--mfy-color-gold-400);
+    --mfy-color-background-accent-secondary: var(--mfy-color-gold-900);
+    --mfy-color-background-accent-secondary-hover: var(--mfy-color-gold-800);
+    --mfy-color-background-accent-tertiary: var(--mfy-color-gold-950);
+    --mfy-color-background-accent-tertiary-hover: var(--mfy-color-gold-900);
+    --mfy-color-border-accent-default: var(--mfy-color-gold-500);
+    --mfy-color-border-accent-secondary: var(--mfy-color-gold-600);
+    --mfy-color-border-accent-tertiary: var(--mfy-color-gold-700);
+    --mfy-color-icon-accent-default: var(--mfy-color-gold-400);
+    --mfy-color-icon-accent-on-accent: var(--mfy-color-brand-900);
+    --mfy-color-icon-accent-on-accent-secondary: var(--mfy-color-gold-100);
+    --mfy-color-icon-accent-on-accent-tertiary: var(--mfy-color-gold-200);
+    --mfy-color-icon-accent-secondary: var(--mfy-color-gold-500);
+    --mfy-color-icon-accent-tertiary: var(--mfy-color-gold-600);
+    --mfy-color-text-accent-default: var(--mfy-color-gold-400);
+    --mfy-color-text-accent-on-accent: var(--mfy-color-brand-900);
+    --mfy-color-text-accent-on-accent-secondary: var(--mfy-color-gold-100);
+    --mfy-color-text-accent-on-accent-tertiary: var(--mfy-color-gold-200);
+    --mfy-color-text-accent-secondary: var(--mfy-color-gold-500);
+    --mfy-color-text-accent-tertiary: var(--mfy-color-gold-600);
+    --mfy-color-background-brand-default: var(--mfy-color-brand-800);
+    --mfy-color-background-brand-hover: var(--mfy-color-brand-700);
     --mfy-color-background-brand-secondary: var(--mfy-color-brand-600);
     --mfy-color-background-brand-secondary-hover: var(--mfy-color-brand-500);
     --mfy-color-background-brand-tertiary: var(--mfy-color-brand-600);
@@ -273,12 +367,12 @@
     --mfy-color-background-danger-secondary-hover: var(--mfy-color-red-900);
     --mfy-color-background-danger-tertiary: var(--mfy-color-red-900);
     --mfy-color-background-danger-tertiary-hover: var(--mfy-color-red-1000);
-    --mfy-color-background-default-default: var(--mfy-color-gray-900);
-    --mfy-color-background-default-default-hover: var(--mfy-color-gray-700);
-    --mfy-color-background-default-secondary: var(--mfy-color-gray-800);
-    --mfy-color-background-default-secondary-hover: var(--mfy-color-gray-900);
-    --mfy-color-background-default-tertiary: var(--mfy-color-gray-600);
-    --mfy-color-background-default-tertiary-hover: var(--mfy-color-gray-700);
+    --mfy-color-background-default-default: var(--mfy-color-stone-1000);
+    --mfy-color-background-default-default-hover: var(--mfy-color-stone-900);
+    --mfy-color-background-default-secondary: var(--mfy-color-stone-950);
+    --mfy-color-background-default-secondary-hover: var(--mfy-color-stone-900);
+    --mfy-color-background-default-tertiary: var(--mfy-color-stone-900);
+    --mfy-color-background-default-tertiary-hover: var(--mfy-color-stone-800);
     --mfy-color-background-disabled-default: var(--mfy-color-brand-700);
     --mfy-color-background-neutral-default: var(--mfy-color-slate-400);
     --mfy-color-background-neutral-hover: var(--mfy-color-slate-500);
@@ -308,9 +402,9 @@
     --mfy-color-border-danger-default: var(--mfy-color-red-200);
     --mfy-color-border-danger-secondary: var(--mfy-color-red-400);
     --mfy-color-border-danger-tertiary: var(--mfy-color-red-500);
-    --mfy-color-border-default-default: var(--mfy-color-gray-600);
-    --mfy-color-border-default-secondary: var(--mfy-color-gray-500);
-    --mfy-color-border-default-tertiary: var(--mfy-color-gray-400);
+    --mfy-color-border-default-default: rgb(216 205 178 / 0.16);
+    --mfy-color-border-default-secondary: var(--mfy-color-stone-500);
+    --mfy-color-border-default-tertiary: var(--mfy-color-stone-400);
     --mfy-color-border-disabled-default: var(--mfy-color-brand-600);
     --mfy-color-border-neutral-default: var(--mfy-color-slate-100);
     --mfy-color-border-neutral-secondary: var(--mfy-color-slate-500);
@@ -324,7 +418,7 @@
     --mfy-color-border-warning-secondary: var(--mfy-color-yellow-400);
     --mfy-color-border-warning-tertiary: var(--mfy-color-yellow-600);
     --mfy-color-icon-brand-default: var(--mfy-color-brand-100);
-    --mfy-color-icon-brand-on-brand: var(--mfy-color-brand-900);
+    --mfy-color-icon-brand-on-brand: var(--mfy-color-brand-100);
     --mfy-color-icon-brand-on-brand-secondary: var(--mfy-color-brand-100);
     --mfy-color-icon-brand-on-brand-tertiary: var(--mfy-color-brand-100);
     --mfy-color-icon-brand-secondary: var(--mfy-color-brand-300);
@@ -335,9 +429,9 @@
     --mfy-color-icon-danger-on-danger-tertiary: var(--mfy-color-red-100);
     --mfy-color-icon-danger-secondary: var(--mfy-color-red-400);
     --mfy-color-icon-danger-tertiary: var(--mfy-color-red-500);
-    --mfy-color-icon-default-default: var(--mfy-color-white-1000);
-    --mfy-color-icon-default-secondary: var(--mfy-color-white-500);
-    --mfy-color-icon-default-tertiary: var(--mfy-color-white-400);
+    --mfy-color-icon-default-default: var(--mfy-color-stone-100);
+    --mfy-color-icon-default-secondary: var(--mfy-color-stone-400);
+    --mfy-color-icon-default-tertiary: var(--mfy-color-stone-500);
     --mfy-color-icon-disabled-default: var(--mfy-color-brand-500);
     --mfy-color-icon-disabled-on-disabled: var(--mfy-color-brand-400);
     --mfy-color-icon-neutral-default: var(--mfy-color-slate-200);
@@ -361,7 +455,7 @@
     --mfy-color-icon-warning-secondary: var(--mfy-color-yellow-400);
     --mfy-color-icon-warning-tertiary: var(--mfy-color-yellow-600);
     --mfy-color-text-brand-default: var(--mfy-color-brand-100);
-    --mfy-color-text-brand-on-brand: var(--mfy-color-brand-900);
+    --mfy-color-text-brand-on-brand: var(--mfy-color-brand-100);
     --mfy-color-text-brand-on-brand-secondary: var(--mfy-color-brand-100);
     --mfy-color-text-brand-on-brand-tertiary: var(--mfy-color-brand-100);
     --mfy-color-text-brand-secondary: var(--mfy-color-brand-300);
@@ -372,9 +466,9 @@
     --mfy-color-text-danger-on-danger-tertiary: var(--mfy-color-red-100);
     --mfy-color-text-danger-secondary: var(--mfy-color-red-400);
     --mfy-color-text-danger-tertiary: var(--mfy-color-red-500);
-    --mfy-color-text-default-default: var(--mfy-color-white-1000);
-    --mfy-color-text-default-secondary: var(--mfy-color-white-500);
-    --mfy-color-text-default-tertiary: var(--mfy-color-white-400);
+    --mfy-color-text-default-default: var(--mfy-color-stone-100);
+    --mfy-color-text-default-secondary: var(--mfy-color-stone-400);
+    --mfy-color-text-default-tertiary: var(--mfy-color-stone-500);
     --mfy-color-text-disabled-default: var(--mfy-color-brand-500);
     --mfy-color-text-disabled-on-disabled: var(--mfy-color-brand-400);
     --mfy-color-text-neutral-default: var(--mfy-color-slate-200);
@@ -418,9 +512,9 @@
   --mfy-size-icon-large: 2.5rem;
   --mfy-size-icon-medium: 2rem;
   --mfy-size-icon-small: 1.5rem;
-  --mfy-size-radius-100: 0.25rem;
-  --mfy-size-radius-200: 0.5rem;
-  --mfy-size-radius-400: 1rem;
+  --mfy-size-radius-100: 0.125rem;
+  --mfy-size-radius-200: 0.25rem;
+  --mfy-size-radius-400: 0.5rem;
   --mfy-size-radius-full: 624.9375rem;
   --mfy-size-space-0: 0rem;
   --mfy-size-space-050: 0.125rem;
@@ -446,8 +540,8 @@
 /* typography_primitives: default (default) */
 :root {
   --mfy-typography-family-mono: "Roboto Mono", monospace;
-  --mfy-typography-family-sans: "Avenir Next", "Inter", sans-serif;
-  --mfy-typography-family-serif: "Baskerville", "Noto Serif", serif;
+  --mfy-typography-family-sans: "Avenir Next", Avenir, var(--mfy-typography-family-sans-web, "Nunito Sans"), "Segoe UI", system-ui, sans-serif;
+  --mfy-typography-family-serif: Baskerville, "Baskerville Old Face", var(--mfy-typography-family-serif-web, "Libre Baskerville"), Georgia, serif;
   --mfy-typography-scale-01: 0.75rem;
   --mfy-typography-scale-02: 0.875rem;
   --mfy-typography-scale-03: 1rem;
@@ -491,8 +585,8 @@
   --mfy-typography-code-size-base: var(--mfy-typography-body-size-medium);
   --mfy-typography-code-size-large: var(--mfy-typography-body-size-large);
   --mfy-typography-code-size-small: var(--mfy-typography-body-size-small);
-  --mfy-typography-heading-font-family: var(--mfy-typography-family-sans);
-  --mfy-typography-heading-font-weight: var(--mfy-typography-weight-semibold);
+  --mfy-typography-heading-font-family: var(--mfy-typography-family-serif);
+  --mfy-typography-heading-font-weight: var(--mfy-typography-weight-regular);
   --mfy-typography-heading-size-base: var(--mfy-typography-scale-05);
   --mfy-typography-heading-size-large: var(--mfy-typography-scale-06);
   --mfy-typography-heading-size-small: var(--mfy-typography-scale-04);

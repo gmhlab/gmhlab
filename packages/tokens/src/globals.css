@@ -6,7 +6,9 @@
  */
 :root {
   --global-focus-ring-size: var(--mfy-size-stroke-focus-ring);
-  --global-focus-ring-color: rgb(0, 106, 255);
+  /* Gold, not the stock blue: gold-600 is 3.8:1 on paper, over the 3:1 WCAG
+     non-text bar that #aa9868 itself (2.7:1) would miss. */
+  --global-focus-ring-color: var(--mfy-color-gold-600);
   --global-line-height-paragraph: 1.4;
   --global-stack-top: 999;
   --global-stack-focus: 999;
@@ -21,6 +23,17 @@
   --global-dialog-max-width: 32rem;
   --global-tooltip-max-width: calc(var(--global-dialog-max-width) / 2);
   --global-line-height-body: 1.6;
+
+  /* Headings (the Text title/heading classes in @gmhlab/ui) are navy on light
+     surfaces. Any surface that sets its own foreground — a brand section or
+     card, a hand-painted brand panel — resets this to `currentColor`, or the
+     heading would come out navy-on-navy. */
+  --text-heading-color: var(--mfy-color-text-brand-default);
+
+  /* Motion, shared by every hover lift and reveal in the system. */
+  --global-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --global-duration-fast: 0.25s;
+  --global-duration-slow: 0.8s;
 }
 
 .display-none-to-flex {
@@ -30,60 +43,74 @@
   display: var(--mfy-responsive-display-flex-to-none) !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --global-focus-ring-color: rgb(0, 106, 255);
+.dark {
+  --global-focus-ring-color: var(--mfy-color-gold-400);
+}
+
+::selection {
+  background: var(--mfy-color-gold-300);
+  color: var(--mfy-color-brand-900);
+}
+
+/* Element defaults live in `@layer base` so they sit UNDER utilities. Left
+ * unlayered, `button { font: … }` beat every Tailwind utility on a <button>
+ * regardless of specificity — `text-sm font-semibold` on the shadcn Button
+ * was silently ignored, and only buttons rendered as <a> looked right. In a
+ * Tailwind app the layer order comes from `@import "tailwindcss"` (base below
+ * utilities); without Tailwind, a single layer behaves as before. */
+@layer base {
+  html {
+    font-size: 16px;
   }
-}
 
-html {
-  font-size: 16px;
-}
+  body {
+    background: var(--mfy-color-background-default-default);
+    color: var(--mfy-color-text-default-default);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 
-body {
-  background: var(--mfy-color-background-default-default);
-  color: var(--mfy-color-text-default-default);
-  margin: 0;
-}
+  html,
+  body {
+    height: 100%;
+  }
 
-html,
-body {
-  height: 100%;
-}
+  #root {
+    min-height: 100%;
+    width: 100%;
+  }
 
-#root {
-  min-height: 100%;
-  width: 100%;
-}
+  body,
+  button,
+  textarea,
+  input,
+  select {
+    font: var(--mfy-font-body-base);
+  }
 
-body,
-button,
-textarea,
-input,
-select {
-  font: var(--mfy-font-body-base);
-}
+  pre,
+  code {
+    font: var(--mfy-font-body-code);
+  }
 
-pre,
-code {
-  font: var(--mfy-font-body-code);
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font: var(--mfy-font-heading);
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font: var(--mfy-font-heading);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
 }

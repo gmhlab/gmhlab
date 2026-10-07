@@ -267,6 +267,65 @@ export function TextSubheading({
   );
 }
 
+export type TextEyebrowProps = RACTextProps & {
+  /**
+   * Draws the short gold rule after the label. On by default — it is what
+   * makes an eyebrow read as a section marker rather than a stray caption.
+   */
+  rule?: boolean;
+};
+/**
+ * The small-caps kicker that sits above a heading ("What we work on"). Gold,
+ * tracked out, uppercase. The colour is text-accent-default (gold-700), not the
+ * #aa9868 brand gold, which is only 2.7:1 at this size; the rule after it IS
+ * the brand gold, since a rule is not text.
+ */
+export function TextEyebrow({
+  className,
+  elementType = "p",
+  rule = true,
+  ...props
+}: TextEyebrowProps) {
+  const classNames = clsx(className, "text-eyebrow", rule && "text-eyebrow-rule");
+  return <RACText className={classNames} elementType={elementType} {...props} />;
+}
+
+export type TextBlockquoteProps = ComponentPropsWithoutRef<"figure"> & {
+  /** The quotation itself. Rendered in a `<blockquote>`. */
+  quote: ReactNode;
+  /** Who said it — rendered strong, above `role`. */
+  name?: ReactNode;
+  /** Title, affiliation or source line under the name. */
+  role?: ReactNode;
+  /** URL of the quoted source, passed through as the blockquote's `cite`. */
+  cite?: string;
+};
+/**
+ * A pull quote: italic serif behind a gold rule, attribution beneath. A
+ * `<figure>` so the attribution is a real `<figcaption>`, which is the
+ * accessible pairing for a quote and its source.
+ */
+export function TextBlockquote({
+  className,
+  quote,
+  name,
+  role,
+  cite,
+  ...props
+}: TextBlockquoteProps) {
+  return (
+    <figure className={clsx(className, "text-blockquote")} {...props}>
+      <blockquote cite={cite}>{quote}</blockquote>
+      {(name || role) && (
+        <figcaption className="text-blockquote-attribution">
+          {name && <span className="text-blockquote-name">{name}</span>}
+          {role && <span className="text-blockquote-role">{role}</span>}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
 export type TextPriceProps = RACTextProps & {
   currency: string;
   price: string;
@@ -339,12 +398,15 @@ export function TextLinkList({ className, ...props }: TextLinkListProps) {
 
 export type TextContentHeadingProps = ComponentPropsWithoutRef<"div"> & {
   align?: "start" | "center";
+  /** Optional kicker above the heading — see {@link TextEyebrow}. */
+  eyebrow?: ReactNode;
   heading: string;
   subheading?: string;
 };
 export function TextContentHeading({
   align = "start",
   className,
+  eyebrow,
   heading,
   subheading,
   ...props
@@ -356,6 +418,7 @@ export function TextContentHeading({
   );
   return (
     <Flex direction="column" gap="200" className={classNames} {...props}>
+      {eyebrow && <TextEyebrow rule={align !== "center"}>{eyebrow}</TextEyebrow>}
       <TextHeading>{heading}</TextHeading>
       {subheading && <TextSubheading>{subheading}</TextSubheading>}
     </Flex>
@@ -364,12 +427,15 @@ export function TextContentHeading({
 
 export type TextContentTitleProps = ComponentPropsWithoutRef<"div"> & {
   align?: "start" | "center";
+  /** Optional kicker above the title — see {@link TextEyebrow}. */
+  eyebrow?: ReactNode;
   title: ReactNode;
   subtitle?: ReactNode;
 };
 export function TextContentTitle({
   align = "start",
   className,
+  eyebrow,
   title,
   subtitle,
   ...props
@@ -378,6 +444,14 @@ export function TextContentTitle({
   const { isMobile } = useMediaQuery();
   return (
     <Flex direction="column" gap="200" className={classNames} {...props}>
+      {eyebrow && (
+        <TextEyebrow
+          rule={align !== "center"}
+          className={`text-align-${align}`}
+        >
+          {eyebrow}
+        </TextEyebrow>
+      )}
       {isMobile ? (
         <TextTitlePage className={`text-align-${align}`}>{title}</TextTitlePage>
       ) : (

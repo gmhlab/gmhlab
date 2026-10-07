@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@gmhlab/blocks";
-import { type HeaderNavItem, Header } from "@gmhlab/ui";
+import { type HeaderNavItem, Header, UtilityBar } from "@gmhlab/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -46,12 +46,29 @@ export function SiteHeader() {
 
   return (
     <Header
+      wordmark={{ eyebrow: "GW", name: "Global Mental Health" }}
       navItems={NAV_ITEMS}
       activeHref={activeHref}
       user={user ? { name: user.name, avatar: user.avatar } : null}
       onLogin={() => login(DEMO_CREDENTIALS)}
       onRegister={() => login(DEMO_CREDENTIALS)}
       onLogout={logout}
+    />
+  );
+}
+
+/** The deep-navy strip above the header. Scrolls away; the header pins. */
+export function SiteUtilityBar() {
+  return (
+    <UtilityBar
+      start="The George Washington University · Milken Institute School of Public Health"
+      end={
+        <>
+          <a href="https://publichealth.gwu.edu/">Milken Institute SPH</a>
+          {" · "}
+          <a href="https://www.gwu.edu/">GW</a>
+        </>
+      }
     />
   );
 }

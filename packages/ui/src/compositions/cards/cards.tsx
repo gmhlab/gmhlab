@@ -19,7 +19,13 @@ import {
   TextStrong,
   TextSubheading,
 } from "../../primitives";
-import { ComponentPropsWithoutRef, ReactNode } from "react";
+import {
+  ComponentPropsWithoutRef,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { AnchorOrButton, AnchorOrButtonProps } from "../../lib/utils";
 import "./cards.css";
 
@@ -470,44 +476,109 @@ export function ReviewCard({
   );
 }
 
-export type StatsCardProps = {
+export type StatsCardProps = ComponentPropsWithoutRef<"div"> & {
   /**
    * The icon
    */
   icon?: ReactNode;
   /**
-   * The stat
+   * The stat. A leading number ("343", "2,400+", "19 countries") is what
+   * `countUp` animates; the rest of the string is kept as a suffix.
    */
   stat: string;
   /**
    * The description
    */
   description: string;
+  /**
+   * Count the leading number up from zero the first time the card scrolls
+   * into view. The server (and a no-JS reader) always gets the real value;
+   * the count only runs for a card that mounts BELOW the fold, so an
+   * above-the-fold stat never flashes to 0. Off under reduced motion.
+   */
+  countUp?: boolean;
 };
 
+const STAT_NUMBER = /^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/;
+
+/** The leading-number count-up behind `StatsCard countUp`. */
+function useCountUp(stat: string, enabled: boolean) {
+  const [display, setDisplay] = useState(stat);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDisplay(stat);
+    const el = ref.current;
+    const match = STAT_NUMBER.exec(stat);
+    if (!enabled || !el || !match) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Already on screen at mount: leave the server-rendered value alone.
+    if (el.getBoundingClientRect().top < window.innerHeight) return;
+
+    const [, prefix, raw, suffix] = match;
+    const target = Number(raw.replace(/,/g, ""));
+    const decimals = raw.split(".")[1]?.length ?? 0;
+    const format = (n: number) =>
+      n.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+        useGrouping: raw.includes(","),
+      });
+    setDisplay(`${prefix}${format(0)}`);
+
+    let frame = 0;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        const start = performance.now();
+        const step = (now: number) => {
+          const p = Math.min((now - start) / 1500, 1);
+          const eased = 1 - (1 - p) ** 3;
+          setDisplay(
+            `${prefix}${format(target * eased)}${p === 1 ? suffix : ""}`,
+          );
+          if (p < 1) frame = requestAnimationFrame(step);
+        };
+        frame = requestAnimationFrame(step);
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [stat, enabled]);
+
+  return { ref, display };
+}
+
 /**
- * A card demonstrating a statistic or metric
+ * A single figure: gold top rule, serif number, short label. Sits directly on
+ * whatever surface it is placed on — on a brand band the label lifts to
+ * gold-300. The visible number is aria-hidden while it animates and the full
+ * value is carried by a visually-hidden copy, so a screen reader never hears
+ * a half-counted figure.
  */
 export function StatsCard({
   icon,
   stat,
   description,
+  countUp = false,
+  className,
   ...props
 }: StatsCardProps) {
+  const { ref, display } = useCountUp(stat, countUp);
   return (
-    <Card
-      {...props}
-      padding="600"
-      direction="vertical"
-      variant="stroke"
-      align="center"
-    >
+    <div ref={ref} className={clsx("stats-card", className)} {...props}>
       {icon}
-      <Flex direction="column" alignSecondary="center" gap="100">
-        <TextHeading>{stat}</TextHeading>
-        {description && <TextSmall>{description}</TextSmall>}
-      </Flex>
-    </Card>
+      <p className="stats-card-value">
+        <span aria-hidden="true">{display}</span>
+        <span className="sr-only">{stat}</span>
+      </p>
+      {description && <p className="stats-card-label">{description}</p>}
+    </div>
   );
 }
 

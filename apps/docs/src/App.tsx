@@ -8,6 +8,7 @@ import { TokensPage } from "./pages/TokensPage";
 import { SlidesPage } from "./pages/SlidesPage";
 import { FlexPage } from "./pages/FlexPage";
 import { ButtonMigrationPage } from "./pages/ButtonMigrationPage";
+import { BlocksHomePage } from "./pages/blocks/BlocksHomePage";
 import { BlocksProjectsPage } from "./pages/blocks/BlocksProjectsPage";
 import { BlocksProjectDetailPage } from "./pages/blocks/BlocksProjectDetailPage";
 import { BlocksPublicationsPage } from "./pages/blocks/BlocksPublicationsPage";
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "components", element: <ComponentsPage /> },
       { path: "blocks", element: <BlocksPage /> },
+      { path: "blocks/home", element: <BlocksHomePage /> },
       { path: "blocks/projects", element: <BlocksProjectsPage /> },
       { path: "blocks/projects/:slug", element: <BlocksProjectDetailPage /> },
       { path: "blocks/publications", element: <BlocksPublicationsPage /> },

@@ -24,7 +24,7 @@ import {
   TextSmall,
   TextStrong,
 } from "../../primitives";
-import { type ReactElement, useState } from "react";
+import { type ReactElement, type ReactNode, useState } from "react";
 import "./headers.css";
 
 export type HeaderNavItem = {
@@ -113,7 +113,7 @@ export function HeaderAuth({
       <Button size="sm" onClick={onLogin}>
         Sign in
       </Button>
-      <Button variant="secondary" size="sm" onClick={onRegister}>
+      <Button variant="accent" size="sm" onClick={onRegister}>
         Register
       </Button>
     </>
@@ -292,11 +292,26 @@ export function HeaderAuth({
   );
 }
 
+/**
+ * A two-line text lockup set beside the mark — a small gold kicker over the
+ * serif name ("GW" / "Global Mental Health"). Hidden below 600px, where the
+ * mark alone has to carry the row.
+ */
+export type HeaderWordmark = {
+  name: string;
+  eyebrow?: string;
+  /** Defaults to "/", matching the logo. */
+  href?: string;
+};
+
 export type HeaderProps = Omit<SectionProps, "variant" | "padding" | "src"> &
   HeaderAuthProps &
-  HeaderNavProps;
+  HeaderNavProps & {
+    wordmark?: HeaderWordmark;
+  };
 export function Header({
   className,
+  wordmark,
   user,
   onLogin,
   onRegister,
@@ -309,7 +324,7 @@ export function Header({
     <Section
       className={clsx("header", className)}
       elementType="header"
-      variant="brand"
+      variant="subtle"
       padding="400"
       {...props}
     >
@@ -322,7 +337,27 @@ export function Header({
         gap="400"
         wrap
       >
-        <GmhLogo />
+        <div className="header-brand">
+          <GmhLogo />
+          {wordmark && (
+            /* The logo is already the home link and its accessible name, so
+               this second link is hidden from AT and the tab order — it only
+               widens the click target to the words. */
+            <a
+              className="header-wordmark"
+              href={wordmark.href ?? "/"}
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              {wordmark.eyebrow && (
+                <span className="header-wordmark-eyebrow">
+                  {wordmark.eyebrow}
+                </span>
+              )}
+              <span className="header-wordmark-name">{wordmark.name}</span>
+            </a>
+          )}
+        </div>
         <HeaderAuth
           user={user}
           onLogin={onLogin}
@@ -331,6 +366,35 @@ export function Header({
           navItems={navItems}
           activeHref={activeHref}
         />
+      </Flex>
+    </Section>
+  );
+}
+
+export type UtilityBarProps = Omit<SectionProps, "variant" | "padding" | "src"> & {
+  /** Left slot — typically the parent institution. Hidden below 640px. */
+  start?: ReactNode;
+  /** Right slot — a few utility links (Give · Contact). */
+  end?: ReactNode;
+};
+/**
+ * The thin deep-navy strip that sits above the Header: parent-institution
+ * line on the left, utility links on the right. It is NOT sticky — render it
+ * before `<Header>` and it scrolls away while the header pins.
+ */
+export function UtilityBar({ className, start, end, ...props }: UtilityBarProps) {
+  return (
+    <Section
+      className={clsx("utility-bar", className)}
+      elementType="section"
+      variant="subtle"
+      padding="0"
+      aria-label="Utility"
+      {...props}
+    >
+      <Flex container alignPrimary="space-between" alignSecondary="center" gap="400">
+        <span className="utility-bar-start">{start}</span>
+        <span className="utility-bar-end">{end}</span>
       </Flex>
     </Section>
   );

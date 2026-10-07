@@ -1,4 +1,16 @@
+/* The bar is paper at 90% over a backdrop blur, so content scrolling beneath
+ * it stays faintly legible — GW's reference header. Once the page scrolls, a
+ * soft navy shadow fades in. That is a scroll-driven animation, so it costs no
+ * JS and no scroll listener; browsers without `animation-timeline` simply keep
+ * the hairline border, which is the correct resting state anyway. */
 .header {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: color-mix(
+    in oklch,
+    var(--mfy-color-background-default-default) 90%,
+    transparent
+  );
   /* Figma gives both header variants (Desktop 7717:3642, Mobile 2299:23639) a
    * bottom border and no top border. Declared here rather than via Section's
    * `stroke` variant, whose borders are positional (`:not(:last-child)` /
@@ -11,6 +23,77 @@
   position: sticky;
   top: 0;
   z-index: var(--global-stack-header, 40);
+
+  .logo-gmh > svg {
+    --logo-color: var(--mfy-color-icon-brand-default);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .header {
+    animation: header-stuck linear both;
+    animation-range: 0 4rem;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes header-stuck {
+  to {
+    box-shadow: 0 1px 20px rgb(3 60 90 / 0.09);
+  }
+}
+
+.header-brand {
+  align-items: center;
+  display: flex;
+  gap: var(--mfy-size-space-300);
+}
+.header-wordmark {
+  color: var(--mfy-color-text-brand-default);
+  display: none;
+  font-family: var(--mfy-typography-family-serif);
+  font-size: var(--mfy-typography-scale-04);
+  line-height: 1.15;
+  text-decoration: none;
+}
+@media (min-width: 600px) {
+  .header-wordmark {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.header-wordmark-eyebrow {
+  color: var(--mfy-color-text-accent-default);
+  font: var(--mfy-font-body-small-strong);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+}
+
+.utility-bar {
+  background: var(--mfy-color-brand-900);
+  color: var(--mfy-color-gold-300);
+  font: var(--mfy-font-body-small);
+  font-size: var(--mfy-typography-scale-01);
+  letter-spacing: 0.06em;
+
+  &.section {
+    padding-block: var(--mfy-size-space-200);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--global-duration-fast) ease;
+  }
+  a:hover {
+    color: var(--mfy-color-white-1000);
+  }
+}
+@media (max-width: 639.98px) {
+  .utility-bar-start {
+    display: none;
+  }
 }
 
 /* 600px is the one breakpoint in this composition: below it the header is
@@ -58,28 +141,48 @@
   [data-slot="navigation-menu-list"] {
     flex-wrap: wrap;
 
-    /* A deliberate deviation from Figma (Header, node 2287:22651), which lays
-     * the links out flush — its default state paints exactly one pill, so
-     * touching neighbours never show there. A consumer passing `activeHref`
-     * keeps a pill lit permanently, and hovering the item beside it butts two
-     * filled rectangles together with no seam. 4px is the smallest gap that
-     * restores the seam. Don't "fix" this back to 0 to match the spec without
-     * also solving that case. */
-    gap: var(--mfy-size-space-100);
+    /* Links are underlined words now, not filled pills (see below), so the
+     * old 4px pill seam is gone; the gap is plain breathing room between
+     * words, scaling with the viewport as the reference's menu does. */
+    gap: clamp(0.5rem, 1.6vw, 1.5rem);
   }
 
-  /* navigation-menu.tsx styles the link with Tailwind's `hover:bg-muted`,
-   * which resolves to the neutral `background-default-secondary`. The header
-   * pills want the brand tint instead. This file is unlayered, so it beats the
-   * Tailwind utility (which lives in @layer utilities) without needing to
-   * outspecify it — but the `:focus` half of that utility pair has to be
-   * restated here too, or focus would still paint the grey. */
+  /* GW nav links are words, not pills: navy, semibold, with a gold rule that
+   * draws in from the left on hover and stays drawn on the active route. The
+   * shadcn link paints `hover:bg-muted` and `data-[active]:bg-muted/50` from
+   * @layer utilities; this file is unlayered, so these win without having to
+   * outspecify them. */
   [data-slot="navigation-menu-link"] {
+    background: transparent;
+    border-radius: 0;
+    color: var(--mfy-color-text-brand-default);
+    font-weight: var(--mfy-typography-weight-semibold);
+    padding-inline: var(--mfy-size-space-100);
+    position: relative;
+
+    &::after {
+      background: var(--mfy-color-border-accent-default);
+      bottom: 0.15rem;
+      content: "";
+      height: 2px;
+      left: var(--mfy-size-space-100);
+      position: absolute;
+      right: var(--mfy-size-space-100);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s var(--global-ease-out);
+    }
+
     &:hover,
     &:focus,
+    &[data-active],
     &[data-active]:hover,
     &[data-active]:focus {
-      background-color: var(--mfy-color-background-brand-secondary-hover);
+      background: transparent;
+    }
+    &:hover::after,
+    &[data-active]::after {
+      transform: scaleX(1);
     }
   }
 }

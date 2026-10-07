@@ -10,6 +10,7 @@
  * the records — it is the spec, and it carries detail the app does not repeat.
  */
 
+export * from "./home-data";
 export * from "./innovation-detail-data";
 export * from "./innovations-data";
 export * from "./project-detail-data";

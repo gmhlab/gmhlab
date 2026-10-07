@@ -38,7 +38,9 @@
 .projects-stat-value {
   color: var(--mfy-color-text-brand-default);
   font-size: var(--mfy-typography-scale-07);
-  font-weight: 700;
+  /* Serif figures, regular weight: the same voice as the system StatsCard. */
+  font-family: var(--mfy-typography-family-serif);
+  font-weight: var(--mfy-typography-weight-regular);
   line-height: 1;
 }
 
@@ -108,32 +110,37 @@
 
 /* ----------------------------------------------------------------- spotlight
  * The featured platform card, sitting on the brand band under the hero. The
- * *section* is the solid brand surface; the card is repainted below as a
- * brand-secondary tint. Only the eyebrow sits directly on the section. */
-/* `inherit`, not `text-default-default`: this label sits directly on the brand
- * section, which already sets `text-brand-on-brand`. A hardcoded default colour
- * would paint it dark-on-navy. */
+ * *section* is the solid brand surface; the card is repainted below as the
+ * gold accent wash. Only the eyebrow sits directly on the section. */
+/* gold-300, never a default text colour: this label sits directly on the
+ * brand section (navy in both themes), where gold-300 is 7.4:1 and a
+ * hardcoded default colour would paint it dark-on-navy. */
 .projects-spotlight-eyebrow {
-  color: inherit;
+  color: var(--mfy-color-gold-300);
   font-weight: 600;
   letter-spacing: 0.0625rem;
   text-transform: uppercase;
 }
 
-/* Card has no brand-secondary variant, so the surface is painted here. The
- * background/text pair is the semantic one and survives the theme flip in both
- * directions:
- *   light — bg brand-200 (pale blue) + text brand-800 (navy)
- *   dark  — bg brand-600 (mid navy)  + text brand-100 (pale blue)
+/* Card has no accent variant, so the surface is painted here: the gold wash
+ * of the secondary brand colour, which is what singles the platform out on
+ * the navy band (the pale-blue brand-secondary it used before was the
+ * loudest thing on the page and only 4.70:1 in dark mode).
+ *   light — bg gold-100 (wash)   + text brand-800 (navy)      9.8:1
+ *   dark  — bg gold-950 (umber)  + text brand-100 (pale blue) ~12:1
  * Card's own `.card-variant-default` rule is 0,1,0, so the `.projects-page`
  * prefix is required to win regardless of stylesheet order. Colour is set
  * alongside background deliberately: `background` does not inherit but `color`
  * does, so repainting one without the other leaves the card inheriting the
- * brand section's on-brand text. */
+ * brand section's on-brand text. Headings follow that colour rather than the
+ * global navy, which would vanish on the dark-mode umber. */
 .projects-page .projects-spotlight {
-  background: var(--mfy-color-background-brand-secondary);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-brand-secondary);
+  --text-heading-color: currentColor;
+  background: var(--mfy-color-background-accent-tertiary);
+  box-shadow:
+    inset 0 3px 0 var(--mfy-color-border-accent-default),
+    inset 0 0 0 var(--mfy-size-stroke-border)
+      var(--mfy-color-border-accent-secondary);
   color: var(--mfy-color-text-brand-default);
 }
 
@@ -141,14 +148,14 @@
  * horizontal once `Flex type="third"` has stacked the two FlexItems. */
 .projects-spotlight-aside {
   border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-brand-secondary);
+    var(--mfy-color-border-accent-secondary);
   padding-top: var(--mfy-size-space-600);
 }
 
 @media (min-width: 600px) {
   .projects-spotlight-aside {
     border-inline-start: var(--mfy-size-stroke-border) solid
-      var(--mfy-color-border-brand-secondary);
+      var(--mfy-color-border-accent-secondary);
     border-top: none;
     padding-inline-start: var(--mfy-size-space-800);
     padding-top: 0;
@@ -181,8 +188,8 @@
 }
 
 /* Full-strength inherited colour: size alone sets these back from the link
- * above them. The brand-secondary card gives only 4.70:1 in dark mode, so the
- * `opacity: 0.85` this used to carry pushed it to 3.86:1 and under AA. Nor is
+ * above them. (On the old brand-secondary surface, an `opacity: 0.85` here
+ * fell to 3.86:1 in dark mode; keep it full-strength on any surface.) Nor is
  * there a muted token to reach for — `text-brand-on-brand-secondary` is a trap
  * (not a quieter on-brand tone but `brand-900` in light, navy-on-navy). */
 .projects-spotlight-list small {

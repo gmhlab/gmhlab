@@ -8,12 +8,54 @@ import {
   TextLink,
   TextLinkList,
   TextListItem,
-  TextStrong,
 } from "../../primitives";
+import type { ReactNode } from "react";
 import "./footers.css";
 
-export type FooterProps = Omit<SectionProps, "variant" | "padding" | "src">;
-export function Footer({ className, ...props }: FooterProps) {
+export type FooterLink = {
+  label: string;
+  href: string;
+};
+export type FooterColumn = {
+  title: string;
+  links: FooterLink[];
+};
+
+/** The design-system default, from Figma's footer (7717:4142). A real site
+ * passes its own `columns`. */
+export const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    title: "Use cases",
+    links: ["UI design", "UX design", "Wireframing", "Diagramming", "Brainstorming", "Online whiteboard", "Team collaboration"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Explore",
+    links: ["Design", "Prototyping", "Development features", "Design systems", "Collaboration features", "Design process", "FigJam"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Resources",
+    links: ["Blog", "Best practices", "Colors", "Color wheel", "Support", "Developers", "Resource library"].map((label) => ({ label, href: "#" })),
+  },
+];
+
+export type FooterProps = Omit<SectionProps, "variant" | "padding" | "src"> & {
+  /** Link columns. Defaults to {@link DEFAULT_FOOTER_COLUMNS}. */
+  columns?: FooterColumn[];
+  /**
+   * Rendered under the logo. Defaults to {@link SocialButtons} — whose links
+   * point at Figma's accounts, so a real site should pass its own (or `null`).
+   */
+  aside?: ReactNode;
+  /** The base row under the hairline — copyright and credits. Omitted when unset. */
+  legal?: ReactNode;
+};
+export function Footer({
+  className,
+  columns = DEFAULT_FOOTER_COLUMNS,
+  aside = <SocialButtons />,
+  legal,
+  ...props
+}: FooterProps) {
   const { isTabletDown } = useMediaQuery();
   const listDensity = isTabletDown ? "tight" : "default";
   return (
@@ -22,99 +64,35 @@ export function Footer({ className, ...props }: FooterProps) {
       elementType="footer"
       variant="brand"
       paddingTop="1600"
-      paddingBottom="4000"
+      paddingBottom={legal ? "800" : "4000"}
       style={{ marginTop: "auto" }}
       {...props}
     >
-      <Flex wrap type="quarter" gap="600" container>
-        <FlexItem size="minor">
-          <Flex direction="column" gap="600" alignSecondary="start">
-            <FlexItem>
-              <GmhLogo className="footer-logo" />
-            </FlexItem>
-            <FlexItem>
-              <SocialButtons />
-            </FlexItem>
-          </Flex>
-        </FlexItem>
-        <TextLinkList
-          density={listDensity}
-          title={<TextStrong>Use cases</TextStrong>}
-        >
-          <TextListItem>
-            <TextLink href="#">UI design</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">UX design</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Wireframing</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Diagramming</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Brainstorming</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Online whiteboard</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Team collaboration</TextLink>
-          </TextListItem>
-        </TextLinkList>
-        <TextLinkList
-          density={listDensity}
-          title={<TextStrong>Explore</TextStrong>}
-        >
-          <TextListItem>
-            <TextLink href="#">Design</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Prototyping</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Development features</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Design systems</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Collaboration features</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Design process</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">FigJam</TextLink>
-          </TextListItem>
-        </TextLinkList>
-        <TextLinkList
-          density={listDensity}
-          title={<TextStrong>Resources</TextStrong>}
-        >
-          <TextListItem>
-            <TextLink href="#">Blog</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Best practices</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Colors</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Color wheel</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Support</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Developers</TextLink>
-          </TextListItem>
-          <TextListItem>
-            <TextLink href="#">Resource library</TextLink>
-          </TextListItem>
-        </TextLinkList>
+      <Flex direction="column" gap="800" container>
+        <Flex wrap type="quarter" gap="600" className="footer-columns">
+          <FlexItem size="minor">
+            <Flex direction="column" gap="600" alignSecondary="start">
+              <FlexItem>
+                <GmhLogo className="footer-logo" />
+              </FlexItem>
+              {aside && <FlexItem>{aside}</FlexItem>}
+            </Flex>
+          </FlexItem>
+          {columns.map((column) => (
+            <TextLinkList
+              key={column.title}
+              density={listDensity}
+              title={<span className="footer-column-title">{column.title}</span>}
+            >
+              {column.links.map((link) => (
+                <TextListItem key={link.label}>
+                  <TextLink href={link.href}>{link.label}</TextLink>
+                </TextListItem>
+              ))}
+            </TextLinkList>
+          ))}
+        </Flex>
+        {legal && <div className="footer-legal">{legal}</div>}
       </Flex>
     </Section>
   );

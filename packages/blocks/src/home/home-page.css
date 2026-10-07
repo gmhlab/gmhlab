@@ -1,0 +1,367 @@
+/* HomePage — scoped under `.home-page`, every class `home-`-prefixed, so
+ * nothing here can leak into another consumer of @gmhlab/blocks/styles.css.
+ *
+ * Colour, type and radius all come from tokens. The few literals left are
+ * geometry (the topographic lines, the gap-field glyph) and the navy-tinted
+ * shadow alpha, which has no token.
+ *
+ * Every grid child gets `min-width: 0`: these grids sit inside a Flex
+ * container, whose items default to `min-width: auto` and would otherwise let
+ * a long word push the page into horizontal scroll. */
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ── Shared ─────────────────────────────────────────────────────────── */
+
+.home-split {
+  align-items: center;
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+
+  > * {
+    min-width: 0;
+  }
+}
+@media (min-width: 940px) {
+  .home-split-hero {
+    grid-template-columns: 1.02fr 0.98fr;
+  }
+  .home-split-gap {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+  .home-split-quote {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+
+.home-lede {
+  max-width: 56ch;
+}
+
+.home-section-head {
+  max-width: 62ch;
+}
+
+.home-caption {
+  color: var(--mfy-color-text-default-secondary);
+  font: var(--mfy-font-body-small);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* The arrow nudges right as its button or card is hovered. */
+.home-arrow {
+  display: inline-block;
+  transition: translate var(--global-duration-fast) var(--global-ease-out);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-arrow-button:hover .home-arrow,
+  .home-focus-card:hover .home-arrow {
+    translate: 4px 0;
+  }
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+
+.home-hero {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Contour lines behind the hero. They draw in once on load; under reduced
+   motion they are simply already drawn. */
+.home-topo {
+  height: 150%;
+  inset: -10% -20% auto -20%;
+  opacity: 0.5;
+  pointer-events: none;
+  position: absolute;
+  width: 140%;
+  z-index: -1;
+
+  path {
+    fill: none;
+    opacity: 0.13;
+    stroke: var(--mfy-color-text-brand-default);
+    stroke-width: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-topo path {
+    animation: home-topo-draw 3.4s ease forwards;
+    stroke-dasharray: 2600;
+    stroke-dashoffset: 2600;
+  }
+  .home-topo path:nth-child(2) { animation-delay: 0.12s; }
+  .home-topo path:nth-child(3) { animation-delay: 0.24s; }
+  .home-topo path:nth-child(4) { animation-delay: 0.36s; }
+  .home-topo path:nth-child(5) { animation-delay: 0.48s; }
+  .home-topo path:nth-child(6) { animation-delay: 0.6s; }
+}
+@keyframes home-topo-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.home-hero-actions {
+  margin-top: var(--mfy-size-space-200);
+}
+
+.home-hero-figure {
+  margin: 0;
+}
+.home-hero-frame {
+  isolation: isolate;
+  position: relative;
+}
+.home-hero-image {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--mfy-size-radius-100);
+}
+/* The gold corner bracket that sits behind the photo's lower-left edge. */
+.home-hero-rule {
+  border-bottom: 2px solid var(--mfy-color-border-accent-default);
+  border-left: 2px solid var(--mfy-color-border-accent-default);
+  bottom: -1rem;
+  height: 56%;
+  left: -1rem;
+  position: absolute;
+  width: 56%;
+  z-index: -1;
+}
+.home-hero-figure .home-caption {
+  margin-top: var(--mfy-size-space-300);
+}
+@media (max-width: 939.98px) {
+  .home-hero-figure {
+    margin-inline: auto;
+    max-width: 30rem;
+    padding-left: 1rem;
+  }
+}
+
+/* ── Stats ──────────────────────────────────────────────────────────── */
+
+.home-stats {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(11.25rem, 1fr));
+  width: 100%;
+
+  > * {
+    min-width: 0;
+  }
+}
+
+/* ── The care-gap field ─────────────────────────────────────────────── */
+
+.home-gap-body {
+  color: var(--mfy-color-text-default-secondary);
+  max-width: 52ch;
+}
+
+.home-gap-field {
+  display: grid;
+  gap: clamp(4px, 0.8vw, 9px);
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+
+  svg {
+    height: auto;
+    overflow: visible;
+    width: 100%;
+  }
+}
+.home-gap-cell {
+  fill: none;
+  opacity: 0.3;
+  stroke: var(--mfy-color-text-brand-default);
+  stroke-linecap: round;
+  stroke-width: 1.4;
+  transition:
+    opacity 0.5s ease,
+    fill 0.5s ease,
+    stroke 0.5s ease;
+
+  &.is-lit {
+    fill: var(--mfy-color-background-accent-default);
+    opacity: 1;
+    stroke: var(--mfy-color-background-accent-default);
+  }
+}
+/* When the field scrolls in, the lit figures fill one after another — the
+   eye catches how few of them there are as it happens. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-page[data-reveal] .home-gap-field:not(.is-in) .home-gap-cell.is-lit {
+    fill: transparent;
+    opacity: 0.3;
+    stroke: var(--mfy-color-text-brand-default);
+  }
+  .home-gap-field.is-in .home-gap-cell.is-lit {
+    transition-delay: calc(var(--cell-index) * 9ms + 300ms);
+  }
+}
+
+.home-gap-legend {
+  color: var(--mfy-color-text-default-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  font: var(--mfy-font-body-small);
+  gap: var(--mfy-size-space-300) var(--mfy-size-space-600);
+  margin-top: var(--mfy-size-space-200);
+
+  span {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--mfy-size-space-200);
+  }
+}
+.home-gap-key {
+  border: 1.4px solid var(--mfy-color-text-brand-default);
+  display: inline-block;
+  height: 0.6875rem;
+  opacity: 0.45;
+  width: 0.6875rem;
+}
+.home-gap-key-lit {
+  background: var(--mfy-color-background-accent-default);
+  border-color: var(--mfy-color-background-accent-default);
+  opacity: 1;
+}
+
+/* ── Focus cards ────────────────────────────────────────────────────── */
+
+.home-focus-grid {
+  display: grid;
+  gap: clamp(1.125rem, 2.4vw, 1.875rem);
+  grid-template-columns: repeat(auto-fit, minmax(16.75rem, 1fr));
+  width: 100%;
+
+  > * {
+    min-width: 0;
+  }
+}
+
+.home-focus-card.card {
+  gap: 0;
+  overflow: hidden;
+
+  /* Stretch the content so the link line pins to the card's bottom edge
+     across a row of uneven copy. */
+  .card-content {
+    flex: 1;
+  }
+  .card-asset {
+    display: block;
+  }
+}
+.home-focus-image {
+  aspect-ratio: 16 / 10;
+}
+.home-focus-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--mfy-size-space-300);
+  padding: clamp(1.25rem, 2.4vw, 1.75rem);
+
+  .text-body-base {
+    color: var(--mfy-color-text-default-default);
+    font-size: 0.96875rem;
+    margin-bottom: var(--mfy-size-space-200);
+  }
+}
+.home-arrow-link {
+  align-items: center;
+  align-self: flex-start;
+  border-bottom: 1.5px solid transparent;
+  color: var(--mfy-color-text-brand-default);
+  display: inline-flex;
+  font: var(--mfy-font-body-small-strong);
+  gap: var(--mfy-size-space-200);
+  margin-top: auto;
+  padding-bottom: 3px;
+  transition: border-color var(--global-duration-fast) ease;
+}
+.home-focus-card:hover .home-arrow-link {
+  border-color: var(--mfy-color-border-accent-default);
+}
+
+/* ── Partners ───────────────────────────────────────────────────────── */
+
+.home-partners {
+  display: grid;
+  gap: var(--mfy-size-space-400);
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.home-partner {
+  background: var(--mfy-color-background-default-default);
+  border: var(--mfy-size-stroke-border) solid
+    var(--mfy-color-border-default-default);
+  border-radius: var(--mfy-size-radius-100);
+  color: var(--mfy-color-text-brand-default);
+  font: var(--mfy-font-body-small-strong);
+  min-width: 0;
+  padding: 1.375rem 1.125rem;
+  text-align: center;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--mfy-color-border-accent-default);
+  }
+
+  span {
+    color: var(--mfy-color-text-default-secondary);
+    display: block;
+    font: var(--mfy-font-body-small);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    margin-top: var(--mfy-size-space-100);
+  }
+}
+
+/* ── Closing CTA ────────────────────────────────────────────────────── */
+
+/* Mirrors the stat band's bloom from the opposite corner, so the page opens
+   and closes on the same light. */
+.home-cta.section-variant-brand {
+  background:
+    radial-gradient(
+      70% 120% at 78% 110%,
+      color-mix(in oklch, var(--mfy-color-gold-500) 38%, transparent),
+      transparent 60%
+    ),
+    var(--mfy-color-brand-900);
+  text-align: center;
+}
+.home-cta-body {
+  color: var(--mfy-color-gold-300);
+  max-width: 52ch;
+}
+
+/* ── Scroll reveal ──────────────────────────────────────────────────── */
+
+/* Only hidden once JS has set `data-reveal` (see useReveal), so the server
+   HTML and no-JS readers always see everything. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-page[data-reveal] .home-reveal {
+    transition:
+      opacity var(--global-duration-slow) ease,
+      translate var(--global-duration-slow) var(--global-ease-out);
+  }
+  .home-page[data-reveal] .home-reveal:not(.is-in) {
+    opacity: 0;
+    translate: 0 22px;
+  }
+}

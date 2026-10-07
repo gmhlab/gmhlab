@@ -18,6 +18,10 @@ const badgeVariants = cva(
         // pair rather than the alpha-over-solid trick `destructive` uses —
         // 10% of yellow-400 is not a readable pill. See --info/--warning/
         // --success in styles/tailwind.css.
+        // The secondary brand colour as a tag: gold wash with gold-800 text
+        // (7:1). For a category label, not a status.
+        accent:
+          "bg-surface-accent-tertiary text-content-on-accent-tertiary [a]:hover:bg-surface-accent-tertiary-hover",
         info: "bg-info text-info-foreground [a]:hover:bg-info/80",
         warning: "bg-warning text-warning-foreground [a]:hover:bg-warning/80",
         success: "bg-success text-success-foreground [a]:hover:bg-success/80",

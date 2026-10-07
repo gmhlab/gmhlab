@@ -26,7 +26,9 @@
 .publications-stat-value {
   color: var(--mfy-color-text-brand-default);
   font-size: var(--mfy-typography-scale-07);
-  font-weight: 700;
+  /* Serif figures, regular weight: the same voice as the system StatsCard. */
+  font-family: var(--mfy-typography-family-serif);
+  font-weight: var(--mfy-typography-weight-regular);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }

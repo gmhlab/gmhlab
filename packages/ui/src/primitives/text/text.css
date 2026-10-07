@@ -27,6 +27,13 @@
   font: var(--mfy-font-body-link);
   position: relative;
   text-decoration: underline;
+  text-decoration-color: var(--mfy-color-border-accent-default);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-thickness var(--global-duration-fast) ease;
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
   &:focus-visible {
     outline: none;
     --offset: calc(var(--mfy-size-stroke-border) * 2);
@@ -53,18 +60,113 @@
 }
 .text-subtitle {
   font: var(--mfy-font-subtitle);
+  line-height: 1.5;
 }
 .text-subheading {
   font: var(--mfy-font-subheading);
+  line-height: 1.55;
+}
+
+/* Display type. The font shorthand resets line-height to `normal`, which is
+   ~1.25 for Baskerville — loose for a two-line serif headline — so each sets
+   its own. Colour comes from --text-heading-color (navy on light surfaces;
+   brand surfaces reset it to currentColor, see globals.css in tokens).
+   `text-wrap: balance` keeps a two-line title from ending on one orphan word.
+
+   The hero and page sizes clamp down with the viewport rather than waiting for
+   TextContentTitle's JS mobile switch: that switch renders the desktop size
+   into SSR HTML (useMediaQuery's server snapshot is `false`), so CSS is what
+   keeps the first paint from overflowing a phone. */
+.text-heading,
+.text-title-hero,
+.text-title-page {
+  color: var(--text-heading-color, inherit);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
 }
 .text-heading {
   font: var(--mfy-font-heading);
+  line-height: 1.25;
 }
 .text-title-hero {
   font: var(--mfy-font-title-hero);
+  font-size: clamp(2.375rem, 5.6vw, var(--mfy-typography-title-hero-size));
+  line-height: 1.04;
 }
 .text-title-page {
   font: var(--mfy-font-title-page);
+  font-size: clamp(1.8rem, 4vw, var(--mfy-typography-title-page-size-base));
+  line-height: 1.1;
+}
+
+/* Italic accent inside a display title: `<TextTitleHero>Care that reaches
+   <em>the people</em></TextTitleHero>`. gold-600, not the #aa9868 anchor:
+   the anchor is 2.7:1 on paper and misses even the 3:1 large-text bar;
+   gold-600 is 3.8:1. Brand surfaces lift it to gold-300 (7.4:1 on navy). */
+:is(.text-title-hero, .text-title-page, .text-heading) em {
+  color: var(--text-heading-em-color, var(--mfy-color-gold-600));
+  font-style: italic;
+}
+.dark :is(.text-title-hero, .text-title-page, .text-heading) em {
+  color: var(--mfy-color-gold-400);
+}
+
+/* The kicker above a heading. */
+.text-eyebrow {
+  align-items: center;
+  color: var(--text-eyebrow-color, var(--mfy-color-text-accent-default));
+  display: flex;
+  font: var(--mfy-font-body-small-strong);
+  font-size: var(--mfy-typography-scale-01);
+  gap: var(--mfy-size-space-300);
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  margin: 0;
+  text-transform: uppercase;
+
+  &.text-align-center {
+    justify-content: center;
+  }
+}
+.text-eyebrow-rule::after {
+  background: var(--mfy-color-border-accent-default);
+  content: "";
+  flex: 1;
+  height: var(--mfy-size-stroke-border);
+  max-width: 7.5rem;
+  opacity: 0.55;
+}
+
+/* Pull quote. */
+.text-blockquote {
+  margin: 0;
+
+  blockquote {
+    border-left: 3px solid var(--mfy-color-border-accent-default);
+    color: var(--text-heading-color, inherit);
+    font-family: var(--mfy-typography-family-serif);
+    font-size: clamp(1.45rem, 3.1vw, 2.375rem);
+    font-style: italic;
+    line-height: 1.3;
+    margin: 0;
+    padding-left: clamp(1.25rem, 2.6vw, 2.125rem);
+    text-wrap: balance;
+  }
+}
+.text-blockquote-attribution {
+  display: flex;
+  flex-direction: column;
+  font: var(--mfy-font-body-small);
+  gap: var(--mfy-size-space-050);
+  margin-top: var(--mfy-size-space-600);
+  padding-left: calc(clamp(1.25rem, 2.6vw, 2.125rem) + 3px);
+}
+.text-blockquote-name {
+  color: var(--text-heading-color, inherit);
+  font: var(--mfy-font-body-strong);
+}
+.text-blockquote-role {
+  color: var(--mfy-color-text-default-secondary);
 }
 
 .text-list {

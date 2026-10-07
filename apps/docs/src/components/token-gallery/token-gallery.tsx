@@ -24,6 +24,7 @@ const INTENT_ORDER = [
   "default",
   "neutral",
   "brand",
+  "accent",
   "positive",
   "warning",
   "danger",
@@ -35,6 +36,7 @@ const INTENT_COPY: Record<string, string> = {
   default: "The resting surface. Most of every screen is this quiet.",
   neutral: "De-emphasis without meaning — slate, not signal.",
   brand: "The product speaking in its own voice.",
+  accent: "The secondary brand voice — GW gold. Rules, highlights, the one thing to notice.",
   positive: "Confirmation. Something worked.",
   warning: "Caution — attention, not alarm.",
   danger: "Destructive actions and errors.",
@@ -286,10 +288,11 @@ function recipeFor(intent: string, prominence: string, has: (n: string) => boole
 /* Section 1: hero — anatomy of a surface                              */
 /* ------------------------------------------------------------------ */
 
-const HERO_INTENTS = ["brand", "positive", "warning", "danger", "neutral"] as const;
+const HERO_INTENTS = ["brand", "accent", "positive", "warning", "danger", "neutral"] as const;
 
 const HERO_LINES: Record<string, { title: string; body: string }> = {
   brand: { title: "New in monofly", body: "The token atlas below generates itself." },
+  accent: { title: "Featured", body: "Gold marks the one thing on the page." },
   positive: { title: "Build passed", body: "tokens → ui → blocks → demo, all green." },
   warning: { title: "Rebuild required", body: "packages/* changed — dist is stale." },
   danger: { title: "Delete workspace?", body: "This removes dist/ everywhere." },
@@ -489,7 +492,7 @@ export function TokenRoleSection({ role }: { role: MfyRole }) {
 /* Section 3: recipes — pairings that always work                      */
 /* ------------------------------------------------------------------ */
 
-const RECIPE_INTENTS = ["default", "brand", "neutral", "positive", "warning", "danger"] as const;
+const RECIPE_INTENTS = ["default", "brand", "accent", "neutral", "positive", "warning", "danger"] as const;
 const PROMINENCES = [
   { key: "default", label: "loud" },
   { key: "secondary", label: "supporting" },
@@ -499,6 +502,7 @@ const PROMINENCES = [
 const RECIPE_LINES: Record<string, { title: string; body: string }> = {
   default: { title: "Resting surface", body: "Most of every screen is this quiet." },
   brand: { title: "New in monofly 2.0", body: "One grammar, both themes." },
+  accent: { title: "Featured platform", body: "The secondary brand colour, same grammar." },
   neutral: { title: "Draft saved", body: "Nothing needs your attention." },
   positive: { title: "Build passed", body: "tokens → ui → blocks → demo, all green." },
   warning: { title: "Rebuild required", body: "packages/* changed — dist is stale." },

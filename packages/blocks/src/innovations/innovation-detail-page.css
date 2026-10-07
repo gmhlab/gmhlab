@@ -75,7 +75,9 @@
 .innovation-detail-stat-value {
   color: var(--mfy-color-text-brand-default);
   font-size: var(--mfy-typography-scale-05);
-  font-weight: var(--mfy-typography-weight-bold);
+  /* Serif figures, regular weight: the same voice as the system StatsCard. */
+  font-family: var(--mfy-typography-family-serif);
+  font-weight: var(--mfy-typography-weight-regular);
   line-height: 1.2;
 }
 
@@ -96,6 +98,7 @@
 
 .innovation-detail-step-number {
   align-items: center;
+  --text-heading-color: currentColor; /* brand panel: headings follow on-brand */
   background: var(--mfy-color-background-brand-default);
   border-radius: var(--mfy-size-radius-full);
   color: var(--mfy-color-text-brand-on-brand);

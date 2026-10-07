@@ -8,14 +8,36 @@ export type ImageProps = Omit<ComponentPropsWithoutRef<"img">, "alt"> & {
   aspectRatio?: "1-1" | "16-9" | "4-3" | "fill" | "natural";
   size?: "small" | "medium" | "large" | "fill" | "natural";
   variant?: "default" | "rounded";
+  /**
+   * `duotone` maps the photo onto the brand pair — navy shadows, gold
+   * highlights — so mismatched program photography reads as one set. The img
+   * is wrapped in a span that takes `className` and `aspectRatio`; size the
+   * wrapper, and the photo covers it.
+   */
+  treatment?: "none" | "duotone";
 };
 export function Image({
   aspectRatio = "natural",
   className,
   size = "natural",
   variant = "rounded",
+  treatment = "none",
   ...props
 }: ImageProps) {
+  if (treatment === "duotone") {
+    return (
+      <span
+        className={clsx(
+          className,
+          "image-duotone",
+          `image-aspect-ratio-${aspectRatio}`,
+          `image-variant-${variant}`,
+        )}
+      >
+        <Image {...props} size="fill" aspectRatio="fill" variant="default" />
+      </span>
+    );
+  }
   const [loaded, setLoaded] = useState(false);
   // A cached image is already `complete` before React attaches `onLoad`, so
   // that event never fires and the img would stay hidden (`image-loading`).
