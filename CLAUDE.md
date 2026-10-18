@@ -156,6 +156,34 @@ What *is* required, so a brand change happens in one place:
   intact, but later phases should move them to M3 roles. The `stone` ramp is
   now unreferenced by the semantic layer.
 
+### Material 3 foundations (phase 2, 2026-10-18)
+
+`packages/tokens/src/material-system.css` (hand-maintained, M3 spec values)
+holds `--md-sys-shape-corner-*`, `--md-sys-typescale-*`, `--md-sys-elevation-level0…5`,
+`--md-sys-state-*` opacities and `--md-sys-motion-*` easing/durations. The
+`--mfy-*` equivalents bridge onto them, so components changed without edits:
+
+- **Shape.** `--mfy-size-radius-100/200/400` → corner extra-small/small/medium
+  (4/8/12px — one step rounder than the old 2/4/8). The shadcn `rounded-*`
+  ramp is now the M3 corner scale step for step (sm 4, md 8, lg 12, xl 16,
+  2xl 28, 3xl 32, 4xl 48) instead of multiples of `--radius`.
+- **Type.** M3's 15 roles in the GMH faces: `--md-ref-typeface-brand`
+  (Baskerville stack) for display and headline, `--md-ref-typeface-plain`
+  (Avenir Next / Nunito Sans) for title, body and label. Text primitives map
+  hero → display-large, page title → display-medium, subtitle → title-large,
+  heading → headline-small, subheading and body → body-large, small →
+  body-medium. Tracking is 0 for display, headline and body (M3's values are
+  Roboto-tuned and made Avenir look airy); title and label keep the spec.
+  The medium weight (500) is real: both apps now load Nunito Sans 500.
+- **Elevation.** `--mfy-effects-shadows-drop-shadow-*` → M3 levels. In M3,
+  elevation is mostly surface colour (`surface-container-*`); shadows are for
+  things that float.
+- **State.** The bridge's hover layers use
+  `calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)` in `color-mix`,
+  disabled uses the 12%/38% tokens. Components do not yet apply state layers
+  themselves — that is phase 3 (component variants), along with M3 component
+  shapes (pill buttons, 28px dialogs) and motion.
+
 ### The GW palette (2026-10-07 — colour superseded by M3, see above)
 
 The colour bullets below describe the pre-M3 values and are kept as history;
@@ -167,7 +195,7 @@ The system was re-skinned to the GW reference design (`.files/gw-global-mental-h
 - **Secondary brand colour = GW gold `#aa9868`**, primitive ramp `--mfy-color-gold-50…950` (anchored at 500; 100/300 pinned to the reference's `#f0ebe0`/`#d8cdb2`), semantic group **`accent`** mirroring the brand group step for step (`background-accent-*`, `text-accent-*`, `on-accent`, …; Tailwind `surface-accent`, `content-accent`, `line-accent`, `icon-accent`, plus clean `gold-*`). Not called "secondary": that word is already a *step* name (`surface-secondary`). `#aa9868` is **2.7:1 on paper** — rules, fills, borders and solid buttons only (with navy text, 5.8:1). Gold *text* is `text-accent-default` = gold-700 (AA on all light surfaces); display italics use gold-600. The reference HTML's own 12px gold eyebrows fail AA — don't copy its colours literally.
 - **The `default` group sits on a new `stone` ramp** (warm paper at the light end, GW navy-ink at the dark end) instead of `gray`. Dark mode is navy-ink, not charcoal.
 - **Brand surfaces stay navy after dark.** `background-brand-default/hover` and `text/icon-brand-on-brand` no longer flip to a pale tint in `.dark`; instead the shadcn `--primary` turns gold in `.dark` (in `tailwind.css`), since a navy button on a navy-ink page has no affordance.
-- Radii are crisper (`radius-100/200/400` = 2/4/8px; shadcn `--radius` tracks `radius-200`), headings (`heading-font-*`) are Baskerville regular, and family stacks put the macOS faces first with a web fallback reachable through an optional hook: `var(--mfy-typography-family-{serif,sans}-web, "Libre Baskerville" | "Nunito Sans")`. `apps/web` fills the hook from `next/font`; `apps/docs` loads the literal families from Google Fonts.
+- Radii were crisper (2/4/8px) — superseded by the M3 corner scale in phase 2; headings (`heading-font-*`) are Baskerville regular, and family stacks put the macOS faces first with a web fallback reachable through an optional hook: `var(--mfy-typography-family-{serif,sans}-web, "Libre Baskerville" | "Nunito Sans")`. `apps/web` fills the hook from `next/font`; `apps/docs` loads the literal families from Google Fonts.
 - **Heading colour** is navy via `--text-heading-color` (set in `globals.css`, consumed by the Text title/heading classes). **Any surface that paints its own foreground must reset it to `currentColor`** — `Section`/`Card` brand variants do, as do the two hand-painted brand panels in blocks. Forget it and a heading goes navy-on-navy.
 - **`globals.css` element defaults are in `@layer base`.** Unlayered, `button { font: … }` beat every Tailwind utility on a `<button>` — `Button`'s `text-sm font-semibold` was silently ignored, and only Buttons rendered as `<a>` looked right. Never move element rules back out of the layer.
 
@@ -223,8 +251,11 @@ essentials:
   the shadcn aliases.
 - **`--mfy-font-*` are `font` shorthands, not families**, so they cannot live in
   the `--font-*` namespace (Tailwind would emit them as `font-family`). They are
-  static utilities instead: `type-title-hero`, `type-body-small-strong`. Being
-  the shorthand, they reset `line-height` to `normal`.
+  static utilities instead: `type-title-hero`, `type-body-small-strong`. Since
+  the M3 phase 2 bridge each shorthand carries its role's line-height
+  (`size/line-height`), so they no longer reset it to `normal` — but they do
+  still override any earlier `line-height`, which is why `text.css` keeps its
+  `.text-line-height-*` overrides at the end of the file.
 - **Spacing is deliberately not mapped.** MFY's scale is already stock Tailwind:
   `--mfy-size-space-N` equals Tailwind's `N/100` step exactly (`space-400` = 1rem
   = `p-4`, `space-050` = `p-0.5`). Adding `--spacing-100` would not add a value,

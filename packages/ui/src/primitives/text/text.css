@@ -1,23 +1,27 @@
+/* Type roles follow the M3 type scale (@gmhlab/tokens material-system.css):
+   the --mfy-font-* shorthands carry each role's size AND line-height, and
+   tracking is set here per role. body = body-large, small = body-medium,
+   subtitle = title-large, subheading = body-large, heading = headline-small,
+   page title = display-medium, hero = display-large. */
 .text-body-base {
   font: var(--mfy-font-body-base);
-}
-.text-line-height-single {
-  line-height: 1;
-}
-.text-line-height-body {
-  line-height: var(--global-line-height-body);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
 }
 .text-body-small {
   font: var(--mfy-font-body-small);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
 }
 .text-body-small-strong {
   font: var(--mfy-font-body-small-strong);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
 }
 .text-body-strong {
   font: var(--mfy-font-body-strong);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
 }
 .text-body-emphasis {
   font: var(--mfy-font-body-emphasis);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
 }
 
 .text-body-link {
@@ -60,16 +64,16 @@
 }
 .text-subtitle {
   font: var(--mfy-font-subtitle);
-  line-height: 1.5;
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
 }
 .text-subheading {
   font: var(--mfy-font-subheading);
-  line-height: 1.55;
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
 }
 
-/* Display type. The font shorthand resets line-height to `normal`, which is
-   ~1.25 for Baskerville — loose for a two-line serif headline — so each sets
-   its own. Colour comes from --text-heading-color (navy on light surfaces;
+/* Display type. Line-heights come from the M3 shorthands, except where the
+   size clamps (below), which use M3's ratio unitless so the leading shrinks
+   with the text. Colour comes from --text-heading-color (navy on light surfaces;
    brand surfaces reset it to currentColor, see globals.css in tokens).
    `text-wrap: balance` keeps a two-line title from ending on one orphan word.
 
@@ -81,22 +85,21 @@
 .text-title-hero,
 .text-title-page {
   color: var(--text-heading-color, inherit);
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .text-heading {
   font: var(--mfy-font-heading);
-  line-height: 1.25;
 }
 .text-title-hero {
   font: var(--mfy-font-title-hero);
   font-size: clamp(2.375rem, 5.6vw, var(--mfy-typography-title-hero-size));
-  line-height: 1.04;
+  line-height: 1.123; /* display-large: 64 / 57 */
 }
 .text-title-page {
   font: var(--mfy-font-title-page);
   font-size: clamp(1.8rem, 4vw, var(--mfy-typography-title-page-size-base));
-  line-height: 1.1;
+  line-height: 1.156; /* display-medium: 52 / 45 */
 }
 
 /* Italic accent inside a display title: `<TextTitleHero>Care that reaches
@@ -116,11 +119,12 @@
   align-items: center;
   color: var(--text-eyebrow-color, var(--mfy-color-text-accent-default));
   display: flex;
+  /* label-medium, tracked out for an uppercase kicker. */
   font: var(--mfy-font-body-small-strong);
-  font-size: var(--mfy-typography-scale-01);
+  font-size: var(--md-sys-typescale-label-medium-size);
   gap: var(--mfy-size-space-300);
   letter-spacing: 0.18em;
-  line-height: 1.4;
+  line-height: var(--md-sys-typescale-label-medium-line-height);
   margin: 0;
   text-transform: uppercase;
 
@@ -254,4 +258,14 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: var(--text-truncate-line-clamp, 9999);
   line-clamp: var(--text-truncate-line-clamp, 9999);
+}
+
+/* Line-height overrides. Last in the file on purpose: every role above sets
+   line-height through its font shorthand, so at equal specificity these only
+   win by coming after them. */
+.text-line-height-single {
+  line-height: 1;
+}
+.text-line-height-body {
+  line-height: var(--global-line-height-body);
 }

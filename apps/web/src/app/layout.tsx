@@ -29,7 +29,7 @@ const serif = Libre_Baskerville({
 });
 const sans = Nunito_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--mfy-typography-family-sans-web",
   display: "swap",
 });
