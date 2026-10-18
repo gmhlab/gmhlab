@@ -1,11 +1,11 @@
 "use client";
 
-import { useAuth } from "@gmhlab/blocks";
+import { useAuth } from "@gmhlab/data";
 import { type HeaderNavItem, Header, UtilityBar } from "@gmhlab/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Mock credentials accepted by the blocks auth service.
+// Mock credentials accepted by mockAuthService (see data-providers.tsx).
 const DEMO_CREDENTIALS = { email: "Charlie Brown", password: "snooptroupe" };
 
 /**
@@ -28,7 +28,7 @@ const NAV_ITEMS: HeaderNavItem[] = [
 
 ];
 
-/** The ui Header wired to the blocks auth layer and the app router. */
+/** The ui Header wired to the @gmhlab/data auth layer and the app router. */
 export function SiteHeader() {
   const { user, login, logout } = useAuth();
   const pathname = usePathname();

@@ -89,6 +89,12 @@ importers:
       '@gmhlab/blocks':
         specifier: workspace:*
         version: link:../../packages/blocks
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@gmhlab/data':
+        specifier: workspace:*
+        version: link:../../packages/data
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -138,6 +144,12 @@ importers:
       '@gmhlab/blocks':
         specifier: workspace:*
         version: link:../../packages/blocks
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@gmhlab/data':
+        specifier: workspace:*
+        version: link:../../packages/data
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -178,6 +190,9 @@ importers:
       '@gmhlab/core':
         specifier: workspace:*
         version: link:../core
+      '@gmhlab/data':
+        specifier: workspace:*
+        version: link:../data
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -230,6 +245,31 @@ importers:
 
   packages/core:
     devDependencies:
+      tsup:
+        specifier: 'catalog:'
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(typescript@6.0.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/data:
+    dependencies:
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../core
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
       tsup:
         specifier: 'catalog:'
         version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(typescript@6.0.3)

@@ -1,13 +1,17 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { PricingContext } from "../contexts/PricingContext";
-import type { PricingPlan } from "@gmhlab/core";
-// Hardwired until @gmhlab/data takes the service as a prop.
-import { mockPricingService as pricingService } from "@gmhlab/core/mocks";
+import type { PricingPlan, PricingService } from "@gmhlab/core";
+
+export type PricingProviderProps = {
+  /** The pricing backend. Pass a stable reference — a new object reloads the plans. */
+  service: PricingService;
+  children?: ReactNode;
+};
 
 /**
  * Pricing provider with full state management
  */
-export function PricingProvider({ children }: { children?: ReactNode }) {
+export function PricingProvider({ service, children }: PricingProviderProps) {
   const [monthlyPlans, setMonthlyPlans] = useState<PricingPlan[]>([]);
   const [annualPlans, setAnnualPlans] = useState<PricingPlan[]>([]);
   const [currentPlan, setCurrentPlan] = useState<PricingPlan>();
@@ -19,7 +23,7 @@ export function PricingProvider({ children }: { children?: ReactNode }) {
       setIsLoading(true);
 
       try {
-        const { monthly, annual } = await pricingService.getPlans();
+        const { monthly, annual } = await service.getPlans();
         setMonthlyPlans(monthly);
         setAnnualPlans(annual);
         setCurrentPlan(monthly[0]);
@@ -30,7 +34,7 @@ export function PricingProvider({ children }: { children?: ReactNode }) {
     }
 
     loadPlans();
-  }, []);
+  }, [service]);
 
   // Memoize the context value to prevent unnecessary re-renders
   const value = useMemo(

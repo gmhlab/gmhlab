@@ -3,7 +3,7 @@ import {
   PricingCardSkeleton,
   pricingPlanToPricingCardProps,
 } from "@gmhlab/ui";
-import { usePricing } from "../data";
+import { usePricing } from "@gmhlab/data";
 import { useMediaQuery } from "@gmhlab/ui";
 import { CardGrid, Flex, FlexItem, Section } from "@gmhlab/ui";
 import {

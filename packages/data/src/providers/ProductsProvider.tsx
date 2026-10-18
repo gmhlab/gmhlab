@@ -9,15 +9,20 @@ import {
   type ProductCart,
   type ProductFilter,
   type ProductSort,
+  type ProductsService,
   type SearchParams,
 } from "@gmhlab/core";
-// Hardwired until @gmhlab/data takes the service as a prop.
-import { mockProductsService as productsService } from "@gmhlab/core/mocks";
+
+export type ProductsProviderProps = {
+  /** The products backend. Pass a stable reference — a new object reloads the catalogue. */
+  service: ProductsService;
+  children?: ReactNode;
+};
 
 /**
  * Products provider with full state management
  */
-export function ProductsProvider({ children }: { children?: ReactNode }) {
+export function ProductsProvider({ service, children }: ProductsProviderProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     query: "",
@@ -43,7 +48,7 @@ export function ProductsProvider({ children }: { children?: ReactNode }) {
       setError(null);
 
       try {
-        const productData = await productsService.getProducts();
+        const productData = await service.getProducts();
         setProducts(productData);
       } catch (err) {
         setError(err as Error);
@@ -53,7 +58,7 @@ export function ProductsProvider({ children }: { children?: ReactNode }) {
     }
 
     loadProducts();
-  }, []);
+  }, [service]);
 
   // Load persisted data from localStorage
   useEffect(() => {

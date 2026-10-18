@@ -4,7 +4,7 @@ import {
   productToProductInfoCardProps,
 } from "@gmhlab/ui";
 import type { Product } from "@gmhlab/core";
-import { useProducts } from "../data";
+import { useProducts } from "@gmhlab/data";
 import { useMediaQuery } from "@gmhlab/ui";
 import { IconChevronDown, IconChevronUp } from "@gmhlab/ui";
 import { CardGrid, Flex, FlexItem, Section } from "@gmhlab/ui";

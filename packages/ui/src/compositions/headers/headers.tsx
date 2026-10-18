@@ -65,8 +65,8 @@ export const DEFAULT_NAV_ITEMS: HeaderNavItem[] = [
 
 /**
  * The signed-in user shown in the header. Kept structural (not imported from
- * the blocks data layer) so ui stays free of a blocks dependency — wire
- * `useAuth` from @gmhlab/blocks into these props at the consumer.
+ * the data layer) so ui stays free of a @gmhlab/data dependency — wire
+ * `useAuth` from @gmhlab/data into these props at the consumer.
  */
 export type HeaderAuthUser = {
   name: string;

@@ -1,0 +1,64 @@
+{
+  "name": "@gmhlab/data",
+  "version": "0.1.0",
+  "description": "React bindings for the GMH Lab data layer — auth, pricing and products contexts, providers and hooks over the @gmhlab/core service interfaces.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "GMH Lab",
+  "homepage": "https://github.com/gmhlab/gmhlab#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmhlab/gmhlab.git",
+    "directory": "packages/data"
+  },
+  "bugs": {
+    "url": "https://github.com/gmhlab/gmhlab/issues"
+  },
+  "keywords": [
+    "react",
+    "context",
+    "hooks",
+    "design-system"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "prepack": "pnpm run build",
+    "prepublishOnly": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||''))throw new Error('Use pnpm publish, not npm: npm does not resolve the workspace:/catalog: protocols and will publish a broken manifest.')\""
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "dependencies": {
+    "@gmhlab/core": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "sideEffects": false
+}

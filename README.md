@@ -12,12 +12,13 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | --- | --- | --- |
 | `packages/tokens` | `@gmhlab/tokens` | The design-token value layer (`--mfy-*` CSS variables). CSS-only — consume the tokens as CSS vars, there is no JS export. CSS at `@gmhlab/tokens/tokens.css`. |
 | `packages/core` | `@gmhlab/core` | Framework-agnostic domain layer: shared record types, backend service interfaces and pure helpers. No React, CSS or data; invented demo data is opt-in at `@gmhlab/core/mocks`. |
+| `packages/data` | `@gmhlab/data` | React bindings for the data layer: auth/pricing/products contexts, providers (`AllProviders`, …) and hooks (`useAuth`, …). Each provider takes its backend as a `service` prop — any implementation of the `@gmhlab/core` interfaces; there are no defaults. |
 | `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
-| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections, slides, the React data layer (`AllProviders`, `useAuth`, …, currently wired to `@gmhlab/core/mocks`), and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
-| `apps/docs` | `docs` | Vite + React 19 reference app that consumes `@gmhlab/ui`, `@gmhlab/blocks`, and `@gmhlab/tokens`. |
-| `apps/web` | `web` | Next.js 16 App Router site consuming all three packages — the MonoFly marketing page at `/`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
+| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections (two of which read `@gmhlab/data`), slides, and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
+| `apps/docs` | `docs` | Vite + React 19 reference app that consumes every package. |
+| `apps/web` | `web` | Next.js 16 App Router site consuming every package — the GW landing page at `/`, the MonoFly marketing page at `/showcase`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
 
-The three `packages/*` are built with tsup (ESM bundle + `.d.ts`, CSS copied into `dist/`).
+The `packages/*` are built with tsup (ESM bundle + `.d.ts`, CSS copied into `dist/`).
 
 ## Commands
 
@@ -25,7 +26,7 @@ Run from the repo root:
 
 ```bash
 pnpm install
-pnpm build       # tokens → ui → blocks (tsup), then the apps, in dependency order
+pnpm build       # tokens, core → ui, data → blocks (tsup), then the apps, in dependency order
 pnpm dev         # run both app dev servers (docs via Vite, web via next dev)
 pnpm typecheck   # tsc --noEmit across all packages
 ```
@@ -81,7 +82,7 @@ Two things a consuming app has to do beyond that:
 
 `src/app/layout.tsx` owns the site chrome — header, `<main>`, footer — and pages render sections into it. **A page should not include its own header or footer.**
 
-The layout wraps everything in `AllProviders` from `@gmhlab/blocks` (auth/pricing/products context, currently backed by the mock services in `@gmhlab/core/mocks`). It renders no DOM of its own, so the header, `<main>` and footer are the `<body>`'s flex children; `globals.css` makes `body` a full-height flex column so the footer settles at the bottom on short pages.
+The layout wraps everything in `DataProviders` (`src/components/data-providers.tsx`), a client component that binds `AllProviders` from `@gmhlab/data` to the mock services in `@gmhlab/core/mocks` — swap the services there for real ones. It has to be a client file: services are objects of functions, which the server-component layout cannot pass as props. It renders no DOM of its own, so the header, `<main>` and footer are the `<body>`'s flex children; `globals.css` makes `body` a full-height flex column so the footer settles at the bottom on short pages.
 
 ## Site pages
 
@@ -167,7 +168,7 @@ cd ../.. && pnpm turbo run build --filter=web
 ```
 
 `build` is `dependsOn: ["^build"]` in `turbo.json`, so filtering to `web` still builds
-tokens → ui → blocks first, in order.
+tokens, core, ui, data → blocks first, in order.
 
 Install is left to Vercel, which detects `pnpm-workspace.yaml` and the root
 `packageManager: pnpm@11.18.0` and installs from the repo root. Two settings it depends
@@ -235,7 +236,7 @@ pnpm release:check   # build + typecheck + `pnpm publish --dry-run` for every pa
 pnpm release         # publish locally — the fallback path, not the normal one
 ```
 
-`pnpm release` still works and is the escape hatch if CI is unavailable, but the account runs `auth-and-writes` 2FA, so it needs an OTP: `pnpm release --otp=<code>`. Codes rotate every 30 seconds and the three builds plus uploads take longer than that, so prefer publishing one package at a time with a fresh code, in the order tokens → ui → blocks. A local publish also produces **no provenance attestation**, since that requires CI's OIDC token.
+`pnpm release` still works and is the escape hatch if CI is unavailable, but the account runs `auth-and-writes` 2FA, so it needs an OTP: `pnpm release --otp=<code>`. Codes rotate every 30 seconds and the three builds plus uploads take longer than that, so prefer publishing one package at a time with a fresh code, in the order tokens → core → data → ui → blocks. A local publish also produces **no provenance attestation**, since that requires CI's OIDC token.
 
 Five things to know:
 

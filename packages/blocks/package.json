@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "@gmhlab/core": "workspace:*",
+    "@gmhlab/data": "workspace:*",
     "@gmhlab/tokens": "workspace:*",
     "@gmhlab/ui": "workspace:*",
     "class-variance-authority": "catalog:",

@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import {
-  AllProviders,
   FAQs,
   PanelSections,
   PricingGrid,
@@ -31,6 +30,12 @@ import {
   TextStrong,
   TextSubheading,
 } from "@gmhlab/ui";
+import {
+  mockAuthService,
+  mockPricingService,
+  mockProductsService,
+} from "@gmhlab/core/mocks";
+import { AllProviders, type DataServices } from "@gmhlab/data";
 
 /**
  * The `@gmhlab/blocks` reference page — the sibling of `ComponentsPage`, which
@@ -51,6 +56,13 @@ import {
  * claims to be exhaustive.
  */
 
+/** The two data-bound examples read @gmhlab/data; module-level so the reference is stable. */
+const SERVICES: DataServices = {
+  auth: mockAuthService,
+  pricing: mockPricingService,
+  products: mockProductsService,
+};
+
 const SECTIONS = [
   { id: "shape", label: "Package shape" },
   { id: "page-blocks", label: "Page blocks" },
@@ -60,7 +72,7 @@ const SECTIONS = [
   { id: "data", label: "Data layer" },
 ];
 
-/** The six export groups, in barrel order. */
+/** The six export groups. */
 const GROUPS = [
   {
     name: "examples/",
@@ -74,6 +86,12 @@ const GROUPS = [
       "PricingGrid",
       "ProductGrid",
     ],
+  },
+  {
+    name: "home/",
+    blurb:
+      "The record-driven landing page: one HomeContent record in, every section after the hero and stats optional.",
+    exports: ["HomePage"],
   },
   {
     name: "projects/",
@@ -108,20 +126,6 @@ const GROUPS = [
     blurb:
       "Full-bleed presentation layouts with co-located CSS. Rendered on their own route so they get the whole viewport.",
     exports: ["BrandSlide", "SlideHeader", "SlideFooter"],
-  },
-  {
-    name: "data/",
-    blurb:
-      "The SDS-style mock data layer: auth/pricing/products contexts, their providers, hooks and mock services. This is what the two data-bound examples read.",
-    exports: [
-      "AllProviders",
-      "AuthProvider",
-      "PricingProvider",
-      "ProductsProvider",
-      "useAuth",
-      "usePricing",
-      "useProducts",
-    ],
   },
 ];
 
@@ -280,7 +284,7 @@ export function BlocksPage() {
       <Demo
         id="shape"
         title="Package shape"
-        description="src/ groups, all six re-exported from the barrel. Build order is tokens → ui → blocks, and blocks externals react, @gmhlab/ui and @gmhlab/tokens so they resolve from the consumer."
+        description="src/ groups, all six re-exported from the barrel. Build order is tokens → core → data → ui → blocks, and blocks externals react and every @gmhlab package it uses so they resolve from the consumer."
       >
         <Flex type="half" wrap gap="600" alignSecondary="stretch">
           {GROUPS.map((group) => (
@@ -423,7 +427,7 @@ export function BlocksPage() {
         variant="neutral"
         bleed
         title="Examples"
-        description="The MonoFly marketing page, section by section. These take no props and carry their own content; the last two read the mock data layer, so they are wrapped in AllProviders here exactly as apps/web wraps its own tree."
+        description="The MonoFly marketing page, section by section. These take no props and carry their own content; the last two read @gmhlab/data, so they are wrapped in AllProviders fed the @gmhlab/core mock services, exactly as apps/web wraps its own tree."
       >
         <Flex direction="column" gap="1200" alignSecondary="stretch">
           <BleedSpec label="<WelcomeHero />">
@@ -444,7 +448,7 @@ export function BlocksPage() {
 
           {/* One provider tree around both: AllProviders renders no DOM, so it
               cannot disturb the section stack. */}
-          <AllProviders>
+          <AllProviders services={SERVICES}>
             <Flex direction="column" gap="1200" alignSecondary="stretch">
               <BleedSpec
                 label="<PricingGrid />"
@@ -502,7 +506,7 @@ export function BlocksPage() {
         id="data"
         variant="neutral"
         title="Data layer"
-        description="Mock contexts, providers, hooks and services. Domain types like Product and PricingPlan live in @gmhlab/ui — the cards compositions need them — and this layer re-exports them alongside its own context types."
+        description="Not part of @gmhlab/blocks: the auth/pricing/products contexts, providers and hooks live in @gmhlab/data, and take their backends as props. Domain types and the mock services come from @gmhlab/core. The two data-bound examples above read it."
       >
         <Card variant="stroke" padding="600">
           <TextSubheading>AllProviders renders no DOM</TextSubheading>

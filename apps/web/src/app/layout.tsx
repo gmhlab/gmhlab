@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Libre_Baskerville, Nunito_Sans } from "next/font/google";
 import type { ReactNode } from "react";
-import { AllProviders } from "@gmhlab/blocks";
+import { DataProviders } from "../components/data-providers";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader, SiteUtilityBar } from "../components/site-header";
 import { ThemeProvider } from "../components/theme-provider";
@@ -49,15 +49,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          {/* AllProviders renders no DOM, so the header, <main> and footer are
+          {/* DataProviders renders no DOM, so the header, <main> and footer are
               the body's own flex children — that is what lets Footer's
               `margin-top: auto` pin it to the bottom on short pages. */}
-          <AllProviders>
+          <DataProviders>
             <SiteUtilityBar />
             <SiteHeader />
             <main className="site-main">{children}</main>
             <SiteFooter />
-          </AllProviders>
+          </DataProviders>
         </ThemeProvider>
       </body>
     </html>
