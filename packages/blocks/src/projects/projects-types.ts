@@ -10,7 +10,7 @@
  * so the block is portable across whatever site hosts it.
  */
 
-/** The three states the Center publishes, normalised for filtering. */
+/** Three project states, normalised for filtering. */
 export type ProjectStatus = "active" | "ongoing" | "closed";
 
 /** Coarse geography, grouped from the countries each abstract names. */

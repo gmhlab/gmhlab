@@ -32,8 +32,7 @@ export type HeaderNavItem = {
   label: string;
   /**
    * Destination. Omit for a non-navigating item — it renders as a `<button>`
-   * that only sets the local active highlight, which is what the Figma-derived
-   * default set does.
+   * that only sets the local active highlight (useful for a static mock).
    */
   href?: string;
   /**
@@ -47,21 +46,6 @@ export type HeaderNavItem = {
   /** Dropped from the mobile sheet, matching Figma's Mobile/Open variant. */
   desktopOnly?: boolean;
 };
-
-/**
- * Nav items, in Figma's order (Header, node 2287:22651). `Link` is on the
- * desktop variant only — the mobile sheet drops it. None carry an `href`: this
- * is the design-system default, and a real site passes its own `navItems`.
- */
-export const DEFAULT_NAV_ITEMS: HeaderNavItem[] = [
-  { label: "Products" },
-  { label: "Solutions" },
-  { label: "Community" },
-  { label: "Resources" },
-  { label: "Pricing" },
-  { label: "Contact" },
-  { label: "Link", desktopOnly: true },
-];
 
 /**
  * The signed-in user shown in the header. Kept structural (not imported from
@@ -82,7 +66,7 @@ export type HeaderAuthProps = {
 };
 
 export type HeaderNavProps = {
-  /** Defaults to {@link DEFAULT_NAV_ITEMS}. */
+  /** None by default. */
   navItems?: HeaderNavItem[];
   /**
    * Marks the current route active. Only applies to items that carry an
@@ -97,11 +81,16 @@ export function HeaderAuth({
   onLogin,
   onRegister,
   onLogout,
-  navItems = DEFAULT_NAV_ITEMS,
+  navItems = [],
   activeHref,
-}: HeaderAuthProps & HeaderNavProps) {
+  logo,
+}: HeaderAuthProps &
+  HeaderNavProps & {
+    /** Repeated in the mobile sheet's top bar. */
+    logo?: ReactNode;
+  }) {
   const [open, setOpen] = useState(false);
-  const [page, setPage] = useState("products");
+  const [page, setPage] = useState<string>();
 
   /* Figma only draws a 375 and a 1200 frame, so the switch point is a call:
    * the hamburger is mobile-only (< 600px) and tablet gets the full inline
@@ -138,8 +127,8 @@ export function HeaderAuth({
       >
         {items.map((item) => {
           /* Three ways to render, in precedence order: a consumer-supplied
-           * element (a router Link), a plain anchor, or — for the label-only
-           * default set — a button, since an anchor with no destination is
+           * element (a router Link), a plain anchor, or — for a label-only
+           * item — a button, since an anchor with no destination is
            * neither focusable nor announced as a control. Base UI's Link
            * renders an `<a>` by default, so the href case needs no `render`. */
           const elementProps = item.render
@@ -200,7 +189,7 @@ export function HeaderAuth({
             alignPrimary="space-between"
             alignSecondary="center"
           >
-            <GmhLogo />
+            {logo}
             <DialogClose
               render={
                 <Button
@@ -307,10 +296,16 @@ export type HeaderWordmark = {
 export type HeaderProps = Omit<SectionProps, "variant" | "padding" | "src"> &
   HeaderAuthProps &
   HeaderNavProps & {
+    /**
+     * The mark at the start of the row (and atop the mobile sheet). Defaults
+     * to GMH Lab's `<GmhLogo />`; pass your own, or `null` for none.
+     */
+    logo?: ReactNode;
     wordmark?: HeaderWordmark;
   };
 export function Header({
   className,
+  logo = <GmhLogo />,
   wordmark,
   user,
   onLogin,
@@ -338,16 +333,17 @@ export function Header({
         wrap
       >
         <div className="header-brand">
-          <GmhLogo />
+          {logo}
           {wordmark && (
-            /* The logo is already the home link and its accessible name, so
-               this second link is hidden from AT and the tab order — it only
-               widens the click target to the words. */
+            /* With a logo, the logo is already the home link and its accessible
+               name, so this second link is hidden from AT and the tab order —
+               it only widens the click target to the words. Without a logo it
+               is the home link, so it stays exposed. */
             <a
               className="header-wordmark"
               href={wordmark.href ?? "/"}
-              aria-hidden="true"
-              tabIndex={-1}
+              aria-hidden={logo ? true : undefined}
+              tabIndex={logo ? -1 : undefined}
             >
               {wordmark.eyebrow && (
                 <span className="header-wordmark-eyebrow">
@@ -365,6 +361,7 @@ export function Header({
           onLogout={onLogout}
           navItems={navItems}
           activeHref={activeHref}
+          logo={logo}
         />
       </Flex>
     </Section>

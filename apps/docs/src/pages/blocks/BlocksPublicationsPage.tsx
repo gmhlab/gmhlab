@@ -4,6 +4,7 @@ import {
   PUBLICATIONS,
   PUBLICATIONS_HERO_IMAGE,
   PUBLICATION_THEMES,
+  PUBLICATIONS_PAGE_COPY,
 } from "../../fixtures/sample-content";
 import { DemoFrame } from "./DemoFrame";
 
@@ -18,15 +19,15 @@ export function BlocksPublicationsPage() {
       component="PublicationsPage"
       blurb="Full-text search across title, journal, authors, summary, theme and projects, plus year / theme / project facets, an open-access toggle, sort and paging. Facet counts respond to the other active facets, so the numbers on the chips always match what selecting them produces."
       props={`<PublicationsPage
+  {...PUBLICATIONS_PAGE_COPY}
   heroImage={PUBLICATIONS_HERO_IMAGE}
-  projectsHref="/blocks/projects"
   publications={PUBLICATIONS}
   themes={PUBLICATION_THEMES}
 />`}
     >
       <PublicationsPage
+        {...PUBLICATIONS_PAGE_COPY}
         heroImage={PUBLICATIONS_HERO_IMAGE}
-        projectsHref="/blocks/projects"
         publications={PUBLICATIONS}
         themes={PUBLICATION_THEMES}
       />

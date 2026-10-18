@@ -20,16 +20,17 @@
   }
 }
 
-/* Unnested + fallback on purpose: dev-mode CSS ships un-flattened, and
-   Safari <16.5 drops nested rules — leaving the SVG at its intrinsic
-   172x247 size. */
+/* The generic `.logo` sizing, for a square or portrait mark. GmhLogo is the
+   only mark now and overrides the size below; this rule still supplies
+   --logo-color. Unnested + fallback on purpose: dev-mode CSS ships
+   un-flattened, and Safari <16.5 drops nested rules. */
 .logo > svg {
   --logo-color: var(--mfy-color-icon-default-default);
   height: auto;
   width: var(--mfy-size-icon-small, 1.5rem);
 }
 
-/* The GMH mark is landscape (33x24.7796), not portrait like Logo/Logo2, so it
+/* The GMH mark is landscape (33x24.7796), not portrait, so it
    is sized by height — Figma specs it at 48px tall (~64px wide at this aspect).
    There is no --mfy-size-icon-* at 48px (large tops out at 40px), so this uses
    the same token icons.css maps .icon-size-48 to. Same specificity as the rule

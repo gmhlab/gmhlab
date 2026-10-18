@@ -1,6 +1,6 @@
 # @gmhlab/blocks
 
-Higher-level composed blocks for the GMH Lab design system — example sections, record-driven page blocks, and slides — built on `@gmhlab/ui` and `@gmhlab/tokens`.
+Higher-level composed blocks for the GMH Lab design system — record-driven page blocks and slides — built on `@gmhlab/ui` and `@gmhlab/tokens`.
 
 ## Install
 
@@ -8,7 +8,7 @@ Higher-level composed blocks for the GMH Lab design system — example sections,
 pnpm add @gmhlab/blocks react react-dom tailwindcss
 ```
 
-`react`, `react-dom`, and `tailwindcss` are peer dependencies. `@gmhlab/ui`, `@gmhlab/tokens`, `@gmhlab/core` and `@gmhlab/data` come along as dependencies.
+`react`, `react-dom`, and `tailwindcss` are peer dependencies. `@gmhlab/ui` and `@gmhlab/tokens` come along as dependencies.
 
 ## Setup
 
@@ -23,57 +23,58 @@ As with `@gmhlab/ui`, Tailwind must scan the built package for class names:
 @source "../node_modules/@gmhlab/ui/dist/**/*.js";
 @source "../node_modules/@gmhlab/## Usage
 
+Every page block takes its records as props; copy is optional:
+
 ```tsx
-"use client";
+import { ProjectsPage, type PageCta } from "@gmhlab/blocks";
+import { PROJECTS } from "./content";
 
-import {
-  mockAuthService,
-  mockPricingService,
-  mockProductsService,
-} from "@gmhlab/core/mocks";
-import { AllProviders } from "@gmhlab/data";
-import { PricingGrid, WelcomeHero } from "@gmhlab/blocks";
-
-const services = {
-  auth: mockAuthService,
-  pricing: mockPricingService,
-  products: mockProductsService,
+const cta: PageCta = {
+  heading: "Looking to collaborate?",
+  body: "We partner with teams adapting this work to new settings.",
+  actions: [{ label: "Email us", href: "mailto:hello@example.org" }],
 };
 
 export default function Page() {
   return (
-    <AllProviders services={services}>
-      <WelcomeHero />
-      <PricingGrid />
-    </AllProviders>
+    <ProjectsPage
+      projects={PROJECTS}
+      heroImage="/hero.jpg"
+      subtitle="Our research portfolio."
+      cta={cta}
+    />
   );
 }
 ```
-
-`PricingGrid` and `ProductGrid` read `usePricing()` / `useProducts()` from
-`@gmhlab/data`, so they need its providers above them. Everything else renders
-without one. See the `@gmhlab/data` README for the providers.
 
 ## What's in here
 
 | Group | Contents |
 | --- | --- |
-| `examples/` | `WelcomeHero`, `PanelSections`, `ProductDetails`, `FAQs`, plus the data-bound `PricingGrid` and `ProductGrid` — no props, hardcoded content |
 | `home/` | `HomePage`, a record-driven landing page |
 | `projects/` | `ProjectsPage`, `ProjectDetailPage` and their record contracts |
 | `publications/` | `PublicationsPage` and the reference resolver |
 | `innovations/` | `InnovationsPage`, `InnovationDetailPage` |
+| `shared/` | The `PageCta` / `PageAction` copy types |
 | `slides/` | `BrandSlide`, `SlideHeader`, `SlideFooter` |
 
-The page blocks take their records as props and name no organisation — the
-content belongs to the consuming app.
+**These blocks are GMH Lab's, and say so.** Hero subtitles and calls to action
+default to the GW Center for Global Mental Health's own copy (exported as
+`GMH_PROJECTS_COPY`, `GMH_PUBLICATIONS_COPY`, `GMH_INNOVATIONS_COPY`), and
+`Header`/`Footer` in `@gmhlab/ui` default to the GMH Lab mark. Every copy prop
+follows one rule:
+
+- omit it → the Center's wording
+- pass a value → yours replaces it
+- pass `null` → the section is not rendered
+
+The records themselves (projects, publications, innovations) are always yours
+to supply.
 
 ## Notes
 
 - The package ships with a **`"use client"` banner**, so it works directly in Next.js App Router.
-- The data layer (`AllProviders`, `useAuth`, …) is **not** exported here — it lives in `@gmhlab/data`. Domain types (`Product`, `PricingPlan`, …) come from `@gmhlab/core`.
-
-ngside the context types.
+- The data layer (`AllProviders`, `useAuth`, …) lives in `@gmhlab/data`. Domain types (`Product`, `PricingPlan`, …) come from `@gmhlab/core`.
 
 ## License
 

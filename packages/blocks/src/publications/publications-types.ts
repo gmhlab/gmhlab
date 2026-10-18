@@ -39,11 +39,14 @@ export type Publication = {
   citations: number;
   openAccess: boolean;
   kind: PublicationKind;
-  /** Appears on the Center's own publications listing. */
+  /**
+   * Appears on the hosting organisation's own publications listing (as
+   * opposed to an author pull). Badged when the page is given `centerBadge`.
+   */
   center: boolean;
-  /** Center projects this work belongs to, where the listing names them. */
+  /** The organisation's projects this work belongs to, where the listing names them. */
   projects?: string[];
-  /** The Center's curated description; only present for `center` entries. */
+  /** The organisation's curated description; typically only on `center` entries. */
   summary?: string;
   theme: PublicationTheme;
 };

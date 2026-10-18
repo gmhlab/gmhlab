@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import {
   Badge,
   Button,
@@ -13,14 +13,15 @@ import {
   TextLink,
   TextSmall,
   TextStrong,
-  TextSubheading,
-  TextTitlePage,
 } from "@gmhlab/ui";
 import {
   publicationSearchText,
   type Publication,
   type PublicationTheme,
 } from "./publications-types";
+import type { PageCta } from "../shared/page-copy";
+import { GMH_PUBLICATIONS_COPY } from "../shared/gmh-copy";
+import { PageCtaSection } from "../shared/page-cta";
 import "./publications-page.css";
 
 /**
@@ -163,7 +164,13 @@ function Authors({ publication }: { publication: Publication }) {
   );
 }
 
-function PublicationRow({ publication }: { publication: Publication }) {
+function PublicationRow({
+  publication,
+  centerBadge,
+}: {
+  publication: Publication;
+  centerBadge?: string;
+}) {
   const published = new Date(`${publication.date}T00:00:00Z`);
   return (
     <Card
@@ -189,7 +196,9 @@ function PublicationRow({ publication }: { publication: Publication }) {
         {publication.kind !== "Article" && (
           <Badge variant="secondary">{publication.kind}</Badge>
         )}
-        {publication.center && <Badge variant="info">Center publication</Badge>}
+        {publication.center && centerBadge ? (
+          <Badge variant="info">{centerBadge}</Badge>
+        ) : null}
         {publication.openAccess && (
           <Badge variant="success">Open access</Badge>
         )}
@@ -254,18 +263,43 @@ export type PublicationsPageProps = {
   themes?: PublicationTheme[];
   /** Hero background image. Required: the hero is an image variant. */
   heroImage: string;
-  /** Where the "browse projects" CTA points. */
-  projectsHref?: string;
-  /** Where the CTA sends collaboration enquiries. */
-  contactEmail?: string;
+  /** The hero heading. */
+  title?: string;
+  /**
+   * The hero's one-line description of the bibliography. Omit for the GW
+   * Center's (`GMH_PUBLICATIONS_COPY`); `null` renders none.
+   */
+  subtitle?: string | null;
+  /**
+   * Small print under the hero stats, saying what the numbers cover. Worth
+   * passing whenever the list is not a complete archive: "citations" is the
+   * total for the works listed, not a career figure, and a reader comparing it
+   * against a Scholar profile deserves to know why it is lower — or that the
+   * list merges a few people's records — without inferring it from a gap in
+   * the year facet.
+   *
+   * Deliberately has no default: it describes one dataset, and the Center's
+   * wording would be false over anyone else's records.
+   */
+  note?: ReactNode;
+  /**
+   * Badge label for works flagged `center` — the organisation's own listing.
+   * Omit for the Center's ("Center publication"); `null` badges nothing.
+   */
+  centerBadge?: string | null;
+  /** The closing call to action. Omit for the Center's; `null` ends the page after the list. */
+  cta?: PageCta | null;
 };
 
 export function PublicationsPage({
   publications,
   themes = NO_THEMES,
   heroImage,
-  projectsHref = "/projects",
-  contactEmail = "info@gwglobalmentalhealth.com",
+  title = "Publications",
+  subtitle = GMH_PUBLICATIONS_COPY.subtitle,
+  note,
+  centerBadge = GMH_PUBLICATIONS_COPY.centerBadge,
+  cta = GMH_PUBLICATIONS_COPY.cta,
 }: PublicationsPageProps) {
   const [filters, setFilters] = useState<Filters>(INITIAL_FILTERS);
   const [sort, setSort] = useState<SortKey>("newest");
@@ -411,10 +445,7 @@ export function PublicationsPage({
         paddingBottom="800"
         flexProps={{ direction: "column", alignSecondary: "start", gap: "1200" }}
       >
-        <TextContentTitle
-          title="Publications"
-          subtitle="Peer-reviewed research from the Center and its collaborators — trials, measurement studies, and implementation work across global mental health."
-        />
+        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
         <Flex direction="column" alignSecondary="stretch" gap="400">
           <Flex className="publications-stats" wrap gap="1200">
             {stats.map((stat) => (
@@ -426,19 +457,9 @@ export function PublicationsPage({
               </div>
             ))}
           </Flex>
-          {/* Says plainly what the numbers cover. "Citations" is the total for
-              the works listed here, not a career figure, and a reader comparing
-              this against a Scholar profile deserves to know that before they
-              wonder why it is lower. Naming the two authors is the honest
-              framing: this is a merge of two people's records, not a complete
-              Center archive, and a reader should not have to infer that from a
-              gap in the year facet. */}
-          <TextSmall className="publications-note">
-            Covers {years[years.length - 1]}–{years[0]}: the Center&rsquo;s own
-            listing merged with the full OpenAlex records for Brandon A. Kohrt
-            and Sauharda Rai. Citation counts are for these{" "}
-            {publications.length} works and were captured in August 2026.
-          </TextSmall>
+          {note ? (
+            <TextSmall className="publications-note">{note}</TextSmall>
+          ) : null}
         </Flex>
       </Hero>
 
@@ -555,6 +576,7 @@ export function PublicationsPage({
                   <PublicationRow
                     key={publication.slug}
                     publication={publication}
+                    centerBadge={centerBadge ?? undefined}
                   />
                 ))}
               </Flex>
@@ -598,44 +620,9 @@ export function PublicationsPage({
         </Flex>
       </Section>
 
-      <Section padding="1600">
-        <Flex
-          container
-          direction="column"
-          alignPrimary="center"
-          alignSecondary="center"
-          gap="800"
-        >
-          {/* TextTitlePage (3rem), not TextContentTitle — that resolves to
-              TextTitleHero (4.5rem) on desktop, which would match the
-              "Publications" H1 above. */}
-          <Flex direction="column" alignSecondary="center" gap="200">
-            <TextTitlePage className="text-align-center">
-              Work with our researchers
-            </TextTitlePage>
-            <TextSubheading className="publications-cta-copy text-align-center">
-              We collaborate on trials, measurement studies, and implementation
-              research across low- and middle-income settings.
-            </TextSubheading>
-          </Flex>
-          <Flex wrap gap="400" alignPrimary="center">
-            <Button
-              variant="default"
-              nativeButton={false}
-              render={<a href={`mailto:${contactEmail}`} />}
-            >
-              Email the Center
-            </Button>
-            <Button
-              variant="secondary"
-              nativeButton={false}
-              render={<a href={projectsHref} />}
-            >
-              Browse our projects
-            </Button>
-          </Flex>
-        </Flex>
-      </Section>
+      {cta ? (
+        <PageCtaSection cta={cta} copyClassName="publications-cta-copy" />
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   CardGrid,
   Card,
   Flex,
@@ -11,10 +10,11 @@ import {
   TextHeading,
   TextLink,
   TextSmall,
-  TextSubheading,
-  TextTitlePage,
 } from "@gmhlab/ui";
 import type { Innovation } from "./innovations-types";
+import type { PageCta } from "../shared/page-copy";
+import { GMH_INNOVATIONS_COPY } from "../shared/gmh-copy";
+import { PageCtaSection } from "../shared/page-cta";
 import "./innovations-page.css";
 
 /**
@@ -112,9 +112,19 @@ export type InnovationsPageProps = {
    * that hosts it.
    */
   basePath?: string;
-  /** Where the closing CTA buttons point. */
-  trainingHref?: string;
-  contactHref?: string;
+  /** The hero heading. */
+  title?: string;
+  /**
+   * The hero's one-line description. Omit for the GW Center's
+   * (`GMH_INNOVATIONS_COPY`); `null` renders none.
+   */
+  subtitle?: string | null;
+  /** Heading over the card grid. Omit for the Center's; `null` for none. */
+  listHeading?: string | null;
+  /** Subheading over the card grid. Omit for the Center's; `null` for none. */
+  listSubheading?: string | null;
+  /** The closing call to action. Omit for the Center's; `null` ends the page after the partners. */
+  cta?: PageCta | null;
 };
 
 export function InnovationsPage({
@@ -123,8 +133,11 @@ export function InnovationsPage({
   partners = [],
   heroImage,
   basePath = "/innovations",
-  trainingHref = "#",
-  contactHref = "#",
+  title = "Innovations",
+  subtitle = GMH_INNOVATIONS_COPY.subtitle,
+  listHeading = GMH_INNOVATIONS_COPY.listHeading,
+  listSubheading = GMH_INNOVATIONS_COPY.listSubheading,
+  cta = GMH_INNOVATIONS_COPY.cta,
 }: InnovationsPageProps) {
   return (
     <div className="innovations-page">
@@ -133,10 +146,7 @@ export function InnovationsPage({
         src={heroImage}
         flexProps={{ direction: "column", alignSecondary: "start" }}
       >
-        <TextContentTitle
-          title="Innovations"
-          subtitle="Scalable tools and technologies developed through community partnership and rigorous research to close the global mental health treatment gap."
-        />
+        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
       </Hero>
 
       {/* Brand band directly under the hero. The cards inside stay
@@ -148,8 +158,8 @@ export function InnovationsPage({
           container
           type="half"
           gap="800"
-          heading="Our Tools & Technologies"
-          subheading="Evidence-based solutions designed for low-resource settings worldwide"
+          heading={listHeading ?? undefined}
+          subheading={listSubheading ?? undefined}
         >
           {innovations.map((innovation) => (
             <InnovationCard
@@ -165,62 +175,27 @@ export function InnovationsPage({
         </CardGrid>
       </Section>
 
-      <Section className="innovations-partners" variant="neutral" padding="800">
-        <Flex
-          container
-          wrap
-          alignPrimary="center"
-          alignSecondary="center"
-          gap="1200"
-        >
-          {partners.map((partner) => (
-            <div className="innovations-partner-logo" key={partner}>
-              <TextSmall>{partner}</TextSmall>
-            </div>
-          ))}
-        </Flex>
-      </Section>
+      {partners.length ? (
+        <Section className="innovations-partners" variant="neutral" padding="800">
+          <Flex
+            container
+            wrap
+            alignPrimary="center"
+            alignSecondary="center"
+            gap="1200"
+          >
+            {partners.map((partner) => (
+              <div className="innovations-partner-logo" key={partner}>
+                <TextSmall>{partner}</TextSmall>
+              </div>
+            ))}
+          </Flex>
+        </Section>
+      ) : null}
 
-      <Section padding="1600">
-        <Flex
-          container
-          direction="column"
-          alignPrimary="center"
-          alignSecondary="center"
-          gap="800"
-        >
-          {/* TextTitlePage (3rem), not TextContentTitle — that resolves to
-              TextTitleHero (4.5rem) on desktop, which would match the
-              "Innovations" H1 above and make the CTA read as a second page
-              title. Paired with TextSubheading (1.25rem) rather than
-              TextSubtitle (2rem), which at this size competes with the
-              heading. */}
-          <Flex direction="column" alignSecondary="center" gap="200">
-            <TextTitlePage className="text-align-center">
-              Implement Our Innovations
-            </TextTitlePage>
-            {/* Only the paragraph is measure-capped, as in the wireframe —
-                capping the wrapper would break the heading onto two lines. */}
-            <TextSubheading className="innovations-cta-copy text-align-center">
-              Interested in using EQUIP, our assessment tools, or other
-              innovations in your setting? We provide training, consultation,
-              and implementation support.
-            </TextSubheading>
-          </Flex>
-          <Flex wrap gap="400" alignPrimary="center">
-            <Button nativeButton={false} render={<a href={trainingHref} />}>
-              Request Training
-            </Button>
-            <Button
-              variant="secondary"
-              nativeButton={false}
-              render={<a href={contactHref} />}
-            >
-              Contact Us
-            </Button>
-          </Flex>
-        </Flex>
-      </Section>
+      {cta ? (
+        <PageCtaSection cta={cta} copyClassName="innovations-cta-copy" />
+      ) : null}
     </div>
   );
 }

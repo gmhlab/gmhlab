@@ -27,11 +27,14 @@ import type {
   HomeContent,
   Innovation,
   InnovationDetail,
+  InnovationsPageProps,
   Project,
   ProjectDetail,
   ProjectRegion,
+  ProjectsPageProps,
   Publication,
   PublicationTheme,
+  PublicationsPageProps,
 } from "@gmhlab/blocks";
 
 /** Deterministic placeholder imagery — the hero variants require a `src`. */
@@ -347,6 +350,8 @@ export const INNOVATION_DETAIL_SLUGS = ["atlas"];
  * section renders no heading for it — `apps/web`'s own records are sparser
  * than this one, which is the behaviour worth seeing here.
  */
+const CENTRE_EMAIL = "hello@example.invalid";
+
 export const HARBOUR_DETAIL: ProjectDetail = {
   slug: "harbour",
   name: "HARBOUR",
@@ -571,6 +576,15 @@ export const HARBOUR_DETAIL: ProjectDetail = {
     email: "harbour@example.invalid",
   },
   relatedSlugs: ["lantern", "compass", "riverbend", "atlas"],
+  publicationsNote: "The trial's protocol, pilot and outcome papers.",
+  cta: {
+    heading: "Adapting HARBOUR?",
+    body: "The protocol and training materials are shared with any team running the intervention in a new setting.",
+    actions: [
+      { label: "Contact the trial", href: "mailto:harbour@example.invalid", variant: "secondary" },
+      { label: "Email the Centre", href: `mailto:${CENTRE_EMAIL}`, variant: "outline" },
+    ],
+  },
 };
 
 /* -- Innovation detail ---------------------------------------------------- */
@@ -772,5 +786,53 @@ export const HOME_CONTENT: HomeContent = {
     heading: "Bring us a problem worth solving.",
     body: "The closing band mirrors the stat band's gold bloom from the opposite corner.",
     action: { label: "Start with the portfolio", href: "/blocks/projects" },
+  },
+};
+
+/* -- Index-page copy ------------------------------------------------------- */
+
+/* The blocks carry no organisation's voice — hero subtitles, CTAs and the
+   bibliography note all arrive as props. These are the invented centre's. */
+
+export const PROJECTS_PAGE_COPY: Pick<
+  ProjectsPageProps,
+  "subtitle" | "partnersSubheading" | "cta"
+> = {
+  subtitle: "The Halden Centre's sample portfolio — trials, platforms and a measurement study across four regions.",
+  partnersSubheading: "Invented funders and delivery partners",
+  cta: {
+    heading: "Working on something similar?",
+    body: "The closing CTA is a prop: omit it and the page ends after the partner strip.",
+    actions: [
+      { label: "Email the Centre", href: `mailto:${CENTRE_EMAIL}` },
+      { label: "Browse publications", href: "/blocks/publications", variant: "secondary" },
+    ],
+  },
+};
+
+export const PUBLICATIONS_PAGE_COPY: Pick<
+  PublicationsPageProps,
+  "subtitle" | "note" | "centerBadge" | "cta"
+> = {
+  subtitle: "Every paper the sample portfolio has produced — invented journals, invented DOIs.",
+  note: `A synthetic bibliography of ${PUBLICATIONS.length} works. Citation counts are fiction too.`,
+  centerBadge: "Centre publication",
+  cta: {
+    heading: "Read the work behind it",
+    actions: [{ label: "Browse projects", href: "/blocks/projects", variant: "secondary" }],
+  },
+};
+
+export const INNOVATIONS_PAGE_COPY: Pick<
+  InnovationsPageProps,
+  "subtitle" | "listHeading" | "listSubheading" | "cta"
+> = {
+  subtitle: "Tools the sample portfolio has built and handed on to other teams.",
+  listHeading: "Tools",
+  listSubheading: "Only ATLAS has a detail record, so only its card links",
+  cta: {
+    heading: "Adopt a tool",
+    body: "Each tool ships with training materials and an implementation guide.",
+    actions: [{ label: "Email the Centre", href: `mailto:${CENTRE_EMAIL}` }],
   },
 };

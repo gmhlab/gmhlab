@@ -89,12 +89,6 @@ importers:
       '@gmhlab/blocks':
         specifier: workspace:*
         version: link:../../packages/blocks
-      '@gmhlab/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@gmhlab/data':
-        specifier: workspace:*
-        version: link:../../packages/data
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -187,12 +181,6 @@ importers:
 
   packages/blocks:
     dependencies:
-      '@gmhlab/core':
-        specifier: workspace:*
-        version: link:../core
-      '@gmhlab/data':
-        specifier: workspace:*
-        version: link:../data
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -205,9 +193,6 @@ importers:
       clsx:
         specifier: 'catalog:'
         version: 2.1.1
-      lucide-react:
-        specifier: 'catalog:'
-        version: 1.30.0(react@19.2.8)
       motion:
         specifier: 'catalog:'
         version: 12.43.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

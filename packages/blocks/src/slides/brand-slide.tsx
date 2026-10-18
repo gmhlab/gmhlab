@@ -40,7 +40,7 @@ export type BrandSlideProps = ComponentPropsWithoutRef<"article"> & {
 export function BrandSlide({
   variant = "brand",
   version = "VERSION 1.0",
-  credit = "©2026 MONOFLY DESIGN",
+  credit = "© STUDIO NAME",
   page = "PAGE 01",
   brandName = "BRAND NAME",
   sectionLabel = "BRAND IDENTITY",

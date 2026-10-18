@@ -25,7 +25,7 @@ const demos = [
   {
     to: "/blocks",
     title: "Blocks",
-    body: "Everything in @gmhlab/blocks — the MonoFly example sections rendered live, and the five record-driven page blocks on their own demo routes.",
+    body: "Everything in @gmhlab/blocks — the six record-driven page blocks on their own demo routes, and the slide layouts.",
   },
   {
     to: "/tokens",

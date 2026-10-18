@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Card,
   CardGrid,
   Flex,
@@ -20,10 +19,8 @@ import {
   resolvePublicationRefs,
   type Publication,
 } from "../publications/publications-types";
-import type {
-  InnovationAction,
-  InnovationDetail,
-} from "./innovation-detail-types";
+import type { InnovationDetail } from "./innovation-detail-types";
+import { PageActions, PageCtaSection } from "../shared/page-cta";
 import "./innovation-detail-page.css";
 
 /**
@@ -64,33 +61,7 @@ import "./innovation-detail-page.css";
 
 /* -- Shared --------------------------------------------------------------- */
 
-/** `nativeButton={false}` is required whenever `render` swaps the element —
- *  Base UI otherwise keeps native button semantics and logs on every render. */
-function Actions({
-  actions,
-  align,
-}: {
-  actions: InnovationAction[];
-  align?: "center";
-}) {
-  if (!actions.length) return null;
-  return (
-    <Flex wrap gap="400" alignPrimary={align === "center" ? "center" : undefined}>
-      {actions.map((action) => (
-        <Button
-          key={action.label}
-          variant={action.variant}
-          nativeButton={false}
-          render={<a href={action.href} />}
-        >
-          {action.label}
-        </Button>
-      ))}
-    </Flex>
-  );
-}
-
-/** "Kohrt BA, Pedersen GA, Schafer A, et al." */
+/** "Smith J, Okafor A, Lee M, et al." */
 function formatAuthors(publication: Publication): string {
   const shown = publication.authors.slice(0, 3).join(", ");
   const truncated =
@@ -161,7 +132,7 @@ function Hero({ detail }: { detail: InnovationDetail }) {
               ) : null}
             </Flex>
             <Text className="innovation-detail-hero-copy">{detail.summary}</Text>
-            <Actions actions={detail.actions ?? []} />
+            <PageActions actions={detail.actions ?? []} />
           </Flex>
         </FlexItem>
         <FlexItem size="minor">
@@ -444,35 +415,6 @@ function Related({ detail }: { detail: InnovationDetail }) {
   );
 }
 
-/* -- Closing CTA ---------------------------------------------------------- */
-
-function Cta({ detail }: { detail: InnovationDetail }) {
-  if (!detail.cta) return null;
-  const { heading, body, actions } = detail.cta;
-
-  return (
-    <Section variant="brand" padding="1600">
-      <Flex
-        container
-        direction="column"
-        alignPrimary="center"
-        alignSecondary="center"
-        gap="800"
-      >
-        <Flex direction="column" alignSecondary="center" gap="200">
-          <TextTitlePage className="text-align-center">{heading}</TextTitlePage>
-          {/* Only the paragraph is measure-capped — capping the wrapper would
-              break the heading onto two lines. */}
-          <TextSubheading className="innovation-detail-cta-copy text-align-center">
-            {body}
-          </TextSubheading>
-        </Flex>
-        <Actions actions={actions ?? []} align="center" />
-      </Flex>
-    </Section>
-  );
-}
-
 /* -- Page ----------------------------------------------------------------- */
 
 export type InnovationDetailPageProps = {
@@ -518,7 +460,13 @@ export function InnovationDetailPage({
         publicationsHref={publicationsHref}
       />
       <Related detail={detail} />
-      <Cta detail={detail} />
+      {detail.cta ? (
+        <PageCtaSection
+          cta={detail.cta}
+          variant="brand"
+          copyClassName="innovation-detail-cta-copy"
+        />
+      ) : null}
     </div>
   );
 }

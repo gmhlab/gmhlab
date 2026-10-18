@@ -364,6 +364,9 @@ export const RESHAPE_DETAIL: ProjectDetail = {
     email: "sauharda@gwu.edu",
   },
 
+  publicationsNote:
+    "Peer-reviewed publications from this project and the stigma-reduction program it belongs to.",
+
   /* SCAPE-U runs the same photo narrative method in Uganda; EQUIP is the
      competency-assessment platform the training rests on. */
   relatedSlugs: ["scape-u", "equip", "equip-su"],

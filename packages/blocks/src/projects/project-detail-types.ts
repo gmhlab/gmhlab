@@ -46,6 +46,7 @@ import {
   type PublicationRef,
   type ResolvedPublication,
 } from "../publications/publications-types";
+import type { PageCta } from "../shared/page-copy";
 
 /** A headline quantity — enrollment targets, sites, duration. */
 export type ProjectFigure = {
@@ -151,7 +152,7 @@ export type ProjectDetail = {
   expandedName?: string;
   tagline: string;
   status: ProjectStatus;
-  /** The Center's own wording, e.g. "Enrollment closed". */
+  /** The organisation's own wording, e.g. "Enrollment closed". */
   statusLabel: string;
   /** The opening paragraph: what the study is, in one breath. */
   lede: string;
@@ -171,10 +172,19 @@ export type ProjectDetail = {
   timeline?: TimelineEntry[];
   eligibility?: EligibilityGroup[];
   publications?: ProjectPublicationRef[];
+  /** Subheading for the published-work section — what these works are to the project. */
+  publicationsNote?: string;
   partners?: string[];
   resources?: ProjectResource[];
   contact?: ProjectContact;
   relatedSlugs?: string[];
+  /**
+   * The closing call to action. Omit for the GW Center's default, built from
+   * the record ("Work with us on {name}", a "Contact the project" button when
+   * `contact` is set, then the Center's address — see `gmhProjectDetailCta`);
+   * `null` ends the page after related projects.
+   */
+  cta?: PageCta | null;
 };
 
 /* -- Resolving references ------------------------------------------------- */

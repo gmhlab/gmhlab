@@ -25,6 +25,9 @@ import {
   type ProjectRegion,
   type ProjectStatus,
 } from "./projects-types";
+import type { PageCta } from "../shared/page-copy";
+import { GMH_PROJECTS_COPY } from "../shared/gmh-copy";
+import { PageCtaSection } from "../shared/page-cta";
 import "./projects-page.css";
 
 /**
@@ -318,10 +321,17 @@ export type ProjectsPageProps = {
    * site that hosts it instead of hardcoding a domain.
    */
   basePath?: string;
-  /** Where the "all publications" CTA points. */
-  publicationsHref?: string;
-  /** Where the CTA sends collaboration enquiries. */
-  contactEmail?: string;
+  /** The hero heading. */
+  title?: string;
+  /**
+   * The hero's one-line description of the portfolio. Omit for the GW
+   * Center's (`GMH_PROJECTS_COPY`); `null` renders none.
+   */
+  subtitle?: string | null;
+  /** Subheading for the partner strip. Omit for the Center's; `null` for none. */
+  partnersSubheading?: string | null;
+  /** The closing call to action. Omit for the Center's; `null` ends the page after the partners. */
+  cta?: PageCta | null;
 };
 
 export function ProjectsPage({
@@ -331,8 +341,10 @@ export function ProjectsPage({
   regions = NO_REGIONS,
   heroImage,
   basePath = "/projects",
-  publicationsHref = "/publications",
-  contactEmail = "info@gwglobalmentalhealth.com",
+  title = "Projects",
+  subtitle = GMH_PROJECTS_COPY.subtitle,
+  partnersSubheading = GMH_PROJECTS_COPY.partnersSubheading,
+  cta = GMH_PROJECTS_COPY.cta,
 }: ProjectsPageProps) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
@@ -440,10 +452,7 @@ export function ProjectsPage({
         paddingBottom="800"
         flexProps={{ direction: "column", alignSecondary: "start", gap: "1200" }}
       >
-        <TextContentTitle
-          title="Projects"
-          subtitle="Research and implementation initiatives building mental health care that works where specialists are scarce — from cluster-randomized trials to a global training platform."
-        />
+        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
         <Flex className="projects-stats" wrap gap="1200">
           {stats.map((stat) => (
             <div className="projects-stat" key={stat.label}>
@@ -554,64 +563,25 @@ export function ProjectsPage({
         )}
       </Section>
 
-      <Section className="projects-partners" variant="neutral" padding="1200">
-        <Flex container direction="column" alignSecondary="stretch" gap="600">
-          <TextContentHeading
-            heading="Funders & partners"
-            subheading="The organizations funding and delivering this work alongside the Center"
-          />
-          <Flex wrap gap="400">
-            {partners.map((partner) => (
-              <span className="projects-partner" key={partner}>
-                {partner}
-              </span>
-            ))}
+      {partners.length ? (
+        <Section className="projects-partners" variant="neutral" padding="1200">
+          <Flex container direction="column" alignSecondary="stretch" gap="600">
+            <TextContentHeading
+              heading="Funders & partners"
+              subheading={partnersSubheading ?? undefined}
+            />
+            <Flex wrap gap="400">
+              {partners.map((partner) => (
+                <span className="projects-partner" key={partner}>
+                  {partner}
+                </span>
+              ))}
+            </Flex>
           </Flex>
-        </Flex>
-      </Section>
+        </Section>
+      ) : null}
 
-      <Section padding="1600">
-        <Flex
-          container
-          direction="column"
-          alignPrimary="center"
-          alignSecondary="center"
-          gap="800"
-        >
-          {/* TextTitlePage (3rem), not TextContentTitle — that resolves to
-              TextTitleHero (4.5rem) on desktop, which would match the
-              "Projects" H1 above and make the CTA read as a second page
-              title. */}
-          <Flex direction="column" alignSecondary="center" gap="200">
-            <TextTitlePage className="text-align-center">
-              Looking to collaborate?
-            </TextTitlePage>
-            {/* Only the paragraph is measure-capped — capping the wrapper would
-                break the heading onto two lines. */}
-            <TextSubheading className="projects-cta-copy text-align-center">
-              We partner with universities, ministries, and community
-              organizations to adapt, deliver, and evaluate mental health care
-              in low-resource settings.
-            </TextSubheading>
-          </Flex>
-          <Flex wrap gap="400" alignPrimary="center">
-            <Button
-              variant="default"
-              nativeButton={false}
-              render={<a href={`mailto:${contactEmail}`} />}
-            >
-              Email the Center
-            </Button>
-            <Button
-              variant="secondary"
-              nativeButton={false}
-              render={<a href={publicationsHref} />}
-            >
-              Read our publications
-            </Button>
-          </Flex>
-        </Flex>
-      </Section>
+      {cta ? <PageCtaSection cta={cta} copyClassName="projects-cta-copy" /> : null}
     </div>
   );
 }

@@ -21,38 +21,25 @@ export type FooterColumn = {
   links: FooterLink[];
 };
 
-/** The design-system default, from Figma's footer (7717:4142). A real site
- * passes its own `columns`. */
-export const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
-  {
-    title: "Use cases",
-    links: ["UI design", "UX design", "Wireframing", "Diagramming", "Brainstorming", "Online whiteboard", "Team collaboration"].map((label) => ({ label, href: "#" })),
-  },
-  {
-    title: "Explore",
-    links: ["Design", "Prototyping", "Development features", "Design systems", "Collaboration features", "Design process", "FigJam"].map((label) => ({ label, href: "#" })),
-  },
-  {
-    title: "Resources",
-    links: ["Blog", "Best practices", "Colors", "Color wheel", "Support", "Developers", "Resource library"].map((label) => ({ label, href: "#" })),
-  },
-];
-
 export type FooterProps = Omit<SectionProps, "variant" | "padding" | "src"> & {
-  /** Link columns. Defaults to {@link DEFAULT_FOOTER_COLUMNS}. */
-  columns?: FooterColumn[];
   /**
-   * Rendered under the logo. Defaults to {@link SocialButtons} — whose links
-   * point at Figma's accounts, so a real site should pass its own (or `null`).
+   * The mark heading the first column. Defaults to GMH Lab's `<GmhLogo />`;
+   * pass your own, or `null` for none. Section `brand` re-colours
+   * `--logo-color` marks.
    */
+  logo?: ReactNode;
+  /** Link columns. None by default. */
+  columns?: FooterColumn[];
+  /** Rendered under the logo — e.g. {@link SocialButtons}. Omitted when unset. */
   aside?: ReactNode;
   /** The base row under the hairline — copyright and credits. Omitted when unset. */
   legal?: ReactNode;
 };
 export function Footer({
   className,
-  columns = DEFAULT_FOOTER_COLUMNS,
-  aside = <SocialButtons />,
+  logo = <GmhLogo />,
+  columns = [],
+  aside,
   legal,
   ...props
 }: FooterProps) {
@@ -70,14 +57,14 @@ export function Footer({
     >
       <Flex direction="column" gap="800" container>
         <Flex wrap type="quarter" gap="600" className="footer-columns">
-          <FlexItem size="minor">
-            <Flex direction="column" gap="600" alignSecondary="start">
-              <FlexItem>
-                <GmhLogo className="footer-logo" />
-              </FlexItem>
-              {aside && <FlexItem>{aside}</FlexItem>}
-            </Flex>
-          </FlexItem>
+          {(logo || aside) && (
+            <FlexItem size="minor">
+              <Flex direction="column" gap="600" alignSecondary="start">
+                {logo && <FlexItem>{logo}</FlexItem>}
+                {aside && <FlexItem>{aside}</FlexItem>}
+              </Flex>
+            </FlexItem>
+          )}
           {columns.map((column) => (
             <TextLinkList
               key={column.title}
@@ -98,49 +85,39 @@ export function Footer({
   );
 }
 
-export function SocialButtons() {
+export type SocialNetwork = "x" | "instagram" | "youtube" | "linkedin";
+export type SocialLink = {
+  network: SocialNetwork;
+  href: string;
+};
+
+const SOCIAL_NETWORKS: Record<
+  SocialNetwork,
+  { label: string; icon: ReactNode }
+> = {
+  x: { label: "X", icon: <IconXLogo /> },
+  instagram: { label: "Instagram", icon: <IconInstagram /> },
+  youtube: { label: "YouTube", icon: <IconYoutube /> },
+  linkedin: { label: "LinkedIn", icon: <IconLinkedin /> },
+};
+
+/** Icon buttons for a site's social accounts, in the order given. */
+export function SocialButtons({ links }: { links: SocialLink[] }) {
   return (
     <Flex alignSecondary="center" gap="100">
-      <Button
-        size="icon"
-        variant="ghost"
-        nativeButton={false}
-        aria-label="X"
-        className="rounded-full hover:[--icon-color:var(--mfy-color-icon-default-default)]"
-        render={<a href="https://www.x.com/figma" />}
-      >
-        <IconXLogo />
-      </Button>
-      <Button
-        size="icon"
-        variant="ghost"
-        nativeButton={false}
-        aria-label="Instagram"
-        className="rounded-full hover:[--icon-color:var(--mfy-color-icon-default-default)]"
-        render={<a href="https://instagram.com/figma" />}
-      >
-        <IconInstagram />
-      </Button>
-      <Button
-        size="icon"
-        variant="ghost"
-        nativeButton={false}
-        aria-label="YouTube"
-        className="rounded-full hover:[--icon-color:var(--mfy-color-icon-default-default)]"
-        render={<a href="https://www.youtube.com/@Figma" />}
-      >
-        <IconYoutube />
-      </Button>
-      <Button
-        size="icon"
-        variant="ghost"
-        nativeButton={false}
-        aria-label="LinkedIn"
-        className="rounded-full hover:[--icon-color:var(--mfy-color-icon-default-default)]"
-        render={<a href="https://www.linkedin.com/company/figma/" />}
-      >
-        <IconLinkedin />
-      </Button>
+      {links.map(({ network, href }) => (
+        <Button
+          key={network}
+          size="icon"
+          variant="ghost"
+          nativeButton={false}
+          aria-label={SOCIAL_NETWORKS[network].label}
+          className="rounded-full hover:[--icon-color:var(--mfy-color-icon-default-default)]"
+          render={<a href={href} />}
+        >
+          {SOCIAL_NETWORKS[network].icon}
+        </Button>
+      ))}
     </Flex>
   );
 }

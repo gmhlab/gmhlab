@@ -30,14 +30,11 @@ const COLUMNS: FooterColumn[] = [
  * The site's own boundary around the ui Footer — kept as the app's client
  * edge (layout.tsx is a server component). The ui bundle ships a
  * "use client" banner of its own, so this is not what makes Footer work.
- *
- * `aside={null}`: the default social buttons point at Figma's accounts.
  */
 export function SiteFooter() {
   return (
     <Footer
       columns={COLUMNS}
-      aside={null}
       legal={
         <>
           <span>

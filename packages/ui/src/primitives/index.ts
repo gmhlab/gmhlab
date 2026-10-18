@@ -14,8 +14,6 @@ export * from "./input-group";
 export * from "./kbd";
 export * from "./label";
 export * from "./logo/gmh-logo";
-export * from "./logo/logo";
-export * from "./logo/logo2";
 export * from "./menubar";
 export * from "./navigation-menu";
 export * from "./radio-group";

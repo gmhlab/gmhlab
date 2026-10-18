@@ -5,6 +5,7 @@ import {
   INNOVATIONS_HERO_IMAGE,
   INNOVATION_DETAIL_SLUGS,
   INNOVATION_PARTNERS,
+  INNOVATIONS_PAGE_COPY,
 } from "../../fixtures/sample-content";
 import { DemoFrame } from "./DemoFrame";
 
@@ -19,6 +20,7 @@ export function BlocksInnovationsPage() {
       component="InnovationsPage"
       blurb="The index. Only ATLAS appears in detailSlugs, so only that card links; the other two render as plain cards rather than as links to a 404."
       props={`<InnovationsPage
+  {...INNOVATIONS_PAGE_COPY}
   basePath="/blocks/innovations"
   detailSlugs={INNOVATION_DETAIL_SLUGS}
   heroImage={INNOVATIONS_HERO_IMAGE}
@@ -27,6 +29,7 @@ export function BlocksInnovationsPage() {
 />`}
     >
       <InnovationsPage
+        {...INNOVATIONS_PAGE_COPY}
         basePath="/blocks/innovations"
         detailSlugs={INNOVATION_DETAIL_SLUGS}
         heroImage={INNOVATIONS_HERO_IMAGE}

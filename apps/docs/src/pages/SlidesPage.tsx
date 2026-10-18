@@ -6,7 +6,7 @@ export function SlidesPage() {
       <BrandSlide
         variant="brand"
         version="VERSION 2.0"
-        credit="©2026 MONOFLY DESIGN"
+        credit="©2026 GMH LAB"
         page="PAGE 02"
         brandName="BRAND NAME"
         sectionLabel="BRAND IDENTITY"
@@ -15,7 +15,7 @@ export function SlidesPage() {
       <BrandSlide
         variant="neutral"
         version="VERSION 2.0"
-        credit="©2026 MONOFLY DESIGN"
+        credit="©2026 GMH LAB"
         page="PAGE 02"
         brandName="BRAND NAME"
         sectionLabel="BRAND IDENTITY"

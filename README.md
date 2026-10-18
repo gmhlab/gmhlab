@@ -16,7 +16,7 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
 | `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections (two of which read `@gmhlab/data`), slides, and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes every package. |
-| `apps/web` | `web` | Next.js 16 App Router site consuming every package — the GW landing page at `/`, the MonoFly marketing page at `/showcase`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
+| `apps/web` | `web` | Next.js 16 App Router site consuming every package — the GW landing page at `/`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
 
 The `packages/*` are built with tsup (ESM bundle + `.d.ts`, CSS copied into `dist/`).
 
@@ -121,8 +121,11 @@ export default function Page() {
 | `InnovationsPage` | `/innovations` | The innovations index. Takes `innovations`. |
 | `InnovationDetailPage` | `/innovations/equip` | One innovation's detail page. Takes an `InnovationDetail` record. |
 
-Both `ProjectsPage` and `PublicationsPage` accept a `contactEmail` prop for their
-closing call to action. The package exports the record *types* and the pure
+The blocks speak in the GW Center's voice by default — hero subtitles and
+closing calls to action come from `GMH_*_COPY` in `@gmhlab/blocks`, so teams that
+adopt them can see whose work it is. Every copy prop can be replaced (pass your
+own) or dropped (pass `null`); a detail record's `cta` works the same way. The
+package exports the record *types* and the pure
 helpers that read them (`projectSearchText`, `resolvePublicationRefs`,
 `resolveRelatedProjects`); `apps/web/src/content/` holds the records themselves,
 and each content module's header documents where it came from and which fields

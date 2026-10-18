@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Card,
   CardGrid,
   Flex,
@@ -24,11 +23,14 @@ import {
 } from "./project-detail-types";
 import type { Project } from "./projects-types";
 import type { Publication } from "../publications/publications-types";
+import { PageCtaSection } from "../shared/page-cta";
+import { gmhProjectDetailCta } from "../shared/gmh-copy";
 import "./project-detail-page.css";
 
 /**
- * The GW Center for Global Mental Health **project detail** page — the
- * template the portfolio's other projects are built from.
+ * A record-driven **project detail** page — the template every project in a
+ * portfolio is built from. (First built for the GW Center for Global Mental
+ * Health; `RESHAPE_DETAIL` in apps/web is the reference record.)
  *
  * It renders a `ProjectDetail` record (see `./project-detail-types`) and
  * nothing else: no project is named in this file. Adding a second project
@@ -508,7 +510,7 @@ function Evidence({
       <Flex container direction="column" alignSecondary="stretch" gap="800">
         <TextContentHeading
           heading="Published work"
-          subheading="Peer-reviewed publications from this project and the stigma-reduction program it belongs to."
+          subheading={detail.publicationsNote}
         />
         <ul className="pd-pubs">
           {entries.map(({ publication, note }) => (
@@ -548,7 +550,7 @@ function Evidence({
         </ul>
         <Flex>
           <TextLink href={publicationsHref}>
-            All Center publications →
+            All publications →
           </TextLink>
         </Flex>
       </Flex>
@@ -686,52 +688,6 @@ function Related({
   );
 }
 
-/* -- CTA ------------------------------------------------------------------ */
-
-function Cta({ detail }: { detail: ProjectDetail }) {
-  return (
-    <Section variant="brand" padding="1600">
-      <Flex
-        container
-        direction="column"
-        alignPrimary="center"
-        alignSecondary="center"
-        gap="800"
-      >
-        <Flex direction="column" alignSecondary="center" gap="200">
-          <TextTitlePage className="text-align-center">
-            Work with us on {detail.name}
-          </TextTitlePage>
-          {/* Only the paragraph is measure-capped — capping the wrapper would
-              break the heading onto two lines. */}
-          <TextSubheading className="pd-cta-copy text-align-center">
-            We share protocols, training materials and measurement tools with
-            teams adapting this work to their own setting.
-          </TextSubheading>
-        </Flex>
-        <Flex wrap gap="400" alignPrimary="center">
-          {detail.contact ? (
-            <Button
-              variant="secondary"
-              nativeButton={false}
-              render={<a href={`mailto:${detail.contact.email}`} />}
-            >
-              Contact the project
-            </Button>
-          ) : null}
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={<a href="mailto:info@gwglobalmentalhealth.com" />}
-          >
-            Email the Center
-          </Button>
-        </Flex>
-      </Flex>
-    </Section>
-  );
-}
-
 /* -- Page ----------------------------------------------------------------- */
 
 export function ProjectDetailPage({
@@ -772,7 +728,13 @@ export function ProjectDetailPage({
         detailSlugs={detailSlugs}
         projects={projects}
       />
-      <Cta detail={detail} />
+      {detail.cta !== null ? (
+        <PageCtaSection
+          cta={detail.cta ?? gmhProjectDetailCta(detail)}
+          variant="brand"
+          copyClassName="pd-cta-copy"
+        />
+      ) : null}
     </div>
   );
 }

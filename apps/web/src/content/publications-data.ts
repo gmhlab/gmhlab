@@ -5248,3 +5248,16 @@ export const PUBLICATIONS: Publication[] = [
  * `./projects-data`; swap it for a Center image before this goes live.
  */
 export const PUBLICATIONS_HERO_IMAGE = "https://picsum.photos/id/24/1920/1080";
+
+/* PUBLICATIONS is sorted date descending, so the span reads off the ends. */
+const newestYear = PUBLICATIONS[0]?.year;
+const oldestYear = PUBLICATIONS[PUBLICATIONS.length - 1]?.year;
+
+/**
+ * What the page's numbers cover, shown under the hero stats. Naming the two
+ * authors is the honest framing: this is a merge of two people's records, not
+ * a complete Center archive (see the provenance header above). Passed by the
+ * app rather than defaulted in the block, because it is a claim about this
+ * dataset specifically.
+ */
+export const PUBLICATIONS_NOTE = `Covers ${oldestYear}–${newestYear}: the Center’s own listing merged with the full OpenAlex records for Brandon A. Kohrt and Sauharda Rai. Citation counts are for these ${PUBLICATIONS.length} works and were captured in August 2026.`;

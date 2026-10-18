@@ -1,15 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
-import {
-  FAQs,
-  PanelSections,
-  PricingGrid,
-  ProductDetails,
-  ProductGrid,
-  SlideFooter,
-  SlideHeader,
-  WelcomeHero,
-} from "@gmhlab/blocks";
+import { SlideFooter, SlideHeader } from "@gmhlab/blocks";
 import {
   Badge,
   Button,
@@ -30,63 +21,31 @@ import {
   TextStrong,
   TextSubheading,
 } from "@gmhlab/ui";
-import {
-  mockAuthService,
-  mockPricingService,
-  mockProductsService,
-} from "@gmhlab/core/mocks";
-import { AllProviders, type DataServices } from "@gmhlab/data";
 
 /**
  * The `@gmhlab/blocks` reference page — the sibling of `ComponentsPage`, which
  * covers `@gmhlab/ui`.
  *
- * The package splits into two kinds of export and the split is the thing worth
- * understanding, so the page is organised around it rather than around a flat
- * list of components:
- *
- *   - **Examples** carry their own hardcoded content and take no props. They
- *     are the MonoFly marketing page, rendered live below.
- *   - **Page blocks** name nothing and take their records as props. They can
- *     only be demonstrated with a corpus, so the live demos live on their own
- *     routes, driven by the synthetic one in `src/fixtures/sample-content.ts`.
+ * Almost everything in the package is a **page block**: it names nothing and
+ * takes its records — and its copy — as props. A block can only be
+ * demonstrated with a corpus, so the live demos live on their own routes,
+ * driven by the synthetic one in `src/fixtures/sample-content.ts`. The rest is
+ * slides.
  *
  * Keep the counts and the export lists here in step with the package barrels
  * (the `index.ts` in each group under `packages/blocks/src`) — this page
  * claims to be exhaustive.
  */
 
-/** The two data-bound examples read @gmhlab/data; module-level so the reference is stable. */
-const SERVICES: DataServices = {
-  auth: mockAuthService,
-  pricing: mockPricingService,
-  products: mockProductsService,
-};
-
 const SECTIONS = [
   { id: "shape", label: "Package shape" },
   { id: "page-blocks", label: "Page blocks" },
   { id: "records", label: "Record-driven" },
-  { id: "examples", label: "Examples" },
   { id: "slides", label: "Slides" },
-  { id: "data", label: "Data layer" },
 ];
 
 /** The six export groups. */
 const GROUPS = [
-  {
-    name: "examples/",
-    blurb:
-      "The demo sections that make up the MonoFly marketing page in apps/web. No props, hardcoded content — that is what separates them from the page blocks.",
-    exports: [
-      "WelcomeHero",
-      "PanelSections",
-      "FAQs",
-      "ProductDetails",
-      "PricingGrid",
-      "ProductGrid",
-    ],
-  },
   {
     name: "home/",
     blurb:
@@ -122,6 +81,20 @@ const GROUPS = [
     exports: ["InnovationsPage", "InnovationDetailPage"],
   },
   {
+    name: "shared/",
+    blurb:
+      "The copy contracts every page block takes its voice through, and the GW Center's default copy. Omit a copy prop for the Center's wording, pass your own, or null to drop it.",
+    exports: [
+      "PageCta",
+      "PageAction",
+      "GMH_PROJECTS_COPY",
+      "GMH_PUBLICATIONS_COPY",
+      "GMH_INNOVATIONS_COPY",
+      "gmhProjectDetailCta",
+      "GMH_CONTACT_EMAIL",
+    ],
+  },
+  {
     name: "slides/",
     blurb:
       "Full-bleed presentation layouts with co-located CSS. Rendered on their own route so they get the whole viewport.",
@@ -143,7 +116,7 @@ const PAGE_BLOCKS = [
     name: "ProjectsPage",
     blurb:
       "Faceted portfolio index: search, status and region chips, a featured spotlight, and a stat strip — all derived from the records prop in a memo, never at module scope.",
-    props: "projects, featuredSlug, regions, partners, heroImage, basePath",
+    props: "projects, featuredSlug, regions, partners, heroImage, basePath, title, subtitle, partnersSubheading, cta",
   },
   {
     to: "/blocks/projects/harbour",
@@ -157,14 +130,14 @@ const PAGE_BLOCKS = [
     name: "PublicationsPage",
     blurb:
       "The bibliography index: full-text search, year/theme/project facets, an open-access toggle, sort, and paging.",
-    props: "publications, themes, heroImage, projectsHref, contactEmail",
+    props: "publications, themes, heroImage, title, subtitle, note, centerBadge, cta",
   },
   {
     to: "/blocks/innovations",
     name: "InnovationsPage",
     blurb:
       "The innovations index. A card links only when its slug appears in detailSlugs, so an index with one detail record ships no 404s.",
-    props: "innovations, detailSlugs, partners, heroImage, basePath",
+    props: "innovations, detailSlugs, partners, heroImage, basePath, title, subtitle, listHeading, listSubheading, cta",
   },
   {
     to: "/blocks/innovations/atlas",
@@ -182,59 +155,25 @@ function Demo({
   title,
   description,
   variant = "subtle",
-  bleed = false,
   children,
 }: {
   id: string;
   title: string;
   description?: string;
   variant?: "subtle" | "neutral";
-  bleed?: boolean;
   children: ReactNode;
 }) {
   return (
     <div id={id} className="scroll-mt-28">
-      <Section
-        variant={variant}
-        paddingTop="1600"
-        paddingBottom={bleed ? "800" : "1600"}
-      >
+      <Section variant={variant} padding="1600">
         <Flex container direction="column" gap="1200" alignSecondary="stretch">
           <TextContentHeading heading={title} subheading={description} />
-          {bleed ? null : (
-            <Flex direction="column" gap="800" alignSecondary="stretch">
-              {children}
-            </Flex>
-          )}
-        </Flex>
-      </Section>
-      {bleed ? children : null}
-    </div>
-  );
-}
-
-/** Full-bleed specimens get a caption rather than a Card wrapper. */
-function BleedSpec({
-  label,
-  note,
-  children,
-}: {
-  label: string;
-  note?: string;
-  children: ReactNode;
-}) {
-  return (
-    <Flex direction="column" gap="400" alignSecondary="stretch">
-      <Section variant="subtle" paddingTop="0" paddingBottom="0">
-        <Flex container direction="column" gap="200">
-          <Flex gap="200" alignSecondary="center" wrap>
-            <TextCode>{label}</TextCode>
+          <Flex direction="column" gap="800" alignSecondary="stretch">
+            {children}
           </Flex>
-          {note ? <TextSmall>{note}</TextSmall> : null}
         </Flex>
       </Section>
-      {children}
-    </Flex>
+    </div>
   );
 }
 
@@ -246,7 +185,7 @@ export function BlocksPage() {
         <TextContentTitle
           align="center"
           title="Blocks"
-          subtitle="Everything exported from @gmhlab/blocks — the composed sections built on @gmhlab/ui, and the record-driven page renderers the GW site runs on."
+          subtitle="Everything exported from @gmhlab/blocks — the record-driven page renderers the GW site runs on, and the slide layouts."
         />
         <Flex gap="300" alignPrimary="center" wrap>
           <Badge variant="secondary">6 export groups</Badge>
@@ -309,9 +248,9 @@ export function BlocksPage() {
         <Card variant="stroke" padding="600">
           <TextSubheading>The bundle carries a "use client" banner</TextSubheading>
           <Text>
-            tsup prepends it to the whole bundle, which is why the providers and
-            the stateful page blocks drop straight into a Next.js App Router
-            server layout without a wrapper of their own.
+            tsup prepends it to the whole bundle, which is why the stateful page
+            blocks drop straight into a Next.js App Router server page without a
+            wrapper of their own.
           </Text>
         </Card>
       </Demo>
@@ -322,7 +261,7 @@ export function BlocksPage() {
         id="page-blocks"
         variant="neutral"
         title="Page blocks"
-        description="Five full-page renderers. Each demo below is driven by the synthetic corpus in src/fixtures/sample-content.ts — an invented institute, so the blocks are shown naming nothing."
+        description="Six full-page renderers. Each demo below is driven by the synthetic corpus in src/fixtures/sample-content.ts — an invented institute, so the blocks are shown naming nothing."
       >
         <Flex type="half" wrap gap="600" alignSecondary="stretch">
           {PAGE_BLOCKS.map((block) => (
@@ -383,10 +322,14 @@ export function BlocksPage() {
           </FlexItem>
           <FlexItem size="minor">
             <Card variant="stroke" padding="600" className="h-full">
-              <TextHeading>Links are props, not constants</TextHeading>
+              <TextHeading>Links and copy are props, not constants</TextHeading>
               <Text>
-                <TextCode>basePath</TextCode> builds every detail href, and
-                cross-page CTAs take their own prop. The demos below pass{" "}
+                <TextCode>basePath</TextCode> builds every detail href. Copy
+                defaults to the GW Center's own (<TextCode>GMH_*_COPY</TextCode>),
+                so adopters can see whose work they are building on — pass your
+                own to replace it, or <TextCode>null</TextCode> to drop a
+                section. The invented institute below overrides all of it. The
+                demos pass{" "}
                 <TextCode>/blocks/projects</TextCode> rather than{" "}
                 <TextCode>/projects</TextCode> — the same blocks apps/web mounts
                 at the root, mounted a level down.
@@ -417,54 +360,6 @@ export function BlocksPage() {
               </Text>
             </Card>
           </FlexItem>
-        </Flex>
-      </Demo>
-
-      {/* ————— examples ————— */}
-
-      <Demo
-        id="examples"
-        variant="neutral"
-        bleed
-        title="Examples"
-        description="The MonoFly marketing page, section by section. These take no props and carry their own content; the last two read @gmhlab/data, so they are wrapped in AllProviders fed the @gmhlab/core mock services, exactly as apps/web wraps its own tree."
-      >
-        <Flex direction="column" gap="1200" alignSecondary="stretch">
-          <BleedSpec label="<WelcomeHero />">
-            <WelcomeHero />
-          </BleedSpec>
-
-          <BleedSpec label="<PanelSections />">
-            <PanelSections />
-          </BleedSpec>
-
-          <BleedSpec label="<ProductDetails />">
-            <ProductDetails />
-          </BleedSpec>
-
-          <BleedSpec label="<FAQs />">
-            <FAQs />
-          </BleedSpec>
-
-          {/* One provider tree around both: AllProviders renders no DOM, so it
-              cannot disturb the section stack. */}
-          <AllProviders services={SERVICES}>
-            <Flex direction="column" gap="1200" alignSecondary="stretch">
-              <BleedSpec
-                label="<PricingGrid />"
-                note="Data-bound — reads usePricing(). The monthly/annual toggle and the skeleton state come from the mock service."
-              >
-                <PricingGrid />
-              </BleedSpec>
-
-              <BleedSpec
-                label="<ProductGrid />"
-                note="Data-bound — reads useProducts()."
-              >
-                <ProductGrid />
-              </BleedSpec>
-            </Flex>
-          </AllProviders>
         </Flex>
       </Demo>
 
@@ -500,25 +395,6 @@ export function BlocksPage() {
         </Flex>
       </Demo>
 
-      {/* ————— data layer ————— */}
-
-      <Demo
-        id="data"
-        variant="neutral"
-        title="Data layer"
-        description="Not part of @gmhlab/blocks: the auth/pricing/products contexts, providers and hooks live in @gmhlab/data, and take their backends as props. Domain types and the mock services come from @gmhlab/core. The two data-bound examples above read it."
-      >
-        <Card variant="stroke" padding="600">
-          <TextSubheading>AllProviders renders no DOM</TextSubheading>
-          <Text>
-            It is only nested context providers, which is what lets a consuming
-            app wrap its whole tree without the header, main and footer losing
-            their place as the body's own flex children. That is load-bearing in
-            apps/web: it is why the ui Footer's <TextCode>margin-top: auto</TextCode>{" "}
-            actually pins to the bottom.
-          </Text>
-        </Card>
-      </Demo>
     </main>
   );
 }

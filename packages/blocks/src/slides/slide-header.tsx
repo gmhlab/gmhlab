@@ -36,7 +36,7 @@ export type SlideHeaderProps = Omit<SectionProps, "variant" | "padding" | "src">
 export function SlideHeader({
   className,
   start = "VERSION 1.0",
-  center = "©2026 MONOFLY DESIGN",
+  center = "© STUDIO NAME",
   end = "PAGE 01",
   bare = false,
   ...props

@@ -37,6 +37,7 @@
 
 import type { InnovationStatus } from "./innovations-types";
 import type { PublicationRef } from "../publications/publications-types";
+import type { PageAction, PageCta } from "../shared/page-copy";
 
 /** A headline quantity in the hero — countries, providers, publications. */
 export type InnovationStat = { value: string; label: string };
@@ -45,11 +46,8 @@ export type InnovationStat = { value: string; label: string };
 export type InnovationBadge = { label: string; tone: InnovationStatus };
 
 /** A call to action. `href` is passed through untouched. */
-export type InnovationAction = {
-  label: string;
-  href: string;
-  variant?: "default" | "secondary" | "outline";
-};
+/** Kept as a named alias of the shared {@link PageAction}. */
+export type InnovationAction = PageAction;
 
 /** One stage of the "how it works" cycle. Numbered by position. */
 export type InnovationProcessStep = { heading: string; body: string };
@@ -118,9 +116,5 @@ export type InnovationDetail = {
   relatedNote?: string;
 
   /* -- Closing CTA -------------------------------------------------------- */
-  cta?: {
-    heading: string;
-    body: string;
-    actions?: InnovationAction[];
-  };
+  cta?: PageCta;
 };

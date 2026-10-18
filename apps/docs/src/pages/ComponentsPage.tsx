@@ -10,10 +10,14 @@ import {
   Card,
   CardGrid,
   Footer,
+  type FooterColumn,
   FormBox,
   Header,
+  type HeaderNavItem,
   Hero,
   Panel,
+  SocialButtons,
+  type SocialLink,
   PricingCard,
   PricingCardSkeleton,
   ProductInfoCard,
@@ -34,8 +38,6 @@ import {
   ButtonGroupText,
   GmhLogo,
   Image,
-  Logo,
-  Logo2,
   Text,
   TextCode,
   TextContentHeading,
@@ -174,6 +176,39 @@ const SECTIONS = [
   { id: "cards", label: "Cards" },
   { id: "vanity-cards", label: "Vanity cards" },
   { id: "compositions", label: "Compositions" },
+];
+
+/* Placeholder chrome for the Header/Footer demos. ui ships no default nav,
+   columns or social links — a site passes its own — so the gallery supplies
+   label-only stand-ins. Items without an href render as buttons. */
+const DEMO_NAV_ITEMS: HeaderNavItem[] = [
+  { label: "Products" },
+  { label: "Solutions" },
+  { label: "Resources" },
+  { label: "Pricing" },
+  { label: "Contact" },
+];
+
+const DEMO_FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    title: "Product",
+    links: ["Overview", "Features", "Pricing", "Changelog"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Resources",
+    links: ["Documentation", "Guides", "Support"].map((label) => ({ label, href: "#" })),
+  },
+  {
+    title: "Company",
+    links: ["About", "Careers", "Contact"].map((label) => ({ label, href: "#" })),
+  },
+];
+
+const DEMO_SOCIAL_LINKS: SocialLink[] = [
+  { network: "x", href: "#" },
+  { network: "instagram", href: "#" },
+  { network: "youtube", href: "#" },
+  { network: "linkedin", href: "#" },
 ];
 
 const img = (seed: string, w: number, h: number) =>
@@ -1147,38 +1182,19 @@ export function ComponentsPage() {
       <Demo
         id="logos"
         title="Logos"
-        description="All three marks. GmhLogo is the one in use — the landscape brand mark, sized by height. All three default to href='/' and render as links; that default is currently not overridable to a non-navigating button (see GmhLogoProps)."
+        description="GmhLogo, the landscape brand mark, sized by height. It defaults to href='/' and renders as a link; pass href={undefined} for a non-navigating button (see GmhLogoProps). Header and Footer take it through their logo prop."
         variant="neutral"
       >
-        <SpecRow type="third">
-          <SpecCell>
-            <Spec label="GmhLogo (in use — headers & footers)">
-              <Flex alignPrimary="center" alignSecondary="center">
-                <GmhLogo />
-              </Flex>
-            </Spec>
-          </SpecCell>
-          <SpecCell>
-            <Spec label="Logo (stroked, portrait — unreferenced)">
-              <Flex alignPrimary="center" alignSecondary="center">
-                <Logo />
-              </Flex>
-            </Spec>
-          </SpecCell>
-          <SpecCell>
-            <Spec label="Logo2 (filled, portrait — unreferenced)">
-              <Flex alignPrimary="center" alignSecondary="center">
-                <Logo2 />
-              </Flex>
-            </Spec>
-          </SpecCell>
-        </SpecRow>
+        <Spec label="GmhLogo">
+          <Flex alignPrimary="center" alignSecondary="center">
+            <GmhLogo />
+          </Flex>
+        </Spec>
 
         <Spec label="--logo-color inverts inside .section-variant-brand">
           <Section variant="brand" padding="800" className="rounded-md">
             <Flex alignPrimary="center" alignSecondary="center" gap="800" wrap>
               <GmhLogo aria-label="GMH Lab on brand" />
-              <Logo2 aria-label="Logo 2 on brand" />
             </Flex>
           </Section>
         </Spec>
@@ -1550,6 +1566,8 @@ export function ComponentsPage() {
           <BleedSpec label="Header — logged out / logged in (toggle below)">
             <Flex direction="column" gap="400" alignSecondary="stretch">
               <Header
+                logo={<GmhLogo />}
+                navItems={DEMO_NAV_ITEMS}
                 user={signedIn ? { name: "Ada Lovelace" } : null}
                 onLogin={() => setSignedIn(true)}
                 onRegister={() => setSignedIn(true)}
@@ -1680,7 +1698,11 @@ export function ComponentsPage() {
           </BleedSpec>
 
           <BleedSpec label="Footer (brand surface, quarter columns)">
-            <Footer />
+            <Footer
+              logo={<GmhLogo />}
+              columns={DEMO_FOOTER_COLUMNS}
+              aside={<SocialButtons links={DEMO_SOCIAL_LINKS} />}
+            />
           </BleedSpec>
         </Flex>
       </Demo>
