@@ -61,7 +61,8 @@
     box-shadow:
       inset 0 0 0 var(--mfy-size-stroke-border)
         var(--mfy-color-border-accent-default),
-      0 18px 46px -20px rgb(3 60 90 / 0.4);
+      0 18px 46px -20px
+        color-mix(in oklch, var(--mfy-color-brand-800) 40%, transparent);
   }
   @media (prefers-reduced-motion: no-preference) {
     &:has(.card-interaction[data-hovered]:not([data-focus-visible])) {

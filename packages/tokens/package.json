@@ -43,6 +43,7 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "script:tokens": "cd scripts && node app.mjs",
+    "script:material": "cd scripts && node material.mjs",
     "prepack": "pnpm run build",
     "prepublishOnly": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||''))throw new Error('Use pnpm publish, not npm: npm does not resolve the workspace:/catalog: protocols and will publish a broken manifest.')\""
   },

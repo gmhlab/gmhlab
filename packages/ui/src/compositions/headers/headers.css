@@ -38,7 +38,10 @@
 }
 @keyframes header-stuck {
   to {
-    box-shadow: 0 1px 20px rgb(3 60 90 / 0.09);
+    /* brand-800, not a literal: the shadow is tinted with the theme's brand
+       colour so a re-themed site does not get a GW-navy shadow. */
+    box-shadow: 0 1px 20px
+      color-mix(in oklch, var(--mfy-color-brand-800) 9%, transparent);
   }
 }
 

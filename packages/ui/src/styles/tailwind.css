@@ -528,38 +528,38 @@
     --blur-100: var(--mfy-size-blur-100);
 }
 
-/* shadcn semantic vars are a thin ALIAS layer over @gmhlab/tokens' --mfy-*
-   semantic tokens. Because those tokens already carry their own light/dark
-   values (see @gmhlab/tokens variables.css .dark block), every aliased var
-   below inherits dark mode for free — so the .dark block here only needs to
-   override what has no MFY source (the chart ramp). */
+/* shadcn semantic vars alias the Material 3 roles in @gmhlab/tokens'
+   material.css (--md-sys-color-*), which carry their own light/dark values —
+   so the .dark block here only overrides what has no M3 source (info, charts).
+   Mapping follows M3's component guidance: --primary is the filled button,
+   --secondary the tonal button, --popover a menu surface, --input a text
+   field's outline. */
 :root {
     /* Tracks --mfy-size-radius-200 (4px): GW's edges are crisp, not pillowy. */
     --radius: var(--mfy-size-radius-200);
 
-    --background: var(--mfy-color-background-default-default);
-    --foreground: var(--mfy-color-text-default-default);
-    --card: var(--mfy-color-background-default-default);
-    --card-foreground: var(--mfy-color-text-default-default);
-    --popover: var(--mfy-color-background-default-default);
-    --popover-foreground: var(--mfy-color-text-default-default);
-    --primary: var(--mfy-color-background-brand-default);
-    --primary-foreground: var(--mfy-color-text-brand-on-brand);
-    --secondary: var(--mfy-color-background-default-secondary);
-    --secondary-foreground: var(--mfy-color-text-default-default);
-    --muted: var(--mfy-color-background-default-secondary);
-    --muted-foreground: var(--mfy-color-text-default-secondary);
-    --accent: var(--mfy-color-background-default-secondary);
-    --accent-foreground: var(--mfy-color-text-default-default);
-    --destructive: var(--mfy-color-background-danger-default);
+    --background: var(--md-sys-color-surface);
+    --foreground: var(--md-sys-color-on-surface);
+    --card: var(--md-sys-color-surface);
+    --card-foreground: var(--md-sys-color-on-surface);
+    --popover: var(--md-sys-color-surface-container);
+    --popover-foreground: var(--md-sys-color-on-surface);
+    --primary: var(--md-sys-color-primary);
+    --primary-foreground: var(--md-sys-color-on-primary);
+    --secondary: var(--md-sys-color-secondary-container);
+    --secondary-foreground: var(--md-sys-color-on-secondary-container);
+    --muted: var(--md-sys-color-surface-container-high);
+    --muted-foreground: var(--md-sys-color-on-surface-variant);
+    --accent: var(--md-sys-color-surface-container-highest);
+    --accent-foreground: var(--md-sys-color-on-surface);
+    --destructive: var(--md-sys-color-error);
 
-    /* Status tones for Badge (and Alert, when it lands). Note the asymmetry
-       with --destructive above, which is the *solid* danger surface by shadcn
-       convention: these three are the *subtle* pair — a tinted surface plus
-       readable on-surface text — because that is the shape a status pill
-       needs. The solid steps stay reachable as
-       --mfy-color-background-{positive,warning}-default if a filled variant is
-       ever added. Both halves flip in dark via their --mfy-* sources. */
+    /* Status tones for Badge (and Alert, when it lands). M3 has no info,
+       warning or success roles, so these stay on the --mfy-* status sets.
+       Note the asymmetry with --destructive above, which is the *solid*
+       danger surface by shadcn convention: these three are the *subtle* pair —
+       a tinted surface plus readable on-surface text — because that is the
+       shape a status pill needs. */
     --info: var(--mfy-color-blue-200);
     --info-foreground: var(--mfy-color-blue-800);
     --warning: var(--mfy-color-background-warning-secondary);
@@ -567,43 +567,37 @@
     --success: var(--mfy-color-background-positive-secondary);
     --success-foreground: var(--mfy-color-text-positive-default);
 
-    --border: var(--mfy-color-border-default-default);
-    --input: var(--mfy-color-border-default-default);
-    --ring: var(--mfy-color-border-accent-default);
+    --border: var(--md-sys-color-outline-variant);
+    --input: var(--md-sys-color-outline);
+    /* Gold focus ring, at the text-capable gold (tertiary, 6.1:1 light) — the
+       #AA9868 fill is only ~2.6:1 on a light surface, under the 3:1 a focus
+       indicator needs. */
+    --ring: var(--md-sys-color-tertiary);
 
-    /* No MFY semantic source — kept as literals; dark values live in .dark below. */
+    /* No semantic source — kept as literals; dark values live in .dark below. */
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
     --chart-3: oklch(0.398 0.07 227.392);
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
 
-    --sidebar: var(--mfy-color-background-default-default);
-    --sidebar-foreground: var(--mfy-color-text-default-default);
-    --sidebar-primary: var(--mfy-color-background-brand-default);
-    --sidebar-primary-foreground: var(--mfy-color-text-brand-on-brand);
-    --sidebar-accent: var(--mfy-color-background-default-secondary);
-    --sidebar-accent-foreground: var(--mfy-color-text-default-default);
-    --sidebar-border: var(--mfy-color-border-default-default);
-    --sidebar-ring: var(--mfy-color-border-accent-default);
+    --sidebar: var(--md-sys-color-surface-container-low);
+    --sidebar-foreground: var(--md-sys-color-on-surface);
+    --sidebar-primary: var(--md-sys-color-primary);
+    --sidebar-primary-foreground: var(--md-sys-color-on-primary);
+    --sidebar-accent: var(--md-sys-color-secondary-container);
+    --sidebar-accent-foreground: var(--md-sys-color-on-secondary-container);
+    --sidebar-border: var(--md-sys-color-outline-variant);
+    --sidebar-ring: var(--md-sys-color-tertiary);
 }
 
 .dark {
-    /* MFY has danger/warning/positive semantic sets but no `info` one, so the
-       blue tone aliases the raw ramp — and raw ramps are single-valued, so
-       unlike --warning/--success these two do not flip on their own. */
+    /* The blue info tone aliases a raw ramp, which is single-valued, so it
+       does not flip on its own. */
     --info: var(--mfy-color-blue-800);
     --info-foreground: var(--mfy-color-blue-200);
 
-    /* Brand surfaces stay navy after dark (see variables.css), which leaves a
-       navy button at ~1.6:1 against the navy-ink page — present, but with no
-       affordance. The primary action turns gold instead: the secondary brand
-       colour doing the job it is best at on a dark field. */
-    --primary: var(--mfy-color-background-accent-default);
-    --primary-foreground: var(--mfy-color-text-accent-on-accent);
-
-    /* Charts have no MFY semantic source, so their dark values are set here.
-       Everything else flips automatically via the aliased --mfy-* tokens. */
+    /* Charts have no semantic source, so their dark values are set here. */
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);

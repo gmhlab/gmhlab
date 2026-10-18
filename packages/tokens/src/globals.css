@@ -6,9 +6,9 @@
  */
 :root {
   --global-focus-ring-size: var(--mfy-size-stroke-focus-ring);
-  /* Gold, not the stock blue: gold-600 is 3.8:1 on paper, over the 3:1 WCAG
-     non-text bar that #aa9868 itself (2.7:1) would miss. */
-  --global-focus-ring-color: var(--mfy-color-gold-600);
+  /* Gold, at the text-capable M3 tertiary (6.1:1 light, 10.9:1 dark) — the
+     #AA9868 fill would miss the 3:1 non-text bar. Flips with the scheme. */
+  --global-focus-ring-color: var(--md-sys-color-tertiary);
   --global-line-height-paragraph: 1.4;
   --global-stack-top: 999;
   --global-stack-focus: 999;
@@ -43,13 +43,9 @@
   display: var(--mfy-responsive-display-flex-to-none) !important;
 }
 
-.dark {
-  --global-focus-ring-color: var(--mfy-color-gold-400);
-}
-
 ::selection {
-  background: var(--mfy-color-gold-300);
-  color: var(--mfy-color-brand-900);
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
 }
 
 /* Element defaults live in `@layer base` so they sit UNDER utilities. Left

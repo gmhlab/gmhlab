@@ -1,12 +1,18 @@
 
+/* GMH Lab's design tokens — the default theme of the design system.
+ *
+ * Hand-maintained. It began as generator output, but has been edited well
+ * past it (see src/theme.css, the generator's drift report).
+ *
+ * The brand is fixed: every team using this system works for GMH Lab, and
+ * these values are not a theming surface for them to override. Keep every
+ * colour in ui and blocks resolving through these tokens — no literal brand
+ * colours — so a brand change is made here, once. */
+
 :root {
 
-/* CSS Variables generated from Kigen.design */
-
-/* Astronaut Blue — the GMH brand ramp (Figma "Color Primitives").
- * Deliberately outside the --mfy-color-* namespace, matching the generated
- * theme.css. The --mfy-color-brand-* gray ramp below is retained because the
- * disabled tokens still key off it. */
+/* Astronaut Blue — the GMH brand ramp (Figma "Color Primitives"). Step 800 is
+ * GW navy #033c5a. */
   --mfy-color-brand-50: oklch(0.9567433030448986 0.02108770263761858 252.4952078182589);
   --mfy-color-brand-100: oklch(0.8931517568820593 0.05220916514433538 251.06207238911827);
   --mfy-color-brand-200: oklch(0.7972228332173676 0.10783570753255824 245.44953995215292);
@@ -17,7 +23,7 @@
   --mfy-color-brand-700: oklch(0.4101013082380879 0.08937938990836782 238.5387135338292);
   --mfy-color-brand-800: oklch(0.3392783938273923 0.07482300861290903 239.36685558989788);
   --mfy-color-brand-900: oklch(0.24403734060606508 0.05405960042820241 239.46340634705268);
-  --mfy-color-brand-950: oklch(0.1739767888550536 0.04027330373426935 240.61316170468567);     
+  --mfy-color-brand-950: oklch(0.1739767888550536 0.04027330373426935 240.61316170468567);
 
 /* GW Gold — the SECONDARY brand colour (#aa9868, anchored at step 500).
  * Steps 100 and 300 are pinned to the tints the GW reference design derives
@@ -83,16 +89,6 @@
   --mfy-color-blue-700: #2a61ba;
   --mfy-color-blue-800: #224a8a;
   --mfy-color-blue-900: #183057;
-/*  --mfy-color-brand-100: #f5f5f5;
-  --mfy-color-brand-1000: #111111;
-  --mfy-color-brand-200: #e6e6e6;
-  --mfy-color-brand-300: #d9d9d9;
-  --mfy-color-brand-400: #b3b3b3;
-  --mfy-color-brand-500: #757575;
-  --mfy-color-brand-600: #444444;
-  --mfy-color-brand-700: #383838;
-  --mfy-color-brand-800: #2c2c2c;
-  --mfy-color-brand-900: #1e1e1e; */
   --mfy-color-gray-100: #f5f5f5;
   --mfy-color-gray-1000: #111111;
   --mfy-color-gray-200: #e6e6e6;
@@ -165,52 +161,60 @@
   --mfy-color-yellow-900: #522504
 }
 
-/* color: mfy_light (default) */
+/* color: mfy_light (default)
+ *
+ * Since 2026-10-18 the default, brand, accent, danger and disabled groups are
+ * a BRIDGE onto the Material 3 roles in ./material.css (--md-sys-color-*),
+ * which flip for dark themselves — so those groups have no .dark entries,
+ * except brand (navy bands in both modes; see the .dark block). Edit colours
+ * in material.css's generator, not here. Positive, warning, neutral and
+ * utilities have no M3 role and still sit on their ramps.
+ *
+ *   default  -> surface / surface-container-* / on-surface(-variant) / outline(-variant)
+ *   brand    -> primary (dark: primary-container); secondary-container for tints
+ *   accent   -> GW gold: tertiary-container fill, tertiary text, on-tertiary-container on it
+ *   danger   -> error family;  disabled -> on-surface at 12% / 38% (M3 spec) */
 :root {
-  /* accent — the secondary brand colour (gold). Mirrors the brand group
-     step-for-step. on-accent is navy, not white: white on #aa9868 is 2.8:1,
-     navy-900 is 5.8:1. text-accent-secondary/tertiary are large/decorative
-     only (gold-600 is 3.8:1 on paper). */
-  --mfy-color-background-accent-default: var(--mfy-color-gold-500);
-  --mfy-color-background-accent-hover: var(--mfy-color-gold-600);
-  --mfy-color-background-accent-secondary: var(--mfy-color-gold-200);
-  --mfy-color-background-accent-secondary-hover: var(--mfy-color-gold-300);
-  --mfy-color-background-accent-tertiary: var(--mfy-color-gold-100);
-  --mfy-color-background-accent-tertiary-hover: var(--mfy-color-gold-200);
-  --mfy-color-border-accent-default: var(--mfy-color-gold-500);
-  --mfy-color-border-accent-secondary: var(--mfy-color-gold-400);
-  --mfy-color-border-accent-tertiary: var(--mfy-color-gold-300);
-  --mfy-color-icon-accent-default: var(--mfy-color-gold-700);
-  --mfy-color-icon-accent-on-accent: var(--mfy-color-brand-900);
-  --mfy-color-icon-accent-on-accent-secondary: var(--mfy-color-gold-900);
-  --mfy-color-icon-accent-on-accent-tertiary: var(--mfy-color-gold-800);
-  --mfy-color-icon-accent-secondary: var(--mfy-color-gold-600);
-  --mfy-color-icon-accent-tertiary: var(--mfy-color-gold-500);
-  --mfy-color-text-accent-default: var(--mfy-color-gold-700);
-  --mfy-color-text-accent-on-accent: var(--mfy-color-brand-900);
-  --mfy-color-text-accent-on-accent-secondary: var(--mfy-color-gold-900);
-  --mfy-color-text-accent-on-accent-tertiary: var(--mfy-color-gold-800);
-  --mfy-color-text-accent-secondary: var(--mfy-color-gold-600);
-  --mfy-color-text-accent-tertiary: var(--mfy-color-gold-500);
-  --mfy-color-background-brand-default: var(--mfy-color-brand-800);
-  --mfy-color-background-brand-hover: var(--mfy-color-brand-900);
-  --mfy-color-background-brand-secondary: var(--mfy-color-brand-200);
-  --mfy-color-background-brand-secondary-hover: var(--mfy-color-brand-300);
-  --mfy-color-background-brand-tertiary: var(--mfy-color-brand-100);
-  --mfy-color-background-brand-tertiary-hover: var(--mfy-color-brand-200);
-  --mfy-color-background-danger-default: var(--mfy-color-red-500);
-  --mfy-color-background-danger-hover: var(--mfy-color-red-600);
-  --mfy-color-background-danger-secondary: var(--mfy-color-red-200);
-  --mfy-color-background-danger-secondary-hover: var(--mfy-color-red-300);
-  --mfy-color-background-danger-tertiary: var(--mfy-color-red-100);
-  --mfy-color-background-danger-tertiary-hover: var(--mfy-color-red-200);
-  --mfy-color-background-default-default: var(--mfy-color-stone-50);
-  --mfy-color-background-default-default-hover: var(--mfy-color-stone-100);
-  --mfy-color-background-default-secondary: var(--mfy-color-stone-100);
-  --mfy-color-background-default-secondary-hover: var(--mfy-color-stone-200);
-  --mfy-color-background-default-tertiary: var(--mfy-color-stone-200);
-  --mfy-color-background-default-tertiary-hover: var(--mfy-color-stone-300);
-  --mfy-color-background-disabled-default: var(--mfy-color-stone-300);
+  --mfy-color-background-accent-default: var(--md-sys-color-tertiary-container);
+  --mfy-color-background-accent-hover: color-mix(in srgb, var(--md-sys-color-tertiary-container), var(--md-sys-color-on-tertiary-container) 8%);
+  --mfy-color-background-accent-secondary: color-mix(in srgb, var(--md-sys-color-tertiary-container) 40%, var(--md-sys-color-surface));
+  --mfy-color-background-accent-secondary-hover: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, var(--md-sys-color-surface));
+  --mfy-color-background-accent-tertiary: color-mix(in srgb, var(--md-sys-color-tertiary-container) 24%, var(--md-sys-color-surface));
+  --mfy-color-background-accent-tertiary-hover: color-mix(in srgb, var(--md-sys-color-tertiary-container) 36%, var(--md-sys-color-surface));
+  --mfy-color-border-accent-default: var(--md-sys-color-tertiary-container);
+  --mfy-color-border-accent-secondary: color-mix(in srgb, var(--md-sys-color-tertiary-container) 60%, var(--md-sys-color-surface));
+  --mfy-color-border-accent-tertiary: color-mix(in srgb, var(--md-sys-color-tertiary-container) 35%, var(--md-sys-color-surface));
+  --mfy-color-icon-accent-default: var(--md-sys-color-tertiary);
+  --mfy-color-icon-accent-on-accent: var(--md-sys-color-on-tertiary-container);
+  --mfy-color-icon-accent-on-accent-secondary: var(--md-sys-color-on-surface);
+  --mfy-color-icon-accent-on-accent-tertiary: var(--md-sys-color-tertiary);
+  --mfy-color-icon-accent-secondary: var(--md-sys-color-tertiary);
+  --mfy-color-icon-accent-tertiary: var(--md-sys-color-tertiary-container);
+  --mfy-color-text-accent-default: var(--md-sys-color-tertiary);
+  --mfy-color-text-accent-on-accent: var(--md-sys-color-on-tertiary-container);
+  --mfy-color-text-accent-on-accent-secondary: var(--md-sys-color-on-surface);
+  --mfy-color-text-accent-on-accent-tertiary: var(--md-sys-color-tertiary);
+  --mfy-color-text-accent-secondary: var(--md-sys-color-tertiary);
+  --mfy-color-text-accent-tertiary: var(--md-sys-color-tertiary-container);
+  --mfy-color-background-brand-default: var(--md-sys-color-primary);
+  --mfy-color-background-brand-hover: color-mix(in srgb, var(--mfy-color-background-brand-default), var(--mfy-color-text-brand-on-brand) 8%);
+  --mfy-color-background-brand-secondary: var(--md-sys-color-secondary-container);
+  --mfy-color-background-brand-secondary-hover: color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) 8%);
+  --mfy-color-background-brand-tertiary: var(--md-sys-color-secondary-container);
+  --mfy-color-background-brand-tertiary-hover: color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) 8%);
+  --mfy-color-background-danger-default: var(--md-sys-color-error);
+  --mfy-color-background-danger-hover: color-mix(in srgb, var(--md-sys-color-error), var(--md-sys-color-on-error) 8%);
+  --mfy-color-background-danger-secondary: var(--md-sys-color-error-container);
+  --mfy-color-background-danger-secondary-hover: color-mix(in srgb, var(--md-sys-color-error-container), var(--md-sys-color-on-error-container) 8%);
+  --mfy-color-background-danger-tertiary: color-mix(in srgb, var(--md-sys-color-error-container) 50%, var(--md-sys-color-surface));
+  --mfy-color-background-danger-tertiary-hover: color-mix(in srgb, var(--md-sys-color-error-container) 70%, var(--md-sys-color-surface));
+  --mfy-color-background-default-default: var(--md-sys-color-surface);
+  --mfy-color-background-default-default-hover: color-mix(in srgb, var(--md-sys-color-surface), var(--md-sys-color-on-surface) 8%);
+  --mfy-color-background-default-secondary: var(--md-sys-color-surface-container-low);
+  --mfy-color-background-default-secondary-hover: color-mix(in srgb, var(--md-sys-color-surface-container-low), var(--md-sys-color-on-surface) 8%);
+  --mfy-color-background-default-tertiary: var(--md-sys-color-surface-container-high);
+  --mfy-color-background-default-tertiary-hover: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) 8%);
+  --mfy-color-background-disabled-default: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
   --mfy-color-background-neutral-default: var(--mfy-color-slate-700);
   --mfy-color-background-neutral-hover: var(--mfy-color-slate-800);
   --mfy-color-background-neutral-secondary: var(--mfy-color-slate-300);
@@ -233,16 +237,16 @@
   --mfy-color-background-warning-secondary-hover: var(--mfy-color-yellow-300);
   --mfy-color-background-warning-tertiary: var(--mfy-color-yellow-100);
   --mfy-color-background-warning-tertiary-hover: var(--mfy-color-yellow-200);
-  --mfy-color-border-brand-default: var(--mfy-color-brand-800);
-  --mfy-color-border-brand-secondary: var(--mfy-color-brand-600);
-  --mfy-color-border-brand-tertiary: var(--mfy-color-brand-500);
-  --mfy-color-border-danger-default: var(--mfy-color-red-700);
-  --mfy-color-border-danger-secondary: var(--mfy-color-red-600);
-  --mfy-color-border-danger-tertiary: var(--mfy-color-red-500);
-  --mfy-color-border-default-default: rgb(3 60 90 / 0.16);
-  --mfy-color-border-default-secondary: var(--mfy-color-stone-500);
-  --mfy-color-border-default-tertiary: var(--mfy-color-stone-700);
-  --mfy-color-border-disabled-default: var(--mfy-color-stone-400);
+  --mfy-color-border-brand-default: var(--md-sys-color-primary);
+  --mfy-color-border-brand-secondary: color-mix(in srgb, var(--md-sys-color-primary) 60%, var(--md-sys-color-surface));
+  --mfy-color-border-brand-tertiary: color-mix(in srgb, var(--md-sys-color-primary) 35%, var(--md-sys-color-surface));
+  --mfy-color-border-danger-default: var(--md-sys-color-error);
+  --mfy-color-border-danger-secondary: var(--md-sys-color-error);
+  --mfy-color-border-danger-tertiary: var(--md-sys-color-error);
+  --mfy-color-border-default-default: var(--md-sys-color-outline-variant);
+  --mfy-color-border-default-secondary: var(--md-sys-color-outline);
+  --mfy-color-border-default-tertiary: var(--md-sys-color-on-surface-variant);
+  --mfy-color-border-disabled-default: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
   --mfy-color-border-neutral-default: var(--mfy-color-slate-900);
   --mfy-color-border-neutral-secondary: var(--mfy-color-slate-600);
   --mfy-color-border-neutral-tertiary: var(--mfy-color-slate-400);
@@ -254,23 +258,23 @@
   --mfy-color-border-warning-default: var(--mfy-color-yellow-900);
   --mfy-color-border-warning-secondary: var(--mfy-color-yellow-700);
   --mfy-color-border-warning-tertiary: var(--mfy-color-yellow-600);
-  --mfy-color-icon-brand-default: var(--mfy-color-brand-800);
-  --mfy-color-icon-brand-on-brand: var(--mfy-color-brand-100);
-  --mfy-color-icon-brand-on-brand-secondary: var(--mfy-color-brand-900);
-  --mfy-color-icon-brand-on-brand-tertiary: var(--mfy-color-brand-800);
-  --mfy-color-icon-brand-secondary: var(--mfy-color-brand-600);
-  --mfy-color-icon-brand-tertiary: var(--mfy-color-brand-500);
-  --mfy-color-icon-danger-default: var(--mfy-color-red-700);
-  --mfy-color-icon-danger-on-danger: var(--mfy-color-red-100);
-  --mfy-color-icon-danger-on-danger-secondary: var(--mfy-color-red-700);
-  --mfy-color-icon-danger-on-danger-tertiary: var(--mfy-color-red-700);
-  --mfy-color-icon-danger-secondary: var(--mfy-color-red-600);
-  --mfy-color-icon-danger-tertiary: var(--mfy-color-red-500);
-  --mfy-color-icon-default-default: var(--mfy-color-stone-800);
-  --mfy-color-icon-default-secondary: var(--mfy-color-stone-600);
-  --mfy-color-icon-default-tertiary: var(--mfy-color-stone-400);
-  --mfy-color-icon-disabled-default: var(--mfy-color-stone-400);
-  --mfy-color-icon-disabled-on-disabled: var(--mfy-color-stone-400);
+  --mfy-color-icon-brand-default: var(--md-sys-color-primary);
+  --mfy-color-icon-brand-on-brand: var(--md-sys-color-on-primary);
+  --mfy-color-icon-brand-on-brand-secondary: var(--mfy-color-text-brand-on-brand);
+  --mfy-color-icon-brand-on-brand-tertiary: var(--mfy-color-text-brand-on-brand);
+  --mfy-color-icon-brand-secondary: var(--md-sys-color-primary);
+  --mfy-color-icon-brand-tertiary: var(--md-sys-color-primary);
+  --mfy-color-icon-danger-default: var(--md-sys-color-error);
+  --mfy-color-icon-danger-on-danger: var(--md-sys-color-on-error);
+  --mfy-color-icon-danger-on-danger-secondary: var(--md-sys-color-on-error-container);
+  --mfy-color-icon-danger-on-danger-tertiary: var(--md-sys-color-on-error-container);
+  --mfy-color-icon-danger-secondary: var(--md-sys-color-error);
+  --mfy-color-icon-danger-tertiary: var(--md-sys-color-error);
+  --mfy-color-icon-default-default: var(--md-sys-color-on-surface);
+  --mfy-color-icon-default-secondary: var(--md-sys-color-on-surface-variant);
+  --mfy-color-icon-default-tertiary: var(--md-sys-color-outline);
+  --mfy-color-icon-disabled-default: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  --mfy-color-icon-disabled-on-disabled: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
   --mfy-color-icon-neutral-default: var(--mfy-color-slate-900);
   --mfy-color-icon-neutral-on-neutral: var(--mfy-color-slate-100);
   --mfy-color-icon-neutral-on-neutral-secondary: var(--mfy-color-slate-900);
@@ -291,23 +295,23 @@
   --mfy-color-icon-warning-on-warning-tertiary: var(--mfy-color-yellow-900);
   --mfy-color-icon-warning-secondary: var(--mfy-color-yellow-700);
   --mfy-color-icon-warning-tertiary: var(--mfy-color-yellow-600);
-  --mfy-color-text-brand-default: var(--mfy-color-brand-800);
-  --mfy-color-text-brand-on-brand: var(--mfy-color-brand-100);
-  --mfy-color-text-brand-on-brand-secondary: var(--mfy-color-brand-900);
-  --mfy-color-text-brand-on-brand-tertiary: var(--mfy-color-brand-800);
-  --mfy-color-text-brand-secondary: var(--mfy-color-brand-600);
-  --mfy-color-text-brand-tertiary: var(--mfy-color-brand-500);
-  --mfy-color-text-danger-default: var(--mfy-color-red-700);
-  --mfy-color-text-danger-on-danger: var(--mfy-color-red-100);
-  --mfy-color-text-danger-on-danger-secondary: var(--mfy-color-red-700);
-  --mfy-color-text-danger-on-danger-tertiary: var(--mfy-color-red-700);
-  --mfy-color-text-danger-secondary: var(--mfy-color-red-600);
-  --mfy-color-text-danger-tertiary: var(--mfy-color-red-500);
-  --mfy-color-text-default-default: var(--mfy-color-stone-800);
-  --mfy-color-text-default-secondary: var(--mfy-color-stone-600);
-  --mfy-color-text-default-tertiary: var(--mfy-color-stone-400);
-  --mfy-color-text-disabled-default: var(--mfy-color-stone-400);
-  --mfy-color-text-disabled-on-disabled: var(--mfy-color-stone-400);
+  --mfy-color-text-brand-default: var(--md-sys-color-primary);
+  --mfy-color-text-brand-on-brand: var(--md-sys-color-on-primary);
+  --mfy-color-text-brand-on-brand-secondary: var(--mfy-color-text-brand-on-brand);
+  --mfy-color-text-brand-on-brand-tertiary: var(--mfy-color-text-brand-on-brand);
+  --mfy-color-text-brand-secondary: var(--md-sys-color-primary);
+  --mfy-color-text-brand-tertiary: var(--md-sys-color-primary);
+  --mfy-color-text-danger-default: var(--md-sys-color-error);
+  --mfy-color-text-danger-on-danger: var(--md-sys-color-on-error);
+  --mfy-color-text-danger-on-danger-secondary: var(--md-sys-color-on-error-container);
+  --mfy-color-text-danger-on-danger-tertiary: var(--md-sys-color-on-error-container);
+  --mfy-color-text-danger-secondary: var(--md-sys-color-error);
+  --mfy-color-text-danger-tertiary: var(--md-sys-color-error);
+  --mfy-color-text-default-default: var(--md-sys-color-on-surface);
+  --mfy-color-text-default-secondary: var(--md-sys-color-on-surface-variant);
+  --mfy-color-text-default-tertiary: var(--md-sys-color-outline);
+  --mfy-color-text-disabled-default: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  --mfy-color-text-disabled-on-disabled: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
   --mfy-color-text-neutral-default: var(--mfy-color-slate-900);
   --mfy-color-text-neutral-on-neutral: var(--mfy-color-slate-100);
   --mfy-color-text-neutral-on-neutral-secondary: var(--mfy-color-slate-900);
@@ -331,49 +335,10 @@
 }
 
 .dark {
-    /* Brand surfaces deliberately do NOT flip to a pale tint after dark —
-       an identity band should not become the brightest slab on the page.
-       background-brand-default stays navy and on-brand stays light. */
-    --mfy-color-background-accent-default: var(--mfy-color-gold-500);
-    --mfy-color-background-accent-hover: var(--mfy-color-gold-400);
-    --mfy-color-background-accent-secondary: var(--mfy-color-gold-900);
-    --mfy-color-background-accent-secondary-hover: var(--mfy-color-gold-800);
-    --mfy-color-background-accent-tertiary: var(--mfy-color-gold-950);
-    --mfy-color-background-accent-tertiary-hover: var(--mfy-color-gold-900);
-    --mfy-color-border-accent-default: var(--mfy-color-gold-500);
-    --mfy-color-border-accent-secondary: var(--mfy-color-gold-600);
-    --mfy-color-border-accent-tertiary: var(--mfy-color-gold-700);
-    --mfy-color-icon-accent-default: var(--mfy-color-gold-400);
-    --mfy-color-icon-accent-on-accent: var(--mfy-color-brand-900);
-    --mfy-color-icon-accent-on-accent-secondary: var(--mfy-color-gold-100);
-    --mfy-color-icon-accent-on-accent-tertiary: var(--mfy-color-gold-200);
-    --mfy-color-icon-accent-secondary: var(--mfy-color-gold-500);
-    --mfy-color-icon-accent-tertiary: var(--mfy-color-gold-600);
-    --mfy-color-text-accent-default: var(--mfy-color-gold-400);
-    --mfy-color-text-accent-on-accent: var(--mfy-color-brand-900);
-    --mfy-color-text-accent-on-accent-secondary: var(--mfy-color-gold-100);
-    --mfy-color-text-accent-on-accent-tertiary: var(--mfy-color-gold-200);
-    --mfy-color-text-accent-secondary: var(--mfy-color-gold-500);
-    --mfy-color-text-accent-tertiary: var(--mfy-color-gold-600);
-    --mfy-color-background-brand-default: var(--mfy-color-brand-800);
-    --mfy-color-background-brand-hover: var(--mfy-color-brand-700);
-    --mfy-color-background-brand-secondary: var(--mfy-color-brand-600);
-    --mfy-color-background-brand-secondary-hover: var(--mfy-color-brand-500);
-    --mfy-color-background-brand-tertiary: var(--mfy-color-brand-600);
-    --mfy-color-background-brand-tertiary-hover: var(--mfy-color-brand-800);
-    --mfy-color-background-danger-default: var(--mfy-color-red-600);
-    --mfy-color-background-danger-hover: var(--mfy-color-red-700);
-    --mfy-color-background-danger-secondary: var(--mfy-color-red-800);
-    --mfy-color-background-danger-secondary-hover: var(--mfy-color-red-900);
-    --mfy-color-background-danger-tertiary: var(--mfy-color-red-900);
-    --mfy-color-background-danger-tertiary-hover: var(--mfy-color-red-1000);
-    --mfy-color-background-default-default: var(--mfy-color-stone-1000);
-    --mfy-color-background-default-default-hover: var(--mfy-color-stone-900);
-    --mfy-color-background-default-secondary: var(--mfy-color-stone-950);
-    --mfy-color-background-default-secondary-hover: var(--mfy-color-stone-900);
-    --mfy-color-background-default-tertiary: var(--mfy-color-stone-900);
-    --mfy-color-background-default-tertiary-hover: var(--mfy-color-stone-800);
-    --mfy-color-background-disabled-default: var(--mfy-color-brand-700);
+    /* Brand bands stay navy after dark: M3's dark `primary` is a light blue
+       meant for controls, so a full-width band uses primary-container (T30)
+       instead — an identity band should not be the brightest slab on the page. */
+    --mfy-color-background-brand-default: var(--md-sys-color-primary-container);
     --mfy-color-background-neutral-default: var(--mfy-color-slate-400);
     --mfy-color-background-neutral-hover: var(--mfy-color-slate-500);
     --mfy-color-background-neutral-secondary: var(--mfy-color-slate-900);
@@ -396,16 +361,6 @@
     --mfy-color-background-warning-secondary-hover: var(--mfy-color-yellow-900);
     --mfy-color-background-warning-tertiary: var(--mfy-color-yellow-900);
     --mfy-color-background-warning-tertiary-hover: var(--mfy-color-yellow-1000);
-    --mfy-color-border-brand-default: var(--mfy-color-brand-100);
-    --mfy-color-border-brand-secondary: var(--mfy-color-brand-300);
-    --mfy-color-border-brand-tertiary: var(--mfy-color-brand-400);
-    --mfy-color-border-danger-default: var(--mfy-color-red-200);
-    --mfy-color-border-danger-secondary: var(--mfy-color-red-400);
-    --mfy-color-border-danger-tertiary: var(--mfy-color-red-500);
-    --mfy-color-border-default-default: rgb(216 205 178 / 0.16);
-    --mfy-color-border-default-secondary: var(--mfy-color-stone-500);
-    --mfy-color-border-default-tertiary: var(--mfy-color-stone-400);
-    --mfy-color-border-disabled-default: var(--mfy-color-brand-600);
     --mfy-color-border-neutral-default: var(--mfy-color-slate-100);
     --mfy-color-border-neutral-secondary: var(--mfy-color-slate-500);
     --mfy-color-border-neutral-tertiary: var(--mfy-color-slate-600);
@@ -417,23 +372,7 @@
     --mfy-color-border-warning-default: var(--mfy-color-yellow-200);
     --mfy-color-border-warning-secondary: var(--mfy-color-yellow-400);
     --mfy-color-border-warning-tertiary: var(--mfy-color-yellow-600);
-    --mfy-color-icon-brand-default: var(--mfy-color-brand-100);
-    --mfy-color-icon-brand-on-brand: var(--mfy-color-brand-100);
-    --mfy-color-icon-brand-on-brand-secondary: var(--mfy-color-brand-100);
-    --mfy-color-icon-brand-on-brand-tertiary: var(--mfy-color-brand-100);
-    --mfy-color-icon-brand-secondary: var(--mfy-color-brand-300);
-    --mfy-color-icon-brand-tertiary: var(--mfy-color-brand-400);
-    --mfy-color-icon-danger-default: var(--mfy-color-red-200);
-    --mfy-color-icon-danger-on-danger: var(--mfy-color-red-100);
-    --mfy-color-icon-danger-on-danger-secondary: var(--mfy-color-red-100);
-    --mfy-color-icon-danger-on-danger-tertiary: var(--mfy-color-red-100);
-    --mfy-color-icon-danger-secondary: var(--mfy-color-red-400);
-    --mfy-color-icon-danger-tertiary: var(--mfy-color-red-500);
-    --mfy-color-icon-default-default: var(--mfy-color-stone-100);
-    --mfy-color-icon-default-secondary: var(--mfy-color-stone-400);
-    --mfy-color-icon-default-tertiary: var(--mfy-color-stone-500);
-    --mfy-color-icon-disabled-default: var(--mfy-color-brand-500);
-    --mfy-color-icon-disabled-on-disabled: var(--mfy-color-brand-400);
+    --mfy-color-icon-brand-on-brand: var(--md-sys-color-on-primary-container);
     --mfy-color-icon-neutral-default: var(--mfy-color-slate-200);
     --mfy-color-icon-neutral-on-neutral: var(--mfy-color-slate-1000);
     --mfy-color-icon-neutral-on-neutral-secondary: var(--mfy-color-slate-100);
@@ -454,23 +393,7 @@
     --mfy-color-icon-warning-on-warning-tertiary: var(--mfy-color-yellow-100);
     --mfy-color-icon-warning-secondary: var(--mfy-color-yellow-400);
     --mfy-color-icon-warning-tertiary: var(--mfy-color-yellow-600);
-    --mfy-color-text-brand-default: var(--mfy-color-brand-100);
-    --mfy-color-text-brand-on-brand: var(--mfy-color-brand-100);
-    --mfy-color-text-brand-on-brand-secondary: var(--mfy-color-brand-100);
-    --mfy-color-text-brand-on-brand-tertiary: var(--mfy-color-brand-100);
-    --mfy-color-text-brand-secondary: var(--mfy-color-brand-300);
-    --mfy-color-text-brand-tertiary: var(--mfy-color-brand-400);
-    --mfy-color-text-danger-default: var(--mfy-color-red-200);
-    --mfy-color-text-danger-on-danger: var(--mfy-color-red-100);
-    --mfy-color-text-danger-on-danger-secondary: var(--mfy-color-red-100);
-    --mfy-color-text-danger-on-danger-tertiary: var(--mfy-color-red-100);
-    --mfy-color-text-danger-secondary: var(--mfy-color-red-400);
-    --mfy-color-text-danger-tertiary: var(--mfy-color-red-500);
-    --mfy-color-text-default-default: var(--mfy-color-stone-100);
-    --mfy-color-text-default-secondary: var(--mfy-color-stone-400);
-    --mfy-color-text-default-tertiary: var(--mfy-color-stone-500);
-    --mfy-color-text-disabled-default: var(--mfy-color-brand-500);
-    --mfy-color-text-disabled-on-disabled: var(--mfy-color-brand-400);
+    --mfy-color-text-brand-on-brand: var(--md-sys-color-on-primary-container);
     --mfy-color-text-neutral-default: var(--mfy-color-slate-200);
     --mfy-color-text-neutral-on-neutral: var(--mfy-color-slate-1000);
     --mfy-color-text-neutral-on-neutral-secondary: var(--mfy-color-slate-100);
