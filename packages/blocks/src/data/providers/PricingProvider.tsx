@@ -1,7 +1,8 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { PricingContext } from "../contexts/PricingContext";
-import { pricingService } from "../services/pricingService";
-import type { PricingPlan } from "../types/pricing";
+import type { PricingPlan } from "@gmhlab/core";
+// Hardwired until @gmhlab/data takes the service as a prop.
+import { mockPricingService as pricingService } from "@gmhlab/core/mocks";
 
 /**
  * Pricing provider with full state management

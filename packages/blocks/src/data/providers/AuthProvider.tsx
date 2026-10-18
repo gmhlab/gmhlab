@@ -1,7 +1,8 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { authService } from "../services/authService";
-import type { Credentials, User } from "../types/auth";
+import type { Credentials, User } from "@gmhlab/core";
+// Hardwired until @gmhlab/data takes the service as a prop.
+import { mockAuthService as authService } from "@gmhlab/core/mocks";
 
 /**
  * Authentication provider with full state management
@@ -11,12 +12,18 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // Initialize user from storage on mount
+  // Restore an existing session on mount
   useEffect(() => {
-    const storedUser = authService.getCurrentUser();
-    if (storedUser && authService.isAuthenticated()) {
-      setUser(storedUser);
-    }
+    let cancelled = false;
+    authService.getCurrentUser().then(
+      (storedUser) => {
+        if (!cancelled && storedUser) setUser(storedUser);
+      },
+      () => {},
+    );
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const login = useCallback(async (credentials: Credentials) => {
@@ -25,7 +32,6 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
 
     try {
       const user = await authService.login(credentials);
-      authService.storeUser(user);
       setUser(user);
     } catch (err) {
       setError(err as Error);

@@ -1,0 +1,58 @@
+{
+  "name": "@gmhlab/core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic domain layer for the GMH Lab design system — shared record types, service interfaces, and pure helpers. No React, no CSS, no data.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "GMH Lab",
+  "homepage": "https://github.com/gmhlab/gmhlab#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmhlab/gmhlab.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/gmhlab/gmhlab/issues"
+  },
+  "keywords": [
+    "design-system",
+    "types",
+    "domain"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./mocks": {
+      "types": "./dist/mocks.d.ts",
+      "import": "./dist/mocks.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "prepack": "pnpm run build",
+    "prepublishOnly": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||''))throw new Error('Use pnpm publish, not npm: npm does not resolve the workspace:/catalog: protocols and will publish a broken manifest.')\""
+  },
+  "devDependencies": {
+    "tsup": "catalog:",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "sideEffects": false
+}

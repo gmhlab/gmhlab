@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { PricingPlan, Product } from "../../data/types";
+import type { PricingPlan, Product } from "@gmhlab/core";
 import { useMediaQuery } from "../../hooks";
 import { IconStar } from "../../icons";
 import { Flex } from "../../layouts";

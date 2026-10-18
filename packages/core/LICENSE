@@ -1,0 +1,94 @@
+GMH Lab Design System — Proprietary Software License
+
+Copyright (c) 2026 The George Washington University. All rights reserved.
+
+Developed and maintained by the GW Center of Global Mental Health, The George
+Washington University School of Medicine and Health Sciences, Washington, DC
+("GW").
+
+This license governs the software packages @gmhlab/tokens, @gmhlab/ui, and
+@gmhlab/blocks, together with all source code, design tokens, documentation,
+and assets contained in this repository (collectively, the "Software").
+
+1. OWNERSHIP
+
+   The Software is the proprietary property of GW and is protected by United
+   States and international copyright and other intellectual property laws. GW
+   retains all right, title, and interest in and to the Software. Nothing in
+   this license transfers any ownership interest.
+
+2. NO LICENSE GRANTED
+
+   No license or right, express or implied, is granted to any person or entity
+   to use, copy, reproduce, modify, adapt, translate, merge, publish,
+   distribute, sublicense, sell, host, or create derivative works of the
+   Software, in whole or in part, except under a separate written agreement
+   signed by an authorized representative of GW.
+
+3. PUBLIC AVAILABILITY IS NOT A GRANT
+
+   The Software may be published to public package registries (including npm)
+   and public source repositories (including GitHub) as a distribution
+   convenience for parties authorized under Section 2. Such publication makes
+   the Software visible and technically installable, but confers no license or
+   permission of any kind. Downloading, installing, or depending on the
+   Software does not grant any right to use it.
+
+4. RESTRICTIONS
+
+   Except as expressly permitted in writing by GW, you may not:
+
+   (a) use the Software for any purpose, commercial or non-commercial;
+   (b) remove, alter, or obscure any copyright, trademark, or other proprietary
+       notice contained in or accompanying the Software;
+   (c) reverse engineer, decompile, or disassemble any portion of the Software,
+       except to the extent this restriction is prohibited by applicable law; or
+   (d) use the names, trademarks, or logos of The George Washington University,
+       the George Washington University School of Medicine and Health Sciences,
+       or the GW Center of Global Mental Health to endorse or promote any
+       product or service.
+
+5. THIRD-PARTY COMPONENTS
+
+   The Software incorporates and depends upon third-party open-source
+   components, each of which remains governed by its own license terms. Those
+   terms are not superseded, modified, or restricted by this license, and
+   nothing here limits any right you hold under them with respect to those
+   components. Third-party dependencies are enumerated in the "dependencies",
+   "peerDependencies", and "devDependencies" fields of each package's
+   package.json.
+
+6. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL THE GEORGE WASHINGTON UNIVERSITY, ITS TRUSTEES, OFFICERS,
+   EMPLOYEES, OR AGENTS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY,
+   WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF,
+   OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+8. TERMINATION
+
+   Any permission granted by GW under Section 2 terminates automatically and
+   without notice upon any breach of this license. Upon termination you must
+   immediately cease all use of the Software and destroy all copies in your
+   possession or control.
+
+9. GOVERNING LAW
+
+   This license is governed by the laws of the District of Columbia, United
+   States, without regard to its conflict-of-laws principles.
+
+10. LICENSING INQUIRIES
+
+    Requests for permission to use the Software should be directed to:
+
+    GW Center of Global Mental Health
+    The George Washington University School of Medicine and Health Sciences
+    Washington, DC
+    terrancebrunner@gmail.com

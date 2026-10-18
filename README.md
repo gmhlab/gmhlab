@@ -11,8 +11,9 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | Package | Name | What it is |
 | --- | --- | --- |
 | `packages/tokens` | `@gmhlab/tokens` | The design-token value layer (`--mfy-*` CSS variables). CSS-only — consume the tokens as CSS vars, there is no JS export. CSS at `@gmhlab/tokens/tokens.css`. |
+| `packages/core` | `@gmhlab/core` | Framework-agnostic domain layer: shared record types, backend service interfaces and pure helpers. No React, CSS or data; invented demo data is opt-in at `@gmhlab/core/mocks`. |
 | `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
-| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections, slides, a mock data layer (`AllProviders`, `useAuth`, …), and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
+| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections, slides, the React data layer (`AllProviders`, `useAuth`, …, currently wired to `@gmhlab/core/mocks`), and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes `@gmhlab/ui`, `@gmhlab/blocks`, and `@gmhlab/tokens`. |
 | `apps/web` | `web` | Next.js 16 App Router site consuming all three packages — the MonoFly marketing page at `/`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
 
@@ -80,7 +81,7 @@ Two things a consuming app has to do beyond that:
 
 `src/app/layout.tsx` owns the site chrome — header, `<main>`, footer — and pages render sections into it. **A page should not include its own header or footer.**
 
-The layout wraps everything in `AllProviders` from `@gmhlab/blocks` (auth/pricing/products context + mock services). It renders no DOM of its own, so the header, `<main>` and footer are the `<body>`'s flex children; `globals.css` makes `body` a full-height flex column so the footer settles at the bottom on short pages.
+The layout wraps everything in `AllProviders` from `@gmhlab/blocks` (auth/pricing/products context, currently backed by the mock services in `@gmhlab/core/mocks`). It renders no DOM of its own, so the header, `<main>` and footer are the `<body>`'s flex children; `globals.css` makes `body` a full-height flex column so the footer settles at the bottom on short pages.
 
 ## Site pages
 
@@ -202,10 +203,10 @@ Stay on `0.x` until the component API stops churning. Avoid `0.0.x` specifically
 
 ### Cutting a release
 
-The three packages are versioned **in lockstep** — one version number, always published together. **Releases run in CI**: pushing a `v*` tag triggers `.github/workflows/release.yml`, which builds, type-checks, publishes all three with provenance, and opens a GitHub Release. You do not publish from your machine.
+The packages are versioned **in lockstep** — one version number, always published together. **Releases run in CI**: pushing a `v*` tag triggers `.github/workflows/release.yml`, which builds, type-checks, publishes all of them with provenance, and opens a GitHub Release. You do not publish from your machine.
 
 ```bash
-pnpm version:patch          # bump all three (see the table above for which bump)
+pnpm version:patch          # bump every package (see the table above for which bump)
 pnpm version:show           # confirm they agree
                             # -> edit CHANGELOG.md: rename [Unreleased] to the new version
 git commit -am "release: v0.1.1"
@@ -217,20 +218,20 @@ Then watch the run in the repo's **Actions** tab.
 
 **The tag must be annotated — `git tag -a`, not `git tag`.** `git push --follow-tags` pushes *only* annotated tags, so a lightweight tag stays on your machine, GitHub never sees it, no workflow fires, and nothing is published. It fails silently in both directions: the push reports success and Actions simply shows no new run. If a release seems not to have started, check `git ls-remote --tags origin` before anything else.
 
-`version:*` passes `--no-git-tag-version`, so npm bumps the manifests without creating three separate commits and three colliding tags — you make one commit and one tag by hand, covering all three packages. The filter keeps `apps/*` out of it.
+`version:*` passes `--no-git-tag-version`, so npm bumps the manifests without creating three separate commits and three colliding tags — you make one commit and one tag by hand, covering every package. The filter keeps `apps/*` out of it.
 
 Write the changelog entry **before** committing, while the changes are fresh. `CHANGELOG.md` has an `[Unreleased]` section with the Keep a Changelog headings to fill in.
 
 #### Rehearsing a release
 
-The workflow can also be run manually from the Actions tab, where it takes a **dry run** checkbox that defaults to on. That path resolves, installs, builds, type-checks, verifies the npm credentials and packs all three packages without publishing anything — useful after touching the workflow, the token, or the build. A tag push always publishes for real; only a manual run can dry-run.
+The workflow can also be run manually from the Actions tab, where it takes a **dry run** checkbox that defaults to on. That path resolves, installs, builds, type-checks, verifies the npm credentials and packs every package without publishing anything — useful after touching the workflow, the token, or the build. A tag push always publishes for real; only a manual run can dry-run.
 
 Note that `pnpm publish --dry-run` never contacts the registry, which is why the workflow runs `npm whoami` as a separate step — otherwise a rehearsal would say nothing about whether `NPM_TOKEN` still works.
 
 ### Reference
 
 ```bash
-pnpm release:check   # build + typecheck + `pnpm publish --dry-run` for all three
+pnpm release:check   # build + typecheck + `pnpm publish --dry-run` for every package
 pnpm release         # publish locally — the fallback path, not the normal one
 ```
 
@@ -240,7 +241,7 @@ Five things to know:
 
 **Always publish with `pnpm`, never `npm`.** The manifests use the `workspace:*` and `catalog:` protocols; `pnpm publish` rewrites those to real semver ranges in the published tarball, and `npm publish` does not — it would ship `"@gmhlab/tokens": "workspace:*"` and produce an uninstallable package. Each package carries a `prepublishOnly` guard that fails the publish if it isn't running under pnpm.
 
-**All three packages must be published together, at the same version.** `@gmhlab/ui`'s stylesheet contains a literal `@import "@gmhlab/tokens/tokens.css"`, so tokens is a genuine runtime dependency — it cannot be `private`. `pnpm publish` pins it exactly (`"@gmhlab/tokens": "0.1.0"`), so a `ui` release with no matching `tokens` release on the registry will fail to install.
+**All packages must be published together, at the same version.** `@gmhlab/ui`'s stylesheet contains a literal `@import "@gmhlab/tokens/tokens.css"`, so tokens is a genuine runtime dependency — it cannot be `private`. `pnpm publish` pins it exactly (`"@gmhlab/tokens": "0.1.0"`), so a `ui` release with no matching `tokens` release on the registry will fail to install.
 
 **Auth comes from outside the repo.** The project's `.npmrc` is tracked on purpose — it pins the registry and holds no secrets. Locally, `npm login` writes your credentials to `~/.npmrc`. In CI, `actions/setup-node` generates one from `registry-url` plus the `NPM_TOKEN` repository secret, exposed to the publish step as `NODE_AUTH_TOKEN`. Never commit a token either way.
 

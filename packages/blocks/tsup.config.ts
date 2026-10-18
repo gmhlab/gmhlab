@@ -6,7 +6,7 @@ export default defineConfig({
   format: ["esm"],
   outDir: "dist",
   clean: true,
-  external: ["react", "react-dom", "@gmhlab/ui", "@gmhlab/tokens"],
+  external: ["react", "react-dom", "@gmhlab/ui", "@gmhlab/tokens", "@gmhlab/core"],
   banner: {
     js: '"use client";'
   },

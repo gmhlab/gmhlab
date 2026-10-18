@@ -1,13 +1,13 @@
 name: Release
 
-# Publishes @gmhlab/tokens, @gmhlab/ui and @gmhlab/blocks to public npm.
+# Publishes @gmhlab/tokens, @gmhlab/core, @gmhlab/ui and @gmhlab/blocks to public npm.
 #
 # Trigger is a version tag, which matches the documented flow in README
 # "Cutting a release": bump -> changelog -> commit -> tag -> `git push --follow-tags`.
 # The push of the tag is what starts this job.
 #
 # Requires one repository secret: NPM_TOKEN — a *granular* access token scoped to
-# the @gmhlab org with read+write on the three packages. Granular tokens bypass
+# the @gmhlab org with read+write on all four packages. Granular tokens bypass
 # the account's auth-and-writes 2FA, which is what makes an unattended publish
 # possible at all; an interactive OTP cannot work here.
 
@@ -85,8 +85,8 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
 
-      # `pnpm -r` walks the workspace in topological order, so tokens lands before
-      # ui (whose manifest pins @gmhlab/tokens exactly) and ui before blocks.
+      # `pnpm -r` walks the workspace in topological order, so tokens and core land
+      # before ui (whose manifest pins both exactly) and ui before blocks.
       #
       # --no-git-checks: pnpm otherwise refuses to publish from a detached HEAD,
       # which is exactly what a tag checkout is.

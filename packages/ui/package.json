@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
+    "@gmhlab/core": "workspace:*",
     "@gmhlab/tokens": "workspace:*",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",

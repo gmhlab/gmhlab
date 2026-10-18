@@ -3,7 +3,8 @@ import {
   ProductInfoCardSkeleton,
   productToProductInfoCardProps,
 } from "@gmhlab/ui";
-import { useProducts, type Product } from "../data";
+import type { Product } from "@gmhlab/core";
+import { useProducts } from "../data";
 import { useMediaQuery } from "@gmhlab/ui";
 import { IconChevronDown, IconChevronUp } from "@gmhlab/ui";
 import { CardGrid, Flex, FlexItem, Section } from "@gmhlab/ui";

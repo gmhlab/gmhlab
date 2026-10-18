@@ -1,36 +1,10 @@
-import type { Product } from "@gmhlab/ui";
-
-export type { Product } from "@gmhlab/ui";
-
-export type ProductFilter = {
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  minRating?: number;
-  inStock?: boolean;
-  tags?: string[];
-};
-
-export type ProductSort = "name" | "price" | "rating" | "newest";
-
-export type ProductCartItem = {
-  product: Product;
-  quantity: number;
-};
-
-export type ProductCart = {
-  items: ProductCartItem[];
-  total: number;
-  currency: string;
-};
-
-export type SearchParams = {
-  query: string;
-  filters: ProductFilter;
-  sort: ProductSort;
-  page: number;
-  limit: number;
-};
+import type {
+  Product,
+  ProductCart,
+  ProductFilter,
+  ProductSort,
+  SearchParams,
+} from "@gmhlab/core";
 
 /**
  * Products context type

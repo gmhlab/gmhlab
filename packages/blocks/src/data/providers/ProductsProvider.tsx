@@ -1,13 +1,18 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { ProductsContext } from "../contexts/ProductsContext";
-import { productsService } from "../services/productsService";
-import type {
-  Product,
-  ProductCart,
-  ProductFilter,
-  ProductSort,
-  SearchParams,
-} from "../types/products";
+import {
+  cartTotal,
+  filterProducts,
+  searchProducts,
+  sortProducts,
+  type Product,
+  type ProductCart,
+  type ProductFilter,
+  type ProductSort,
+  type SearchParams,
+} from "@gmhlab/core";
+// Hardwired until @gmhlab/data takes the service as a prop.
+import { mockProductsService as productsService } from "@gmhlab/core/mocks";
 
 /**
  * Products provider with full state management
@@ -84,10 +89,7 @@ export function ProductsProvider({ children }: { children?: ReactNode }) {
 
   // Update cart total when items change
   useEffect(() => {
-    const total = cart.items.reduce(
-      (sum, item) => sum + item.product.price * item.quantity,
-      0,
-    );
+    const total = cartTotal(cart.items);
     setCart((prev) => ({ ...prev, total }));
   }, [cart.items]);
 
@@ -97,14 +99,14 @@ export function ProductsProvider({ children }: { children?: ReactNode }) {
 
     // Apply search query
     if (searchParams.query) {
-      result = productsService.searchProducts(result, searchParams.query);
+      result = searchProducts(result, searchParams.query);
     }
 
     // Apply filters
-    result = productsService.filterProducts(result, searchParams.filters);
+    result = filterProducts(result, searchParams.filters);
 
     // Apply sorting
-    result = productsService.sortProducts(result, searchParams.sort);
+    result = sortProducts(result, searchParams.sort);
 
     return result;
   }, [products, searchParams]);

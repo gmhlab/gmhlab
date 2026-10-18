@@ -175,6 +175,9 @@ importers:
 
   packages/blocks:
     dependencies:
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../core
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -225,6 +228,15 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
 
+  packages/core:
+    devDependencies:
+      tsup:
+        specifier: 'catalog:'
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(typescript@6.0.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
   packages/tokens:
     devDependencies:
       tsup:
@@ -239,6 +251,9 @@ importers:
       '@base-ui/react':
         specifier: 'catalog:'
         version: 1.7.0(@date-fns/tz@1.5.0)(@types/react@19.2.18)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../core
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../tokens

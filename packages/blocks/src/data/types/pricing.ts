@@ -1,6 +1,4 @@
-import type { PricingPlan } from "@gmhlab/ui";
-
-export type { PricingInterval, PricingPlan } from "@gmhlab/ui";
+import type { PricingPlan } from "@gmhlab/core";
 
 /**
  * Pricing context type
