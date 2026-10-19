@@ -302,11 +302,19 @@ export type HeaderProps = Omit<SectionProps, "variant" | "padding" | "src"> &
      */
     logo?: ReactNode;
     wordmark?: HeaderWordmark;
+    /**
+     * A full lockup (`<GmhCrestLogo />`) that takes the logo's and
+     * wordmark's place from 600px up. Below that — and in the mobile sheet —
+     * `logo` still carries the row, since a lockup is illegible at phone
+     * size. The swap is CSS, so SSR renders the right one with no flash.
+     */
+    lockup?: ReactNode;
   };
 export function Header({
   className,
   logo = <GmhLogo />,
   wordmark,
+  lockup,
   user,
   onLogin,
   onRegister,
@@ -333,26 +341,31 @@ export function Header({
         wrap
       >
         <div className="header-brand">
-          {logo}
-          {wordmark && (
-            /* With a logo, the logo is already the home link and its accessible
-               name, so this second link is hidden from AT and the tab order —
-               it only widens the click target to the words. Without a logo it
-               is the home link, so it stays exposed. */
-            <a
-              className="header-wordmark"
-              href={wordmark.href ?? "/"}
-              aria-hidden={logo ? true : undefined}
-              tabIndex={logo ? -1 : undefined}
-            >
-              {wordmark.eyebrow && (
-                <span className="header-wordmark-eyebrow">
-                  {wordmark.eyebrow}
-                </span>
-              )}
-              <span className="header-wordmark-name">{wordmark.name}</span>
-            </a>
-          )}
+          {lockup && <div className="header-brand-lockup">{lockup}</div>}
+          <div
+            className={clsx("header-brand-compact", lockup && "has-lockup")}
+          >
+            {logo}
+            {wordmark && (
+              /* With a logo, the logo is already the home link and its
+                 accessible name, so this second link is hidden from AT and
+                 the tab order — it only widens the click target to the words.
+                 Without a logo it is the home link, so it stays exposed. */
+              <a
+                className="header-wordmark"
+                href={wordmark.href ?? "/"}
+                aria-hidden={logo ? true : undefined}
+                tabIndex={logo ? -1 : undefined}
+              >
+                {wordmark.eyebrow && (
+                  <span className="header-wordmark-eyebrow">
+                    {wordmark.eyebrow}
+                  </span>
+                )}
+                <span className="header-wordmark-name">{wordmark.name}</span>
+              </a>
+            )}
+          </div>
         </div>
         <HeaderAuth
           user={user}

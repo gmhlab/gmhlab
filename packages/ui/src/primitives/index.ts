@@ -13,6 +13,7 @@ export * from "./input";
 export * from "./input-group";
 export * from "./kbd";
 export * from "./label";
+export * from "./logo/gmh-crest-logo";
 export * from "./logo/gmh-logo";
 export * from "./menubar";
 export * from "./navigation-menu";

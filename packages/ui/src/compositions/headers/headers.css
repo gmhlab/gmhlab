@@ -45,10 +45,25 @@
   }
 }
 
-.header-brand {
+.header-brand,
+.header-brand-compact {
   align-items: center;
   display: flex;
   gap: var(--mfy-size-space-300);
+}
+/* A lockup replaces the mark + wordmark at the same 600px pivot as the rest
+ * of the header (see below). Both halves stay in the DOM; display: none takes
+ * the hidden one out of the tab order and the accessibility tree. */
+.header-brand-lockup {
+  display: none;
+}
+@media (min-width: 600px) {
+  .header-brand-lockup {
+    display: flex;
+  }
+  .header-brand-compact.has-lockup {
+    display: none;
+  }
 }
 .header-wordmark {
   color: var(--mfy-color-text-brand-default);

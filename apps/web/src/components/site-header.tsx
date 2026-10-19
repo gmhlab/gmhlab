@@ -1,7 +1,12 @@
 "use client";
 
 import { useAuth } from "@gmhlab/data";
-import { type HeaderNavItem, Header, UtilityBar } from "@gmhlab/ui";
+import {
+  type HeaderNavItem,
+  GmhCrestLogo,
+  Header,
+  UtilityBar,
+} from "@gmhlab/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -47,6 +52,7 @@ export function SiteHeader() {
   return (
     <Header
       wordmark={{ eyebrow: "GW", name: "Global Mental Health" }}
+      lockup={<GmhCrestLogo />}
       navItems={NAV_ITEMS}
       activeHref={activeHref}
       user={user ? { name: user.name, avatar: user.avatar } : null}

@@ -57,3 +57,30 @@
      reason. */
   overflow: visible;
 }
+
+/* The crest lockup (GmhCrestLogo), 595x144. Sized by height for the same
+   reason as the mark above, and with the same three guards: explicit width,
+   no flex shrink, visible overflow. 64px is the smallest height at which the
+   university line still reads; below it, use GmhLogo. */
+.logo-gmh-crest {
+  flex-shrink: 0;
+}
+.logo-gmh-crest > svg {
+  --logo-gmh-crest-height: var(--mfy-typography-scale-09, 4rem);
+  /* Three colour roles, one per colourway difference in the source art:
+     ink is navy on paper and white after dark; gold and the navy globe
+     detail are the same in both. Gold here is a fill (the figures and
+     rules), which is the one thing #AA9868 is allowed to be. */
+  --logo-crest-ink: var(--mfy-color-icon-brand-default);
+  --logo-crest-gold: var(--mfy-color-background-accent-default);
+  --logo-crest-detail: var(--mfy-color-brand-800);
+  display: block;
+  height: var(--logo-gmh-crest-height);
+  width: calc(var(--logo-gmh-crest-height) * 595 / 144);
+  overflow: visible;
+}
+/* Not `primary`: M3's dark primary is a light blue meant for controls, and
+   the designer's dark colourway is white. */
+.dark .logo-gmh-crest > svg {
+  --logo-crest-ink: var(--mfy-color-icon-default-default);
+}

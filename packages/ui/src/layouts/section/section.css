@@ -93,6 +93,7 @@
   color: var(--mfy-color-text-brand-on-brand);
   .logo svg {
     --logo-color: var(--mfy-color-icon-brand-on-brand);
+    --logo-crest-ink: var(--mfy-color-icon-brand-on-brand);
   }
   /* Icon renders <svg class="icon">, so the class is ON the svg — a
      descendant selector (`.icon svg`) never matches and left icons at
