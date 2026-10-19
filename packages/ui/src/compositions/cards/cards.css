@@ -154,3 +154,13 @@
 .card-variant-brand .stats-card {
   --stats-card-label-color: var(--mfy-color-gold-300);
 }
+
+/* A light card inside a brand band is paper again, so it also drops the
+   band's on-brand type roles (gold-300 eyebrows and emphasis, currentColor
+   headings) — they are pale-on-white there. `initial` un-sets the custom
+   property, so text.css falls back to its paper defaults. */
+.section-variant-brand .card:not(.card-variant-brand) {
+  --text-eyebrow-color: initial;
+  --text-heading-em-color: initial;
+  --text-heading-color: var(--mfy-color-text-brand-default);
+}

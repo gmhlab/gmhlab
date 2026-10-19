@@ -20,21 +20,22 @@
   }
 }
 
-/* The generic `.logo` sizing, for a square or portrait mark. GmhLogo is the
-   only mark now and overrides the size below; this rule still supplies
-   --logo-color. Unnested + fallback on purpose: dev-mode CSS ships
-   un-flattened, and Safari <16.5 drops nested rules. */
+/* The generic `.logo` sizing, for a square or portrait mark, and the
+   single-colour `--logo-color` role for a consumer's own mark. Both GMH marks
+   override the size below and use their own colour roles. Unnested + fallback
+   on purpose: dev-mode CSS ships un-flattened, and Safari <16.5 drops nested
+   rules. */
 .logo > svg {
   --logo-color: var(--mfy-color-icon-default-default);
   height: auto;
   width: var(--mfy-size-icon-small, 1.5rem);
 }
 
-/* The GMH mark is landscape (33x24.7796), not portrait, so it
-   is sized by height — Figma specs it at 48px tall (~64px wide at this aspect).
-   There is no --mfy-size-icon-* at 48px (large tops out at 40px), so this uses
-   the same token icons.css maps .icon-size-48 to. Same specificity as the rule
-   above — it wins by source order.
+/* The GMH mark is near-square (1144.11 x 945, a little wider than tall), so
+   it is sized by height — Figma specs the mark at 48px tall. There is no
+   --mfy-size-icon-* at 48px (large tops out at 40px), so this uses the same
+   token icons.css maps .icon-size-48 to. Same specificity as the rule above —
+   it wins by source order.
 
    Width is computed from the aspect rather than left as `auto`: the
    AnchorOrButton wrapper (an <a> now that the logo defaults to href="/", a
@@ -48,14 +49,23 @@
 }
 .logo-gmh > svg {
   --logo-gmh-height: var(--mfy-typography-scale-08, 3rem);
+  /* Two colour roles, one per colourway difference in the source art: ink is
+     navy on paper and white reversed; gold is the same in both. Gold is a
+     fill here (two of the four figures), which is what #AA9868 is for. */
+  --logo-mark-ink: var(--mfy-color-icon-brand-default);
+  --logo-mark-gold: var(--mfy-color-background-accent-default);
   display: block;
   height: var(--logo-gmh-height);
-  /* The mark's native aspect: 33 / 24.7796. */
-  width: calc(var(--logo-gmh-height) * 33 / 24.7796);
-  /* The artwork touches all four viewBox edges, so the SVG's default
-     `overflow: hidden` shaves it. The Figma export sets this for the same
-     reason. */
+  /* The mark's native aspect: 1144.11 / 945. */
+  width: calc(var(--logo-gmh-height) * 1144.11 / 945);
+  /* The heads touch the viewBox's top edge, so the SVG's default
+     `overflow: hidden` would shave them. */
   overflow: visible;
+}
+/* Not `primary`: M3's dark primary is a light blue meant for controls, and
+   the designer's reversed colourway is white. */
+.dark .logo-gmh > svg {
+  --logo-mark-ink: var(--mfy-color-icon-default-default);
 }
 
 /* The crest lockup (GmhCrestLogo), 595x144. Sized by height for the same

@@ -2,8 +2,8 @@
  * nothing here can leak into another consumer of @gmhlab/blocks/styles.css.
  *
  * Colour, type and radius all come from tokens. The few literals left are
- * geometry (the topographic lines, the gap-field glyph) and the navy-tinted
- * shadow alpha, which has no token.
+ * geometry (the gap-field glyph, the bracket frame) — the hero's contour globe,
+ * the wave, the glyphs and the care rings are @gmhlab/ui graphics.
  *
  * Every grid child gets `min-width: 0`: these grids sit inside a Flex
  * container, whose items default to `min-width: auto` and would otherwise let
@@ -75,40 +75,13 @@
   overflow: hidden;
 }
 
-/* Contour lines behind the hero. They draw in once on load; under reduced
-   motion they are simply already drawn. */
-.home-topo {
-  height: 150%;
-  inset: -10% -20% auto -20%;
-  opacity: 0.5;
-  pointer-events: none;
-  position: absolute;
-  width: 140%;
-  z-index: -1;
-
-  path {
-    fill: none;
-    opacity: 0.13;
-    stroke: var(--mfy-color-text-brand-default);
-    stroke-width: 1;
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .home-topo path {
-    animation: home-topo-draw 3.4s ease forwards;
-    stroke-dasharray: 2600;
-    stroke-dashoffset: 2600;
-  }
-  .home-topo path:nth-child(2) { animation-delay: 0.12s; }
-  .home-topo path:nth-child(3) { animation-delay: 0.24s; }
-  .home-topo path:nth-child(4) { animation-delay: 0.36s; }
-  .home-topo path:nth-child(5) { animation-delay: 0.48s; }
-  .home-topo path:nth-child(6) { animation-delay: 0.6s; }
-}
-@keyframes home-topo-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
+/* No photo: the hero is the copy over the contours and the mark, given the
+   artboard's proportions so the mark sits whole beside the headline. */
+.home-hero-mark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: clamp(28rem, 44vw, 40rem);
 }
 
 .home-hero-actions {
@@ -126,15 +99,41 @@
   aspect-ratio: 4 / 5;
   border-radius: var(--mfy-size-radius-100);
 }
-/* The gold corner bracket that sits behind the photo's lower-left edge. */
-.home-hero-rule {
-  border-bottom: 2px solid var(--mfy-color-border-accent-default);
-  border-left: 2px solid var(--mfy-color-border-accent-default);
-  bottom: -1rem;
-  height: 56%;
-  left: -1rem;
+/* The kit's bracket frame: gold corners at two opposite edges of the photo,
+   a dotted field behind its lower-left. */
+.home-hero-frame::before,
+.home-hero-frame::after {
+  border: 3px solid var(--mfy-color-border-accent-default);
+  content: "";
+  height: clamp(2rem, 4vw, 3rem);
   position: absolute;
-  width: 56%;
+  width: clamp(2rem, 4vw, 3rem);
+}
+.home-hero-frame::before {
+  border-bottom: 0;
+  border-left: 0;
+  right: -0.875rem;
+  top: -0.875rem;
+}
+.home-hero-frame::after {
+  border-right: 0;
+  border-top: 0;
+  bottom: -0.875rem;
+  left: -0.875rem;
+}
+.home-hero-rule {
+  background: radial-gradient(
+      circle,
+      color-mix(in oklch, var(--mfy-color-icon-brand-default) 50%, transparent)
+        1.6px,
+      transparent 2px
+    )
+    0 0 / 12px 12px;
+  bottom: -2rem;
+  height: 46%;
+  left: -2rem;
+  position: absolute;
+  width: 46%;
   z-index: -1;
 }
 .home-hero-figure .home-caption {
@@ -149,6 +148,13 @@
 }
 
 /* ── Stats ──────────────────────────────────────────────────────────── */
+
+/* Plain navy behind the figures: the band keeps its bloom and the gold wave
+   on its top edge, but not the contour texture every other brand band
+   carries (section.css). */
+.home-stats-band.section-variant-brand::before {
+  content: none;
+}
 
 .home-stats {
   display: grid;
@@ -265,6 +271,39 @@
 .home-focus-image {
   aspect-ratio: 16 / 10;
 }
+/* The research band is plain navy: its contour lines live inside the cards'
+   glyph panels instead (below). */
+.home-focus-band.section-variant-brand::before {
+  content: none;
+}
+
+/* A glyph card's art: the glyph large on a navy panel with the kit's contour
+   texture and the brand band's gold bloom. */
+.home-focus-art {
+  --graphic-contour-color: var(--mfy-color-icon-brand-on-brand);
+  align-items: center;
+  aspect-ratio: 16 / 10;
+  background:
+    radial-gradient(
+      90% 120% at 14% 0%,
+      color-mix(in oklch, var(--mfy-color-gold-500) 28%, transparent),
+      transparent 62%
+    ),
+    var(--mfy-color-background-brand-default);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .graphic {
+    --graphic-glyph-stroke: 1.5;
+    transition: scale var(--global-duration-slow) var(--global-ease-out);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-focus-card:hover .home-focus-art .graphic {
+    scale: 1.06;
+  }
+}
 .home-focus-body {
   display: flex;
   flex: 1;
@@ -292,6 +331,13 @@
 }
 .home-focus-card:hover .home-arrow-link {
   border-color: var(--mfy-color-border-accent-default);
+}
+
+/* ── Pull quote ─────────────────────────────────────────────────────── */
+
+/* The photo is cropped to the kit's blob. */
+.home-quote-art .image {
+  aspect-ratio: 1;
 }
 
 /* ── Partners ───────────────────────────────────────────────────────── */
@@ -331,6 +377,15 @@
   }
 }
 
+/* ── Consecutive navy bands ─────────────────────────────────────────── */
+
+/* Research and the closing CTA are brand bands; with no pull quote and no
+   partners they stack. A faint gold hairline keeps each its own. */
+.home-page .section-variant-brand + .section-variant-brand {
+  border-top: var(--mfy-size-stroke-border) solid
+    color-mix(in oklch, var(--mfy-color-gold-500) 30%, transparent);
+}
+
 /* ── Closing CTA ────────────────────────────────────────────────────── */
 
 /* Mirrors the stat band's bloom from the opposite corner, so the page opens
@@ -344,6 +399,20 @@
     ),
     var(--mfy-color-brand-900);
   text-align: center;
+}
+/* The care rings radiate from behind the right edge — the page closes on
+   reach. Faded under the centred copy on narrow screens. */
+.home-cta-rings.graphic-backdrop {
+  height: 150%;
+  inset: -25% -10rem auto auto;
+  opacity: 0.6;
+  width: auto;
+  aspect-ratio: 1;
+}
+@media (max-width: 899.98px) {
+  .home-cta-rings.graphic-backdrop {
+    opacity: 0.22;
+  }
 }
 .home-cta-body {
   color: var(--mfy-color-gold-300);

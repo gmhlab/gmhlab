@@ -21,6 +21,7 @@
  */
 
 import type { InnovationDetail } from "@gmhlab/blocks";
+import { EQUIP_HERO_IMAGE } from "./hero-images";
 
 export const EQUIP_DETAIL: InnovationDetail = {
   slug: "equip",
@@ -30,13 +31,14 @@ export const EQUIP_DETAIL: InnovationDetail = {
     { label: "WHO/UNICEF Partnership", tone: "info" },
     { label: "Active", tone: "success" },
   ],
+  heroImage: EQUIP_HERO_IMAGE,
   summary:
     "EQUIP is a competency-based training and supervision system designed to ensure non-specialist providers can deliver high-quality psychological interventions. Developed in partnership with WHO and UNICEF, EQUIP standardizes how we assess, train, and support mental health workers in low-resource settings worldwide.",
   actions: [
     { label: "Request Training →", href: "#" },
     { label: "Download Toolkit", href: "#", variant: "outline" },
   ],
-  visualCaption: "[ Platform Screenshot / Demo Video ]",
+  glyph: "competency",
   stats: [
     { value: "25+", label: "Countries" },
     { value: "5K+", label: "Providers" },
@@ -67,17 +69,17 @@ export const EQUIP_DETAIL: InnovationDetail = {
   componentsNote: "The EQUIP system includes three integrated components",
   components: [
     {
-      icon: "📋",
+      glyph: "measurement",
       heading: "Competency Assessment Tools",
       body: "Standardized rubrics and rating scales for evaluating counselor performance across key therapeutic competencies like empathy, collaboration, and behavioral activation techniques.",
     },
     {
-      icon: "🎓",
+      glyph: "competency",
       heading: "Training Curriculum",
       body: "Modular training materials adaptable to different interventions (PM+, IPT, behavioral activation) and cultural contexts. Includes facilitator guides and participant workbooks.",
     },
     {
-      icon: "👥",
+      glyph: "task-sharing",
       heading: "Supervision Framework",
       body: "Structured supervision protocols for ongoing support, including group supervision models and individual feedback mechanisms for continuous quality improvement.",
     },

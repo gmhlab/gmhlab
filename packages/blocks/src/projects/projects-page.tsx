@@ -1,17 +1,16 @@
 import { useMemo, useState } from "react";
 import {
   Badge,
+  BrandShape,
   Button,
   Card,
   CardGrid,
   Flex,
   FlexItem,
-  Hero,
   Input,
   Section,
   Text,
   TextContentHeading,
-  TextContentTitle,
   TextHeading,
   TextLink,
   TextSmall,
@@ -28,6 +27,7 @@ import {
 import type { PageCta } from "../shared/page-copy";
 import { GMH_PROJECTS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
+import { PageHero } from "../shared/page-hero";
 import "./projects-page.css";
 
 /**
@@ -314,8 +314,11 @@ export type ProjectsPageProps = {
   partners?: string[];
   /** Region facet order. Omit to show only the "All" chip. */
   regions?: ProjectRegion[];
-  /** Hero background image. Required: the hero is an image variant. */
-  heroImage: string;
+  /**
+   * Hero background photograph, shown in the brand duotone under the hero's
+   * graphics-kit motif. Omit for the motif alone.
+   */
+  heroImage?: string;
   /**
    * Base path project links are built from, so the block travels with the
    * site that hosts it instead of hardcoding a domain.
@@ -446,13 +449,14 @@ export function ProjectsPage({
 
   return (
     <div className="projects-page">
-      <Hero
-        variant="image"
-        src={heroImage}
+      <PageHero
+        title={title}
+        subtitle={subtitle}
+        image={heroImage}
+        motif="globe"
         paddingBottom="800"
-        flexProps={{ direction: "column", alignSecondary: "start", gap: "1200" }}
+        flexProps={{ gap: "1200" }}
       >
-        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
         <Flex className="projects-stats" wrap gap="1200">
           {stats.map((stat) => (
             <div className="projects-stat" key={stat.label}>
@@ -463,7 +467,7 @@ export function ProjectsPage({
             </div>
           ))}
         </Flex>
-      </Hero>
+      </PageHero>
 
       {/* A neutral band directly under the image hero, closed with a hairline,
           so the two read as one page header rather than as a banner followed by
@@ -545,6 +549,7 @@ export function ProjectsPage({
         ) : (
           <Flex container direction="column" alignSecondary="center" gap="400">
             <div className="projects-empty">
+              <BrandShape name="quarter-sun" size={96} />
               <TextHeading>No projects match those filters</TextHeading>
               <Text>
                 Try a different region or status, or clear the filters to see

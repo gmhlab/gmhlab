@@ -338,6 +338,11 @@
   max-width: 34rem;
   padding: var(--mfy-size-space-1200);
   text-align: center;
+
+  /* The graphics-kit spot illustration over the message. */
+  .graphic-shape {
+    align-self: center;
+  }
 }
 
 /* ------------------------------------------------------------------ partners

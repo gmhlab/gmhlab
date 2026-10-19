@@ -316,7 +316,7 @@ export const INNOVATION_PARTNERS = [
 export const INNOVATIONS: Innovation[] = [
   {
     slug: "atlas",
-    icon: "🧭",
+    glyph: "care-delivery",
     status: "Multi-site deployment",
     statusTone: "success",
     heading: "ATLAS Platform",
@@ -326,7 +326,7 @@ export const INNOVATIONS: Innovation[] = [
   },
   {
     slug: "compass-scale",
-    icon: "📐",
+    glyph: "measurement",
     status: "Validated in four languages",
     statusTone: "info",
     heading: "COMPASS Rating Scale",
@@ -336,7 +336,7 @@ export const INNOVATIONS: Innovation[] = [
   },
   {
     slug: "harbour-toolkit",
-    icon: "🧰",
+    glyph: "task-sharing",
     status: "In field testing",
     statusTone: "warning",
     heading: "HARBOUR Toolkit",
@@ -608,6 +608,7 @@ export const ATLAS_DETAIL: InnovationDetail = {
     { label: "Request a demo", href: "#" },
     { label: "Read the documentation", href: "#", variant: "secondary" },
   ],
+  glyph: "care-delivery",
   visualCaption: "Platform screenshot — supervisor dashboard",
   stats: [
     { value: "9", label: "Countries" },
@@ -637,22 +638,22 @@ export const ATLAS_DETAIL: InnovationDetail = {
     "The cycle repeats: sustainment ratings feed the same dashboard as certification ratings.",
   components: [
     {
-      icon: "📚",
+      glyph: "competency",
       heading: "Curriculum host",
       body: "Versioned session guides, translations, and the fidelity forms that go with them.",
     },
     {
-      icon: "📐",
+      glyph: "measurement",
       heading: "Rating workflow",
       body: "Assignment, blinding, second-rater sampling and inter-rater agreement, out of the box.",
     },
     {
-      icon: "📊",
+      glyph: "care-delivery",
       heading: "Supervisor dashboard",
       body: "Per-item competency drift by cohort, with the reliability threshold drawn on the chart.",
     },
     {
-      icon: "🔌",
+      glyph: "community",
       heading: "Export layer",
       body: "A flat export per study, so trial statisticians never work out of the platform's own database.",
     },

@@ -4,12 +4,10 @@ import {
   Card,
   CardGrid,
   Flex,
-  Hero,
   Image,
   Section,
   Text,
   TextContentHeading,
-  TextContentTitle,
   TextLink,
   TextSmall,
   TextStrong,
@@ -27,6 +25,7 @@ import type { Publication } from "../publications/publications-types";
 import type { PageCta } from "../shared/page-copy";
 import { GMH_TEAM_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
+import { PageHero } from "../shared/page-hero";
 import "./team-page.css";
 
 /**
@@ -312,8 +311,11 @@ export type TeamPageProps = {
   detailSlugs?: string[];
   /** Where the projects index is mounted. */
   projectsBasePath?: string;
-  /** Hero background image. Required: the hero is an image variant. */
-  heroImage: string;
+  /**
+   * Hero background photograph, shown in the brand duotone under the hero's
+   * graphics-kit motif. Omit for the motif alone.
+   */
+  heroImage?: string;
   /** The hero heading. */
   title?: string;
   /** Omit for the GW Center's (`GMH_TEAM_COPY`); `null` renders none. */
@@ -394,13 +396,12 @@ export function TeamPage({
 
   return (
     <div className="team-page">
-      <Hero
-        variant="image"
-        src={heroImage}
-        flexProps={{ direction: "column", alignSecondary: "start" }}
-      >
-        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
-      </Hero>
+      <PageHero
+        title={title}
+        subtitle={subtitle}
+        image={heroImage}
+        motif="rings"
+      />
 
       {filterOptions.length ? (
         <Section className="team-toolbar" variant="neutral" padding="600">

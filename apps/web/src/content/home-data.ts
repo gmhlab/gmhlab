@@ -16,17 +16,22 @@
  *     severe mental disorders in low- and middle-income countries receive no
  *     treatment. The field lights 24 of 100 — the most generous reading of
  *     that range.
- *   - Photographs are PLACEHOLDERS (picsum, the same seeds as the reference
- *     design), shown through the duotone treatment. Their `alt` is empty on
- *     purpose: describing a scene that is not in the random image would be a
- *     false statement to a screen-reader user. Give real program photography
- *     real alt text.
+ *   - The hero has no side `image`, so it draws the contours fading into the
+ *     GMH mark (the designer's "Contour hero — logo backdrop"), over a
+ *     placeholder `background` photo (see `./hero-images`). The research cards
+ *     draw their theme's graphics-kit glyph (`PUBLICATION_THEME_GLYPHS`)
+ *     rather than photographs.
  *   - There is no pull quote. The reference's quote is unattributed design
  *     copy; putting it under a GW role would invent a statement. `HomePage`
  *     renders a `quote` record when there is a real one to give it.
  */
 
-import type { HomeContent, PublicationTheme } from "@gmhlab/blocks";
+import {
+  type HomeContent,
+  PUBLICATION_THEME_GLYPHS,
+  type PublicationTheme,
+} from "@gmhlab/blocks";
+import { HOME_HERO_IMAGE } from "./hero-images";
 import { PROJECTS } from "./projects-data";
 import { PUBLICATIONS } from "./publications-data";
 
@@ -47,37 +52,31 @@ const OPEN_ACCESS_SHARE = Math.round(
 /** Copy for each bibliography theme; the count beside it is computed. */
 const THEME_COPY: Record<
   PublicationTheme,
-  { heading: string; body: string; seed: string }
+  { heading: string; body: string }
 > = {
   "Care delivery & systems": {
     heading: "Care delivery & systems",
     body: "How mental health care is organised, staffed and financed where specialists are scarce — and what it takes for a program to outlast its grant.",
-    seed: "gw-policy",
   },
   "Adolescent & child": {
     heading: "Adolescents & children",
     body: "School- and community-based work that reaches young people early, before a first episode becomes a lifetime condition.",
-    seed: "gw-adolescent",
   },
   "Training & competency": {
     heading: "Training & competency",
     body: "Measuring and building the skills of non-specialist helpers — the line of work behind the EQUIP platform.",
-    seed: "gw-task-sharing",
   },
   "Measurement & validation": {
     heading: "Measurement & validation",
     body: "Instruments adapted and validated across languages and cultures, so that outcomes mean the same thing at every site.",
-    seed: "gw-humanitarian",
   },
   "Stigma & discrimination": {
     heading: "Stigma & discrimination",
     body: "Interventions that change how providers and communities respond to people living with mental illness.",
-    seed: "gw-stigma",
   },
   "Maternal & perinatal": {
     heading: "Maternal & perinatal",
     body: "Support for mothers through pregnancy and the first year, where depression is common and care is rare.",
-    seed: "gw-maternal",
   },
 };
 
@@ -106,10 +105,7 @@ export const HOME_CONTENT: HomeContent = {
     lede: "We study why effective mental health care fails to reach most of the world — and we build, test, and hand over the systems that close that distance.",
     primary: { label: "Explore our research", href: "/projects" },
     secondary: { label: "Browse publications", href: "/publications" },
-    image: {
-      src: "https://picsum.photos/seed/gw-community-health/1000/1250",
-      alt: "",
-    },
+    background: HOME_HERO_IMAGE,
   },
   stats: [
     { value: String(PROJECTS.length), label: "Studies and platforms in the portfolio" },
@@ -138,10 +134,7 @@ export const HOME_CONTENT: HomeContent = {
       body: THEME_COPY[theme].body,
       href: "/publications",
       linkLabel: "Read the work",
-      image: {
-        src: `https://picsum.photos/seed/${THEME_COPY[theme].seed}/900/560`,
-        alt: "",
-      },
+      glyph: PUBLICATION_THEME_GLYPHS[theme],
     })),
   },
   partners: {

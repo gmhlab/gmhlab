@@ -25,6 +25,12 @@
   width: 100%;
 }
 
+/* The graphics kit's contours behind the hero, set back further than an
+   index hero's: this band carries the facts panel on the right. */
+.project-detail-page .pd-hero-contours {
+  opacity: 0.55;
+}
+
 /* Guard, not a fix for an observed break. Flex items default to
    `min-width: auto`, so a grid child is permitted to grow to its own
    min-content width and push the Flex container past the viewport — which

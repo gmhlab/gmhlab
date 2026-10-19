@@ -1,20 +1,22 @@
 import { type ReactNode, useMemo, useState } from "react";
 import {
   Badge,
+  BrandShape,
   Button,
   Card,
   Flex,
-  Hero,
   Input,
+  ResearchGlyph,
+  type ResearchGlyphName,
   Section,
   Text,
-  TextContentTitle,
   TextHeading,
   TextLink,
   TextSmall,
   TextStrong,
 } from "@gmhlab/ui";
 import {
+  PUBLICATION_THEME_GLYPHS,
   publicationSearchText,
   type Publication,
   type PublicationTheme,
@@ -22,6 +24,7 @@ import {
 import type { PageCta } from "../shared/page-copy";
 import { GMH_PUBLICATIONS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
+import { PageHero } from "../shared/page-hero";
 import "./publications-page.css";
 
 /**
@@ -106,11 +109,14 @@ function Facet<T extends string | number>({
   options,
   value,
   onChange,
+  glyphs,
 }: {
   label: string;
   options: FacetOption<T>[];
   value: T;
   onChange: (next: T) => void;
+  /** A graphics-kit glyph per option value, drawn before its label. */
+  glyphs?: Partial<Record<string, ResearchGlyphName>>;
 }) {
   return (
     <Flex
@@ -127,6 +133,7 @@ function Facet<T extends string | number>({
       </TextSmall>
       {options.map((option) => {
         const selected = option.value === value;
+        const glyph = glyphs?.[String(option.value)];
         return (
           <Button
             key={String(option.value)}
@@ -138,6 +145,7 @@ function Facet<T extends string | number>({
             disabled={option.count === 0 && !selected}
             onClick={() => onChange(option.value)}
           >
+            {glyph && <ResearchGlyph name={glyph} size={20} />}
             {option.label}
             <span className="publications-facet-count">{option.count}</span>
           </Button>
@@ -235,7 +243,13 @@ function PublicationRow({
           {publication.journal}
         </TextSmall>
         <TextSmall aria-hidden="true">·</TextSmall>
-        <TextSmall>{publication.theme}</TextSmall>
+        <TextSmall className="publication-theme">
+          <ResearchGlyph
+            name={PUBLICATION_THEME_GLYPHS[publication.theme]}
+            size={18}
+          />
+          {publication.theme}
+        </TextSmall>
         {publication.citations > 0 && (
           <>
             <TextSmall aria-hidden="true">·</TextSmall>
@@ -261,8 +275,11 @@ export type PublicationsPageProps = {
   publications: Publication[];
   /** Theme facet order. Omit to show only the "All" chip. */
   themes?: PublicationTheme[];
-  /** Hero background image. Required: the hero is an image variant. */
-  heroImage: string;
+  /**
+   * Hero background photograph, shown in the brand duotone under the hero's
+   * graphics-kit motif. Omit for the motif alone.
+   */
+  heroImage?: string;
   /** The hero heading. */
   title?: string;
   /**
@@ -439,13 +456,14 @@ export function PublicationsPage({
 
   return (
     <div className="publications-page">
-      <Hero
-        variant="image"
-        src={heroImage}
+      <PageHero
+        title={title}
+        subtitle={subtitle}
+        image={heroImage}
+        motif="contours"
         paddingBottom="800"
-        flexProps={{ direction: "column", alignSecondary: "start", gap: "1200" }}
+        flexProps={{ gap: "1200" }}
       >
-        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
         <Flex direction="column" alignSecondary="stretch" gap="400">
           <Flex className="publications-stats" wrap gap="1200">
             {stats.map((stat) => (
@@ -461,7 +479,7 @@ export function PublicationsPage({
             <TextSmall className="publications-note">{note}</TextSmall>
           ) : null}
         </Flex>
-      </Hero>
+      </PageHero>
 
       {/* A neutral band directly under the image hero, closed with a hairline,
           so the two read as one page header rather than as a banner followed by
@@ -508,6 +526,7 @@ export function PublicationsPage({
             />
             <Facet
               label="Theme"
+              glyphs={PUBLICATION_THEME_GLYPHS}
               options={themeOptions}
               value={filters.theme}
               onChange={(theme) => update({ theme })}
@@ -598,6 +617,7 @@ export function PublicationsPage({
           ) : (
             <Flex direction="column" alignSecondary="center" gap="400">
               <div className="publications-empty">
+                <BrandShape name="seed" size={96} />
                 <TextHeading>No publications match those filters</TextHeading>
                 <Text>
                   Try a different year or theme, or clear the filters to see all{" "}

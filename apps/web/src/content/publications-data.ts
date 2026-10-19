@@ -5243,12 +5243,6 @@ export const PUBLICATIONS: Publication[] = [
   },
 ];
 
-/**
- * Hero background — a **demo placeholder**, not a Center asset. See the note in
- * `./projects-data`; swap it for a Center image before this goes live.
- */
-export const PUBLICATIONS_HERO_IMAGE = "https://picsum.photos/id/24/1920/1080";
-
 /* PUBLICATIONS is sorted date descending, so the span reads off the ends. */
 const newestYear = PUBLICATIONS[0]?.year;
 const oldestYear = PUBLICATIONS[PUBLICATIONS.length - 1]?.year;

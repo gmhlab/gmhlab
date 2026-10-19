@@ -9,6 +9,12 @@
   border-top: var(--mfy-size-stroke-border) solid
     color-mix(in oklch, var(--mfy-color-gold-500) 35%, transparent);
 
+  /* No contour texture here: every other brand band carries it (section.css),
+     but the footer is plain navy and its bloom. */
+  &.section-variant-brand::before {
+    content: none;
+  }
+
   .footer-columns > * {
     min-width: 0;
   }

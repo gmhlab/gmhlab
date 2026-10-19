@@ -35,6 +35,7 @@
  * abbreviated titles, and a publisher ("Frontiers") in place of a journal.
  */
 
+import type { ResearchGlyphName } from "@gmhlab/ui";
 import type { InnovationStatus } from "./innovations-types";
 import type { PublicationRef } from "../publications/publications-types";
 import type { PageAction, PageCta } from "../shared/page-copy";
@@ -54,7 +55,8 @@ export type InnovationProcessStep = { heading: string; body: string };
 
 /** One of the parts the innovation ships as. */
 export type InnovationComponent = {
-  icon: string;
+  /** The graphics-kit glyph on the component's card. */
+  glyph: ResearchGlyphName;
   heading: string;
   body: string;
 };
@@ -86,8 +88,18 @@ export type InnovationDetail = {
   badges?: InnovationBadge[];
   /** The hero paragraph. */
   summary: string;
+  /**
+   * Hero background photograph, shown in the brand duotone under the hero's
+   * contour lines. Omit for the contours alone.
+   */
+  heroImage?: string;
   actions?: InnovationAction[];
-  /** Placeholder copy for the hero media slot, e.g. a screenshot or demo. */
+  /**
+   * The hero media slot's art: this graphics-kit glyph, large on a navy
+   * contour panel. Usually the same glyph as the innovation's index card.
+   */
+  glyph?: ResearchGlyphName;
+  /** Caption under the media slot, e.g. what a screenshot will show. */
   visualCaption?: string;
   stats?: InnovationStat[];
 

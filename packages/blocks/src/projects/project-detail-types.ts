@@ -156,6 +156,11 @@ export type ProjectDetail = {
   statusLabel: string;
   /** The opening paragraph: what the study is, in one breath. */
   lede: string;
+  /**
+   * Hero background photograph, shown in the brand duotone under the hero's
+   * contour lines. Omit for the contours alone.
+   */
+  heroImage?: string;
   facts: ProjectFact[];
   figures?: ProjectFigure[];
   /** Paragraphs establishing the problem the study addresses. */

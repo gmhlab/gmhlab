@@ -1,8 +1,12 @@
 import {
   Button,
+  CareRings,
   Card,
+  ContourGlobe,
   Flex,
   Image,
+  PhotoBackdrop,
+  ResearchGlyph,
   Section,
   StatsCard,
   Text,
@@ -12,6 +16,7 @@ import {
   TextSubheading,
   TextTitleHero,
   TextTitlePage,
+  WaveDivider,
 } from "@gmhlab/ui";
 import {
   type CSSProperties,
@@ -31,9 +36,11 @@ import "./home-page.css";
 
 /**
  * A research centre's landing page, after the GW Global Mental Health
- * reference design: serif headline over drawn topographic lines, a navy stat
- * band, the "care gap" field figure, duotone research cards, a pull quote, a
- * partner wall and a closing call to action.
+ * reference design and the GMH graphics kit: serif headline over the contour
+ * backdrop (the globe around a hero photo, or the GMH mark when there is
+ * none) over an optional duotone background photo, a navy stat band carved in by the gold wave, the "care gap" field
+ * figure, research cards (photo or kit glyph), a pull quote, a partner wall
+ * and a closing call to action over the care rings.
  *
  * Record-driven — see `home-types.ts`. Page content only: the site header and
  * footer belong to the consuming app's layout.
@@ -53,7 +60,13 @@ export function HomePage({ content }: { content: HomeContent }) {
       <HomeHeroSection hero={hero} />
 
       {stats.length > 0 && (
-        <Section variant="brand" padding="1200" aria-label="At a glance">
+        <Section
+          variant="brand"
+          padding="1200"
+          className="home-stats-band"
+          aria-label="At a glance"
+        >
+          <WaveDivider />
           <Flex container>
             <div className="home-stats">
               {stats.map((stat) => (
@@ -73,7 +86,7 @@ export function HomePage({ content }: { content: HomeContent }) {
       {gap && <HomeGapSection gap={gap} />}
 
       {focus && focus.items.length > 0 && (
-        <Section variant="tint" padding="1600">
+        <Section variant="brand" padding="1600" className="home-focus-band">
           <Flex container direction="column" gap="1200">
             <SectionHead head={focus} />
             <div className="home-focus-grid">
@@ -97,6 +110,10 @@ export function HomePage({ content }: { content: HomeContent }) {
                         alt={item.image.alt}
                         loading="lazy"
                       />
+                    ) : item.glyph ? (
+                      <div className="home-focus-art graphic-on-brand graphic-contours">
+                        <ResearchGlyph name={item.glyph} size={96} />
+                      </div>
                     ) : undefined
                   }
                 >
@@ -120,7 +137,7 @@ export function HomePage({ content }: { content: HomeContent }) {
           <Flex container>
             <div className="home-split home-split-quote">
               {quote.image && (
-                <div className="home-reveal">
+                <div className="home-reveal home-quote-art graphic-mask-blob">
                   <Image
                     treatment="duotone"
                     aspectRatio="1-1"
@@ -150,7 +167,7 @@ export function HomePage({ content }: { content: HomeContent }) {
       )}
 
       {partners && partners.items.length > 0 && (
-        <Section variant="tint" padding="1600">
+        <Section variant="neutral" padding="1600">
           <Flex container direction="column" gap="1200">
             <SectionHead head={partners} />
             <ul className="home-partners home-reveal">
@@ -167,6 +184,10 @@ export function HomePage({ content }: { content: HomeContent }) {
 
       {cta && (
         <Section variant="brand" padding="1600" className="home-cta">
+          <CareRings
+            className="graphic-backdrop home-cta-rings"
+            preserveAspectRatio="xMaxYMid meet"
+          />
           <Flex
             container
             direction="column"
@@ -187,8 +208,19 @@ export function HomePage({ content }: { content: HomeContent }) {
 function HomeHeroSection({ hero }: { hero: HomeContent["hero"] }) {
   const parts = splitEmphasis(hero.title, hero.emphasis);
   return (
-    <Section className="home-hero" padding="1600" elementType="header">
-      <Topography />
+    <Section
+      className={hero.image ? "home-hero" : "home-hero home-hero-mark"}
+      padding="1600"
+      elementType="header"
+    >
+      {hero.background ? <PhotoBackdrop src={hero.background} /> : null}
+      {/* With a photo the globe frames it; without one the right half is the
+          contours fading into the GMH mark. */}
+      <ContourGlobe
+        backdrop
+        centerpiece={hero.image ? "globe" : "mark"}
+        className="graphic-fade-start"
+      />
       <Flex container>
         <div className="home-split home-split-hero">
           <Flex direction="column" gap="600" alignSecondary="start">
@@ -336,25 +368,6 @@ function Arrow(): ReactNode {
     <span className="home-arrow" aria-hidden="true">
       →
     </span>
-  );
-}
-
-/** Six contour lines that draw themselves in behind the hero. */
-function Topography() {
-  return (
-    <svg
-      className="home-topo"
-      viewBox="0 0 1400 900"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      <path d="M-60 700 C 220 610, 340 760, 620 660 S 1060 520, 1460 600" />
-      <path d="M-60 640 C 240 540, 360 700, 640 590 S 1080 440, 1460 530" />
-      <path d="M-60 578 C 260 468, 380 638, 660 518 S 1100 358, 1460 458" />
-      <path d="M-60 512 C 280 392, 400 572, 680 442 S 1120 272, 1460 382" />
-      <path d="M-60 444 C 300 314, 420 504, 700 364 S 1140 184, 1460 304" />
-      <path d="M-60 372 C 320 232, 440 432, 720 282 S 1160 92, 1460 222" />
-    </svg>
   );
 }
 

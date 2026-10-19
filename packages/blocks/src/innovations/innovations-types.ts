@@ -9,13 +9,16 @@
  * so the block is portable across whatever site hosts it.
  */
 
+import type { ResearchGlyphName } from "@gmhlab/ui";
+
 /** Maps onto Badge's status variants. */
 export type InnovationStatus = "info" | "warning" | "success";
 
 export type Innovation = {
   /** Identity; also the last segment of the detail-page href. */
   slug: string;
-  icon: string;
+  /** The graphics-kit glyph on the card's tile. */
+  glyph: ResearchGlyphName;
   /** The status line as published, e.g. "WHO/UNICEF Partnership". */
   status: string;
   statusTone: InnovationStatus;

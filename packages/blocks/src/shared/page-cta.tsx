@@ -1,11 +1,13 @@
 import {
   Button,
+  FigureBand,
   Flex,
   Section,
   TextSubheading,
   TextTitlePage,
 } from "@gmhlab/ui";
 import type { PageAction, PageCta } from "./page-copy";
+import "./page-cta.css";
 
 /* Internal to @gmhlab/blocks — the barrel exports only the copy types. */
 
@@ -43,6 +45,9 @@ export function PageActions({
  * as a second page title. Paired with TextSubheading (1.25rem) rather than
  * TextSubtitle (2rem), which at this size competes with the heading.
  *
+ * It opens on the graphics kit's figure band — a short row of people, one in
+ * three in gold — so every page ends on the people the work is for.
+ *
  * `copyClassName` is the page's own measure cap for the paragraph — only the
  * paragraph is capped, since capping the wrapper would break the heading onto
  * two lines.
@@ -66,6 +71,7 @@ export function PageCtaSection({
         alignSecondary="center"
         gap="800"
       >
+        <FigureBand className="page-cta-figures" />
         <Flex direction="column" alignSecondary="center" gap="200">
           <TextTitlePage className="text-align-center">{heading}</TextTitlePage>
           {body ? (

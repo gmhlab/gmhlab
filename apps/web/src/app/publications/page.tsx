@@ -5,8 +5,8 @@ import { PublicationsPage } from "@gmhlab/blocks"
 import {
   PUBLICATIONS,
   PUBLICATIONS_HERO_IMAGE,
-  PUBLICATION_THEMES,
   PUBLICATIONS_NOTE,
+  PUBLICATION_THEMES,
 } from "@/content"
 
 export default function Page() {

@@ -3,18 +3,19 @@ import {
   CardGrid,
   Card,
   Flex,
-  Hero,
+  ResearchGlyph,
   Section,
   Text,
-  TextContentTitle,
   TextHeading,
   TextLink,
   TextSmall,
+  WaveDivider,
 } from "@gmhlab/ui";
 import type { Innovation } from "./innovations-types";
 import type { PageCta } from "../shared/page-copy";
 import { GMH_INNOVATIONS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
+import { PageHero } from "../shared/page-hero";
 import "./innovations-page.css";
 
 /**
@@ -38,7 +39,7 @@ import "./innovations-page.css";
 function InnovationCard({
   innovation: {
     slug,
-    icon,
+    glyph,
     status,
     statusTone,
     heading,
@@ -58,8 +59,8 @@ function InnovationCard({
       variant="stroke"
       padding="800"
       asset={
-        <span className="innovation-card-icon" aria-hidden="true">
-          {icon}
+        <span className="innovation-card-icon">
+          <ResearchGlyph name={glyph} size={40} />
         </span>
       }
     >
@@ -72,10 +73,16 @@ function InnovationCard({
       </Flex>
       <TextHeading>{heading}</TextHeading>
       <Text>{body}</Text>
-      <Flex className="innovation-card-meta" wrap gap="400">
-        <TextSmall>🌍 {reach}</TextSmall>
-        <TextSmall>📄 {publications}</TextSmall>
-      </Flex>
+      <dl className="innovation-card-meta">
+        <div>
+          <dt>Reach</dt>
+          <dd>{reach}</dd>
+        </div>
+        <div>
+          <dt>Evidence</dt>
+          <dd>{publications}</dd>
+        </div>
+      </dl>
       {/* Only innovations with a detail record get a link — the rest have no
           page yet, and a card that offers a 404 is worse than one that offers
           nothing. Wrapped because `.card-content > *` is forced to width:100%,
@@ -105,8 +112,11 @@ export type InnovationsPageProps = {
   detailSlugs?: string[];
   /** Funder and partner word marks. Omit to render no partner strip. */
   partners?: string[];
-  /** Hero background image. Required: the hero is an image variant. */
-  heroImage: string;
+  /**
+   * Hero background photograph, shown in the brand duotone under the hero's
+   * graphics-kit motif. Omit for the motif alone.
+   */
+  heroImage?: string;
   /**
    * Base path detail links are built from, so the block travels with the site
    * that hosts it.
@@ -141,19 +151,19 @@ export function InnovationsPage({
 }: InnovationsPageProps) {
   return (
     <div className="innovations-page">
-      <Hero
-        variant="image"
-        src={heroImage}
-        flexProps={{ direction: "column", alignSecondary: "start" }}
-      >
-        <TextContentTitle title={title} subtitle={subtitle ?? undefined} />
-      </Hero>
+      <PageHero
+        title={title}
+        subtitle={subtitle}
+        image={heroImage}
+        motif="globe"
+      />
 
       {/* Brand band directly under the hero. The cards inside stay
           `variant="stroke"` and reset their own colour, so they read as light
           panels on the brand surface; the CardGrid heading has no colour of its
           own and inherits the section's `text-brand-on-brand`. */}
       <Section variant="brand" padding="1600">
+        <WaveDivider />
         <CardGrid
           container
           type="half"

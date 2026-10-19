@@ -12,9 +12,9 @@ import {
 export default function Page() {
   return (
     <InnovationsPage
+      heroImage={INNOVATIONS_HERO_IMAGE}
       basePath="/innovations"
       detailSlugs={INNOVATION_DETAIL_SLUGS}
-      heroImage={INNOVATIONS_HERO_IMAGE}
       innovations={INNOVATIONS}
       partners={INNOVATION_PARTNERS}
     />

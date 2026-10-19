@@ -41,27 +41,54 @@
   transform: translateY(-2px);
 }
 
-/* Card content is a 24px-gap column; the wireframe's meta row sits on its own
- * hairline above the link. */
+/* Card content is a 24px-gap column; the meta pair sits on its own hairline
+ * above the link, as small-caps terms over their values. */
 .innovation-card-meta {
   border-top: var(--mfy-size-stroke-border) solid
     var(--mfy-color-border-default-secondary);
-  /* `secondary`, not `tertiary`: tertiary is #b3b3b3, ~2:1 on the card's white
-     surface. See the contrast note in ../projects/projects-page.css. */
-  color: var(--mfy-color-text-default-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mfy-size-space-300) var(--mfy-size-space-800);
+  margin: 0;
   padding-top: var(--mfy-size-space-400);
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mfy-size-space-050);
+  }
+  dt {
+    /* `tertiary` (M3 tertiary, the passing gold), not the #AA9868 fill. */
+    color: var(--mfy-color-text-accent-default);
+    font: var(--mfy-font-body-small-strong);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  dd {
+    color: var(--mfy-color-text-default-default);
+    font: var(--mfy-font-body-small);
+    margin: 0;
+  }
 }
 
+/* The kit's glyph on a pale gold wash, with a gold hairline — the research
+ * glyph cards in the graphics kit, scaled to a card's corner. */
 .innovation-card-icon {
   align-items: center;
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-200);
+  background: var(--mfy-color-background-accent-tertiary);
+  border-radius: var(--mfy-size-radius-400);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-accent-tertiary);
   display: flex;
-  font-size: 1.5rem;
-  height: 3.5rem;
+  height: 4rem;
   justify-content: center;
-  line-height: 1;
-  width: 3.5rem;
+  width: 4rem;
+}
+
+/* The wave is carved out of the brand band in the hero's neutral surface. */
+.innovations-page {
+  --graphic-wave-fill: var(--mfy-color-background-default-tertiary);
 }
 
 /* Colour comes from Badge's info/warning/success variants now; this only adds

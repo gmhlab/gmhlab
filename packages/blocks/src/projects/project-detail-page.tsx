@@ -2,8 +2,10 @@ import {
   Badge,
   Card,
   CardGrid,
+  ContourGlobe,
   Flex,
   FlexItem,
+  PhotoBackdrop,
   Section,
   Text,
   TextContentHeading,
@@ -143,6 +145,8 @@ const STATUS_VARIANT: Record<ProjectDetail["status"], "success" | "info"> = {
 function Hero({ detail }: { detail: ProjectDetail }) {
   return (
     <Section variant="neutral" padding="1600">
+      {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
+      <ContourGlobe backdrop centerpiece="none" className="pd-hero-contours graphic-fade-start" />
       <Flex container direction="column" alignSecondary="stretch" gap="1200">
         <Flex type="third" gap="1200" wrap>
           <FlexItem size="major">

@@ -203,11 +203,3 @@ export const PROJECT_REGIONS: ProjectRegion[] = [
   "North America",
 ];
 
-/**
- * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
- * serves one fixed photo per numeric id, so the URL is stable rather than
- * random, but it is stock imagery standing in for a real photograph and it
- * makes the page depend on a third-party host at runtime. Swap it for a Center
- * image (or a local file in this app) before this goes live.
- */
-export const PROJECTS_HERO_IMAGE = "https://picsum.photos/id/17/1920/1080";

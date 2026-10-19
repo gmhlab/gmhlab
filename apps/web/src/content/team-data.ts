@@ -65,15 +65,6 @@
 
 import type { Person } from "@gmhlab/blocks";
 
-/**
- * Placeholder hero until the Center has a photo of its own team: "Diverse team
- * collaborates around a table in office" by Vitaly Gariev, free under the
- * Unsplash License (unsplash.com/photos/fm4B1xWEIsU). Stock people, so it must
- * never be captioned as, or placed beside the name of, anyone at the Center.
- */
-export const TEAM_HERO_IMAGE =
-  "https://images.unsplash.com/photo-1758873269276-9518d0cb4a0b?fm=jpg&q=70&w=1920&fit=crop";
-
 const photo = (slug: string) => `/team/${slug}.jpg`;
 
 export const TEAM: Person[] = [

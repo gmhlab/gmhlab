@@ -8,6 +8,8 @@
  * such section rather than an empty heading.
  */
 
+import type { ResearchGlyphName } from "@gmhlab/ui";
+
 export type HomeLink = {
   label: string;
   href: string;
@@ -33,7 +35,16 @@ export type HomeHero = {
   lede: string;
   primary: HomeLink;
   secondary?: HomeLink;
+  /**
+   * A photograph beside the copy, framed by the contour globe. Omit it and
+   * the hero draws the contours fading into the GMH mark instead.
+   */
   image?: HomeImage;
+  /**
+   * A photograph behind the whole hero, in the brand duotone under the
+   * contours. Decorative (no alt text); independent of `image`.
+   */
+  background?: string;
 };
 
 export type HomeStat = {
@@ -65,7 +76,13 @@ export type HomeFocusItem = {
   body: string;
   href: string;
   linkLabel?: string;
+  /**
+   * The card's art. A photograph when there is a real one; otherwise a
+   * graphics-kit glyph, drawn large on a navy contour panel. `image` wins
+   * when both are set.
+   */
   image?: HomeImage;
+  glyph?: ResearchGlyphName;
 };
 
 export type HomeSectionHead = {

@@ -13,8 +13,8 @@ import {
 export default function Page() {
   return (
     <TeamPage
-      detailSlugs={PROJECT_DETAIL_SLUGS}
       heroImage={TEAM_HERO_IMAGE}
+      detailSlugs={PROJECT_DETAIL_SLUGS}
       people={TEAM}
       projects={PROJECTS}
       projectsBasePath="/projects"

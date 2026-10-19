@@ -91,9 +91,24 @@
     ),
     var(--mfy-color-background-brand-default);
   color: var(--mfy-color-text-brand-on-brand);
+  isolation: isolate;
+  /* The graphics kit's contour texture, drawn in the on-brand ink across the
+     band's top 28rem — under the gold bloom, behind the content. The mask
+     lives in graphics.css (--graphic-contour-mask). */
+  &::before {
+    background: var(--mfy-color-icon-brand-on-brand);
+    content: "";
+    inset: 0;
+    mask: var(--graphic-contour-mask) top center / 100% min(100%, 28rem)
+      no-repeat;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+  }
   .logo svg {
     --logo-color: var(--mfy-color-icon-brand-on-brand);
     --logo-crest-ink: var(--mfy-color-icon-brand-on-brand);
+    --logo-mark-ink: var(--mfy-color-icon-brand-on-brand);
   }
   /* Icon renders <svg class="icon">, so the class is ON the svg — a
      descendant selector (`.icon svg`) never matches and left icons at

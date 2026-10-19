@@ -42,21 +42,48 @@
 /* Stands in for the screenshot/demo slot. Same treatment as the map tile
    below, minus the tint. */
 .innovation-detail-visual {
-  align-items: center;
   background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-200);
+  border-radius: var(--mfy-size-radius-400);
   box-shadow:
     inset 0 0 0 var(--mfy-size-stroke-border)
       var(--mfy-color-border-default-default),
     var(--mfy-effects-shadows-drop-shadow-300);
-  /* `secondary`, not `tertiary`: tertiary is #b3b3b3, ~2:1 on this white
-     surface. See the contrast note in ../projects/projects-page.css. */
-  color: var(--mfy-color-text-default-secondary);
+  margin: 0;
+  overflow: hidden;
+
+  figcaption {
+    /* `secondary`, not `tertiary`: tertiary is the outline role, not text.
+       See the contrast note in ../projects/projects-page.css. */
+    color: var(--mfy-color-text-default-secondary);
+    padding: var(--mfy-size-space-300) var(--mfy-size-space-400);
+  }
+}
+/* The glyph large on a navy panel with the kit's contour texture and the
+   brand band's gold bloom — the same art as the landing page's theme cards. */
+.innovation-detail-visual-art {
+  --graphic-contour-color: var(--mfy-color-icon-brand-on-brand);
+  align-items: center;
+  background:
+    radial-gradient(
+      90% 120% at 14% 0%,
+      color-mix(in oklch, var(--mfy-color-gold-500) 28%, transparent),
+      transparent 62%
+    ),
+    var(--mfy-color-background-brand-default);
   display: flex;
   justify-content: center;
   min-height: 13.75rem;
   padding: var(--mfy-size-space-600);
-  text-align: center;
+
+  .graphic-glyph {
+    --graphic-glyph-stroke: 1.4;
+  }
+}
+
+/* The hero's contours sit back further than an index hero's: this band
+   carries a facts panel and stats on the right. */
+.innovation-detail-contours {
+  opacity: 0.55;
 }
 
 .innovation-detail-stat {
@@ -96,11 +123,17 @@
   position: relative;
 }
 
+/* The steps are the graphics kit's pathway rule: navy milestones ringed in
+   gold, joined by a dotted gold path, ending on a gold goal. */
 .innovation-detail-step-number {
   align-items: center;
   --text-heading-color: currentColor; /* brand panel: headings follow on-brand */
   background: var(--mfy-color-background-brand-default);
   border-radius: var(--mfy-size-radius-full);
+  /* A surface-coloured gap, then the gold ring. */
+  box-shadow:
+    0 0 0 0.3125rem var(--mfy-color-background-default-default),
+    0 0 0 0.40625rem var(--mfy-color-border-accent-default);
   color: var(--mfy-color-text-brand-on-brand);
   display: flex;
   flex-shrink: 0;
@@ -109,37 +142,56 @@
   height: 3rem;
   justify-content: center;
   line-height: 1;
+  position: relative;
   width: 3rem;
+  z-index: 1;
+}
+/* The goal: gold, with the kit's soft halo. Navy ink on the gold fill
+   (on-tertiary-container), which is what #AA9868 is allowed to carry. */
+.innovation-detail-step:last-child .innovation-detail-step-number {
+  background: var(--mfy-color-background-accent-default);
+  box-shadow: 0 0 0 0.625rem
+    color-mix(in oklch, var(--mfy-color-background-accent-default) 22%, transparent);
+  color: var(--mfy-color-text-accent-on-accent);
 }
 
-/* The wireframe's connector between steps. Only drawn where the row is
-   actually 4-up — below 1024px `flex-type-quarter` collapses to 2-up and then
-   1-up (see --mfy-responsive-ratio-column-quarter-*), where an arrow pointing
-   into the next row would be nonsense. */
+/* The path between milestones. Only drawn where the row is actually 4-up —
+   below 1024px `flex-type-quarter` collapses to 2-up and then 1-up (see
+   --mfy-responsive-ratio-column-quarter-*), where a path running into the
+   next row would be nonsense. It spans from this node's ring to the next
+   one's: half a step, the 24px (space-600) gutter, half a step, less two
+   node radii and rings (2rem each side). */
 @media (min-width: 1024px) {
   .innovation-detail-step:not(:last-child)::after {
-    color: var(--mfy-color-icon-default-tertiary);
-    content: "→";
-    /* Centred in the 24px (space-600) gutter between steps. */
+    background: radial-gradient(
+        circle,
+        var(--mfy-color-border-accent-default) 1px,
+        transparent 1.5px
+      )
+      0 50% / 10px 4px repeat-x;
+    content: "";
+    height: 4px;
+    left: calc(50% + 2rem);
     position: absolute;
-    right: calc(-1 * var(--mfy-size-space-600) / 2 - 0.375rem);
     top: 1.5rem;
-    transform: translateY(-50%);
+    translate: 0 -50%;
+    width: calc(100% + var(--mfy-size-space-600) - 4rem);
   }
 }
 
 /* Core components ------------------------------------------------------- */
 
+/* The kit's glyph on a pale gold wash — the same tile as the index cards. */
 .innovation-detail-icon {
   align-items: center;
-  background: var(--mfy-color-background-brand-tertiary);
-  border-radius: var(--mfy-size-radius-200);
+  background: var(--mfy-color-background-accent-tertiary);
+  border-radius: var(--mfy-size-radius-400);
+  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
+    var(--mfy-color-border-accent-tertiary);
   display: flex;
-  font-size: 1.25rem;
-  height: 2.75rem;
+  height: 4rem;
   justify-content: center;
-  line-height: 1;
-  width: 2.75rem;
+  width: 4rem;
 }
 
 /* Where it's used ------------------------------------------------------- */

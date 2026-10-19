@@ -1,10 +1,14 @@
 import {
   Badge,
+  BrandShape,
   Card,
   CardGrid,
+  ContourGlobe,
   Flex,
   FlexItem,
+  PhotoBackdrop,
   Grid,
+  ResearchGlyph,
   Section,
   Text,
   TextContentHeading,
@@ -108,6 +112,8 @@ function Breadcrumb({
 function Hero({ detail }: { detail: InnovationDetail }) {
   return (
     <Section variant="neutral" padding="1600">
+      {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
+      <ContourGlobe backdrop centerpiece="none" className="innovation-detail-contours graphic-fade-start" />
       <Flex container type="third" gap="1200" wrap>
         <FlexItem size="major">
           <Flex direction="column" alignSecondary="stretch" gap="600">
@@ -139,10 +145,21 @@ function Hero({ detail }: { detail: InnovationDetail }) {
         </FlexItem>
         <FlexItem size="minor">
           <Flex direction="column" alignSecondary="stretch" gap="400">
-            {detail.visualCaption ? (
-              <div className="innovation-detail-visual">
-                <TextSmall>{detail.visualCaption}</TextSmall>
-              </div>
+            {detail.glyph || detail.visualCaption ? (
+              <figure className="innovation-detail-visual">
+                <div className="innovation-detail-visual-art graphic-on-brand graphic-contours">
+                  {detail.glyph ? (
+                    <ResearchGlyph name={detail.glyph} size={112} />
+                  ) : (
+                    <BrandShape name="arch" size={128} />
+                  )}
+                </div>
+                {detail.visualCaption ? (
+                  <figcaption>
+                    <TextSmall>{detail.visualCaption}</TextSmall>
+                  </figcaption>
+                ) : null}
+              </figure>
             ) : null}
             {detail.stats?.length ? (
               <Grid
@@ -236,8 +253,8 @@ function CoreComponents({ detail }: { detail: InnovationDetail }) {
               variant="stroke"
               padding="800"
               asset={
-                <span className="innovation-detail-icon" aria-hidden="true">
-                  {component.icon}
+                <span className="innovation-detail-icon">
+                  <ResearchGlyph name={component.glyph} size={40} />
                 </span>
               }
             >

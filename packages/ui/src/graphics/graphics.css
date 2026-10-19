@@ -1,0 +1,360 @@
+/* The GMH graphics kit (v1) — colour roles, layout hooks and motion for the
+ * components in this directory.
+ *
+ * Every graphic paints with four roles rather than literal colours, so the
+ * kit follows the theme and brand bands the way the logo does:
+ *
+ *   --graphic-ink     line work and navy fills. Navy on paper; pale after
+ *                     dark and inside a brand band (the kit's "navy ground"
+ *                     variant, #d6dfe5 lines on navy).
+ *   --graphic-gold    the accent. #AA9868 is ~2.7:1 on paper, so it is only
+ *                     ever a fill, a rule or a marker here — never text.
+ *   --graphic-ground  the surface the graphic sits on, for knock-outs (the
+ *                     care-rings hub, pathway ring gaps).
+ *   --graphic-ink-*   derived tints: `soft` is the kit's lighter navy (#2a5f7d),
+ *   --graphic-gold-*  `wash`/`soft` its pale golds (#eee8d9, #cfc2a0).
+ *
+ * Overrides target `.your-thing .graphic`: the roles are set on the graphic
+ * itself, so a parent's custom property would not reach past them. */
+
+:root {
+  /* The kit's contour texture as an alpha mask, so a surface can paint it in
+     any token colour (section.css uses it on every brand band). Lines keep a
+     1.1px stroke however far the mask is stretched. */
+  --graphic-contour-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.1'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='0.14' d='M-20 30 C300 -10 520 70 820 30 S1260 -10 1460 20'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='0.2' d='M-20 58 C300 18 520 98 820 58 S1260 18 1460 48'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='0.26' d='M-20 86 C300 46 520 126 820 86 S1260 46 1460 76'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='0.32' d='M-20 114 C300 74 520 154 820 114 S1260 74 1460 104'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='0.2' d='M-20 142 C300 102 520 182 820 142 S1260 102 1460 132'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='0.14' d='M-20 170 C300 130 520 210 820 170 S1260 130 1460 160'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.graphic {
+  --graphic-ground: var(--mfy-color-background-default-default);
+  --graphic-ink: var(--mfy-color-icon-brand-default);
+  --graphic-ink-soft: color-mix(in oklch, var(--graphic-ink) 78%, var(--graphic-ground));
+  /* Navy in every context — line work drawn on a gold fill (the seed's veins). */
+  --graphic-ink-fixed: var(--mfy-color-brand-800);
+  --graphic-gold: var(--mfy-color-background-accent-default);
+  --graphic-gold-soft: color-mix(in oklch, var(--graphic-gold) 60%, white);
+  --graphic-gold-wash: color-mix(in oklch, var(--graphic-gold) 22%, var(--graphic-ground));
+  display: block;
+  flex-shrink: 0;
+  overflow: visible;
+}
+/* Not `primary`: M3's dark primary is a light blue meant for controls. */
+.dark .graphic {
+  --graphic-ink: var(--mfy-color-icon-default-secondary);
+}
+/* After .dark on purpose: a brand band is navy in both modes. */
+.section-variant-brand .graphic,
+.card-variant-brand .graphic,
+.graphic-on-brand .graphic {
+  --graphic-ground: var(--mfy-color-background-brand-default);
+  --graphic-ink: var(--mfy-color-icon-brand-on-brand);
+}
+/* A light card inside a brand band is paper again (cards.css resets its
+   colour the same way). */
+.section-variant-brand .card:not(.card-variant-brand) .graphic {
+  --graphic-ground: var(--mfy-color-background-default-default);
+  --graphic-ink: var(--mfy-color-icon-brand-default);
+}
+.dark .section-variant-brand .card:not(.card-variant-brand) .graphic {
+  --graphic-ink: var(--mfy-color-icon-default-secondary);
+}
+/* …unless the card holds its own navy panel (the home glyph art). */
+.section-variant-brand .card .graphic-on-brand .graphic {
+  --graphic-ground: var(--mfy-color-background-brand-default);
+  --graphic-ink: var(--mfy-color-icon-brand-on-brand);
+}
+
+/* The GMH mark inside a graphic (ContourGlobe `centerpiece="mark"`) takes
+   the logo's own roles: navy on paper, white after dark and on a brand band
+   — not --graphic-ink, which is a muted line tone after dark. */
+.graphic-mark {
+  --logo-mark-ink: var(--mfy-color-icon-brand-default);
+  --logo-mark-gold: var(--graphic-gold);
+}
+.dark .graphic-mark {
+  --logo-mark-ink: var(--mfy-color-icon-default-default);
+}
+.section-variant-brand .graphic-mark,
+.graphic-on-brand .graphic-mark {
+  --logo-mark-ink: var(--mfy-color-icon-brand-on-brand);
+}
+
+/* ── Backdrops ─────────────────────────────────────────────────────── */
+
+.graphic-backdrop {
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+.section:has(> .graphic-backdrop),
+.section:has(> .graphic-photo) {
+  isolation: isolate;
+  overflow: hidden;
+}
+/* Over left-aligned copy, a backdrop can be faded where the text sits:
+   `.graphic-fade-start` keeps a third of its strength across the first 35%
+   and reaches full strength by 62% — lines still run under the title, but
+   never at reading contrast. Below 900px the copy spans the width, so the
+   whole backdrop drops to a third. */
+@media (max-width: 899.98px) {
+  .graphic-fade-start {
+    opacity: 0.35;
+  }
+  /* The mark is a centrepiece, not a texture: under the copy it would read
+     as a watermark behind the headline, so the narrow form is contours only. */
+  .graphic-fade-start :is(.graphic-mark, .graphic-clearing) {
+    display: none;
+  }
+}
+@media (min-width: 900px) {
+  .graphic-fade-start {
+    mask-image: linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.32) 0 35%,
+      #000 62%
+    );
+  }
+}
+
+/* The contour texture on any surface: `.graphic-contours` paints it in
+   `--graphic-contour-color` (default: the element's text colour) across the
+   top 28rem, behind the element's content. */
+.graphic-contours {
+  isolation: isolate;
+  position: relative;
+}
+.graphic-contours::before {
+  background: var(--graphic-contour-color, currentColor);
+  content: "";
+  inset: 0;
+  mask: var(--graphic-contour-mask) top center / 100% min(100%, 28rem) no-repeat;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+/* ── Photo backdrop ────────────────────────────────────────────────── */
+
+/* Three layers in one isolated box: the photo in grayscale multiplied onto
+   gold, navy over it with \`lighten\` (darks go navy, lights stay gold — the
+   Image duotone's recipe), then the surface wash. The wash colour is the
+   band's own surface, so the photo reads as tinted paper rather than a
+   picture pasted on, and the bottom edge fades into the next band. */
+.graphic-photo {
+  --graphic-photo-wash: var(--mfy-color-background-default-default);
+  background: var(--mfy-color-background-accent-default);
+  inset: 0;
+  isolation: isolate;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity var(--global-duration-slow, 0.6s) ease;
+  z-index: -2;
+
+  img {
+    display: block;
+    filter: grayscale(1) contrast(1.08) brightness(1.04);
+    height: 100%;
+    mix-blend-mode: multiply;
+    object-fit: cover;
+    object-position: var(--graphic-photo-position, center);
+    position: relative;
+    width: 100%;
+  }
+  &::before {
+    background: var(--mfy-color-brand-800);
+    content: "";
+    inset: 0;
+    mix-blend-mode: lighten;
+    position: absolute;
+    z-index: 1;
+  }
+  &::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+    z-index: 2;
+  }
+}
+.graphic-photo.is-loaded {
+  opacity: 1;
+}
+.page-hero .graphic-photo,
+.section-variant-neutral > .graphic-photo {
+  --graphic-photo-wash: var(--mfy-color-background-default-tertiary);
+}
+/* Even: one strength across, for centred copy — and every narrow screen,
+   where the copy spans the width. */
+.graphic-photo-wash-even::after,
+.graphic-photo-wash-start::after {
+  background:
+    linear-gradient(to bottom, transparent 55%, var(--graphic-photo-wash)),
+    color-mix(in oklch, var(--graphic-photo-wash) 80%, transparent);
+}
+/* Start: reading strength under the copy column, opening to the right where
+   the graphic's centrepiece stands. */
+@media (min-width: 900px) {
+  .graphic-photo-wash-start::after {
+    background:
+      linear-gradient(to bottom, transparent 55%, var(--graphic-photo-wash)),
+      linear-gradient(
+        90deg,
+        var(--graphic-photo-wash) 0 30%,
+        color-mix(in oklch, var(--graphic-photo-wash) 78%, transparent) 52%,
+        color-mix(in oklch, var(--graphic-photo-wash) 45%, transparent) 100%
+      );
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .graphic-photo {
+    transition: none;
+  }
+}
+
+/* ── Photo crops ───────────────────────────────────────────────────── */
+
+/* The kit's frames as crops for an <img> or its wrapper. */
+.graphic-mask-blob {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='20 16 164 168' preserveAspectRatio='none'%3E%3Cpath d='M104 18 C150 16 186 52 182 98 C178 146 142 184 96 182 C52 180 18 146 20 100 C22 56 58 20 104 18 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.graphic-mask-pill {
+  border-radius: 999px;
+}
+/* Oversized top radii are scaled down to half the width — a true semicircle
+   at any aspect ratio. */
+.graphic-mask-arch {
+  border-radius: 999px 999px var(--mfy-size-radius-100) var(--mfy-size-radius-100);
+}
+
+/* ── Glyphs ────────────────────────────────────────────────────────── */
+
+.graphic-glyph {
+  stroke-width: var(--graphic-glyph-stroke, 1.75);
+}
+
+/* ── Figure band ───────────────────────────────────────────────────── */
+
+.graphic-figure-band {
+  width: 100%;
+}
+
+/* ── Wave divider ──────────────────────────────────────────────────── */
+
+.section:has(> .graphic-wave) {
+  --graphic-wave-height: clamp(3rem, 7vw, 6.25rem);
+  padding-top: calc(var(--padding-y-top) + var(--graphic-wave-height) * 0.75);
+}
+.graphic-wave {
+  height: var(--graphic-wave-height, 6.25rem);
+  left: 0;
+  position: absolute;
+  /* -1px: no seam of band colour above the carve at fractional zoom. */
+  top: -1px;
+  width: 100%;
+}
+.graphic-wave-carve {
+  fill: var(--graphic-wave-fill, var(--mfy-color-background-default-default));
+}
+/* The echo sits on the carved (paper) side, so it takes the paper ink even
+   inside the brand band. */
+.graphic-wave-echo {
+  fill: none;
+  opacity: 0.3;
+  stroke: var(--mfy-color-icon-brand-default);
+  stroke-width: 1.25;
+}
+.dark .graphic-wave-echo {
+  stroke: var(--mfy-color-icon-default-secondary);
+}
+.graphic-wave-edge {
+  fill: none;
+  stroke: var(--graphic-gold);
+  stroke-width: 2.5;
+}
+
+/* ── Pathway rule ──────────────────────────────────────────────────── */
+
+.graphic-pathway {
+  align-items: center;
+  display: flex;
+  height: 2.75rem;
+  justify-content: space-between;
+  padding-inline: 0.875rem;
+  position: relative;
+}
+/* The kit's 2-on-8 dotted gold path. */
+.graphic-pathway::before {
+  background: radial-gradient(circle, var(--graphic-gold) 1px, transparent 1.5px)
+    0 50% / 10px 4px repeat-x;
+  content: "";
+  height: 4px;
+  inset-inline: 0.875rem;
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+.graphic-pathway-node {
+  background: var(--graphic-ink);
+  border-radius: 50%;
+  /* A ground-coloured gap, then the gold ring — the kit's r6 dot in an r13 ring. */
+  box-shadow:
+    0 0 0 0.4375rem var(--graphic-ground),
+    0 0 0 0.53125rem var(--graphic-gold);
+  height: 0.75rem;
+  position: relative;
+  width: 0.75rem;
+}
+.graphic-pathway-goal {
+  background: var(--graphic-gold);
+  box-shadow: 0 0 0 0.625rem color-mix(in oklch, var(--graphic-gold) 20%, transparent);
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+/* ── Motion ────────────────────────────────────────────────────────── */
+
+/* One pass on mount, nothing looping. Everything is simply already drawn
+   under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .graphic-draw {
+    animation: graphic-draw 2.6s var(--global-ease-out, ease-out) both;
+    stroke-dasharray: 1;
+  }
+  .graphic-draw:nth-child(2) { animation-delay: 0.08s; }
+  .graphic-draw:nth-child(3) { animation-delay: 0.16s; }
+  .graphic-draw:nth-child(4) { animation-delay: 0.24s; }
+  .graphic-draw:nth-child(5) { animation-delay: 0.32s; }
+  .graphic-draw:nth-child(6) { animation-delay: 0.4s; }
+  .graphic-draw:nth-child(7) { animation-delay: 0.48s; }
+  .graphic-draw:nth-child(8) { animation-delay: 0.56s; }
+  .graphic-draw.graphic-draw-lead {
+    animation-delay: 0.5s;
+    animation-duration: 2s;
+  }
+  .graphic-marker {
+    animation: graphic-marker 0.8s var(--global-ease-out, ease-out) both;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .graphic-ring {
+    animation: graphic-ring 1.1s var(--global-ease-out, ease-out) both;
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+  }
+  .graphic-ring-2 { animation-delay: 0.15s; }
+  .graphic-ring-3 { animation-delay: 0.3s; }
+}
+@keyframes graphic-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes graphic-marker {
+  from { opacity: 0; scale: 0.4; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes graphic-ring {
+  from { opacity: 0; scale: 0.86; }
+}

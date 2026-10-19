@@ -16,9 +16,9 @@ export default function Page() {
      project card linked to a 404. */
   return (
     <ProjectsPage
+      heroImage={PROJECTS_HERO_IMAGE}
       basePath="/projects"
       featuredSlug={FEATURED_SLUG}
-      heroImage={PROJECTS_HERO_IMAGE}
       partners={PROJECT_PARTNERS}
       projects={PROJECTS}
       regions={PROJECT_REGIONS}

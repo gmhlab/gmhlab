@@ -1,6 +1,7 @@
 import "./styles/index.css";
 
 export * from "./compositions";
+export * from "./graphics";
 export * from "./hooks"
 export * from "./icons";
 export * from "./images";

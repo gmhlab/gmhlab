@@ -36,8 +36,18 @@ import {
   ButtonGroup,
   ButtonGroupSeparator,
   ButtonGroupText,
+  BRAND_SHAPES,
+  BrandShape,
+  CareRings,
+  ContourGlobe,
+  FigureBand,
+  GmhCrestLogo,
   GmhLogo,
   Image,
+  PathwayRule,
+  RESEARCH_GLYPHS,
+  ResearchGlyph,
+  WaveDivider,
   Text,
   TextCode,
   TextContentHeading,
@@ -171,6 +181,7 @@ const SECTIONS = [
   { id: "overlays", label: "Overlays" },
   { id: "icons", label: "Icons" },
   { id: "logos", label: "Logos" },
+  { id: "graphics", label: "Graphics" },
   { id: "images", label: "Images" },
   { id: "layouts", label: "Layouts" },
   { id: "cards", label: "Cards" },
@@ -1182,19 +1193,96 @@ export function ComponentsPage() {
       <Demo
         id="logos"
         title="Logos"
-        description="GmhLogo, the landscape brand mark, sized by height. It defaults to href='/' and renders as a link; pass href={undefined} for a non-navigating button (see GmhLogoProps). Header and Footer take it through their logo prop."
+        description="GmhLogo, the two-tone brand mark (four figures holding a globe) in a simple drawing for small sizes and a detailed one for large, and GmhCrestLogo, the desktop lockup; both sized by height. They default to href='/' and render as a link; pass href={undefined} for a non-navigating button (see GmhLogoProps). Header and Footer take the mark through their logo prop, and Header the lockup through lockup."
         variant="neutral"
       >
-        <Spec label="GmhLogo">
-          <Flex alignPrimary="center" alignSecondary="center">
+        <Spec label='GmhLogo (variant "simple" / "detailed") and GmhCrestLogo'>
+          <Flex alignPrimary="center" alignSecondary="center" gap="1200" wrap>
             <GmhLogo />
+            <GmhLogo variant="detailed" aria-label="GMH Lab, detailed mark" />
+            <GmhCrestLogo />
           </Flex>
         </Spec>
 
-        <Spec label="--logo-color inverts inside .section-variant-brand">
+        <Spec label="The ink role turns white inside .section-variant-brand; gold stays gold">
           <Section variant="brand" padding="800" className="rounded-md">
-            <Flex alignPrimary="center" alignSecondary="center" gap="800" wrap>
+            <Flex alignPrimary="center" alignSecondary="center" gap="1200" wrap>
               <GmhLogo aria-label="GMH Lab on brand" />
+              <GmhLogo variant="detailed" aria-label="GMH Lab detailed on brand" />
+              <GmhCrestLogo aria-label="Center for Global Mental Health on brand" />
+            </Flex>
+          </Section>
+        </Spec>
+      </Demo>
+
+      <Demo
+        id="graphics"
+        title="Graphics"
+        description="The GMH graphics kit (v1). Every piece paints with the --graphic-ink / --graphic-gold roles, so it follows .dark and brand bands like the logo; all are aria-hidden unless given a label. Every brand Section also carries the kit's contour texture."
+      >
+        <Spec label='ContourGlobe — hero backdrop (centerpiece "globe" / "mark" / "none")'>
+          <Grid columns="repeat(auto-fit, minmax(280px, 1fr))" gap="600">
+            <ContourGlobe className="aspect-[9/4] h-auto w-full rounded-md" />
+            <ContourGlobe centerpiece="mark" className="aspect-[9/4] h-auto w-full rounded-md" />
+            <ContourGlobe centerpiece="none" className="aspect-[9/4] h-auto w-full rounded-md" />
+          </Grid>
+        </Spec>
+
+        <Spec label="CareRings — reach motif, on paper and on a brand band">
+          <Grid columns="repeat(auto-fit, minmax(240px, 1fr))" gap="600">
+            <CareRings className="mx-auto aspect-square h-auto w-full max-w-80" />
+            <Section variant="brand" padding="400" className="rounded-md">
+              <CareRings className="mx-auto aspect-square h-auto w-full max-w-80" />
+            </Section>
+          </Grid>
+        </Spec>
+
+        <Spec label="ResearchGlyph — 48 grid, 1.75 stroke, one gold accent">
+          <Grid
+            columns="repeat(auto-fill, minmax(120px, 1fr))"
+            gap="600"
+            justifyItems="center"
+          >
+            {RESEARCH_GLYPHS.map((name) => (
+              <GridItem key={name}>
+                <Flex direction="column" gap="200" alignSecondary="center">
+                  <ResearchGlyph name={name} size={64} />
+                  <TextSmall>{name}</TextSmall>
+                </Flex>
+              </GridItem>
+            ))}
+          </Grid>
+        </Spec>
+
+        <Spec label="BrandShape — duotone spot shapes and frames">
+          <Grid
+            columns="repeat(auto-fill, minmax(140px, 1fr))"
+            gap="600"
+            justifyItems="center"
+          >
+            {BRAND_SHAPES.map((name) => (
+              <GridItem key={name}>
+                <Flex direction="column" gap="200" alignSecondary="center">
+                  <BrandShape name={name} size={128} />
+                  <TextSmall>{name}</TextSmall>
+                </Flex>
+              </GridItem>
+            ))}
+          </Grid>
+        </Spec>
+
+        <Spec label="FigureBand and PathwayRule">
+          <Flex direction="column" alignSecondary="stretch" gap="800">
+            <FigureBand />
+            <PathwayRule steps={5} />
+          </Flex>
+        </Spec>
+
+        <Spec label="WaveDivider — first child of a brand Section after a light one">
+          <Section variant="brand" padding="800" className="rounded-md">
+            <WaveDivider />
+            <Flex container>
+              <TextSmall>The band's top edge is carved into the wave.</TextSmall>
             </Flex>
           </Section>
         </Spec>

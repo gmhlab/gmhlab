@@ -183,6 +183,19 @@
   font-weight: 600;
 }
 
+/* --------------------------------------------------------- theme glyphs
+ * The theme chips and each row's theme line carry the theme's kit glyph. In
+ * a chip it follows the button's own text colour, so the selected (navy)
+ * chip draws it in on-primary; the gold accent stays gold either way. */
+.publications-facet .graphic {
+  --graphic-ink: currentColor;
+}
+.publication-theme {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--mfy-size-space-100);
+}
+
 /* --------------------------------------------------------------- empty state */
 .publications-empty {
   border: var(--mfy-size-stroke-border) dashed
@@ -194,6 +207,11 @@
   max-width: 34rem;
   padding: var(--mfy-size-space-1200);
   text-align: center;
+
+  /* The graphics-kit spot illustration over the message. */
+  .graphic-shape {
+    align-self: center;
+  }
 }
 
 /* Measure cap for the CTA paragraph only — the heading above it runs the full

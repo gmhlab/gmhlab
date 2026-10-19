@@ -15,7 +15,7 @@ import type { Innovation } from "@gmhlab/blocks";
 export const INNOVATIONS: Innovation[] = [
   {
     slug: "equip",
-    icon: "📋",
+    glyph: "competency",
     status: "WHO/UNICEF Partnership",
     statusTone: "info",
     heading: "EQUIP Platform",
@@ -25,7 +25,7 @@ export const INNOVATIONS: Innovation[] = [
   },
   {
     slug: "passive-sensing",
-    icon: "📱",
+    glyph: "sensing",
     status: "In Development",
     statusTone: "warning",
     heading: "Passive Sensing Technology",
@@ -35,7 +35,7 @@ export const INNOVATIONS: Innovation[] = [
   },
   {
     slug: "validated-assessment-tools",
-    icon: "✓",
+    glyph: "measurement",
     status: "Active",
     statusTone: "success",
     heading: "Validated Assessment Tools",
@@ -45,7 +45,7 @@ export const INNOVATIONS: Innovation[] = [
   },
   {
     slug: "reshape-stigma-toolkit",
-    icon: "🤝",
+    glyph: "stigma",
     status: "Active",
     statusTone: "success",
     heading: "RESHAPE Stigma Toolkit",
@@ -64,16 +64,3 @@ export const INNOVATION_PARTNERS = [
   "Carter Center",
 ];
 
-/**
- * Hero background — a **demo placeholder**, not a Center asset. Lorem Picsum
- * serves one fixed photo per numeric id, so the URL is stable rather than
- * random, but it is stock imagery standing in for a real photograph and it
- * makes the page depend on a third-party host at runtime. Swap it for a Center
- * image (or a local file in this app) before this goes live.
- *
- * Section's `image` variant lays a scrim over it that **inverts with the
- * theme** — 80% white in light, 80% black in dark — so the hero's existing text
- * tokens (which invert the same way) stay readable without an on-image colour
- * of their own.
- */
-export const INNOVATIONS_HERO_IMAGE = "https://picsum.photos/id/36/1920/1080";

@@ -32,6 +32,7 @@
  */
 
 import type { ProjectDetail } from "@gmhlab/blocks";
+import { RESHAPE_HERO_IMAGE } from "./hero-images";
 
 /* -------------------------------------------------------------------------- */
 /* RESHAPE                                                                     */
@@ -45,6 +46,7 @@ export const RESHAPE_DETAIL: ProjectDetail = {
     "Bringing people with lived experience of mental illness into WHO mhGAP training, and testing whether that changes how primary care providers diagnose",
   status: "closed",
   statusLabel: "Enrollment closed",
+  heroImage: RESHAPE_HERO_IMAGE,
   lede:
     "RESHAPE is a cluster-randomized clinical trial in Nepal. It tests an implementation strategy that adds people with lived experience of mental illness to standard WHO mhGAP training for primary care providers, and measures whether reducing provider stigma improves how accurately those providers detect mental illness in their patients.",
 

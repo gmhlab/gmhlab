@@ -8,6 +8,8 @@
  * those records against, and it holds nothing organization-specific.
  */
 
+import type { ResearchGlyphName } from "@gmhlab/ui";
+
 /** Coarse, keyword-derived subject buckets. See the note above. */
 export type PublicationTheme =
   | "Training & competency"
@@ -16,6 +18,23 @@ export type PublicationTheme =
   | "Measurement & validation"
   | "Maternal & perinatal"
   | "Care delivery & systems";
+
+/**
+ * The graphics-kit glyph for each theme — on the theme chips, each row's theme
+ * line, and anywhere a consuming app shows a theme (the GW landing page's
+ * research cards). Part of the contract because the theme set is.
+ */
+export const PUBLICATION_THEME_GLYPHS: Record<
+  PublicationTheme,
+  ResearchGlyphName
+> = {
+  "Training & competency": "competency",
+  "Adolescent & child": "young-people",
+  "Stigma & discrimination": "stigma",
+  "Measurement & validation": "measurement",
+  "Maternal & perinatal": "maternal",
+  "Care delivery & systems": "care-delivery",
+};
 
 export type PublicationKind =
   | "Article"

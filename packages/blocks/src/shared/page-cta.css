@@ -1,0 +1,7 @@
+/* PageCtaSection. Scoped by its own prefixed class. */
+
+/* A motif over the heading, not a rule across the page: five 96px pattern
+   tiles, fifteen figures, five of them gold. */
+.page-cta-figures {
+  max-width: 30rem;
+}
