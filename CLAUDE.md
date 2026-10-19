@@ -265,7 +265,11 @@ essentials:
 Nothing generates `tailwind.css` — it is hand-maintained like `variables.css`.
 Adding a token to `variables.css` means applying the rule above by hand.
 
-## The two Figma files
+## The Figma files
+
+- **`xoEDlF54N0QE84TMGlSYvw` ("GMH Lab - Foundations")**, built 2026-10-19 from `packages/tokens`, is the new foundations library, the first of three (ui and blocks files to follow). It has 540 variables in eight collections: `Palette` (M3 tonal palettes plus the GW ramps, no scopes), `Scheme` (the 49 `--md-sys-color-*` roles, Light/Dark), `Color` (the 157 `--mfy-color-*` semantic tokens, Light/Dark), `Shape`, `Size`, `Typography`, `State` and `Motion`. It also has 19 text styles bound to the Typography variables, 5 `Elevation/Level` effect styles, and the `GMH Crest` / `GMH Logo` component sets (Colorway=Navy/White). Every variable's WEB code syntax is its CSS name. Where code computes a colour (`color-mix` hovers, disabled alphas), Figma stores the resolved value and the formula sits in the variable description, so **re-resolve those when the tokens change**; nothing syncs them.
+
+The older two:
 
 - **`a8t0tmguLdEKoVMc3wVoL7` ("GMH Lab DSP")** is the live component library — this is the one to read when implementing or updating a component. It holds the `Header` component set (`platform` Desktop/Mobile × `state` Default/Open, node `2287:22651`), the `Badge` page (`3241:2`), the GMH brand mark (`5007:49`), and the variable collections: `Color Primitives` (1 mode), `Color` (MonoFly Light / MonoFly Dark), `Typography Primitives`, `Typography`, `Size`, `Responsive` (Desktop/Mobile/Tablet).
 - **`jdTRzc3vWF5pEOUna8rrkR` ("MonoFly DSP")** is the token source only — see below.
