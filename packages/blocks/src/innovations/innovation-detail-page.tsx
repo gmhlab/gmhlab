@@ -21,6 +21,8 @@ import {
 } from "../publications/publications-types";
 import type { InnovationDetail } from "./innovation-detail-types";
 import { PageActions, PageCtaSection } from "../shared/page-cta";
+import { PeopleSection } from "../team/team-page";
+import { projectPeople, type Person } from "../team/team-types";
 import "./innovation-detail-page.css";
 
 /**
@@ -432,6 +434,13 @@ export type InnovationDetailPageProps = {
   homeHref?: string;
   /** Where "view all publications" points. */
   publicationsHref?: string;
+  /**
+   * Everyone on the team page. The page shows those tagged with this
+   * innovation's slug; omit and the people section renders nothing.
+   */
+  people?: Person[];
+  /** Where the team page is mounted; each person links to their card there. */
+  teamHref?: string;
 };
 
 export function InnovationDetailPage({
@@ -441,6 +450,8 @@ export function InnovationDetailPage({
   indexLabel = "Innovations",
   homeHref = "/",
   publicationsHref = "/publications",
+  people = [],
+  teamHref = "/team",
 }: InnovationDetailPageProps) {
   return (
     <div className="innovation-detail-page">
@@ -460,6 +471,12 @@ export function InnovationDetailPage({
         publicationsHref={publicationsHref}
       />
       <Related detail={detail} />
+      {/* Neutral: it follows the plain Related section. */}
+      <PeopleSection
+        people={projectPeople(detail.slug, people)}
+        teamHref={teamHref}
+        variant="neutral"
+      />
       {detail.cta ? (
         <PageCtaSection
           cta={detail.cta}

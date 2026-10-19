@@ -2,8 +2,15 @@
 
 import { Footer, type FooterColumn } from "@gmhlab/ui";
 
-/** Every link here resolves to a route this app actually serves. */
+/**
+ * Every link here resolves to a route this app actually serves. Three columns
+ * at most: the ui Footer lays out as quarters, and the logo takes the first.
+ */
 const COLUMNS: FooterColumn[] = [
+  {
+    title: "The Center",
+    links: [{ label: "Our team", href: "/team" }],
+  },
   {
     title: "Research",
     links: [
@@ -11,11 +18,8 @@ const COLUMNS: FooterColumn[] = [
       { label: "RESHAPE", href: "/projects/reshape" },
       { label: "Innovations", href: "/innovations" },
       { label: "EQUIP", href: "/innovations/equip" },
+      { label: "Publications", href: "/publications" },
     ],
-  },
-  {
-    title: "Publications",
-    links: [{ label: "Bibliography", href: "/publications" }],
   },
   {
     title: "The University",

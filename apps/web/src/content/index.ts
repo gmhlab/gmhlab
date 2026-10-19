@@ -16,3 +16,4 @@ export * from "./innovations-data";
 export * from "./project-detail-data";
 export * from "./projects-data";
 export * from "./publications-data";
+export * from "./team-data";

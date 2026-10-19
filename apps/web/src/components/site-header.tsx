@@ -14,6 +14,7 @@ const DEMO_CREDENTIALS = { email: "Charlie Brown", password: "snooptroupe" };
  * required: it is what the active-route match below compares against.
  */
 const NAV_ITEMS: HeaderNavItem[] = [
+  { label: "Team", href: "/team", render: <Link href="/team" /> },
   { label: "Projects", href: "/projects", render: <Link href="/projects" /> },
   {
     label: "Innovations",
@@ -25,7 +26,6 @@ const NAV_ITEMS: HeaderNavItem[] = [
     href: "/publications",
     render: <Link href="/publications" />,
   },
-
 ];
 
 /** The ui Header wired to the @gmhlab/data auth layer and the app router. */

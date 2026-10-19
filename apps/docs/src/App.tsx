@@ -14,9 +14,10 @@ import { BlocksProjectDetailPage } from "./pages/blocks/BlocksProjectDetailPage"
 import { BlocksPublicationsPage } from "./pages/blocks/BlocksPublicationsPage";
 import { BlocksInnovationsPage } from "./pages/blocks/BlocksInnovationsPage";
 import { BlocksInnovationDetailPage } from "./pages/blocks/BlocksInnovationDetailPage";
+import { BlocksTeamPage } from "./pages/blocks/BlocksTeamPage";
 
 /**
- * The `blocks/*` routes mirror the five GW routes in `apps/web`, one level
+ * The `blocks/*` routes mirror the GW routes in `apps/web`, one level
  * down: the page blocks build every internal href from a `basePath` prop, and
  * mounting them off the root here is what proves that prop does its job. Each
  * wrapper passes the matching `basePath`; changing a path below means changing
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
         path: "blocks/innovations/:slug",
         element: <BlocksInnovationDetailPage />,
       },
+      { path: "blocks/team", element: <BlocksTeamPage /> },
       { path: "tokens", element: <TokensPage /> },
       { path: "slides", element: <SlidesPage /> },
       { path: "flex", element: <FlexPage /> },

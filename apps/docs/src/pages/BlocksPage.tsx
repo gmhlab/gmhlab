@@ -123,7 +123,7 @@ const PAGE_BLOCKS = [
     name: "ProjectDetailPage",
     blurb:
       "One record, rendered as a study protocol: arms, ranked objectives with their instruments, a two-track assessment schedule, eligibility, and resolved evidence. Every section is conditional on its data.",
-    props: "detail, projects, publications, detailSlugs, basePath",
+    props: "detail, projects, publications, people, detailSlugs, basePath, teamHref",
   },
   {
     to: "/blocks/publications",
@@ -144,7 +144,14 @@ const PAGE_BLOCKS = [
     name: "InnovationDetailPage",
     blurb:
       "The adoption-shaped sibling of the project detail page: what it is, how it works, who runs it, what the evidence is, how to adopt it.",
-    props: "detail, publications, basePath, indexLabel, homeHref",
+    props: "detail, publications, people, basePath, indexLabel, homeHref, teamHref",
+  },
+  {
+    to: "/blocks/team",
+    name: "TeamPage",
+    blurb:
+      "Core team, affiliates, students and alumni in one person format. Bios expand in place; project tags filter the page, and the same records give the detail pages their People section.",
+    props: "people, projects, publications, detailSlugs, heroImage, projectsBasePath, title, subtitle, cta",
   },
 ];
 

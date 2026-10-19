@@ -6,6 +6,7 @@ import {
   PROJECT_DETAILS,
   PROJECT_DETAIL_SLUGS,
   PUBLICATIONS,
+  TEAM,
 } from "../../fixtures/sample-content";
 import { DemoFrame } from "./DemoFrame";
 import { MissingDetail } from "./MissingDetail";
@@ -40,8 +41,10 @@ export function BlocksProjectDetailPage() {
   detail={PROJECT_DETAILS[slug]}
   detailSlugs={PROJECT_DETAIL_SLUGS}
   projects={PROJECTS}
+  people={TEAM}
   publications={PUBLICATIONS}
   publicationsHref="/blocks/publications"
+  teamHref="/blocks/team"
 />`}
     >
       <ProjectDetailPage
@@ -49,8 +52,10 @@ export function BlocksProjectDetailPage() {
         detail={detail}
         detailSlugs={PROJECT_DETAIL_SLUGS}
         projects={PROJECTS}
+        people={TEAM}
         publications={PUBLICATIONS}
         publicationsHref="/blocks/publications"
+        teamHref="/blocks/team"
       />
     </DemoFrame>
   );

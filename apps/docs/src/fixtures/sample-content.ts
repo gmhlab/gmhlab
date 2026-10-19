@@ -19,6 +19,8 @@
  *   - `ProjectDetail.relatedSlugs` index `PROJECTS` by `slug`
  *   - `ProjectDetail.publications[].slug` and `InnovationDetail.publications[].slug`
  *     index `PUBLICATIONS` by `slug`
+ *   - `Person.projects` index `PROJECTS` by `slug`, and `Person.authorNames`
+ *     match `PUBLICATIONS[].authors` exactly
  * Both resolve at render time and fail soft — a typo shortens a list instead of
  * breaking a row, so a broken reference here is silent.
  */
@@ -35,6 +37,8 @@ import type {
   Publication,
   PublicationTheme,
   PublicationsPageProps,
+  Person,
+  TeamPageProps,
 } from "@gmhlab/blocks";
 
 /** Deterministic placeholder imagery — the hero variants require a `src`. */
@@ -44,6 +48,7 @@ const img = (seed: string, w: number, h: number) =>
 export const PROJECTS_HERO_IMAGE = img("gmhlab-projects", 1600, 900);
 export const PUBLICATIONS_HERO_IMAGE = img("gmhlab-publications", 1600, 900);
 export const INNOVATIONS_HERO_IMAGE = img("gmhlab-innovations", 1600, 900);
+export const TEAM_HERO_IMAGE = img("gmhlab-team", 1600, 900);
 
 /* -- Projects ------------------------------------------------------------- */
 
@@ -833,6 +838,87 @@ export const INNOVATIONS_PAGE_COPY: Pick<
   cta: {
     heading: "Adopt a tool",
     body: "Each tool ships with training materials and an implementation guide.",
+    actions: [{ label: "Email the Centre", href: `mailto:${CENTRE_EMAIL}` }],
+  },
+};
+
+/* -- Team ----------------------------------------------------------------- */
+
+/**
+ * No photos: a picsum scene beside an invented name would be exactly the
+ * stand-in-photo problem the team block exists to avoid, so every person here
+ * exercises the initials monogram. `apps/web` exercises the photo path.
+ *
+ * Deliberate edge cases: Vance carries an unknown project slug (dropped from
+ * the tags), Idris has no bio (no expander), and the alumni are listed out of
+ * order with one `now` missing, so the sort and the optional line both show.
+ */
+export const TEAM: Person[] = [
+  {
+    slug: "folake-adeyemi",
+    name: "Folake Adeyemi",
+    group: "core",
+    credentials: ["MD", "PhD"],
+    role: "Director",
+    location: "Halden",
+    projects: ["harbour", "atlas"],
+    authorNames: ["Adeyemi F"],
+    links: { email: "f.adeyemi@example.org" },
+    bio: [
+      "An invented psychiatrist who leads the sample portfolio. The bio expands in place; selected publications below are resolved from the synthetic bibliography by exact author-name match, most-cited first.",
+    ],
+  },
+  {
+    slug: "lucia-serrano",
+    name: "Lucía Serrano",
+    group: "core",
+    credentials: ["PhD"],
+    role: "Measurement Lead",
+    projects: ["atlas", "compass"],
+    authorNames: ["Serrano L"],
+    bio: ["Leads the fictional validation work. Her tags link only where a project has a detail record."],
+  },
+  {
+    slug: "rowan-vance",
+    name: "Rowan Vance",
+    group: "core",
+    credentials: ["MSc"],
+    role: "Trial Manager",
+    projects: ["harbour", "no-such-project"],
+    authorNames: ["Vance R"],
+    bio: ["Carries one unknown project slug, which the tag list drops rather than rendering a broken chip."],
+  },
+  {
+    slug: "bisi-okonkwo",
+    name: "Bisi Okonkwo",
+    group: "affiliate",
+    credentials: ["PhD"],
+    role: "Visiting Professor",
+    affiliation: "Coastal Institute of Invented Health",
+    location: "Port Arden",
+    projects: ["lantern"],
+    authorNames: ["Okonkwo B"],
+    bio: ["An affiliate: the institution line and the location line are separate fields, so neither has to stand in for the other."],
+  },
+  {
+    slug: "mira-idris",
+    name: "Mira Idris",
+    group: "affiliate",
+    role: "Senior Statistician",
+    affiliation: "Northgate University",
+    projects: ["quarry"],
+  },
+  { slug: "tomas-hale", name: "Tomas Hale", group: "student", degree: "DrPH", program: "Global Health" },
+  { slug: "ana-pires", name: "Ana Pires", group: "student", program: "Psychology" },
+  { slug: "kenji-nakamura", name: "Kenji Nakamura", group: "alumni", credentials: ["MPH"], year: 2022, now: "Research Fellow, Eastbridge Institute" },
+  { slug: "sara-lind", name: "Sara Lind", group: "alumni", credentials: ["DrPH"], year: 2025, now: "Assistant Professor, Northgate University" },
+  { slug: "omar-farouk", name: "Omar Farouk", group: "alumni", credentials: ["MSc"], year: 2024 },
+];
+
+export const TEAM_PAGE_COPY: Pick<TeamPageProps, "subtitle" | "cta"> = {
+  subtitle: "The Halden Centre's invented staff — every name, title and destination is fiction.",
+  cta: {
+    heading: "Join the Centre",
     actions: [{ label: "Email the Centre", href: `mailto:${CENTRE_EMAIL}` }],
   },
 };

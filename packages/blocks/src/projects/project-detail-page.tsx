@@ -24,6 +24,8 @@ import {
 import type { Project } from "./projects-types";
 import type { Publication } from "../publications/publications-types";
 import { PageCtaSection } from "../shared/page-cta";
+import { PeopleSection } from "../team/team-page";
+import { projectPeople, type Person } from "../team/team-types";
 import { gmhProjectDetailCta } from "../shared/gmh-copy";
 import "./project-detail-page.css";
 
@@ -92,6 +94,13 @@ export type ProjectDetailPageProps = {
   basePath?: string;
   /** Where "all publications" links to. */
   publicationsHref?: string;
+  /**
+   * Everyone on the team page. The page shows those tagged with this
+   * project's slug; omit and the people section renders nothing.
+   */
+  people?: Person[];
+  /** Where the team page is mounted; each person links to their card there. */
+  teamHref?: string;
 };
 
 function cx(...values: (string | false | undefined)[]): string {
@@ -697,6 +706,8 @@ export function ProjectDetailPage({
   detailSlugs = [],
   basePath = "/projects",
   publicationsHref = "/publications",
+  people = [],
+  teamHref = "/team",
 }: ProjectDetailPageProps) {
   return (
     <div className="project-detail-page">
@@ -727,6 +738,11 @@ export function ProjectDetailPage({
         detail={detail}
         detailSlugs={detailSlugs}
         projects={projects}
+      />
+      {/* After the neutral Related band, so the bands keep alternating. */}
+      <PeopleSection
+        people={projectPeople(detail.slug, people)}
+        teamHref={teamHref}
       />
       {detail.cta !== null ? (
         <PageCtaSection

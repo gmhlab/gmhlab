@@ -7,6 +7,7 @@ import {
   PROJECT_DETAIL_SLUGS,
   PUBLICATIONS,
   RESHAPE_DETAIL,
+  TEAM,
 } from "@/content"
 
 export default function Page() {
@@ -14,6 +15,7 @@ export default function Page() {
     <ProjectDetailPage
       detail={RESHAPE_DETAIL}
       detailSlugs={PROJECT_DETAIL_SLUGS}
+      people={TEAM}
       projects={PROJECTS}
       publications={PUBLICATIONS}
     />

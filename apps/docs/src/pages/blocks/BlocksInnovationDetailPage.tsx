@@ -1,7 +1,11 @@
 import { useParams } from "react-router";
 import { InnovationDetailPage } from "@gmhlab/blocks";
 
-import { INNOVATION_DETAILS, PUBLICATIONS } from "../../fixtures/sample-content";
+import {
+  INNOVATION_DETAILS,
+  PUBLICATIONS,
+  TEAM,
+} from "../../fixtures/sample-content";
 import { DemoFrame } from "./DemoFrame";
 import { MissingDetail } from "./MissingDetail";
 
@@ -36,8 +40,10 @@ export function BlocksInnovationDetailPage() {
   detail={INNOVATION_DETAILS[slug]}
   homeHref="/blocks"
   indexLabel="Innovations"
+  people={TEAM}
   publications={PUBLICATIONS}
   publicationsHref="/blocks/publications"
+  teamHref="/blocks/team"
 />`}
     >
       <InnovationDetailPage
@@ -45,8 +51,10 @@ export function BlocksInnovationDetailPage() {
         detail={detail}
         homeHref="/blocks"
         indexLabel="Innovations"
+        people={TEAM}
         publications={PUBLICATIONS}
         publicationsHref="/blocks/publications"
+        teamHref="/blocks/team"
       />
     </DemoFrame>
   );

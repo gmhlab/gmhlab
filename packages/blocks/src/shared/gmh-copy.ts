@@ -70,6 +70,19 @@ export const GMH_INNOVATIONS_COPY = {
   } satisfies PageCta,
 };
 
+export const GMH_TEAM_COPY = {
+  subtitle:
+    "Researchers, clinicians and students working with partners worldwide to make mental health care equitable where specialists are scarce.",
+  cta: {
+    heading: "Looking to collaborate?",
+    body: "We work with universities, ministries and community organizations, and welcome enquiries from prospective students and fellows.",
+    actions: [
+      emailTheCenter,
+      { label: "Browse our projects", href: "/projects", variant: "secondary" },
+    ],
+  } satisfies PageCta,
+};
+
 /**
  * The project detail page's default CTA, built from the record: a "Contact
  * the project" button when the record names a contact, then the Center.
