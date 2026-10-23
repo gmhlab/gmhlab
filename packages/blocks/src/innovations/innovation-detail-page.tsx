@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import {
   Badge,
   BrandShape,
@@ -24,7 +25,10 @@ import {
   type Publication,
 } from "../publications/publications-types";
 import { PublicationCover } from "../publications/publication-cover";
-import type { InnovationDetail } from "./innovation-detail-types";
+import type {
+  InnovationDetail,
+  InnovationProcessImage,
+} from "./innovation-detail-types";
 import { PageActions, PageCtaSection } from "../shared/page-cta";
 import { ProjectMark } from "../shared/project-mark";
 import { PeopleSection } from "../team/team-page";
@@ -194,6 +198,38 @@ function Hero({ detail }: { detail: InnovationDetail }) {
 
 /* -- How it works --------------------------------------------------------- */
 
+/**
+ * The illustration under a step, on a square white tile. Pinned to the bottom
+ * of its column, so a row of steps with bodies of different lengths still
+ * lines its tiles up. A plain `<img>` with its intrinsic size, rather than the
+ * `Image` primitive, whose fade-in waits on a load event — these sit below the
+ * fold and lazy-load.
+ */
+function StepFigure({
+  image,
+  index,
+}: {
+  image: InnovationProcessImage;
+  index: number;
+}) {
+  return (
+    <figure
+      className="innovation-detail-step-figure"
+      // The `--*` CSSProperties augmentation is ui-internal, hence the cast.
+      style={{ "--step-index": index } as CSSProperties}
+    >
+      <img
+        alt={image.alt}
+        decoding="async"
+        height={720}
+        loading="lazy"
+        src={image.src}
+        width={720}
+      />
+    </figure>
+  );
+}
+
 function HowItWorks({ detail }: { detail: InnovationDetail }) {
   const steps = detail.process ?? [];
   if (!steps.length) return null;
@@ -205,7 +241,7 @@ function HowItWorks({ detail }: { detail: InnovationDetail }) {
           heading="How It Works"
           subheading={detail.processNote}
         />
-        <Flex type="quarter" gap="600" wrap>
+        <Flex type="quarter" gap="600" wrap alignSecondary="stretch">
           {steps.map((step, index) => (
             /* FlexItem, not a bare Flex. flex.css computes each child's
                flex-basis *on the child*, and `var(--flex-gap)` in that calc
@@ -220,7 +256,12 @@ function HowItWorks({ detail }: { detail: InnovationDetail }) {
               key={step.heading}
               size="minor"
             >
-              <Flex direction="column" alignSecondary="center" gap="300">
+              <Flex
+                className="innovation-detail-step-body"
+                direction="column"
+                alignSecondary="center"
+                gap="300"
+              >
                 <span
                   className="innovation-detail-step-number"
                   aria-hidden="true"
@@ -231,6 +272,9 @@ function HowItWorks({ detail }: { detail: InnovationDetail }) {
                   {step.heading}
                 </TextStrong>
                 <TextSmall className="text-align-center">{step.body}</TextSmall>
+                {step.image ? (
+                  <StepFigure image={step.image} index={index} />
+                ) : null}
               </Flex>
             </FlexItem>
           ))}

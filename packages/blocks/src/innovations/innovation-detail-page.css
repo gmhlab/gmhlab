@@ -179,6 +179,68 @@
   }
 }
 
+/* The illustration under each step. The row stretches its columns (the Flex
+   has alignSecondary="stretch"), the column fills its FlexItem, and the figure
+   takes the leftover height as top margin — so tiles line up along the bottom
+   of the row however long each step's body is. */
+.innovation-detail-step-body {
+  height: 100%;
+}
+.innovation-detail-step-figure {
+  margin: auto 0 0;
+  padding-top: var(--mfy-size-space-600);
+  width: min(100%, 15rem);
+}
+/* The illustrations are navy and gold line art on their own white ground, so
+   the tile is that white in both modes — after dark it reads as a paper card
+   rather than the art going navy-on-navy. The hairline gives it an edge on
+   the light page surface, which is nearly white itself. */
+.innovation-detail-step-figure img {
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: var(--md-sys-shape-corner-large);
+  box-shadow:
+    var(--md-sys-elevation-level1),
+    0 0 0 var(--mfy-size-stroke-border) var(--md-sys-color-outline-variant);
+  box-sizing: border-box;
+  display: block;
+  height: auto;
+  /* Several drawings run to their own edges; the padding is the tile's white
+     margin around the art (percentages resolve against the width, so it
+     stays square). */
+  padding: 12%;
+  width: 100%;
+}
+/* The goal's tile carries the goal node's gold, so the path ends on it. */
+.innovation-detail-step:last-child .innovation-detail-step-figure img {
+  box-shadow:
+    var(--md-sys-elevation-level1),
+    0 0 0 0.1875rem var(--mfy-color-background-default-default),
+    0 0 0 0.3125rem var(--mfy-color-border-accent-default);
+}
+
+/* Each tile rises in as it scrolls into view, staggered along the path.
+   Scroll-driven, so no JS and nothing hidden in the server HTML: browsers
+   without view timelines, and anyone who prefers reduced motion, just see
+   the tiles. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .innovation-detail-step-figure {
+      animation: innovation-detail-step-rise linear both;
+      animation-range: entry calc(var(--step-index, 0) * 8%)
+        cover calc(30% + var(--step-index, 0) * 8%);
+      animation-timeline: view();
+    }
+  }
+}
+@keyframes innovation-detail-step-rise {
+  from {
+    opacity: 0;
+    scale: 0.94;
+    translate: 0 1.5rem;
+  }
+}
+
 /* Core components ------------------------------------------------------- */
 
 /* The kit's glyph on a pale gold wash — the same tile as the index cards. */

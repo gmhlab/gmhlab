@@ -17,6 +17,10 @@
  * duplicated — every title abbreviated, and `"Frontiers"` (a publisher) given
  * as a journal. Referencing them fixes that permanently.
  *
+ * The process-step illustrations are from the live EQUIP page's "How do I use
+ * it?" section; originals and the edits made to them are in
+ * `apps/web/assets/gw-site/innovations/equip-how-do-i-use-it/README.md`.
+ *
  * The `href`s below are placeholders (`#`) except where a real route exists.
  */
 
@@ -52,20 +56,37 @@ export const EQUIP_DETAIL: InnovationDetail = {
     {
       heading: "Baseline Assessment",
       body: "Evaluate provider skills using standardized role-play scenarios and competency rubrics",
+      image: {
+        src: "/innovations/equip/rate.webp",
+        alt: "A hand ticking items off a checklist on a clipboard",
+      },
     },
     {
       heading: "Targeted Training",
       body: "Deliver focused skill-building based on identified competency gaps",
+      image: {
+        src: "/innovations/equip/feedback.webp",
+        alt: "A trainer points to a document while talking a health worker through it",
+      },
     },
     {
       heading: "Supervised Practice",
       body: "Support providers during real-world delivery with structured supervision",
+      image: {
+        src: "/innovations/equip/observe.webp",
+        alt: "A supervisor with a clipboard watches a provider's session with a client",
+      },
     },
     {
       heading: "Ongoing Evaluation",
       body: "Continuously monitor competency and provide feedback for improvement",
+      image: {
+        src: "/innovations/equip/visualize.webp",
+        alt: "A tablet showing a bar chart and a trend line rising",
+      },
     },
   ],
+
 
   componentsNote: "The EQUIP system includes three integrated components",
   components: [

@@ -50,8 +50,22 @@ export type InnovationBadge = { label: string; tone: InnovationStatus };
 /** Kept as a named alias of the shared {@link PageAction}. */
 export type InnovationAction = PageAction;
 
+/**
+ * The illustration under a process step. Rendered as a square white tile, so
+ * supply a square image on a pure white ground (it is the tile's ground too).
+ */
+export type InnovationProcessImage = {
+  src: string;
+  /** What the picture shows. */
+  alt: string;
+};
+
 /** One stage of the "how it works" cycle. Numbered by position. */
-export type InnovationProcessStep = { heading: string; body: string };
+export type InnovationProcessStep = {
+  heading: string;
+  body: string;
+  image?: InnovationProcessImage;
+};
 
 /** One of the parts the innovation ships as. */
 export type InnovationComponent = {
