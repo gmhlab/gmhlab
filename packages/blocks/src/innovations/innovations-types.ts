@@ -19,6 +19,11 @@ export type Innovation = {
   slug: string;
   /** The graphics-kit glyph on the card's tile. */
   glyph: ResearchGlyphName;
+  /**
+   * The innovation's own logo, as a URL. When set it takes the tile in place
+   * of `glyph`, on a paper tile like the projects' marks.
+   */
+  logo?: string;
   /** The status line as published, e.g. "WHO/UNICEF Partnership". */
   status: string;
   statusTone: InnovationStatus;

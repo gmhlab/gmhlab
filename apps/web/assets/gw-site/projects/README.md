@@ -9,7 +9,7 @@ served: it is the source of what is in `apps/web/public/projects/`.
 ## `marks/` — square logos (shipped)
 
 From each project page. These are what the site renders, as
-`public/projects/<slug>.png` (`Project.logo` in `src/content/projects-data.ts`).
+`public/projects/<slug>.png` (`Project.logo` in `src/content/projects-data.ts`; `equip.png` is also the EQUIP innovation's `logo` in `innovations-data.ts` and `innovation-detail-data.ts`).
 
 | Project      | Original                  | Wix id                              | Shipped as        |
 | ------------ | ------------------------- | ----------------------------------- | ----------------- |

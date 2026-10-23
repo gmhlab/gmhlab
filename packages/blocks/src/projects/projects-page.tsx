@@ -28,7 +28,7 @@ import type { PageCta } from "../shared/page-copy";
 import { GMH_PROJECTS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
 import { PageHero } from "../shared/page-hero";
-import { ProjectMark } from "./project-mark";
+import { ProjectMark } from "../shared/project-mark";
 import "./projects-page.css";
 
 /**

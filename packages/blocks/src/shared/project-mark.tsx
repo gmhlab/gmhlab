@@ -1,8 +1,9 @@
 import "./project-mark.css";
 
 /**
- * A project's own logo on a paper tile. Internal to the projects blocks — the
- * index cards, the spotlight, the detail hero and the related cards.
+ * A project's own logo on a paper tile. Internal to the blocks — the projects
+ * index cards, spotlight, detail hero and related cards, and the innovation
+ * card and detail hero for an innovation that has a logo (EQUIP).
  *
  * The tile is always paper, in both themes and on brand bands: project logos
  * are third-party artwork drawn for a white page (ALIVE's wordmark and EQUIP's

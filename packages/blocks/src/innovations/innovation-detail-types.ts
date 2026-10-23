@@ -85,6 +85,9 @@ export type InnovationDetail = {
   name: string;
   /** What the acronym stands for, shown as the subheading. */
   expandedName?: string;
+  /** The innovation's own logo, as a URL, shown on a paper tile beside the
+   *  title. */
+  logo?: string;
   badges?: InnovationBadge[];
   /** The hero paragraph. */
   summary: string;

@@ -29,7 +29,7 @@ import { PageCtaSection } from "../shared/page-cta";
 import { PeopleSection } from "../team/team-page";
 import { projectPeople, type Person } from "../team/team-types";
 import { gmhProjectDetailCta } from "../shared/gmh-copy";
-import { ProjectMark } from "./project-mark";
+import { ProjectMark } from "../shared/project-mark";
 import "./project-detail-page.css";
 
 /**

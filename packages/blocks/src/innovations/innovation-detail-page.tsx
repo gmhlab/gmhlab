@@ -25,6 +25,7 @@ import {
 } from "../publications/publications-types";
 import type { InnovationDetail } from "./innovation-detail-types";
 import { PageActions, PageCtaSection } from "../shared/page-cta";
+import { ProjectMark } from "../shared/project-mark";
 import { PeopleSection } from "../team/team-page";
 import { projectPeople, type Person } from "../team/team-types";
 import "./innovation-detail-page.css";
@@ -133,11 +134,16 @@ function Hero({ detail }: { detail: InnovationDetail }) {
             {/* TextTitlePage (3rem), not TextContentTitle — that resolves to
                 TextTitleHero (4.5rem) on desktop, which is the index page's
                 size. A detail page sits one level down. */}
-            <Flex direction="column" alignSecondary="stretch" gap="200">
-              <TextTitlePage>{detail.name}</TextTitlePage>
-              {detail.expandedName ? (
-                <TextSubheading>{detail.expandedName}</TextSubheading>
+            <Flex alignSecondary="center" gap="600">
+              {detail.logo ? (
+                <ProjectMark src={detail.logo} size="large" />
               ) : null}
+              <Flex direction="column" alignSecondary="stretch" gap="200">
+                <TextTitlePage>{detail.name}</TextTitlePage>
+                {detail.expandedName ? (
+                  <TextSubheading>{detail.expandedName}</TextSubheading>
+                ) : null}
+              </Flex>
             </Flex>
             <Text className="innovation-detail-hero-copy">{detail.summary}</Text>
             <PageActions actions={detail.actions ?? []} />

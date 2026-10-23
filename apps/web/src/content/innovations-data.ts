@@ -16,6 +16,7 @@ export const INNOVATIONS: Innovation[] = [
   {
     slug: "equip",
     glyph: "competency",
+    logo: "/projects/equip.png",
     status: "WHO/UNICEF Partnership",
     statusTone: "info",
     heading: "EQUIP Platform",

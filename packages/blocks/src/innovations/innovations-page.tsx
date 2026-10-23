@@ -16,6 +16,7 @@ import type { PageCta } from "../shared/page-copy";
 import { GMH_INNOVATIONS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
 import { PageHero } from "../shared/page-hero";
+import { ProjectMark } from "../shared/project-mark";
 import "./innovations-page.css";
 
 /**
@@ -40,6 +41,7 @@ function InnovationCard({
   innovation: {
     slug,
     glyph,
+    logo,
     status,
     statusTone,
     heading,
@@ -59,9 +61,13 @@ function InnovationCard({
       variant="stroke"
       padding="800"
       asset={
-        <span className="innovation-card-icon">
-          <ResearchGlyph name={glyph} size={40} />
-        </span>
+        logo ? (
+          <ProjectMark src={logo} />
+        ) : (
+          <span className="innovation-card-icon">
+            <ResearchGlyph name={glyph} size={40} />
+          </span>
+        )
       }
     >
       {/* Wrapped: `.card-content > *` is forced to width:100%, which would

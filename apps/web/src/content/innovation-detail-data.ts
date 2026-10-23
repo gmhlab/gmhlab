@@ -27,6 +27,7 @@ export const EQUIP_DETAIL: InnovationDetail = {
   slug: "equip",
   name: "EQUIP Platform",
   expandedName: "Ensuring Quality in Psychological Support",
+  logo: "/projects/equip.png",
   badges: [
     { label: "WHO/UNICEF Partnership", tone: "info" },
     { label: "Active", tone: "success" },
