@@ -117,6 +117,151 @@
   font-size: var(--mfy-typography-scale-03);
 }
 
+/* ------------------------------------------------------------ group rings
+ *
+ * Core team wear a gold ring, affiliates an ice-blue one: a conic sweep of
+ * the ramp (light → deep → light, so it reads as a metal catching light, not
+ * a flat stroke), a hairline of card surface between ring and photo, and a
+ * soft glow in the ring's own hue. Gold is the GW gold ramp; ice is the M3
+ * primary palette's pale end — the brand navy's own hue, lifted.
+ *
+ * The ring and the gap are both painted in the avatar's background, so they
+ * show the same whether the photo has loaded, failed or is a monogram:
+ * the radial layer fills everything inside the ring with the card surface,
+ * the conic layer shows only in the outer `--team-ring-width`. The child sits
+ * in the padding-shrunk centre, rounded to a circle.
+ *
+ * On card hover the sweep turns half a revolution (`@property` makes the
+ * angle animatable) — slow, and off under reduced motion. */
+@property --team-ring-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.team-avatar-core,
+.team-avatar-affiliate {
+  --team-ring-width: 4px;
+  --team-ring-gap: 3px;
+  background:
+    radial-gradient(
+      closest-side,
+      var(--mfy-color-background-default-default)
+        calc(100% - var(--team-ring-width)),
+      transparent calc(100% - var(--team-ring-width) + 0.5px)
+    ),
+    var(--team-ring);
+  box-shadow: 0 0.5rem 1.25rem -0.5rem var(--team-ring-glow);
+  box-sizing: border-box;
+  padding: calc(var(--team-ring-width) + var(--team-ring-gap));
+  transition:
+    --team-ring-angle 1.4s var(--md-sys-motion-easing-emphasized, ease),
+    box-shadow 0.4s ease;
+}
+
+.team-avatar-small.team-avatar-core,
+.team-avatar-small.team-avatar-affiliate {
+  --team-ring-width: 2px;
+  --team-ring-gap: 2px;
+}
+
+.team-avatar-core > *,
+.team-avatar-affiliate > * {
+  border-radius: var(--mfy-size-radius-full);
+}
+
+.team-avatar-core {
+  --team-ring: conic-gradient(
+    from var(--team-ring-angle) at 50% 50%,
+    var(--mfy-color-gold-300),
+    var(--mfy-color-gold-500) 18%,
+    var(--mfy-color-gold-700) 34%,
+    var(--mfy-color-gold-400) 52%,
+    var(--mfy-color-gold-100) 64%,
+    var(--mfy-color-gold-500) 80%,
+    var(--mfy-color-gold-300)
+  );
+  --team-ring-glow: color-mix(in oklch, var(--mfy-color-gold-500) 55%, transparent);
+}
+
+.team-avatar-affiliate {
+  --team-ring: conic-gradient(
+    from var(--team-ring-angle) at 50% 50%,
+    var(--md-ref-palette-primary90),
+    var(--md-ref-palette-primary80) 18%,
+    var(--md-ref-palette-primary60) 34%,
+    var(--md-ref-palette-primary80) 52%,
+    var(--md-ref-palette-primary98) 64%,
+    var(--md-ref-palette-primary70) 80%,
+    var(--md-ref-palette-primary90)
+  );
+  --team-ring-glow: color-mix(
+    in oklch,
+    var(--md-ref-palette-primary70) 60%,
+    transparent
+  );
+}
+
+/* A monogram has no photo to fill the centre, so it takes a tint of its
+ * ring's family instead of the avatar's brand fill. */
+.team-avatar-core .team-monogram {
+  background: var(--mfy-color-gold-100);
+  color: var(--mfy-color-gold-800);
+}
+
+.team-avatar-affiliate .team-monogram {
+  background: var(--md-ref-palette-primary95);
+  color: var(--mfy-color-brand-800);
+}
+
+.team-card:hover .team-avatar-core,
+.team-card:hover .team-avatar-affiliate,
+.team-row:hover .team-avatar-core,
+.team-row:hover .team-avatar-affiliate {
+  --team-ring-angle: 180deg;
+  box-shadow: 0 0.75rem 1.75rem -0.5rem var(--team-ring-glow);
+}
+
+/* The same family as a rail on the card's top edge, like the projects
+ * index's status rail — so the grouping reads before the faces do. Corner
+ * radii are matched rather than clipped, to keep the card's focus ring. */
+.team-card-core::before,
+.team-card-affiliate::before {
+  background: var(--team-card-rail);
+  border-start-end-radius: var(--mfy-size-radius-200);
+  border-start-start-radius: var(--mfy-size-radius-200);
+  content: "";
+  height: 3px;
+  inset-block-start: 0;
+  inset-inline: 0;
+  position: absolute;
+}
+
+.team-card-core {
+  --team-card-rail: linear-gradient(
+    90deg,
+    var(--mfy-color-gold-600),
+    var(--mfy-color-gold-300) 50%,
+    var(--mfy-color-gold-600)
+  );
+}
+
+.team-card-affiliate {
+  --team-card-rail: linear-gradient(
+    90deg,
+    var(--md-ref-palette-primary70),
+    var(--md-ref-palette-primary90) 50%,
+    var(--md-ref-palette-primary70)
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-avatar-core,
+  .team-avatar-affiliate {
+    transition: none;
+  }
+}
+
 /* ------------------------------------------------------------- project tags */
 .team-projects {
   display: flex;

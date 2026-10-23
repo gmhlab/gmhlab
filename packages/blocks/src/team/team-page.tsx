@@ -59,7 +59,11 @@ import "./team-page.css";
 
 function Avatar({ person, size }: { person: Person; size: "large" | "small" }) {
   return (
-    <span className={`team-avatar team-avatar-${size}`}>
+    // `team-avatar-<group>` draws the core (gold) and affiliate (ice) rings —
+    // here rather than on the card, so the People strips match the team page.
+    <span
+      className={`team-avatar team-avatar-${size} team-avatar-${person.group}`}
+    >
       {person.photo ? (
         // No `loading="lazy"`: Image keeps the img `display: none` until its
         // load event, and a lazy img with no layout box is never fetched — so
@@ -174,7 +178,11 @@ function PersonCard({
   const hasMore = Boolean(person.bio?.length || works.length);
 
   return (
-    <Card className="team-card" variant="stroke" padding="600">
+    <Card
+      className={`team-card team-card-${person.group}`}
+      variant="stroke"
+      padding="600"
+    >
       <article id={person.slug} className="team-card-body">
         <Flex className="team-card-head" alignSecondary="start" gap="400">
           <Avatar person={person} size="large" />
