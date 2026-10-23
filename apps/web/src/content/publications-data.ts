@@ -50,6 +50,10 @@
  * the corpus was classified by it directly, so expect a handful of arguable
  * calls in the long tail.
  *
+ * `cover` is derived too, from `journal`, and is not stored on the records:
+ * `PUBLICATIONS` is `RECORDS` with each venue's image attached. See
+ * `publication-covers.ts` for the mapping and its source.
+ *
  * `authors` holds at most the first six names; `authorCount` is the true
  * total, which reaches 150 on one meta-analysis.
  */
@@ -58,6 +62,7 @@ import type {
   Publication,
   PublicationTheme,
 } from "@gmhlab/blocks";
+import { journalCover } from "./publication-covers";
 
 /** Facet order: most-published first, matching the portfolio's weight. */
 export const PUBLICATION_THEMES: PublicationTheme[] = [
@@ -69,7 +74,7 @@ export const PUBLICATION_THEMES: PublicationTheme[] = [
   "Maternal & perinatal",
 ];
 
-export const PUBLICATIONS: Publication[] = [
+const RECORDS: Publication[] = [
   {
     slug: "feasibility-acceptability-and-pilot-effectiveness-of-a-social-contact",
     title: "Feasibility, acceptability, and pilot effectiveness of a social-contact-based intervention to reduce mental health-related stigma among primary care providers in China, Ethiopia, India, Nepal, and Tunisia: Findings from a multi-site pre-post study",
@@ -5242,6 +5247,12 @@ export const PUBLICATIONS: Publication[] = [
     theme: "Care delivery & systems",
   },
 ];
+
+/** The records, each with its venue's cover where the Center has one. */
+export const PUBLICATIONS: Publication[] = RECORDS.map((publication) => {
+  const cover = journalCover(publication.journal);
+  return cover ? { ...publication, cover } : publication;
+});
 
 /* PUBLICATIONS is sorted date descending, so the span reads off the ends. */
 const newestYear = PUBLICATIONS[0]?.year;

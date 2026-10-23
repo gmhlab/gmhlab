@@ -614,6 +614,11 @@
   gap: var(--mfy-size-space-150);
 }
 
+.project-detail-page .pd-pub-meta .publication-cover {
+  --publication-cover-size: 4rem;
+  margin-bottom: var(--mfy-size-space-100);
+}
+
 .project-detail-page .pd-pub-year {
   color: var(--mfy-color-text-default-default);
   font-size: var(--mfy-typography-scale-04);
@@ -870,8 +875,13 @@
   }
 
   .project-detail-page .pd-pub-meta {
-    align-items: baseline;
+    align-items: center;
     flex-direction: row;
     gap: var(--mfy-size-space-300);
+  }
+
+  .project-detail-page .pd-pub-meta .publication-cover {
+    --publication-cover-size: 3rem;
+    margin-bottom: 0;
   }
 }

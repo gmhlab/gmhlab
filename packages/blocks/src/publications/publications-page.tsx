@@ -21,6 +21,7 @@ import {
   type Publication,
   type PublicationTheme,
 } from "./publications-types";
+import { PublicationCover } from "./publication-cover";
 import type { PageCta } from "../shared/page-copy";
 import { GMH_PUBLICATIONS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
@@ -187,14 +188,17 @@ function PublicationRow({
       padding="600"
       direction="horizontal"
       asset={
-        <div className="publication-date" aria-hidden="true">
-          <span className="publication-date-year">{publication.year}</span>
-          <span className="publication-date-month">
-            {published.toLocaleString("en-US", {
-              month: "short",
-              timeZone: "UTC",
-            })}
-          </span>
+        <div className="publication-asset">
+          <PublicationCover publication={publication} />
+          <div className="publication-date" aria-hidden="true">
+            <span className="publication-date-year">{publication.year}</span>
+            <span className="publication-date-month">
+              {published.toLocaleString("en-US", {
+                month: "short",
+                timeZone: "UTC",
+              })}
+            </span>
+          </div>
         </div>
       }
     >

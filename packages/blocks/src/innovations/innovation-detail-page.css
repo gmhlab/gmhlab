@@ -263,22 +263,8 @@
   min-width: 0;
 }
 
-.innovation-detail-journal {
-  align-items: center;
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-100);
-  /* `default`, not `secondary`: this tile's own gray-100 surface drops
-     #757575 to 4.23:1, just under AA. (`tertiary` here was ~1.9:1.) */
-  color: var(--mfy-color-text-default-default);
-  display: flex;
-  font-size: var(--mfy-typography-scale-01);
-  height: 3.75rem;
-  justify-content: center;
-  padding: var(--mfy-size-space-100);
-  /* "Lancet Psychiatry" and "BJPsych Open" wrap to two lines inside 3.75rem,
-     so the lines need centering as well as the box. */
-  text-align: center;
-  width: 3.75rem;
+.innovation-detail-publication .publication-cover {
+  --publication-cover-size: 3.75rem;
 }
 
 /* Related projects ------------------------------------------------------ */

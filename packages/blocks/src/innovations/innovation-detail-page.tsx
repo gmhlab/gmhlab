@@ -23,6 +23,7 @@ import {
   resolvePublicationRefs,
   type Publication,
 } from "../publications/publications-types";
+import { PublicationCover } from "../publications/publication-cover";
 import type { InnovationDetail } from "./innovation-detail-types";
 import { PageActions, PageCtaSection } from "../shared/page-cta";
 import { ProjectMark } from "../shared/project-mark";
@@ -361,11 +362,7 @@ function Evidence({
               variant="stroke"
               padding="600"
               direction="horizontal"
-              asset={
-                <span className="innovation-detail-journal" aria-hidden="true">
-                  {publication.journal}
-                </span>
-              }
+              asset={<PublicationCover publication={publication} />}
             >
               <Flex
                 alignPrimary="space-between"
@@ -380,7 +377,8 @@ function Evidence({
                 >
                   <TextStrong>{publication.title}</TextStrong>
                   <TextSmall>
-                    {formatAuthors(publication)} · {publication.year}
+                    {formatAuthors(publication)} · {publication.journal} ·{" "}
+                    {publication.year}
                     {note ? ` · ${note}` : ""}
                   </TextSmall>
                 </Flex>

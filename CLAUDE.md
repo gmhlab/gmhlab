@@ -514,6 +514,16 @@ fail silently:
   `"Elsevier eBooks"`); resolve the real book title via Crossref rather than
   falling back to `"Unlisted"`.
 
+**`cover` is derived, not stored**: `PUBLICATIONS` is the literal `RECORDS`
+mapped through `journalCover()` (`content/publication-covers.ts`), which matches
+on `journal` — exact titles plus the BMC, Lancet, Frontiers and Cambridge Prisms
+families, following the live site's own reuse of those marks. The 13 images are
+the live /publications page's uploads (originals and crop notes in
+`apps/web/assets/gw-site/publications/`). `PublicationCover` (exported from
+blocks) renders the cover or, with none, the theme glyph on a flat tile; callers
+size it with `--publication-cover-size`. A new journal image means a file in
+`public/publications/` plus a mapping line, never a field on the records.
+
 Titles never end in a period (APA venues include one), `authors` holds at most
 six names with the true total in `authorCount`, and the array is sorted **date
 descending** — the page relies on that order. `citations`/`openAccess` are

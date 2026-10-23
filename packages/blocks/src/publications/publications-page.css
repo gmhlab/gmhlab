@@ -122,24 +122,42 @@
 }
 
 /* `.card-asset` is a flex container that defaults to stretching its child, so
- * without this the date block becomes a full-height empty rail down the side
+ * without this the cover column becomes a full-height empty rail down the side
  * of the row. Pin it to the top instead. */
 .publication-row .card-asset {
   align-items: flex-start;
 }
 
-/* Date block in the card's asset slot. Fixed width so every row's content
- * starts on the same line regardless of month name length. */
-.publication-date {
+/* The asset column: the journal's cover (or the theme glyph standing in for
+ * one) with the date set under it, like a shelf label. Fixed width so every
+ * row's content starts on the same line. */
+.publication-asset {
   align-items: center;
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-100);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
+  gap: var(--mfy-size-space-200);
+  width: 4.5rem;
+}
+
+.publication-asset .publication-cover {
+  --publication-cover-size: 4.5rem;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+/* The cover lifts with the row — a printed object picked off the shelf. The
+ * glyph stand-in stays flat. */
+.publication-row:hover .publication-cover:not(.publication-cover-fallback) {
+  box-shadow: var(--mfy-effects-shadows-drop-shadow-300);
+  transform: translateY(-2px);
+}
+
+.publication-date {
+  align-items: baseline;
+  display: flex;
+  gap: var(--mfy-size-space-100);
   justify-content: center;
-  padding: var(--mfy-size-space-200);
-  width: 4rem;
 }
 
 .publication-date-year {
@@ -221,7 +239,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .publication-row {
+  .publication-row,
+  .publication-asset .publication-cover {
     transition: none;
+  }
+
+  .publication-row:hover .publication-cover:not(.publication-cover-fallback) {
+    transform: none;
   }
 }

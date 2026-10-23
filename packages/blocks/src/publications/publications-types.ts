@@ -68,6 +68,12 @@ export type Publication = {
   /** The organisation's curated description; typically only on `center` entries. */
   summary?: string;
   theme: PublicationTheme;
+  /**
+   * URL of a square image of the venue — the journal's cover or masthead.
+   * Rendered decoratively beside the journal name, so it needs no alt text.
+   * Omit it and the theme's glyph stands in.
+   */
+  cover?: string;
 };
 
 /* -- Resolving references ------------------------------------------------- */

@@ -25,6 +25,7 @@ import {
 } from "./project-detail-types";
 import type { Project } from "./projects-types";
 import type { Publication } from "../publications/publications-types";
+import { PublicationCover } from "../publications/publication-cover";
 import { PageCtaSection } from "../shared/page-cta";
 import { PeopleSection } from "../team/team-page";
 import { projectPeople, type Person } from "../team/team-types";
@@ -533,6 +534,7 @@ function Evidence({
           {entries.map(({ publication, note }) => (
             <li className="pd-pub" key={publication.slug}>
               <div className="pd-pub-meta">
+                <PublicationCover publication={publication} />
                 <span className="pd-pub-year">{publication.year}</span>
                 {note ? <span className="pd-pub-note">{note}</span> : null}
               </div>

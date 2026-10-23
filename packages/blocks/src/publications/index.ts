@@ -8,5 +8,6 @@
  * against, plus the search helper and the reference resolver that detail pages
  * use to turn slugs into real citations. The records are that app's content —
  * see `apps/web/src/content/` in this repo. */
+export * from "./publication-cover"
 export * from "./publications-page"
 export * from "./publications-types"
