@@ -27,6 +27,11 @@ export type Project = {
   name: string;
   /** The one-line descriptor used on the index. */
   tagline: string;
+  /**
+   * URL of the project's own square logo, shown on a paper tile beside the
+   * name. Omit and the project renders on its name alone.
+   */
+  logo?: string;
   /** Condensed from the project page's abstract. */
   summary: string;
   status: ProjectStatus;

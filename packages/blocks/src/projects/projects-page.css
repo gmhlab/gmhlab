@@ -171,10 +171,18 @@
   padding: 0;
 }
 
+/* Mark (when the record has one) beside the name and tagline. */
 .projects-spotlight-list li {
+  align-items: center;
+  display: flex;
+  gap: var(--mfy-size-space-400);
+}
+
+.projects-spotlight-item {
   display: flex;
   flex-direction: column;
   gap: var(--mfy-size-space-050);
+  min-width: 0;
 }
 
 /* Inherit the card's own text colour and let the underline carry the

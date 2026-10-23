@@ -29,6 +29,7 @@ import { PageCtaSection } from "../shared/page-cta";
 import { PeopleSection } from "../team/team-page";
 import { projectPeople, type Person } from "../team/team-types";
 import { gmhProjectDetailCta } from "../shared/gmh-copy";
+import { ProjectMark } from "./project-mark";
 import "./project-detail-page.css";
 
 /**
@@ -142,7 +143,7 @@ const STATUS_VARIANT: Record<ProjectDetail["status"], "success" | "info"> = {
   closed: "info",
 };
 
-function Hero({ detail }: { detail: ProjectDetail }) {
+function Hero({ detail, logo }: { detail: ProjectDetail; logo?: string }) {
   return (
     <Section variant="neutral" padding="1600">
       {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
@@ -159,16 +160,19 @@ function Hero({ detail }: { detail: ProjectDetail }) {
                   {detail.statusLabel}
                 </Badge>
               </Flex>
-              <Flex direction="column" alignSecondary="stretch" gap="200">
-                {/* TextTitlePage (3rem), not TextContentTitle — that resolves
-                    to TextTitleHero on desktop, which is the index page's
-                    size. A detail page sits one level down. */}
-                <TextTitlePage>{detail.name}</TextTitlePage>
-                {detail.expandedName ? (
-                  <TextSubheading className="pd-expanded-name">
-                    {detail.expandedName}
-                  </TextSubheading>
-                ) : null}
+              <Flex alignSecondary="center" gap="600">
+                {logo ? <ProjectMark src={logo} size="large" /> : null}
+                <Flex direction="column" alignSecondary="stretch" gap="200">
+                  {/* TextTitlePage (3rem), not TextContentTitle — that
+                      resolves to TextTitleHero on desktop, which is the index
+                      page's size. A detail page sits one level down. */}
+                  <TextTitlePage>{detail.name}</TextTitlePage>
+                  {detail.expandedName ? (
+                    <TextSubheading className="pd-expanded-name">
+                      {detail.expandedName}
+                    </TextSubheading>
+                  ) : null}
+                </Flex>
               </Flex>
               <Text className="pd-lede">{detail.lede}</Text>
             </Flex>
@@ -671,9 +675,14 @@ function Related({
               variant="stroke"
               padding="600"
             >
-              <Flex direction="column" alignSecondary="stretch" gap="200">
-                <TextHeading>{project.name}</TextHeading>
-                <Text>{project.tagline}</Text>
+              <Flex alignSecondary="start" gap="400">
+                {project.logo ? (
+                  <ProjectMark src={project.logo} size="small" />
+                ) : null}
+                <Flex direction="column" alignSecondary="stretch" gap="200">
+                  <TextHeading>{project.name}</TextHeading>
+                  <Text>{project.tagline}</Text>
+                </Flex>
               </Flex>
               {/* Only projects with a detail record get a link — the rest have
                   no page yet, and a card that offers a 404 is worse than a
@@ -716,7 +725,12 @@ export function ProjectDetailPage({
   return (
     <div className="project-detail-page">
       <Breadcrumb basePath={basePath} detail={detail} />
-      <Hero detail={detail} />
+      {/* The logo lives on the portfolio record, not the detail record, so
+          a project's mark is set in one place. */}
+      <Hero
+        detail={detail}
+        logo={projects.find((p) => p.slug === detail.slug)?.logo}
+      />
       {detail.rationale?.length ? (
         <Rationale paragraphs={detail.rationale} />
       ) : null}

@@ -28,6 +28,7 @@ import type { PageCta } from "../shared/page-copy";
 import { GMH_PROJECTS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
 import { PageHero } from "../shared/page-hero";
+import { ProjectMark } from "./project-mark";
 import "./projects-page.css";
 
 /**
@@ -144,6 +145,14 @@ function Facet<T extends string>({
 
 function ProjectCard({ project, href }: { project: Project; href: string }) {
   const status = STATUS_META[project.status];
+  const statusBadge = (
+    <Badge variant={status.tone} className="project-status">
+      {status.label}
+    </Badge>
+  );
+  const design = (
+    <TextSmall className="project-design">{project.design}</TextSmall>
+  );
   return (
     <Card
       className={`project-card project-card-status-${project.status}`}
@@ -157,13 +166,22 @@ function ProjectCard({ project, href }: { project: Project; href: string }) {
       }}
     >
       {/* Wrapped: `.card-content > *` is forced to width:100%, which would
-          stretch the pill across the card. */}
-      <Flex alignPrimary="space-between" alignSecondary="center" gap="400" wrap>
-        <Badge variant={status.tone} className="project-status">
-          {status.label}
-        </Badge>
-        <TextSmall className="project-design">{project.design}</TextSmall>
-      </Flex>
+          stretch the pill across the card. With a logo, the mark leads the
+          row and the status pill and design stack against the far edge. */}
+      {project.logo ? (
+        <Flex alignPrimary="space-between" alignSecondary="start" gap="400">
+          <ProjectMark src={project.logo} />
+          <Flex direction="column" alignSecondary="end" gap="200">
+            {statusBadge}
+            {design}
+          </Flex>
+        </Flex>
+      ) : (
+        <Flex alignPrimary="space-between" alignSecondary="center" gap="400" wrap>
+          {statusBadge}
+          {design}
+        </Flex>
+      )}
 
       <Flex direction="column" alignSecondary="stretch" gap="100">
         <TextHeading>{project.name}</TextHeading>
@@ -266,9 +284,14 @@ function Spotlight({
                     {STATUS_META[project.status].label}
                   </Badge>
                 </Flex>
-                <Flex direction="column" alignSecondary="stretch" gap="100">
-                  <TextTitlePage>{project.name}</TextTitlePage>
-                  <TextSubheading>{project.tagline}</TextSubheading>
+                <Flex alignSecondary="center" gap="600">
+                  {project.logo ? (
+                    <ProjectMark src={project.logo} size="large" />
+                  ) : null}
+                  <Flex direction="column" alignSecondary="stretch" gap="100">
+                    <TextTitlePage>{project.name}</TextTitlePage>
+                    <TextSubheading>{project.tagline}</TextSubheading>
+                  </Flex>
                 </Flex>
                 <Text>{project.summary}</Text>
                 <Flex wrap gap="400">
@@ -289,10 +312,15 @@ function Spotlight({
                 <ul className="projects-spotlight-list">
                   {dependents.map((dependent) => (
                     <li key={dependent.slug}>
-                      <TextLink href={`${basePath}/${dependent.slug}`}>
-                        {dependent.name}
-                      </TextLink>
-                      <TextSmall>{dependent.tagline}</TextSmall>
+                      {dependent.logo ? (
+                        <ProjectMark src={dependent.logo} size="small" />
+                      ) : null}
+                      <div className="projects-spotlight-item">
+                        <TextLink href={`${basePath}/${dependent.slug}`}>
+                          {dependent.name}
+                        </TextLink>
+                        <TextSmall>{dependent.tagline}</TextSmall>
+                      </div>
                     </li>
                   ))}
                 </ul>

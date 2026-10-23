@@ -21,6 +21,11 @@
  *
  * `slug` rather than a full URL: the page builds hrefs from a `basePath` prop
  * so the block is portable across the site that hosts it.
+ *
+ * `logo` is each project's square mark from its own page on the live site
+ * (the `*-logo-sq.png` Wix uploads), served from `public/projects/<slug>.png`.
+ * The untouched originals, the wide index versions and the partner logos from
+ * the same pages are in `apps/web/assets/gw-site/projects/` — see its README.
  */
 
 import type { Project, ProjectRegion } from "@gmhlab/blocks";
@@ -31,6 +36,7 @@ export const FEATURED_SLUG = "equip";
 export const PROJECTS: Project[] = [
   {
     slug: "alive",
+    logo: "/projects/alive.png",
     name: "ALIVE",
     tagline: "Improving Adolescent Mental Health by Reducing the Impact of Poverty",
     summary:
@@ -43,6 +49,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "equip",
+    logo: "/projects/equip.png",
     name: "EQUIP",
     tagline: "Ensuring Quality in Psychosocial and Mental Healthcare",
     summary:
@@ -57,6 +64,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "recoup-ny",
+    logo: "/projects/recoup-ny.png",
     name: "RECOUP-NY",
     tagline: "Community-Based Psychological Services in NYC",
     summary:
@@ -71,6 +79,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "unicef-mmapp",
+    logo: "/projects/unicef-mmapp.png",
     name: "UNICEF-MMAPP",
     tagline: "Measuring Mental Health Among Adolescents and Young People",
     summary:
@@ -84,6 +93,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "reshape",
+    logo: "/projects/reshape.png",
     name: "RESHAPE",
     tagline: "Reducing Stigma Among Healthcare Providers",
     summary:
@@ -101,6 +111,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "restore",
+    logo: "/projects/restore.png",
     name: "RESTORE",
     tagline: "Evaluating Self-Help Plus (SH+) in Senegal",
     summary:
@@ -116,6 +127,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "standstrong",
+    logo: "/projects/standstrong.png",
     name: "StandStrong",
     tagline: "Sensing Technology to Personalize Adolescent Maternal Depression Treatment",
     summary:
@@ -129,6 +141,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "idea",
+    logo: "/projects/idea.png",
     name: "IDEA",
     tagline: "Identifying Depression Early in Adolescents",
     summary:
@@ -142,6 +155,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "equip-su",
+    logo: "/projects/equip-su.png",
     name: "EQUIP-SU",
     tagline: "Ensuring Quality in Psychosocial and Mental Healthcare with Service Users",
     summary:
@@ -153,6 +167,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "hope",
+    logo: "/projects/hope.png",
     name: "HOPE",
     tagline: "NIHR Group on Homelessness and Mental Health in Africa",
     summary:
@@ -166,6 +181,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "scape-u",
+    logo: "/projects/scape-u.png",
     name: "SCAPE-U",
     tagline: "Strengthening Care in Collaboration with People",
     summary:

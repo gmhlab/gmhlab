@@ -1,0 +1,41 @@
+/* ProjectMark — a project logo on a paper tile. See project-mark.tsx for why
+ * the tile is paper in every theme. White is a neutral, not a brand colour, so
+ * the literal is allowed; the hairline tints from the brand ink. */
+.project-mark {
+  --project-mark-size: 4rem;
+  background: white;
+  border-radius: var(--md-sys-shape-corner-medium);
+  box-shadow:
+    inset 0 0 0 var(--mfy-size-stroke-border)
+      color-mix(in oklch, var(--mfy-color-brand-800) 12%, transparent),
+    var(--md-sys-elevation-level1);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: var(--project-mark-size);
+  padding: calc(var(--project-mark-size) * 0.1);
+  width: var(--project-mark-size);
+}
+
+.project-mark img {
+  display: block;
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.project-mark-small {
+  --project-mark-size: 3rem;
+  border-radius: var(--md-sys-shape-corner-small);
+}
+
+.project-mark-large {
+  --project-mark-size: 6.5rem;
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+@media (min-width: 600px) {
+  .project-mark-large {
+    --project-mark-size: 8rem;
+  }
+}
