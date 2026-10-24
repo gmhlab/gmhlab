@@ -1,6 +1,6 @@
 # @gmhlab/tokens
 
-The design-token **value layer** for the GMH Lab design system: the `--mfy-*` CSS custom properties, light/dark theme values, responsive variables, icon sizing, and global base styles.
+The design-token **value layer** for the GMH Lab design system: the `--gmh-*` CSS custom properties — Material Design 3 colour roles and system tokens — with light/dark values, responsive variables, icon sizing, and global base styles.
 
 This package is CSS-only. It carries **no Tailwind directives** and exports no runtime JavaScript — consume the tokens as CSS variables.
 
@@ -22,24 +22,43 @@ Then reference tokens anywhere in your CSS:
 
 ```css
 .card {
-  background: var(--mfy-color-background-default-default);
-  color: var(--mfy-color-text-default-default);
-  gap: var(--mfy-size-space-400);
+  background: var(--gmh-color-surface-container-low);
+  color: var(--gmh-color-on-surface);
+  border-radius: var(--gmh-shape-corner-medium);
+  font: var(--gmh-typescale-body-large);
+  gap: var(--gmh-space-400);
 }
 ```
 
-## Material 3 colour roles
+## One layer, Material 3 names
 
-Colour follows Material Design 3. The standard M3 role tokens are available
-directly — `--md-sys-color-primary`, `--md-sys-color-on-surface`,
-`--md-sys-color-tertiary-container`, … — alongside the tonal palettes
-(`--md-ref-palette-primary40`, …). They are GMH Lab's: GW navy `#033C5A` is the
-light-mode primary and GW gold `#AA9868` the tertiary container. The older
-`--mfy-color-*` semantic tokens resolve to the same roles.
+There is one token layer. Its names are Material Design 3's with GMH Lab's
+prefix: M3's `--md-sys-X` is `--gmh-X` here and `--md-ref-X` is
+`--gmh-ref-X`, so anything written against the M3 spec reads the same.
+
+| Group | Tokens |
+| --- | --- |
+| Colour roles | `--gmh-color-primary`, `--gmh-color-on-primary-container`, `--gmh-color-surface-container-high`, `--gmh-color-outline-variant`, … |
+| Tonal palettes | `--gmh-ref-palette-primary40`, `--gmh-ref-palette-tertiary80`, … |
+| Shape | `--gmh-shape-corner-extra-small` … `--gmh-shape-corner-full` |
+| Type | `--gmh-typescale-<role>-{font,weight,size,line-height,tracking}`, plus a `font` shorthand `--gmh-typescale-<role>` |
+| Elevation, state, motion | `--gmh-elevation-level0…5`, `--gmh-state-*`, `--gmh-motion-*` |
+| Not in M3 | `--gmh-space-*`, `--gmh-stroke-*`, `--gmh-icon-size-*`, `--gmh-responsive-*` |
+
+Colour is GMH Lab's: GW navy `#033C5A` is the light-mode `primary`, GW gold
+`#AA9868` is `tertiary-container` (a fill — gold *text* is `tertiary`). On top
+of M3's roles there are `success`, `warning` and `info` (custom colours in M3's
+four-role shape) and four GMH roles: `brand-band`, `on-brand-band`,
+`brand-band-accent` (the full-width navy band) and `navy` (GW navy that never
+flips).
+
+`src/color.css` is generated — run `pnpm --filter @gmhlab/tokens script:color`.
+The script measures every content-on-container pairing and refuses to write a
+failing one.
 
 ## Light and dark
 
-Light and dark are driven by a **`.dark` class on `<html>`** (not `prefers-color-scheme` directly). Add or remove that class to switch modes; every `--md-sys-color-*` role and `--mfy-*` semantic token flips with it.
+Light and dark are driven by a **`.dark` class on `<html>`** (not `prefers-color-scheme` directly). Add or remove that class to switch modes; every `--gmh-color-*` role flips with it.
 
 ## The brand is fixed
 

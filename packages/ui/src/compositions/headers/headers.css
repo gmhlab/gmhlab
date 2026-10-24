@@ -7,8 +7,8 @@
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background: color-mix(
-    in oklch,
-    var(--mfy-color-background-default-default) 90%,
+    in srgb,
+    var(--gmh-color-surface) 90%,
     transparent
   );
   /* Figma gives both header variants (Desktop 7717:3642, Mobile 2299:23639) a
@@ -17,15 +17,15 @@
    * `:not(:first-child)`) — that happened to resolve correctly while the
    * header was the body's first child, but would have grown a top border the
    * moment anything rendered above it. */
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
   left: 0;
   position: sticky;
   top: 0;
   z-index: var(--global-stack-header, 40);
 
   .logo-gmh > svg {
-    --logo-color: var(--mfy-color-icon-brand-default);
+    --logo-color: var(--gmh-color-primary);
   }
 }
 
@@ -38,10 +38,9 @@
 }
 @keyframes header-stuck {
   to {
-    /* brand-800, not a literal: the shadow is tinted with the theme's brand
-       colour so a re-themed site does not get a GW-navy shadow. */
+    /* A navy-tinted shadow, from the token rather than a literal. */
     box-shadow: 0 1px 20px
-      color-mix(in oklch, var(--mfy-color-brand-800) 9%, transparent);
+      color-mix(in srgb, var(--gmh-color-navy) 9%, transparent);
   }
 }
 
@@ -49,7 +48,7 @@
 .header-brand-compact {
   align-items: center;
   display: flex;
-  gap: var(--mfy-size-space-300);
+  gap: var(--gmh-space-300);
 }
 /* A lockup replaces the mark + wordmark at the same 600px pivot as the rest
  * of the header (see below). Both halves stay in the DOM; display: none takes
@@ -66,10 +65,10 @@
   }
 }
 .header-wordmark {
-  color: var(--mfy-color-text-brand-default);
+  color: var(--gmh-color-primary);
   display: none;
-  font-family: var(--mfy-typography-family-serif);
-  font-size: var(--mfy-typography-scale-04);
+  font-family: var(--gmh-ref-typeface-brand);
+  font-size: var(--gmh-typescale-title-large-size);
   line-height: 1.15;
   text-decoration: none;
 }
@@ -80,8 +79,8 @@
   }
 }
 .header-wordmark-eyebrow {
-  color: var(--mfy-color-text-accent-default);
-  font: var(--mfy-font-body-small-strong);
+  color: var(--gmh-color-tertiary);
+  font: var(--gmh-typescale-label-large);
   font-size: 0.6875rem;
   letter-spacing: 0.16em;
   margin-bottom: 0.2rem;
@@ -89,14 +88,14 @@
 }
 
 .utility-bar {
-  background: var(--mfy-color-brand-900);
-  color: var(--mfy-color-gold-300);
-  font: var(--mfy-font-body-small);
-  font-size: var(--mfy-typography-scale-01);
+  background: var(--gmh-ref-palette-primary15);
+  color: var(--gmh-color-brand-band-accent);
+  font: var(--gmh-typescale-body-medium);
+  font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.06em;
 
   &.section {
-    padding-block: var(--mfy-size-space-200);
+    padding-block: var(--gmh-space-200);
   }
 
   a {
@@ -105,7 +104,7 @@
     transition: color var(--global-duration-fast) ease;
   }
   a:hover {
-    color: var(--mfy-color-white-1000);
+    color: var(--gmh-color-on-brand-band);
   }
 }
 @media (max-width: 639.98px) {
@@ -124,7 +123,7 @@
  * needs `.header.section` to outspecify it. */
 @media (min-width: 600px) {
   .header.section {
-    padding: var(--mfy-size-space-800);
+    padding: var(--gmh-space-800);
   }
 }
 
@@ -132,11 +131,11 @@
  * desktop. Both rules outspecify the 48px default in logo.css. */
 .header .logo-gmh > svg,
 .navigation-dialog .logo-gmh > svg {
-  --logo-gmh-height: var(--mfy-size-icon-large, 2.5rem);
+  --logo-gmh-height: var(--gmh-icon-size-large);
 }
 @media (min-width: 600px) {
   .header .logo-gmh > svg {
-    --logo-gmh-height: var(--mfy-typography-scale-08, 3rem);
+    --logo-gmh-height: var(--gmh-icon-size-extra-large);
   }
 }
 
@@ -173,19 +172,19 @@
   [data-slot="navigation-menu-link"] {
     background: transparent;
     border-radius: 0;
-    color: var(--mfy-color-text-brand-default);
-    font-weight: var(--mfy-typography-weight-semibold);
-    padding-inline: var(--mfy-size-space-100);
+    color: var(--gmh-color-primary);
+    font-weight: var(--gmh-ref-typeface-weight-semibold);
+    padding-inline: var(--gmh-space-100);
     position: relative;
 
     &::after {
-      background: var(--mfy-color-border-accent-default);
+      background: var(--gmh-color-tertiary-container);
       bottom: 0.15rem;
       content: "";
       height: 2px;
-      left: var(--mfy-size-space-100);
+      left: var(--gmh-space-100);
       position: absolute;
-      right: var(--mfy-size-space-100);
+      right: var(--gmh-space-100);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.28s var(--global-ease-out);
@@ -206,22 +205,22 @@
 }
 
 .header-auth-avatar-button {
-  --border-radius: var(--mfy-size-radius-200);
+  --border-radius: var(--gmh-shape-corner-small);
   align-items: center;
   border-radius: var(--border-radius);
   cursor: pointer;
   display: flex;
-  gap: var(--mfy-size-space-200);
-  padding: var(--mfy-size-space-100) var(--mfy-size-space-200);
+  gap: var(--gmh-space-200);
+  padding: var(--gmh-space-100) var(--gmh-space-200);
   position: relative;
 
   &[data-hovered] {
-    background-color: var(--mfy-color-background-default-default-hover);
+    background-color: color-mix(in srgb, var(--gmh-color-surface), var(--gmh-color-on-surface) calc(var(--gmh-state-hover-state-layer-opacity) * 100%));
   }
 
   &[data-focus-visible] {
     outline: none;
-    --offset: calc(var(--mfy-size-stroke-border) * 2);
+    --offset: calc(var(--gmh-stroke-border) * 2);
     &::before {
       content: "";
       border-radius: calc(var(--border-radius) + var(--offset));
@@ -236,7 +235,7 @@
   }
 
   > .logo {
-    --icon-color: var(--mfy-color-icon-default-default);
+    --icon-color: var(--gmh-color-on-surface);
   }
 }
 
@@ -253,11 +252,11 @@
   border-radius: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-1600);
+  gap: var(--gmh-space-1600);
   height: 100%;
   inset: 0;
   max-width: 100%;
-  padding: var(--mfy-size-space-800) var(--mfy-size-space-600);
+  padding: var(--gmh-space-800) var(--gmh-space-600);
   translate: none;
   width: 100%;
 }

@@ -1,13 +1,13 @@
 .form-box {
   align-items: flex-start;
-  background: var(--mfy-color-background-default-default);
-  border: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
-  border-radius: var(--mfy-size-radius-200);
+  background: var(--gmh-color-surface);
+  border: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
+  border-radius: var(--gmh-shape-corner-small);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-600);
-  padding: var(--mfy-size-space-600);
+  gap: var(--gmh-space-600);
+  padding: var(--gmh-space-600);
 
   > * {
     width: 100%;

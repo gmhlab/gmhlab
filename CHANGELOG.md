@@ -26,6 +26,39 @@ then rename this section to the new version with today's date and open a fresh
 ### Security   — vulnerability fixes
 -->
 
+### Changed
+
+- **Breaking** `tokens` `ui` `blocks` — One token layer, prefixed `--gmh-`, named
+  after Material Design 3. The `--mfy-*` semantic layer and the `--md-*` M3 layer
+  under it are both gone: M3's `--md-sys-X` is now `--gmh-X` and `--md-ref-X` is
+  `--gmh-ref-X` (`--gmh-color-on-surface-variant`, `--gmh-shape-corner-small`,
+  `--gmh-typescale-body-large`). New roles: `success` / `warning` / `info` (M3
+  custom-colour shape), `brand-band` / `on-brand-band` / `brand-band-accent` /
+  `navy`, and `--gmh-space-*`, `--gmh-stroke-*`, `--gmh-icon-size-*`.
+- **Breaking** `ui` — Tailwind colour utilities are the M3 role names
+  (`bg-surface-container-low`, `text-on-surface-variant`, `bg-success-container`);
+  the `surface-*` / `content-*` / `line-*` / `mfy-*` utilities, the numeric
+  `rounded-100…400` and `shadow-100…600` keys and the `text-size-*` / `text-scale-*`
+  keys are removed. `type-*` utilities are now the 15 M3 type roles
+  (`type-body-large`, `type-label-large`); M3 elevation is `shadow-level1…5`.
+  `bg-secondary` keeps shadcn's meaning (the tonal button).
+- **Breaking** `ui` — `Flex` emits `flex-gmh` (was `flex-mfy`), `Grid` emits
+  `grid-gmh` (was `grid-mfy`).
+- `ui` — `Badge`'s `info` / `warning` / `success` variants use the generated M3
+  container pairs.
+
+### Removed
+
+- `tokens` — the MonoFly Figma ingestion pipeline (`script:tokens`, the Figma
+  plugin and its JSON exports) and the `theme.css` drift report it produced.
+  `script:material` is now `script:color`.
+
+### Fixed
+
+- `ui` `blocks` — translucent mixes (`color-mix(… , transparent)`) interpolate in
+  sRGB, not OKLCH. Mixing a near-neutral colour with `transparent` in OKLCH left
+  the hue undefined, which renders as hue 0 — the sticky header was tinted pink.
+
 ## [0.1.0] — 2026-08-05
 
 First published release. Prior work was unpublished; this entry describes the packages as they first shipped rather than itemising changes against `0.0.0`.

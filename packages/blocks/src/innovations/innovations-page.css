@@ -35,39 +35,39 @@
 }
 .innovation-card:hover {
   box-shadow:
-    inset 0 0 0 var(--mfy-size-stroke-border)
-      var(--mfy-color-border-default-default),
-    var(--mfy-effects-shadows-drop-shadow-600);
+    inset 0 0 0 var(--gmh-stroke-border)
+      var(--gmh-color-outline-variant),
+    var(--gmh-elevation-level5);
   transform: translateY(-2px);
 }
 
 /* Card content is a 24px-gap column; the meta pair sits on its own hairline
  * above the link, as small-caps terms over their values. */
 .innovation-card-meta {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mfy-size-space-300) var(--mfy-size-space-800);
+  gap: var(--gmh-space-300) var(--gmh-space-800);
   margin: 0;
-  padding-top: var(--mfy-size-space-400);
+  padding-top: var(--gmh-space-400);
 
   div {
     display: flex;
     flex-direction: column;
-    gap: var(--mfy-size-space-050);
+    gap: var(--gmh-space-050);
   }
   dt {
     /* `tertiary` (M3 tertiary, the passing gold), not the #AA9868 fill. */
-    color: var(--mfy-color-text-accent-default);
-    font: var(--mfy-font-body-small-strong);
+    color: var(--gmh-color-tertiary);
+    font: var(--gmh-typescale-label-large);
     font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
   dd {
-    color: var(--mfy-color-text-default-default);
-    font: var(--mfy-font-body-small);
+    color: var(--gmh-color-on-surface);
+    font: var(--gmh-typescale-body-medium);
     margin: 0;
   }
 }
@@ -76,10 +76,10 @@
  * glyph cards in the graphics kit, scaled to a card's corner. */
 .innovation-card-icon {
   align-items: center;
-  background: var(--mfy-color-background-accent-tertiary);
-  border-radius: var(--mfy-size-radius-400);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-accent-tertiary);
+  background: color-mix(in srgb, var(--gmh-color-tertiary-container) 24%, var(--gmh-color-surface));
+  border-radius: var(--gmh-shape-corner-medium);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 35%, var(--gmh-color-surface));
   display: flex;
   height: 4rem;
   justify-content: center;
@@ -88,7 +88,7 @@
 
 /* The wave is carved out of the brand band in the hero's neutral surface. */
 .innovations-page {
-  --graphic-wave-fill: var(--mfy-color-background-default-tertiary);
+  --graphic-wave-fill: var(--gmh-color-surface-container-high);
 }
 
 /* Colour comes from Badge's info/warning/success variants now; this only adds
@@ -99,19 +99,19 @@
 }
 
 .innovations-partners {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
 }
 
 .innovations-partner-logo {
   align-items: center;
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-100);
+  background: var(--gmh-color-surface-container-low);
+  border-radius: var(--gmh-shape-corner-extra-small);
   /* `default`, not `secondary`: this tile's own gray-100 surface drops
      #757575 to 4.23:1, just under AA. (`tertiary` here was ~1.9:1.) */
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
   display: flex;
   height: 2.5rem;
   justify-content: center;
@@ -131,6 +131,6 @@
    `secondary`, not `tertiary`: the card resets to its own white surface, where
    secondary is 4.6:1 — tertiary would be ~2:1 and fail AA. */
 .innovation-card-pending {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   font-style: italic;
 }

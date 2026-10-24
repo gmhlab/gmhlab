@@ -10,7 +10,7 @@ const features = [
   { title: "Fill", body: 'size="fill" lets an item expand to eat the remaining space in the row.' },
   { title: "Minor / Major", body: "Relative sizes that resolve against the flex type's column math." },
   { title: "Direction", body: 'direction="column" stacks items vertically with the same gap tokens.' },
-  { title: "Gap", body: 'gap="200"…"600" pulls straight from the --mfy spacing scale.' },
+  { title: "Gap", body: 'gap="200"…"600" pulls straight from the --gmh spacing scale.' },
   { title: "Align", body: "alignPrimary / alignSecondary control main- and cross-axis placement." },
 ];
 

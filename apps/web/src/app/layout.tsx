@@ -17,20 +17,20 @@ export const metadata: Metadata = {
 
 /* Web fallbacks for the GW faces. Baskerville and Avenir Next are macOS system
    fonts and win on a Mac; everyone else gets these, self-hosted by next/font.
-   The `variable`s feed the optional hooks in @gmhlab/tokens' family stacks
-   (--mfy-typography-family-{serif,sans}-web), which is how a hashed next/font
+   The `variable`s feed the optional hooks in @gmhlab/tokens' typeface stacks
+   (--gmh-ref-typeface-{brand,plain}-web), which is how a hashed next/font
    family name reaches a token without the token knowing about Next. */
 const serif = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400", "700"],
   style: ["normal", "italic"],
-  variable: "--mfy-typography-family-serif-web",
+  variable: "--gmh-ref-typeface-brand-web",
   display: "swap",
 });
 const sans = Nunito_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--mfy-typography-family-sans-web",
+  variable: "--gmh-ref-typeface-plain-web",
   display: "swap",
 });
 

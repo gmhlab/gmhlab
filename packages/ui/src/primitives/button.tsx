@@ -13,15 +13,15 @@ const buttonVariants = cva(
         // them back down. Lift is off under reduced motion.
         default:
           "bg-primary text-primary-foreground hover:bg-primary/88 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
-        // The secondary brand colour (GW gold). Navy text, not white: white on
-        // #aa9868 is 2.8:1, navy is 5.8:1. Hover deepens to gold-600 — still
-        // AA against the navy label.
+        // The secondary brand colour (GW gold, M3 tertiary-container). Navy
+        // text, not white: white on #aa9868 is 2.8:1, navy is 5.8:1. Hover is
+        // the M3 state layer: the label colour over the fill at 8%.
         accent:
-          "bg-surface-accent text-content-on-accent hover:bg-surface-accent-hover hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
+          "bg-tertiary-container text-on-tertiary-container hover:bg-[color-mix(in_srgb,var(--gmh-color-tertiary-container),var(--gmh-color-on-tertiary-container)_8%)] hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
         outline:
-          "border-border bg-background text-foreground shadow-xs hover:border-line-accent hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border-border bg-background text-foreground shadow-xs hover:border-tertiary-container hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_srgb,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:

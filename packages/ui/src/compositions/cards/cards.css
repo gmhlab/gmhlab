@@ -1,15 +1,15 @@
 .card {
-  --border-radius: var(--mfy-size-radius-200);
-  background: var(--mfy-color-background-default-default);
+  --border-radius: var(--gmh-shape-corner-small);
+  background: var(--gmh-color-surface);
   /* Paired with the background on purpose. `background` doesn't inherit but
    * `color` does, and nothing between here and the glyphs declares one — so
    * without this a card inside `.section-variant-brand` keeps its own white
    * surface while inheriting that section's `text-brand-on-brand`, i.e.
    * near-white type on white. Any rule below that changes `background` must
    * also set `color`, the way `.card-variant-brand` does. */
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
   border-radius: var(--border-radius);
-  gap: var(--mfy-size-space-600);
+  gap: var(--gmh-space-600);
   display: flex;
   position: relative;
 
@@ -23,31 +23,31 @@
 
   &.card-variant-stroke {
     box-shadow:
-      inset 0 0 0 var(--mfy-size-stroke-border)
-        var(--mfy-color-border-default-default),
-      var(--mfy-effects-shadows-drop-shadow-300);
+      inset 0 0 0 var(--gmh-stroke-border)
+        var(--gmh-color-outline-variant),
+      var(--gmh-elevation-level2);
   }
 
   &.card-variant-brand {
     --text-heading-color: currentColor;
-    --text-heading-em-color: var(--mfy-color-gold-300);
-    --text-eyebrow-color: var(--mfy-color-gold-300);
-    background: var(--mfy-color-background-brand-default);
+    --text-heading-em-color: var(--gmh-color-brand-band-accent);
+    --text-eyebrow-color: var(--gmh-color-brand-band-accent);
+    background: var(--gmh-color-brand-band);
     box-shadow:
-      inset 0 0 0 var(--mfy-size-stroke-border)
-        var(--mfy-color-border-default-default),
-      var(--mfy-effects-shadows-drop-shadow-300);
-    color: var(--mfy-color-text-brand-on-brand);
+      inset 0 0 0 var(--gmh-stroke-border)
+        var(--gmh-color-outline-variant),
+      var(--gmh-elevation-level2);
+    color: var(--gmh-color-on-brand-band);
     .text-list {
       color: inherit;
     }
   }
 
   &.card-padding-600 {
-    padding: var(--mfy-size-space-600);
+    padding: var(--gmh-space-600);
   }
   &.card-padding-800 {
-    padding: var(--mfy-size-space-800);
+    padding: var(--gmh-space-800);
   }
 
   /* A card that is a link lifts and casts a navy-tinted shadow, like the GW
@@ -59,10 +59,10 @@
   }
   &:has(.card-interaction[data-hovered]:not([data-focus-visible])) {
     box-shadow:
-      inset 0 0 0 var(--mfy-size-stroke-border)
-        var(--mfy-color-border-accent-default),
+      inset 0 0 0 var(--gmh-stroke-border)
+        var(--gmh-color-tertiary-container),
       0 18px 46px -20px
-        color-mix(in oklch, var(--mfy-color-brand-800) 40%, transparent);
+        color-mix(in srgb, var(--gmh-color-navy) 40%, transparent);
   }
   @media (prefers-reduced-motion: no-preference) {
     &:has(.card-interaction[data-hovered]:not([data-focus-visible])) {
@@ -75,7 +75,7 @@
     grid-area: asset;
 
     .icon {
-      --icon-color: var(--mfy-color-icon-default-default);
+      --icon-color: var(--gmh-color-on-surface);
     }
   }
 
@@ -93,7 +93,7 @@
     align-items: var(--content-align, start);
     display: flex;
     flex-direction: column;
-    gap: var(--mfy-size-space-600);
+    gap: var(--gmh-space-600);
     grid-area: content;
 
     > * {
@@ -114,7 +114,7 @@
 
   &[data-focus-visible] {
     outline: none;
-    --offset: calc(var(--mfy-size-stroke-border) * 2);
+    --offset: calc(var(--gmh-stroke-border) * 2);
     &::before {
       content: "";
       border-radius: calc(var(--border-radius) + var(--offset));
@@ -129,30 +129,30 @@
   }
 }
 .stats-card {
-  border-top: 2px solid var(--mfy-color-border-accent-default);
+  border-top: 2px solid var(--gmh-color-tertiary-container);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-300);
-  padding-top: var(--mfy-size-space-500, 1.25rem);
+  gap: var(--gmh-space-300);
+  padding-top: var(--gmh-space-500);
 }
 .stats-card-value {
   color: var(--text-heading-color, inherit);
-  font-family: var(--mfy-typography-family-serif);
+  font-family: var(--gmh-ref-typeface-brand);
   font-size: clamp(2.375rem, 5vw, 3.75rem);
   font-variant-numeric: lining-nums tabular-nums;
   line-height: 1;
   margin: 0;
 }
 .stats-card-label {
-  color: var(--stats-card-label-color, var(--mfy-color-text-default-secondary));
-  font: var(--mfy-font-body-small);
+  color: var(--stats-card-label-color, var(--gmh-color-on-surface-variant));
+  font: var(--gmh-typescale-body-medium);
   line-height: 1.45;
   margin: 0;
   max-width: 24ch;
 }
 .section-variant-brand .stats-card,
 .card-variant-brand .stats-card {
-  --stats-card-label-color: var(--mfy-color-gold-300);
+  --stats-card-label-color: var(--gmh-color-brand-band-accent);
 }
 
 /* A light card inside a brand band is paper again, so it also drops the
@@ -162,5 +162,5 @@
 .section-variant-brand .card:not(.card-variant-brand) {
   --text-eyebrow-color: initial;
   --text-heading-em-color: initial;
-  --text-heading-color: var(--mfy-color-text-brand-default);
+  --text-heading-color: var(--gmh-color-primary);
 }

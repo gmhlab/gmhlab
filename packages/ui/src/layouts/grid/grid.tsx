@@ -57,7 +57,7 @@ export function Grid({
 }: GridProps) {
   const classNames = clsx(
     className,
-    "grid-mfy",
+    "grid-gmh",
     container && "grid-container",
     `grid-justify-items-${justifyItems}`,
     `grid-align-items-${alignItems}`,
@@ -72,9 +72,9 @@ export function Grid({
     display: "grid",
     gridTemplateColumns: columns,
     gridTemplateRows: rows,
-    gap: gap ? `var(--mfy-size-space-${gap})` : undefined,
-    columnGap: columnGap ? `var(--mfy-size-space-${columnGap})` : undefined,
-    rowGap: rowGap ? `var(--mfy-size-space-${rowGap})` : undefined,
+    gap: gap ? `var(--gmh-space-${gap})` : undefined,
+    columnGap: columnGap ? `var(--gmh-space-${columnGap})` : undefined,
+    rowGap: rowGap ? `var(--gmh-space-${rowGap})` : undefined,
     justifyItems,
     alignItems,
   };

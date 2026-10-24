@@ -23,7 +23,7 @@ import "./innovations-page.css";
  * The `innovations.tsx` wireframe rebuilt on the @gmhlab/ui layouts,
  * compositions and primitives. Same sections in the same order, same copy,
  * same 2-up card grid — but the chrome comes from Section/Flex/CardGrid/Card
- * and the colour, spacing and type come from `--mfy-*` tokens instead of the
+ * and the colour, spacing and type come from `--gmh-*` tokens instead of the
  * hardcoded palette in `innovations.css`.
  *
  * Page content only: the site header and footer belong to the consuming app's

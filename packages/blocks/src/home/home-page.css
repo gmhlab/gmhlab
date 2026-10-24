@@ -49,8 +49,8 @@
 }
 
 .home-caption {
-  color: var(--mfy-color-text-default-secondary);
-  font: var(--mfy-font-body-small);
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-medium);
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
   margin: 0;
@@ -85,7 +85,7 @@
 }
 
 .home-hero-actions {
-  margin-top: var(--mfy-size-space-200);
+  margin-top: var(--gmh-space-200);
 }
 
 .home-hero-figure {
@@ -97,13 +97,13 @@
 }
 .home-hero-image {
   aspect-ratio: 4 / 5;
-  border-radius: var(--mfy-size-radius-100);
+  border-radius: var(--gmh-shape-corner-extra-small);
 }
 /* The kit's bracket frame: gold corners at two opposite edges of the photo,
    a dotted field behind its lower-left. */
 .home-hero-frame::before,
 .home-hero-frame::after {
-  border: 3px solid var(--mfy-color-border-accent-default);
+  border: 3px solid var(--gmh-color-tertiary-container);
   content: "";
   height: clamp(2rem, 4vw, 3rem);
   position: absolute;
@@ -124,7 +124,7 @@
 .home-hero-rule {
   background: radial-gradient(
       circle,
-      color-mix(in oklch, var(--mfy-color-icon-brand-default) 50%, transparent)
+      color-mix(in srgb, var(--gmh-color-primary) 50%, transparent)
         1.6px,
       transparent 2px
     )
@@ -137,7 +137,7 @@
   z-index: -1;
 }
 .home-hero-figure .home-caption {
-  margin-top: var(--mfy-size-space-300);
+  margin-top: var(--gmh-space-300);
 }
 @media (max-width: 939.98px) {
   .home-hero-figure {
@@ -170,7 +170,7 @@
 /* ── The care-gap field ─────────────────────────────────────────────── */
 
 .home-gap-body {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   max-width: 52ch;
 }
 
@@ -188,7 +188,7 @@
 .home-gap-cell {
   fill: none;
   opacity: 0.3;
-  stroke: var(--mfy-color-text-brand-default);
+  stroke: var(--gmh-color-primary);
   stroke-linecap: round;
   stroke-width: 1.4;
   transition:
@@ -197,9 +197,9 @@
     stroke 0.5s ease;
 
   &.is-lit {
-    fill: var(--mfy-color-background-accent-default);
+    fill: var(--gmh-color-tertiary-container);
     opacity: 1;
-    stroke: var(--mfy-color-background-accent-default);
+    stroke: var(--gmh-color-tertiary-container);
   }
 }
 /* When the field scrolls in, the lit figures fill one after another — the
@@ -208,7 +208,7 @@
   .home-page[data-reveal] .home-gap-field:not(.is-in) .home-gap-cell.is-lit {
     fill: transparent;
     opacity: 0.3;
-    stroke: var(--mfy-color-text-brand-default);
+    stroke: var(--gmh-color-primary);
   }
   .home-gap-field.is-in .home-gap-cell.is-lit {
     transition-delay: calc(var(--cell-index) * 9ms + 300ms);
@@ -216,29 +216,29 @@
 }
 
 .home-gap-legend {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   display: flex;
   flex-wrap: wrap;
-  font: var(--mfy-font-body-small);
-  gap: var(--mfy-size-space-300) var(--mfy-size-space-600);
-  margin-top: var(--mfy-size-space-200);
+  font: var(--gmh-typescale-body-medium);
+  gap: var(--gmh-space-300) var(--gmh-space-600);
+  margin-top: var(--gmh-space-200);
 
   span {
     align-items: center;
     display: inline-flex;
-    gap: var(--mfy-size-space-200);
+    gap: var(--gmh-space-200);
   }
 }
 .home-gap-key {
-  border: 1.4px solid var(--mfy-color-text-brand-default);
+  border: 1.4px solid var(--gmh-color-primary);
   display: inline-block;
   height: 0.6875rem;
   opacity: 0.45;
   width: 0.6875rem;
 }
 .home-gap-key-lit {
-  background: var(--mfy-color-background-accent-default);
-  border-color: var(--mfy-color-background-accent-default);
+  background: var(--gmh-color-tertiary-container);
+  border-color: var(--gmh-color-tertiary-container);
   opacity: 1;
 }
 
@@ -280,16 +280,16 @@
 /* A glyph card's art: the glyph large on a navy panel with the kit's contour
    texture and the brand band's gold bloom. */
 .home-focus-art {
-  --graphic-contour-color: var(--mfy-color-icon-brand-on-brand);
+  --graphic-contour-color: var(--gmh-color-on-brand-band);
   align-items: center;
   aspect-ratio: 16 / 10;
   background:
     radial-gradient(
       90% 120% at 14% 0%,
-      color-mix(in oklch, var(--mfy-color-gold-500) 28%, transparent),
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 28%, transparent),
       transparent 62%
     ),
-    var(--mfy-color-background-brand-default);
+    var(--gmh-color-brand-band);
   display: flex;
   justify-content: center;
   width: 100%;
@@ -308,29 +308,29 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--mfy-size-space-300);
+  gap: var(--gmh-space-300);
   padding: clamp(1.25rem, 2.4vw, 1.75rem);
 
   .text-body-base {
-    color: var(--mfy-color-text-default-default);
+    color: var(--gmh-color-on-surface);
     font-size: 0.96875rem;
-    margin-bottom: var(--mfy-size-space-200);
+    margin-bottom: var(--gmh-space-200);
   }
 }
 .home-arrow-link {
   align-items: center;
   align-self: flex-start;
   border-bottom: 1.5px solid transparent;
-  color: var(--mfy-color-text-brand-default);
+  color: var(--gmh-color-primary);
   display: inline-flex;
-  font: var(--mfy-font-body-small-strong);
-  gap: var(--mfy-size-space-200);
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-200);
   margin-top: auto;
   padding-bottom: 3px;
   transition: border-color var(--global-duration-fast) ease;
 }
 .home-focus-card:hover .home-arrow-link {
-  border-color: var(--mfy-color-border-accent-default);
+  border-color: var(--gmh-color-tertiary-container);
 }
 
 /* ── Pull quote ─────────────────────────────────────────────────────── */
@@ -344,7 +344,7 @@
 
 .home-partners {
   display: grid;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
   list-style: none;
   margin: 0;
@@ -352,28 +352,28 @@
   width: 100%;
 }
 .home-partner {
-  background: var(--mfy-color-background-default-default);
-  border: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
-  border-radius: var(--mfy-size-radius-100);
-  color: var(--mfy-color-text-brand-default);
-  font: var(--mfy-font-body-small-strong);
+  background: var(--gmh-color-surface);
+  border: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
+  border-radius: var(--gmh-shape-corner-extra-small);
+  color: var(--gmh-color-primary);
+  font: var(--gmh-typescale-label-large);
   min-width: 0;
   padding: 1.375rem 1.125rem;
   text-align: center;
   transition: border-color 0.3s ease;
 
   &:hover {
-    border-color: var(--mfy-color-border-accent-default);
+    border-color: var(--gmh-color-tertiary-container);
   }
 
   span {
-    color: var(--mfy-color-text-default-secondary);
+    color: var(--gmh-color-on-surface-variant);
     display: block;
-    font: var(--mfy-font-body-small);
+    font: var(--gmh-typescale-body-medium);
     font-size: 0.75rem;
     letter-spacing: 0.04em;
-    margin-top: var(--mfy-size-space-100);
+    margin-top: var(--gmh-space-100);
   }
 }
 
@@ -382,8 +382,8 @@
 /* Research and the closing CTA are brand bands; with no pull quote and no
    partners they stack. A faint gold hairline keeps each its own. */
 .home-page .section-variant-brand + .section-variant-brand {
-  border-top: var(--mfy-size-stroke-border) solid
-    color-mix(in oklch, var(--mfy-color-gold-500) 30%, transparent);
+  border-top: var(--gmh-stroke-border) solid
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 30%, transparent);
 }
 
 /* ── Closing CTA ────────────────────────────────────────────────────── */
@@ -394,10 +394,10 @@
   background:
     radial-gradient(
       70% 120% at 78% 110%,
-      color-mix(in oklch, var(--mfy-color-gold-500) 38%, transparent),
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 38%, transparent),
       transparent 60%
     ),
-    var(--mfy-color-brand-900);
+    var(--gmh-ref-palette-primary15);
   text-align: center;
 }
 /* The care rings radiate from behind the right edge — the page closes on
@@ -415,7 +415,7 @@
   }
 }
 .home-cta-body {
-  color: var(--mfy-color-gold-300);
+  color: var(--gmh-color-brand-band-accent);
   max-width: 52ch;
 }
 

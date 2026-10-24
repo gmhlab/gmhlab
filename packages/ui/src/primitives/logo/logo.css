@@ -1,11 +1,11 @@
 .logo {
-  --border-radius: var(--mfy-size-radius-200);
+  --border-radius: var(--gmh-shape-corner-small);
   border-radius: var(--border-radius);
   position: relative;
 
   &[data-focus-visible] {
     outline: none;
-    --offset: calc(var(--mfy-size-stroke-border) * 2);
+    --offset: calc(var(--gmh-stroke-border) * 2);
     &::before {
       content: "";
       border-radius: calc(var(--border-radius) + var(--offset));
@@ -26,15 +26,14 @@
    on purpose: dev-mode CSS ships un-flattened, and Safari <16.5 drops nested
    rules. */
 .logo > svg {
-  --logo-color: var(--mfy-color-icon-default-default);
+  --logo-color: var(--gmh-color-on-surface);
   height: auto;
-  width: var(--mfy-size-icon-small, 1.5rem);
+  width: var(--gmh-icon-size-small);
 }
 
 /* The GMH mark is near-square (1144.11 x 945, a little wider than tall), so
-   it is sized by height — Figma specs the mark at 48px tall. There is no
-   --mfy-size-icon-* at 48px (large tops out at 40px), so this uses the same
-   token icons.css maps .icon-size-48 to. Same specificity as the rule above —
+   it is sized by height — Figma specs the mark at 48px tall. This is
+   --gmh-icon-size-extra-large, the token icons.css maps .icon-size-48 to. Same specificity as the rule above —
    it wins by source order.
 
    Width is computed from the aspect rather than left as `auto`: the
@@ -48,12 +47,12 @@
   flex-shrink: 0;
 }
 .logo-gmh > svg {
-  --logo-gmh-height: var(--mfy-typography-scale-08, 3rem);
+  --logo-gmh-height: var(--gmh-icon-size-extra-large);
   /* Two colour roles, one per colourway difference in the source art: ink is
      navy on paper and white reversed; gold is the same in both. Gold is a
      fill here (two of the four figures), which is what #AA9868 is for. */
-  --logo-mark-ink: var(--mfy-color-icon-brand-default);
-  --logo-mark-gold: var(--mfy-color-background-accent-default);
+  --logo-mark-ink: var(--gmh-color-primary);
+  --logo-mark-gold: var(--gmh-color-tertiary-container);
   display: block;
   height: var(--logo-gmh-height);
   /* The mark's native aspect: 1144.11 / 945. */
@@ -65,7 +64,7 @@
 /* Not `primary`: M3's dark primary is a light blue meant for controls, and
    the designer's reversed colourway is white. */
 .dark .logo-gmh > svg {
-  --logo-mark-ink: var(--mfy-color-icon-default-default);
+  --logo-mark-ink: var(--gmh-color-on-surface);
 }
 
 /* The crest lockup (GmhCrestLogo), 595x144. Sized by height for the same
@@ -76,14 +75,14 @@
   flex-shrink: 0;
 }
 .logo-gmh-crest > svg {
-  --logo-gmh-crest-height: var(--mfy-typography-scale-09, 4rem);
+  --logo-gmh-crest-height: 4rem;
   /* Three colour roles, one per colourway difference in the source art:
      ink is navy on paper and white after dark; gold and the navy globe
      detail are the same in both. Gold here is a fill (the figures and
      rules), which is the one thing #AA9868 is allowed to be. */
-  --logo-crest-ink: var(--mfy-color-icon-brand-default);
-  --logo-crest-gold: var(--mfy-color-background-accent-default);
-  --logo-crest-detail: var(--mfy-color-brand-800);
+  --logo-crest-ink: var(--gmh-color-primary);
+  --logo-crest-gold: var(--gmh-color-tertiary-container);
+  --logo-crest-detail: var(--gmh-color-navy);
   display: block;
   height: var(--logo-gmh-crest-height);
   width: calc(var(--logo-gmh-crest-height) * 595 / 144);
@@ -92,5 +91,5 @@
 /* Not `primary`: M3's dark primary is a light blue meant for controls, and
    the designer's dark colourway is white. */
 .dark .logo-gmh-crest > svg {
-  --logo-crest-ink: var(--mfy-color-icon-default-default);
+  --logo-crest-ink: var(--gmh-color-on-surface);
 }

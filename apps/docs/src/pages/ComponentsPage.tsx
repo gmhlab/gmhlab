@@ -1134,7 +1134,7 @@ export function ComponentsPage() {
                   <AccordionTrigger>Which styling system?</AccordionTrigger>
                   <AccordionContent>
                     Two coexist: shadcn primitives on Tailwind utilities, and
-                    MFY layout components on co-located CSS driven by --mfy-*
+                    MFY layout components on co-located CSS driven by --gmh-*
                     tokens.
                   </AccordionContent>
                 </AccordionItem>

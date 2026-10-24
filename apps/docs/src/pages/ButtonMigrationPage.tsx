@@ -18,13 +18,13 @@ import {
 import { useTheme } from "../components/theme-provider";
 
 /* ------------------------------------------------------------------ */
-/* Page scaffolding, built from the MFY layout + composition stack     */
+/* Page scaffolding, built from the ui layout + composition stack     */
 /* ------------------------------------------------------------------ */
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <Flex direction="column" gap="100" className="mb-4 last:mb-0">
-      <TextSmall className="font-semibold tracking-wider uppercase text-[var(--mfy-color-text-default-tertiary)]">
+      <TextSmall className="font-semibold tracking-wider uppercase text-outline">
         {label}
       </TextSmall>
       <Flex gap="300" alignSecondary="center" wrap>
@@ -42,10 +42,10 @@ function Callout({
   children: ReactNode;
 }) {
   const styles = {
-    bad: "border-[var(--mfy-color-border-danger-tertiary)] bg-[var(--mfy-color-background-danger-tertiary)]",
-    warn: "border-[var(--mfy-color-border-warning-tertiary)] bg-[var(--mfy-color-background-warning-tertiary)]",
-    info: "border-[var(--mfy-color-border-default-default)] bg-[var(--mfy-color-background-default-secondary)]",
-    good: "border-[var(--mfy-color-border-positive-tertiary)] bg-[var(--mfy-color-background-positive-tertiary)]",
+    bad: "border-error bg-error-container/50",
+    warn: "border-warning bg-warning-container/50",
+    info: "border-outline-variant bg-surface-container-low",
+    good: "border-success bg-success-container/50",
   } as const;
   return (
     <Flex
@@ -60,7 +60,7 @@ function Callout({
 
 function CodeBlock({ children }: { children: string }) {
   return (
-    <pre className="overflow-x-auto rounded-lg border border-[var(--mfy-color-border-default-default)] bg-[var(--mfy-color-background-default-secondary)] p-4 font-mono text-[0.8125rem] leading-relaxed">
+    <pre className="overflow-x-auto rounded-lg border border-outline-variant bg-surface-container-low p-4 font-mono text-[0.8125rem] leading-relaxed">
       <code>{children}</code>
     </pre>
   );
@@ -75,7 +75,7 @@ function CmpTable({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
             {head.map((h) => (
               <th
                 key={h}
-                className="border-b border-[var(--mfy-color-border-default-default)] px-3 py-2 text-left text-[0.6875rem] tracking-wider uppercase text-[var(--mfy-color-text-default-secondary)]"
+                className="border-b border-outline-variant px-3 py-2 text-left text-[0.6875rem] tracking-wider uppercase text-on-surface-variant"
               >
                 {h}
               </th>
@@ -89,7 +89,7 @@ function CmpTable({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
                 <td
                   key={j}
                   className={cn(
-                    "border-b border-[var(--mfy-color-border-default-default)] px-3 py-2 align-top",
+                    "border-b border-outline-variant px-3 py-2 align-top",
                     j === 0 && "font-semibold whitespace-nowrap",
                   )}
                 >
@@ -119,7 +119,7 @@ function MigrationSection({
         <Flex direction="column" gap="200">
           <TextHeading>{title}</TextHeading>
           {lede && (
-            <Text className="max-w-[72ch] text-[var(--mfy-color-text-default-secondary)]">
+            <Text className="max-w-[72ch] text-on-surface-variant">
               {lede}
             </Text>
           )}
@@ -171,7 +171,7 @@ export function ButtonMigrationPage() {
               </Button>
             </ButtonGroup>
           </Flex>
-          <TextSubheading className="max-w-[70ch] text-[var(--mfy-color-text-default-secondary)]">
+          <TextSubheading className="max-w-[70ch] text-on-surface-variant">
             The react-aria SDS button has been removed from{" "}
             {code("@gmhlab/ui")}. {code("Button")} and {code("ButtonGroup")}{" "}
             now resolve to the shadcn pair (Base UI primitives, shadcn{" "}
@@ -294,7 +294,7 @@ export function ButtonMigrationPage() {
         </Callout>
         <Grid columns="repeat(auto-fit, minmax(20rem, 1fr))" gap="400">
           <Flex direction="column" gap="200">
-            <TextSmall className="font-semibold tracking-wider uppercase text-[var(--mfy-color-text-default-tertiary)]">
+            <TextSmall className="font-semibold tracking-wider uppercase text-outline">
               ButtonGroup — for segmented controls
             </TextSmall>
             <ButtonGroup>
@@ -304,7 +304,7 @@ export function ButtonMigrationPage() {
             </ButtonGroup>
           </Flex>
           <Flex direction="column" gap="200">
-            <TextSmall className="font-semibold tracking-wider uppercase text-[var(--mfy-color-text-default-tertiary)]">
+            <TextSmall className="font-semibold tracking-wider uppercase text-outline">
               Flex — for laying buttons out
             </TextSmall>
             <Flex gap="300" alignSecondary="center">

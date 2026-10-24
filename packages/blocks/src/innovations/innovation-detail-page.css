@@ -23,8 +23,8 @@
 /* Breadcrumb and hero are both `variant="neutral"`, so the divider between
    them has to come from here. */
 .innovation-detail-breadcrumb {
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
 }
 
 .innovation-detail-badge {
@@ -35,45 +35,45 @@
 /* Hero ------------------------------------------------------------------ */
 
 .innovation-detail-hero-copy {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   max-width: 38rem;
 }
 
 /* Stands in for the screenshot/demo slot. Same treatment as the map tile
    below, minus the tint. */
 .innovation-detail-visual {
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-400);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-medium);
   box-shadow:
-    inset 0 0 0 var(--mfy-size-stroke-border)
-      var(--mfy-color-border-default-default),
-    var(--mfy-effects-shadows-drop-shadow-300);
+    inset 0 0 0 var(--gmh-stroke-border)
+      var(--gmh-color-outline-variant),
+    var(--gmh-elevation-level2);
   margin: 0;
   overflow: hidden;
 
   figcaption {
     /* `secondary`, not `tertiary`: tertiary is the outline role, not text.
        See the contrast note in ../projects/projects-page.css. */
-    color: var(--mfy-color-text-default-secondary);
-    padding: var(--mfy-size-space-300) var(--mfy-size-space-400);
+    color: var(--gmh-color-on-surface-variant);
+    padding: var(--gmh-space-300) var(--gmh-space-400);
   }
 }
 /* The glyph large on a navy panel with the kit's contour texture and the
    brand band's gold bloom — the same art as the landing page's theme cards. */
 .innovation-detail-visual-art {
-  --graphic-contour-color: var(--mfy-color-icon-brand-on-brand);
+  --graphic-contour-color: var(--gmh-color-on-brand-band);
   align-items: center;
   background:
     radial-gradient(
       90% 120% at 14% 0%,
-      color-mix(in oklch, var(--mfy-color-gold-500) 28%, transparent),
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 28%, transparent),
       transparent 62%
     ),
-    var(--mfy-color-background-brand-default);
+    var(--gmh-color-brand-band);
   display: flex;
   justify-content: center;
   min-height: 13.75rem;
-  padding: var(--mfy-size-space-600);
+  padding: var(--gmh-space-600);
 
   .graphic-glyph {
     --graphic-glyph-stroke: 1.4;
@@ -88,30 +88,30 @@
 
 .innovation-detail-stat {
   align-items: center;
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-100);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-extra-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
-  padding: var(--mfy-size-space-400);
+  gap: var(--gmh-space-050);
+  padding: var(--gmh-space-400);
   text-align: center;
 }
 
 .innovation-detail-stat-value {
-  color: var(--mfy-color-text-brand-default);
-  font-size: var(--mfy-typography-scale-05);
+  color: var(--gmh-color-primary);
+  font-size: var(--gmh-typescale-headline-small-size);
   /* Serif figures, regular weight: the same voice as the system StatsCard. */
-  font-family: var(--mfy-typography-family-serif);
-  font-weight: var(--mfy-typography-weight-regular);
+  font-family: var(--gmh-ref-typeface-brand);
+  font-weight: var(--gmh-ref-typeface-weight-regular);
   line-height: 1.2;
 }
 
 .innovation-detail-stat-label {
   /* White tile surface — `secondary` is 4.61:1, `tertiary` would be ~2:1. */
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.03125rem;
   line-height: 1.4;
   text-transform: uppercase;
@@ -128,17 +128,17 @@
 .innovation-detail-step-number {
   align-items: center;
   --text-heading-color: currentColor; /* brand panel: headings follow on-brand */
-  background: var(--mfy-color-background-brand-default);
-  border-radius: var(--mfy-size-radius-full);
+  background: var(--gmh-color-brand-band);
+  border-radius: var(--gmh-shape-corner-full);
   /* A surface-coloured gap, then the gold ring. */
   box-shadow:
-    0 0 0 0.3125rem var(--mfy-color-background-default-default),
-    0 0 0 0.40625rem var(--mfy-color-border-accent-default);
-  color: var(--mfy-color-text-brand-on-brand);
+    0 0 0 0.3125rem var(--gmh-color-surface),
+    0 0 0 0.40625rem var(--gmh-color-tertiary-container);
+  color: var(--gmh-color-on-brand-band);
   display: flex;
   flex-shrink: 0;
-  font-size: var(--mfy-typography-scale-03);
-  font-weight: var(--mfy-typography-weight-semibold);
+  font-size: var(--gmh-typescale-body-large-size);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
   height: 3rem;
   justify-content: center;
   line-height: 1;
@@ -149,15 +149,15 @@
 /* The goal: gold, with the kit's soft halo. Navy ink on the gold fill
    (on-tertiary-container), which is what #AA9868 is allowed to carry. */
 .innovation-detail-step:last-child .innovation-detail-step-number {
-  background: var(--mfy-color-background-accent-default);
+  background: var(--gmh-color-tertiary-container);
   box-shadow: 0 0 0 0.625rem
-    color-mix(in oklch, var(--mfy-color-background-accent-default) 22%, transparent);
-  color: var(--mfy-color-text-accent-on-accent);
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 22%, transparent);
+  color: var(--gmh-color-on-tertiary-container);
 }
 
 /* The path between milestones. Only drawn where the row is actually 4-up —
    below 1024px `flex-type-quarter` collapses to 2-up and then 1-up (see
-   --mfy-responsive-ratio-column-quarter-*), where a path running into the
+   --gmh-responsive-ratio-column-quarter-*), where a path running into the
    next row would be nonsense. It spans from this node's ring to the next
    one's: half a step, the 24px (space-600) gutter, half a step, less two
    node radii and rings (2rem each side). */
@@ -165,7 +165,7 @@
   .innovation-detail-step:not(:last-child)::after {
     background: radial-gradient(
         circle,
-        var(--mfy-color-border-accent-default) 1px,
+        var(--gmh-color-tertiary-container) 1px,
         transparent 1.5px
       )
       0 50% / 10px 4px repeat-x;
@@ -175,7 +175,7 @@
     position: absolute;
     top: 1.5rem;
     translate: 0 -50%;
-    width: calc(100% + var(--mfy-size-space-600) - 4rem);
+    width: calc(100% + var(--gmh-space-600) - 4rem);
   }
 }
 
@@ -188,7 +188,7 @@
 }
 .innovation-detail-step-figure {
   margin: auto 0 0;
-  padding-top: var(--mfy-size-space-600);
+  padding-top: var(--gmh-space-600);
   width: min(100%, 15rem);
 }
 /* The illustrations are navy and gold line art on their own white ground, so
@@ -198,10 +198,10 @@
 .innovation-detail-step-figure img {
   aspect-ratio: 1;
   background: #fff;
-  border-radius: var(--md-sys-shape-corner-large);
+  border-radius: var(--gmh-shape-corner-large);
   box-shadow:
-    var(--md-sys-elevation-level1),
-    0 0 0 var(--mfy-size-stroke-border) var(--md-sys-color-outline-variant);
+    var(--gmh-elevation-level1),
+    0 0 0 var(--gmh-stroke-border) var(--gmh-color-outline-variant);
   box-sizing: border-box;
   display: block;
   height: auto;
@@ -214,9 +214,9 @@
 /* The goal's tile carries the goal node's gold, so the path ends on it. */
 .innovation-detail-step:last-child .innovation-detail-step-figure img {
   box-shadow:
-    var(--md-sys-elevation-level1),
-    0 0 0 0.1875rem var(--mfy-color-background-default-default),
-    0 0 0 0.3125rem var(--mfy-color-border-accent-default);
+    var(--gmh-elevation-level1),
+    0 0 0 0.1875rem var(--gmh-color-surface),
+    0 0 0 0.3125rem var(--gmh-color-tertiary-container);
 }
 
 /* Each tile rises in as it scrolls into view, staggered along the path.
@@ -246,10 +246,10 @@
 /* The kit's glyph on a pale gold wash — the same tile as the index cards. */
 .innovation-detail-icon {
   align-items: center;
-  background: var(--mfy-color-background-accent-tertiary);
-  border-radius: var(--mfy-size-radius-400);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-accent-tertiary);
+  background: color-mix(in srgb, var(--gmh-color-tertiary-container) 24%, var(--gmh-color-surface));
+  border-radius: var(--gmh-shape-corner-medium);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 35%, var(--gmh-color-surface));
   display: flex;
   height: 4rem;
   justify-content: center;
@@ -260,32 +260,32 @@
 
 .innovation-detail-map {
   align-items: center;
-  background: var(--mfy-color-background-brand-tertiary);
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-brand-tertiary);
-  color: var(--mfy-color-text-brand-default);
+  background: var(--gmh-color-secondary-container);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    color-mix(in srgb, var(--gmh-color-primary) 35%, var(--gmh-color-surface));
+  color: var(--gmh-color-primary);
   display: flex;
   justify-content: center;
   min-height: 22.5rem;
-  padding: var(--mfy-size-space-600);
+  padding: var(--gmh-space-600);
   text-align: center;
 }
 
 .innovation-detail-countries {
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
   /* Clips the header's fill and the rows' hairlines to the rounded corner. */
   overflow: hidden;
 }
 
 .innovation-detail-countries-header {
-  background: var(--mfy-color-background-default-secondary);
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
-  padding: var(--mfy-size-space-400) var(--mfy-size-space-600);
+  background: var(--gmh-color-surface-container-low);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
+  padding: var(--gmh-space-400) var(--gmh-space-600);
 }
 
 .innovation-detail-country-list {
@@ -295,16 +295,16 @@
 }
 
 .innovation-detail-country {
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
-  padding: var(--mfy-size-space-300) var(--mfy-size-space-600);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
+  padding: var(--gmh-space-300) var(--gmh-space-600);
 }
 .innovation-detail-country:last-child {
   border-bottom: none;
 }
 
 .innovation-detail-flag {
-  font-size: var(--mfy-typography-scale-02);
+  font-size: var(--gmh-typescale-body-medium-size);
   line-height: 1;
 }
 
@@ -342,9 +342,9 @@
 }
 .innovation-detail-related:hover {
   box-shadow:
-    inset 0 0 0 var(--mfy-size-stroke-border)
-      var(--mfy-color-border-default-default),
-    var(--mfy-effects-shadows-drop-shadow-600);
+    inset 0 0 0 var(--gmh-stroke-border)
+      var(--gmh-color-outline-variant),
+    var(--gmh-elevation-level5);
   transform: translateY(-2px);
 }
 

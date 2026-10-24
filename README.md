@@ -10,10 +10,10 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 
 | Package | Name | What it is |
 | --- | --- | --- |
-| `packages/tokens` | `@gmhlab/tokens` | The design-token value layer (`--mfy-*` CSS variables). CSS-only — consume the tokens as CSS vars, there is no JS export. CSS at `@gmhlab/tokens/tokens.css`. |
+| `packages/tokens` | `@gmhlab/tokens` | The design-token value layer (`--gmh-*` CSS variables: Material 3 colour roles and system tokens). CSS-only — consume the tokens as CSS vars, there is no JS export. CSS at `@gmhlab/tokens/tokens.css`. |
 | `packages/core` | `@gmhlab/core` | Framework-agnostic domain layer: shared record types, backend service interfaces and pure helpers. No React, CSS or data; invented demo data is opt-in at `@gmhlab/core/mocks`. |
 | `packages/data` | `@gmhlab/data` | React bindings for the data layer: auth/pricing/products contexts, providers (`AllProviders`, …) and hooks (`useAuth`, …). Each provider takes its backend as a `service` prop — any implementation of the `@gmhlab/core` interfaces; there are no defaults. |
-| `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + MFY layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
+| `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + CSS layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
 | `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections (two of which read `@gmhlab/data`), slides, and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes every package. |
 | `apps/web` | `web` | Next.js 16 App Router site consuming every package — the GW landing page at `/`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |

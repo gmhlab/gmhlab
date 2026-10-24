@@ -11,14 +11,10 @@
  *
  * ## Contrast
  *
- * `--mfy-color-text-default-tertiary` is #b3b3b3 — roughly 2:1 on white — and
- * carries no text anywhere in this file. The muted tone is chosen per surface,
- * as the repo's accessibility note requires:
- *
- *   - on white cards      -> --mfy-color-text-default-secondary
- *   - on a neutral band   -> --mfy-color-text-default-default (the band is
- *                            #d9d9d9; `secondary` falls to ~3.1:1 there)
- *   - on the brand band   -> color: inherit, quieted with opacity
+ * `--gmh-color-outline` is an outline role (~4.2:1), not body text, and
+ * carries no text anywhere in this file. Muted text is
+ * `--gmh-color-on-surface-variant`; on the brand band it is `color: inherit`,
+ * quieted with opacity.
  */
 
 .project-detail-page {
@@ -67,8 +63,8 @@
 /* Breadcrumb and hero are both `variant="neutral"`, so the divider between
    them has to come from here. */
 .project-detail-page .pd-breadcrumb {
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
 }
 
 .project-detail-page .pd-badge {
@@ -81,9 +77,9 @@
 .project-detail-page .pd-panel-label,
 .project-detail-page .pd-arms-label,
 .project-detail-page .pd-hypotheses-label {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
   display: block;
-  font-weight: var(--mfy-typography-weight-semibold);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
   letter-spacing: 0.0625rem;
   text-transform: uppercase;
 }
@@ -91,11 +87,11 @@
 /* Hero -------------------------------------------------------------------- */
 
 .project-detail-page .pd-expanded-name {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
 }
 
 .project-detail-page .pd-lede {
-  font-size: var(--mfy-typography-scale-04);
+  font-size: var(--gmh-typescale-title-large-size);
   line-height: 1.55;
   max-width: 42rem;
 }
@@ -104,42 +100,42 @@
    categorical facts about the study, not quantities, and rendering them as
    big numbers would overstate them. */
 .project-detail-page .pd-facts {
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
-  padding: var(--mfy-size-space-600);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
+  padding: var(--gmh-space-600);
 }
 
 .project-detail-page .pd-facts-list {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   margin: 0;
 }
 
 .project-detail-page .pd-fact {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
+  gap: var(--gmh-space-050);
 }
 
 .project-detail-page .pd-fact + .pd-fact {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
-  padding-top: var(--mfy-size-space-400);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
+  padding-top: var(--gmh-space-400);
 }
 
 .project-detail-page .pd-fact-term {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.0625rem;
   text-transform: uppercase;
 }
 
 .project-detail-page .pd-fact-detail {
-  color: var(--mfy-color-text-default-default);
-  font-weight: var(--mfy-typography-weight-semibold);
+  color: var(--gmh-color-on-surface);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
   margin: 0;
 }
 
@@ -147,7 +143,7 @@
    rather than a result — the number alone would read as an outcome. */
 .project-detail-page .pd-figures {
   display: grid;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
   list-style: none;
   margin: 0;
@@ -156,31 +152,31 @@
 
 .project-detail-page .pd-figure {
   align-items: flex-start;
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-100);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-extra-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
-  padding: var(--mfy-size-space-600);
+  gap: var(--gmh-space-050);
+  padding: var(--gmh-space-600);
 }
 
 .project-detail-page .pd-figure-value {
-  color: var(--mfy-color-text-brand-default);
-  font-size: var(--mfy-typography-scale-06);
-  font-weight: var(--mfy-typography-weight-bold);
+  color: var(--gmh-color-primary);
+  font-size: var(--gmh-typescale-headline-large-size);
+  font-weight: var(--gmh-ref-typeface-weight-bold);
   line-height: 1.1;
 }
 
 .project-detail-page .pd-figure-label {
-  color: var(--mfy-color-text-default-default);
-  font-weight: var(--mfy-typography-weight-medium);
+  color: var(--gmh-color-on-surface);
+  font-weight: var(--gmh-ref-typeface-weight-medium);
 }
 
 .project-detail-page .pd-figure-note {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
 }
 
 /* Prose ------------------------------------------------------------------- */
@@ -188,17 +184,17 @@
 .project-detail-page .pd-prose {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   max-width: 44rem;
 }
 
 .project-detail-page .pd-prose > * {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
 }
 
 /* On the #d9d9d9 neutral band, `secondary` drops to ~3.1:1. */
 .project-detail-page .pd-prose-on-band > * {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
 }
 
 /* Arms -------------------------------------------------------------------- */
@@ -206,7 +202,7 @@
 .project-detail-page .pd-arms {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
 }
 
 /* `.card-content` has no flex-grow of its own, so the two arm cards would
@@ -219,80 +215,80 @@
    comparison, and tinting one side implies a result the trial has not
    reported. */
 .project-detail-page .pd-arm-intervention {
-  border-left: var(--mfy-size-space-050) solid
-    var(--mfy-color-border-brand-default);
+  border-left: var(--gmh-space-050) solid
+    var(--gmh-color-primary);
 }
 
 .project-detail-page .pd-arm-abbr {
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-full);
-  color: var(--mfy-color-text-default-default);
-  font-size: var(--mfy-typography-scale-01);
-  font-weight: var(--mfy-typography-weight-semibold);
+  background: var(--gmh-color-surface-container-low);
+  border-radius: var(--gmh-shape-corner-full);
+  color: var(--gmh-color-on-surface);
+  font-size: var(--gmh-typescale-label-medium-size);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
   letter-spacing: 0.0625rem;
-  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  padding: var(--gmh-space-050) var(--gmh-space-200);
 }
 
 /* Strategy elements ------------------------------------------------------- */
 
 .project-detail-page .pd-elements {
   display: grid;
-  gap: var(--mfy-size-space-600);
+  gap: var(--gmh-space-600);
   grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   margin: 0;
 }
 
 .project-detail-page .pd-element {
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
-  padding: var(--mfy-size-space-600);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
+  padding: var(--gmh-space-600);
 }
 
 .project-detail-page .pd-element-term {
-  color: var(--mfy-color-text-default-default);
-  font-weight: var(--mfy-typography-weight-semibold);
-  margin-bottom: var(--mfy-size-space-200);
+  color: var(--gmh-color-on-surface);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
+  margin-bottom: var(--gmh-space-200);
 }
 
 .project-detail-page .pd-element-body {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   margin: 0;
 }
 
 /* Objectives -------------------------------------------------------------- */
 
 .project-detail-page .pd-objectives {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .project-detail-page .pd-objective {
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
   display: grid;
-  gap: var(--mfy-size-space-400) var(--mfy-size-space-800);
+  gap: var(--gmh-space-400) var(--gmh-space-800);
   grid-template-columns: minmax(min(14rem, 100%), 1fr) 2fr;
-  padding: var(--mfy-size-space-800) 0;
+  padding: var(--gmh-space-800) 0;
 }
 
 .project-detail-page .pd-objective-head {
   align-items: flex-start;
   display: flex;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
 }
 
 /* The objective's own number. Ordered because the protocol orders them, and
    because the rank chip below reads against it. */
 .project-detail-page .pd-objective-index {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   flex-shrink: 0;
-  font-size: var(--mfy-typography-scale-05);
-  font-weight: var(--mfy-typography-weight-bold);
+  font-size: var(--gmh-typescale-headline-small-size);
+  font-weight: var(--gmh-ref-typeface-weight-bold);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
@@ -300,15 +296,15 @@
 .project-detail-page .pd-objective-heading {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-150);
+  gap: var(--gmh-space-150);
 }
 
 .project-detail-page .pd-objective-rank {
-  border-radius: var(--mfy-size-radius-full);
-  font-size: var(--mfy-typography-scale-01);
-  font-weight: var(--mfy-typography-weight-bold);
+  border-radius: var(--gmh-shape-corner-full);
+  font-size: var(--gmh-typescale-label-medium-size);
+  font-weight: var(--gmh-ref-typeface-weight-bold);
   letter-spacing: 0.0625rem;
-  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  padding: var(--gmh-space-050) var(--gmh-space-200);
   text-transform: uppercase;
   width: fit-content;
 }
@@ -318,35 +314,35 @@
    it. */
 .project-detail-page .pd-objective-rank-primary {
   --text-heading-color: currentColor; /* brand panel: headings follow on-brand */
-  background: var(--mfy-color-background-brand-default);
-  color: var(--mfy-color-text-brand-on-brand);
+  background: var(--gmh-color-brand-band);
+  color: var(--gmh-color-on-brand-band);
 }
 
 .project-detail-page .pd-objective-rank-secondary {
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
-  color: var(--mfy-color-text-default-secondary);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
+  color: var(--gmh-color-on-surface-variant);
 }
 
 .project-detail-page .pd-objective-body {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
 }
 
 .project-detail-page .pd-objective-note {
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-100);
+  background: var(--gmh-color-surface-container-low);
+  border-radius: var(--gmh-shape-corner-extra-small);
   /* On this #f5f5f5 tint `secondary` drops to ~4.2:1. */
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
   margin: 0;
-  padding: var(--mfy-size-space-400);
+  padding: var(--gmh-space-400);
 }
 
 .project-detail-page .pd-measures {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-300);
+  gap: var(--gmh-space-300);
   margin: 0;
 }
 
@@ -354,49 +350,49 @@
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mfy-size-space-200);
+  gap: var(--gmh-space-200);
 }
 
 /* The instrument acronym is how the field refers to these, so it leads. */
 .project-detail-page .pd-measure-abbr {
-  background: var(--mfy-color-background-brand-tertiary);
-  border-radius: var(--mfy-size-radius-100);
-  color: var(--mfy-color-text-brand-default);
-  font-size: var(--mfy-typography-scale-01);
-  font-weight: var(--mfy-typography-weight-bold);
+  background: var(--gmh-color-secondary-container);
+  border-radius: var(--gmh-shape-corner-extra-small);
+  color: var(--gmh-color-primary);
+  font-size: var(--gmh-typescale-label-medium-size);
+  font-weight: var(--gmh-ref-typeface-weight-bold);
   letter-spacing: 0.03125rem;
-  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  padding: var(--gmh-space-050) var(--gmh-space-200);
   white-space: nowrap;
 }
 
 .project-detail-page .pd-measure-name {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
 }
 
 .project-detail-page .pd-measure-detail {
-  color: var(--mfy-color-text-default-secondary);
-  margin: var(--mfy-size-space-050) 0 0;
+  color: var(--gmh-color-on-surface-variant);
+  margin: var(--gmh-space-050) 0 0;
 }
 
 .project-detail-page .pd-hypotheses {
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-200);
+  background: var(--gmh-color-surface-container-low);
+  border-radius: var(--gmh-shape-corner-small);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-300);
-  padding: var(--mfy-size-space-800);
+  gap: var(--gmh-space-300);
+  padding: var(--gmh-space-800);
 }
 
 .project-detail-page .pd-hypotheses-list {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-200);
+  gap: var(--gmh-space-200);
   margin: 0;
-  padding-left: var(--mfy-size-space-600);
+  padding-left: var(--gmh-space-600);
 }
 
 .project-detail-page .pd-hypothesis {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
 }
 
 /* Assessment timeline ----------------------------------------------------- */
@@ -404,7 +400,7 @@
 .project-detail-page .pd-tl-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mfy-size-space-600);
+  gap: var(--gmh-space-600);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -414,38 +410,38 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mfy-size-space-200);
+  gap: var(--gmh-space-200);
 }
 
 .project-detail-page .pd-tl-legend-swatch {
   background: var(--pd-track-color);
-  border-radius: var(--mfy-size-radius-full);
+  border-radius: var(--gmh-shape-corner-full);
   flex-shrink: 0;
   height: 0.75rem;
   width: 0.75rem;
 }
 
 .project-detail-page .pd-tl-legend-label {
-  color: var(--mfy-color-text-default-default);
-  font-weight: var(--mfy-typography-weight-semibold);
+  color: var(--gmh-color-on-surface);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
 }
 
 .project-detail-page .pd-tl-legend-population {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
 }
 
 /* Two tracks are distinguished by a single custom property, set once per
    track and read by the legend swatch, the node ring and the code chip. */
 .project-detail-page .pd-tl-legend-provider,
 .project-detail-page .pd-tl-provider {
-  --pd-track-color: var(--mfy-color-background-brand-default);
-  --pd-track-text: var(--mfy-color-text-brand-on-brand);
+  --pd-track-color: var(--gmh-color-brand-band);
+  --pd-track-text: var(--gmh-color-on-brand-band);
 }
 
 .project-detail-page .pd-tl-legend-patient,
 .project-detail-page .pd-tl-patient {
-  --pd-track-color: var(--mfy-color-background-neutral-default);
-  --pd-track-text: var(--mfy-color-text-neutral-on-neutral);
+  --pd-track-color: var(--gmh-color-inverse-surface);
+  --pd-track-text: var(--gmh-color-inverse-on-surface);
 }
 
 /* The spine. Desktop lays out [provider | spine | patient]; the rail itself
@@ -453,7 +449,7 @@
    without a spacer element per row. */
 .project-detail-page .pd-tl {
   display: grid;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   grid-template-columns: 1fr;
   list-style: none;
   margin: 0;
@@ -463,7 +459,7 @@
 
 .project-detail-page .pd-tl-entry {
   display: grid;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   grid-template-columns: auto 1fr;
   position: relative;
 }
@@ -472,7 +468,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-100);
+  gap: var(--gmh-space-100);
   position: relative;
   width: 3rem;
 }
@@ -484,14 +480,14 @@
    gray-300 — the *same* value as `background-default-tertiary`, so the rail
    would be invisible. gray-500 reads against the band in both themes. */
 .project-detail-page .pd-tl-marker::after {
-  background: var(--mfy-color-border-default-secondary);
-  bottom: calc(var(--mfy-size-space-400) * -1);
+  background: var(--gmh-color-outline);
+  bottom: calc(var(--gmh-space-400) * -1);
   content: "";
   left: 50%;
   position: absolute;
   top: 2.25rem;
   transform: translateX(-50%);
-  width: var(--mfy-size-stroke-border);
+  width: var(--gmh-stroke-border);
 }
 
 .project-detail-page .pd-tl-entry:last-child .pd-tl-marker::after {
@@ -502,12 +498,12 @@
 .project-detail-page .pd-tl-code {
   align-items: center;
   background: var(--pd-track-color);
-  border-radius: var(--mfy-size-radius-full);
+  border-radius: var(--gmh-shape-corner-full);
   color: var(--pd-track-text);
   display: flex;
   flex-shrink: 0;
-  font-size: var(--mfy-typography-scale-01);
-  font-weight: var(--mfy-typography-weight-bold);
+  font-size: var(--gmh-typescale-label-medium-size);
+  font-weight: var(--gmh-ref-typeface-weight-bold);
   height: 2.25rem;
   justify-content: center;
   letter-spacing: 0.03125rem;
@@ -517,61 +513,61 @@
 /* A phase measures nothing, so it gets no code and no filled node — just a
    tick on the rail. */
 .project-detail-page .pd-tl-phase-dash {
-  background: var(--mfy-color-border-default-secondary);
-  border-radius: var(--mfy-size-radius-full);
-  height: var(--mfy-size-space-150);
+  background: var(--gmh-color-outline);
+  border-radius: var(--gmh-shape-corner-full);
+  height: var(--gmh-space-150);
   margin-top: 1rem;
-  width: var(--mfy-size-space-150);
+  width: var(--gmh-space-150);
 }
 
 .project-detail-page .pd-tl-body {
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-100);
-  padding: var(--mfy-size-space-600);
+  gap: var(--gmh-space-100);
+  padding: var(--gmh-space-600);
 }
 
 /* Phases read as the connective tissue they are: no card, just a tinted band
    so the eye skips them on the way between assessments. */
 .project-detail-page .pd-tl-kind-phase .pd-tl-body {
-  background: var(--mfy-color-background-default-secondary);
+  background: var(--gmh-color-surface-container-low);
   box-shadow: none;
-  padding: var(--mfy-size-space-400) var(--mfy-size-space-600);
+  padding: var(--gmh-space-400) var(--gmh-space-600);
 }
 
 .project-detail-page .pd-tl-when {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.03125rem;
   text-transform: uppercase;
 }
 
 .project-detail-page .pd-tl-title {
-  color: var(--mfy-color-text-default-default);
-  font-weight: var(--mfy-typography-weight-semibold);
+  color: var(--gmh-color-on-surface);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
 }
 
 .project-detail-page .pd-tl-kind-phase .pd-tl-title {
-  font-weight: var(--mfy-typography-weight-medium);
+  font-weight: var(--gmh-ref-typeface-weight-medium);
 }
 
 .project-detail-page .pd-tl-detail {
-  color: var(--mfy-color-text-default-secondary);
-  margin: var(--mfy-size-space-100) 0 0;
+  color: var(--gmh-color-on-surface-variant);
+  margin: var(--gmh-space-100) 0 0;
 }
 
 .project-detail-page .pd-tl-cohorts {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-100);
-  margin: var(--mfy-size-space-200) 0 0;
-  padding-left: var(--mfy-size-space-600);
+  gap: var(--gmh-space-100);
+  margin: var(--gmh-space-200) 0 0;
+  padding-left: var(--gmh-space-600);
 }
 
 /* The track name. Redundant with column position on desktop, where it is
@@ -591,51 +587,51 @@
 .project-detail-page .pd-pubs {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-300);
+  gap: var(--gmh-space-300);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .project-detail-page .pd-pub {
-  background: var(--mfy-color-background-default-default);
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
+  background: var(--gmh-color-surface);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
   display: grid;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   grid-template-columns: 7rem 1fr;
-  padding: var(--mfy-size-space-600);
+  padding: var(--gmh-space-600);
 }
 
 .project-detail-page .pd-pub-meta {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-150);
+  gap: var(--gmh-space-150);
 }
 
 .project-detail-page .pd-pub-meta .publication-cover {
   --publication-cover-size: 4rem;
-  margin-bottom: var(--mfy-size-space-100);
+  margin-bottom: var(--gmh-space-100);
 }
 
 .project-detail-page .pd-pub-year {
-  color: var(--mfy-color-text-default-default);
-  font-size: var(--mfy-typography-scale-04);
+  color: var(--gmh-color-on-surface);
+  font-size: var(--gmh-typescale-title-large-size);
   font-variant-numeric: tabular-nums;
-  font-weight: var(--mfy-typography-weight-bold);
+  font-weight: var(--gmh-ref-typeface-weight-bold);
   line-height: 1;
 }
 
 /* What this work is to this project — a relationship the bibliography does
    not carry, so it is worth the visual weight of a chip. */
 .project-detail-page .pd-pub-note {
-  background: var(--mfy-color-background-brand-tertiary);
-  border-radius: var(--mfy-size-radius-100);
-  color: var(--mfy-color-text-brand-default);
-  font-size: var(--mfy-typography-scale-01);
-  font-weight: var(--mfy-typography-weight-semibold);
-  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  background: var(--gmh-color-secondary-container);
+  border-radius: var(--gmh-shape-corner-extra-small);
+  color: var(--gmh-color-primary);
+  font-size: var(--gmh-typescale-label-medium-size);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
+  padding: var(--gmh-space-050) var(--gmh-space-200);
   text-align: center;
   width: fit-content;
 }
@@ -643,34 +639,34 @@
 .project-detail-page .pd-pub-body {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-100);
+  gap: var(--gmh-space-100);
 }
 
 .project-detail-page .pd-pub-title {
-  color: var(--mfy-color-text-default-default);
-  font-weight: var(--mfy-typography-weight-semibold);
+  color: var(--gmh-color-on-surface);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
 }
 
 .project-detail-page .pd-pub-source {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-02);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-body-medium-size);
 }
 
 .project-detail-page .pd-pub-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mfy-size-space-200);
-  margin-top: var(--mfy-size-space-100);
+  gap: var(--gmh-space-200);
+  margin-top: var(--gmh-space-100);
 }
 
 .project-detail-page .pd-pub-tag {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
 }
 
 .project-detail-page .pd-pub-tag-oa {
-  color: var(--mfy-color-text-positive-default);
-  font-weight: var(--mfy-typography-weight-semibold);
+  color: var(--gmh-color-success);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
 }
 
 /* Eligibility, partners, resources ---------------------------------------- */
@@ -684,7 +680,7 @@
 .project-detail-page .pd-resource-list {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-300);
+  gap: var(--gmh-space-300);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -692,33 +688,33 @@
 
 .project-detail-page .pd-criterion,
 .project-detail-page .pd-partner {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
-  color: var(--mfy-color-text-default-secondary);
-  padding-top: var(--mfy-size-space-300);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
+  color: var(--gmh-color-on-surface-variant);
+  padding-top: var(--gmh-space-300);
 }
 
 .project-detail-page .pd-panel,
 .project-detail-page .pd-resources {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
 }
 
 .project-detail-page .pd-resource {
   align-items: baseline;
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mfy-size-space-200);
+  gap: var(--gmh-space-200);
   justify-content: space-between;
-  padding-top: var(--mfy-size-space-300);
+  padding-top: var(--gmh-space-300);
 }
 
 .project-detail-page .pd-resource-kind {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.0625rem;
   text-transform: uppercase;
 }
@@ -726,35 +722,35 @@
 .project-detail-page .pd-contact {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
+  gap: var(--gmh-space-050);
 }
 
 .project-detail-page .pd-contact-role {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
 }
 
 .project-detail-page .pd-related .card-content {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
 }
 
 /* Pins the link to the card's bottom edge across a row of uneven cards. */
-.project-detail-page .pd-related .card-content > .flex-mfy:last-child {
+.project-detail-page .pd-related .card-content > .flex-gmh:last-child {
   margin-top: auto;
 }
 
 .project-detail-page .pd-related-pending {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
   font-style: italic;
 }
 
 /* CTA --------------------------------------------------------------------- */
 
-/* `--mfy-color-text-brand-on-brand-secondary` inverts on a solid brand
-   surface and renders navy-on-navy at ~1.03:1. Inherit and quiet with
-   opacity instead. */
+/* Muted copy on the brand band: inherit the band's on-colour and quiet it
+   with opacity, rather than reaching for a surface-muted role that was never
+   meant for a navy ground. */
 .project-detail-page .pd-cta-copy {
   color: inherit;
   max-width: 38rem;
@@ -780,7 +776,7 @@
   .project-detail-page .pd-tl-entry {
     align-items: start;
     grid-template-columns: 1fr auto 1fr;
-    padding-block: var(--mfy-size-space-200);
+    padding-block: var(--gmh-space-200);
   }
 
   /* The marker always holds the centre column; the body swaps sides by
@@ -806,14 +802,14 @@
      marker: per-marker segments leave a seam at every entry boundary. The
      code chips are opaque and sit above it. */
   .project-detail-page .pd-tl::before {
-    background: var(--mfy-color-border-default-secondary);
+    background: var(--gmh-color-outline);
     bottom: 0;
     content: "";
     left: 50%;
     position: absolute;
     top: 0;
     transform: translateX(-50%);
-    width: var(--mfy-size-stroke-border);
+    width: var(--gmh-stroke-border);
   }
 
   .project-detail-page .pd-tl-marker::after {
@@ -834,7 +830,7 @@
      the wrong edge. */
   .project-detail-page .pd-tl-provider .pd-tl-cohorts {
     padding-left: 0;
-    padding-right: var(--mfy-size-space-600);
+    padding-right: var(--gmh-space-600);
   }
 }
 
@@ -845,9 +841,9 @@
      column. Un-hides the screen-reader label. */
   .project-detail-page .pd-tl-track-tag {
     clip-path: none;
-    color: var(--mfy-color-text-default-secondary);
-    font-size: var(--mfy-typography-scale-01);
-    font-weight: var(--mfy-typography-weight-bold);
+    color: var(--gmh-color-on-surface-variant);
+    font-size: var(--gmh-typescale-label-medium-size);
+    font-weight: var(--gmh-ref-typeface-weight-bold);
     height: auto;
     letter-spacing: 0.0625rem;
     overflow: visible;
@@ -860,7 +856,7 @@
   /* The card gets the track's colour as a left edge, since there is no
      column position to read it from. */
   .project-detail-page .pd-tl-kind-point .pd-tl-body {
-    border-left: var(--mfy-size-space-050) solid var(--pd-track-color);
+    border-left: var(--gmh-space-050) solid var(--pd-track-color);
   }
 }
 
@@ -871,13 +867,13 @@
 
   .project-detail-page .pd-pub {
     grid-template-columns: 1fr;
-    gap: var(--mfy-size-space-300);
+    gap: var(--gmh-space-300);
   }
 
   .project-detail-page .pd-pub-meta {
     align-items: center;
     flex-direction: row;
-    gap: var(--mfy-size-space-300);
+    gap: var(--gmh-space-300);
   }
 
   .project-detail-page .pd-pub-meta .publication-cover {

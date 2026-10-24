@@ -1,7 +1,7 @@
 {
   "name": "@gmhlab/tokens",
   "version": "0.1.0",
-  "description": "Design-token value layer for the GMH Lab design system — the --mfy-* CSS custom properties, light/dark themes, and responsive variables.",
+  "description": "Design-token value layer for the GMH Lab design system — the --gmh-* CSS custom properties (Material 3 colour roles and system tokens), light/dark themes, and responsive variables.",
   "license": "SEE LICENSE IN LICENSE",
   "author": "GMH Lab",
   "homepage": "https://github.com/gmhlab/gmhlab#readme",
@@ -42,8 +42,7 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
-    "script:tokens": "cd scripts && node app.mjs",
-    "script:material": "cd scripts && node material.mjs",
+    "script:color": "cd scripts && node color.mjs",
     "prepack": "pnpm run build",
     "prepublishOnly": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||''))throw new Error('Use pnpm publish, not npm: npm does not resolve the workspace:/catalog: protocols and will publish a broken manifest.')\""
   },

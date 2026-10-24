@@ -24,7 +24,7 @@ export function Flex({
 }: FlexProps) {
   const classNames = clsx(
     className,
-    "flex-mfy",
+    "flex-gmh",
     container && "flex-container",
     `flex-align-primary-${alignPrimary}`,
     `flex-align-secondary-${alignSecondary}`,

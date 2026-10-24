@@ -1,5 +1,5 @@
 .icon {
-  --icon-color: var(--mfy-color-icon-brand-default);
+  --icon-color: var(--gmh-color-primary);
   --svg-stroke-color: var(--icon-color);
   --svg-fill-color: var(--icon-color);
   height: var(--icon-diameter);
@@ -7,23 +7,23 @@
 }
 
 .icon-size-14 {
-  --icon-diameter: var(--mfy-typography-scale-02);
+  --icon-diameter: 0.875rem;
 }
 .icon-size-16 {
-  --icon-diameter: var(--mfy-typography-scale-03);
+  --icon-diameter: 1rem;
 }
 .icon-size-20 {
-  --icon-diameter: var(--mfy-typography-scale-04);
+  --icon-diameter: 1.25rem;
 }
 .icon-size-24 {
-  --icon-diameter: var(--mfy-size-icon-small);
+  --icon-diameter: var(--gmh-icon-size-small);
 }
 .icon-size-32 {
-  --icon-diameter: var(--mfy-size-icon-medium);
+  --icon-diameter: var(--gmh-icon-size-medium);
 }
 .icon-size-40 {
-  --icon-diameter: var(--mfy-size-icon-large);
+  --icon-diameter: var(--gmh-icon-size-large);
 }
 .icon-size-48 {
-  --icon-diameter: var(--mfy-typography-scale-08);
+  --icon-diameter: var(--gmh-icon-size-extra-large);
 }

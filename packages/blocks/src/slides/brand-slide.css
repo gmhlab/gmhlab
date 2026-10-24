@@ -10,7 +10,7 @@
  * `.brand-slide-variant-*` classes below (each only overrides the fg/bg custom
  * properties). Individual colours and spacing can still be overridden per
  * instance via the `--brand-slide-*` custom properties, e.g.
- *   <BrandSlide style={{ "--brand-slide-bg": "var(--mfy-color-brand-800)" }} />
+ *   <BrandSlide style={{ "--brand-slide-bg": "var(--gmh-color-navy)" }} />
  */
 .brand-slide {
   /* Fallback colours; the .brand-slide-variant-* classes set the real values. */
@@ -20,8 +20,8 @@
    * tablet/desktop breakpoints below so it stays readable on narrow screens
    * instead of swallowing the content.
    */
-  --brand-slide-inline-padding: var(--mfy-size-space-800); /* 32px */
-  --brand-slide-block-padding: var(--mfy-size-space-1600); /* 64px */
+  --brand-slide-inline-padding: var(--gmh-space-800); /* 32px */
+  --brand-slide-block-padding: var(--gmh-space-1600); /* 64px */
   --brand-slide-font: inherit;
 
   aspect-ratio: 16/9;
@@ -47,30 +47,30 @@
    `min-width` queries in @gmhlab/tokens' responsive.css). */
 @media (min-width: 600px) {
   .brand-slide {
-    --brand-slide-inline-padding: var(--mfy-size-space-1600); /* 64px */
+    --brand-slide-inline-padding: var(--gmh-space-1600); /* 64px */
   }
 }
 @media (min-width: 1024px) {
   .brand-slide {
-    --brand-slide-inline-padding: var(--mfy-size-space-4000); /* 160px */
+    --brand-slide-inline-padding: var(--gmh-space-4000); /* 160px */
   }
 }
 
 /* Colour treatments — each variant only remaps the fg/bg tokens. */
 .brand-slide-variant-brand {
   /* The Figma frame is a raw cyan fill. */
-  --brand-slide-bg: var(--mfy-color-background-brand-default);
-  --brand-slide-bg-hover: var(--mfy-color-background-brand-hover);
-  --brand-slide-fg: var(--mfy-color-text-brand-on-brand);
-  --brand-slide-border-size: var(--mfy-size-stroke-border);
-  --brand-slide-border-color: var(--mfy-color-border-brand-default);
+  --brand-slide-bg: var(--gmh-color-brand-band);
+  --brand-slide-bg-hover: color-mix(in srgb, var(--gmh-color-brand-band), var(--gmh-color-on-brand-band) calc(var(--gmh-state-hover-state-layer-opacity) * 100%));
+  --brand-slide-fg: var(--gmh-color-on-brand-band);
+  --brand-slide-border-size: var(--gmh-stroke-border);
+  --brand-slide-border-color: var(--gmh-color-primary);
 }
 .brand-slide-variant-neutral {
-  --brand-slide-bg: var(--mfy-color-background-neutral-secondary);
-  --brand-slide-bg-hover: var(--mfy-color-background-neutral-secondary-hover);
-  --brand-slide-fg: var(--mfy-color-text-neutral-on-neutral-secondary);
-  --brand-slide-border-size: var(--mfy-size-stroke-border);
-  --brand-slide-border-color: var(--mfy-color-border-neutral-default);
+  --brand-slide-bg: var(--gmh-color-surface-container-highest);
+  --brand-slide-bg-hover: color-mix(in srgb, var(--gmh-color-surface-container-highest), var(--gmh-color-on-surface) calc(var(--gmh-state-hover-state-layer-opacity) * 100%));
+  --brand-slide-fg: var(--gmh-color-on-surface);
+  --brand-slide-border-size: var(--gmh-stroke-border);
+  --brand-slide-border-color: var(--gmh-color-on-surface);
 }
 
 /*

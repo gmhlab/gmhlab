@@ -2,7 +2,7 @@ import { Section, Flex, FlexItem } from "@gmhlab/ui";
 import {
   TokenGallery,
   TokenGalleryHero,
-  TokenRoleSection,
+  TokenFamilySection,
   TokenPairingRecipes,
   TokenPairingLab,
 } from "../components/token-gallery/token-gallery";
@@ -32,7 +32,7 @@ export function TokensPage() {
             </p>
           </Flex>
           {/* type="quarter" + wrap drives the responsive columns straight from
-              the MFY tokens: 4-up desktop, 2-up tablet, single column mobile.
+              the responsive tokens: 4-up desktop, 2-up tablet, single column mobile.
               Every item uses size="minor" so the flex quarter math applies. */}
           <Flex type="quarter" alignPrimary="center" alignSecondary="center" wrap gap="400">
             {items.map((item) => (
@@ -48,15 +48,32 @@ export function TokensPage() {
       </Section>
       <TokenPairingRecipes />
 
-      {/* ——— Semantic color roles: --mfy-color-{background,text,border,icon} ———
-          The atlas discovers every token from the loaded stylesheets at runtime,
+      {/* ——— Colour roles: --gmh-color-*, grouped by M3 family ———
+          The atlas discovers every role from the loaded stylesheets at runtime,
           so it stays comprehensive as the token set grows. Press `d` to watch
           every section re-answer in dark. */}
 
-      <TokenRoleSection role="background" />
-      <TokenRoleSection role="text" />
-      <TokenRoleSection role="border" />
-      <TokenRoleSection role="icon" />
+      <TokenFamilySection
+        title="Surfaces"
+        verb="what everything sits on"
+        blurb="Hover a fill — the shift is its state layer, not a filter. Content roles are shown on the fill they were minted for."
+        families={["surface"]}
+        variant="stroke"
+      />
+      <TokenFamilySection
+        title="Brand"
+        verb="navy and gold"
+        blurb="Primary is GW navy, tertiary is GW gold, pinned into M3's roles. The brand band roles are GMH's own."
+        families={["primary", "secondary", "tertiary", "brand"]}
+        variant="subtle"
+      />
+      <TokenFamilySection
+        title="Status"
+        verb="what just happened"
+        blurb="Error is M3's; success, warning and info are GMH custom colours generated in the same shape."
+        families={["error", "success", "warning", "info"]}
+        variant="stroke"
+      />
     </TokenGallery>
   );
 }

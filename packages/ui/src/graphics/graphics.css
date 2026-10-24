@@ -25,57 +25,57 @@
 }
 
 .graphic {
-  --graphic-ground: var(--mfy-color-background-default-default);
-  --graphic-ink: var(--mfy-color-icon-brand-default);
-  --graphic-ink-soft: color-mix(in oklch, var(--graphic-ink) 78%, var(--graphic-ground));
+  --graphic-ground: var(--gmh-color-surface);
+  --graphic-ink: var(--gmh-color-primary);
+  --graphic-ink-soft: color-mix(in srgb, var(--graphic-ink) 78%, var(--graphic-ground));
   /* Navy in every context — line work drawn on a gold fill (the seed's veins). */
-  --graphic-ink-fixed: var(--mfy-color-brand-800);
-  --graphic-gold: var(--mfy-color-background-accent-default);
-  --graphic-gold-soft: color-mix(in oklch, var(--graphic-gold) 60%, white);
-  --graphic-gold-wash: color-mix(in oklch, var(--graphic-gold) 22%, var(--graphic-ground));
+  --graphic-ink-fixed: var(--gmh-color-navy);
+  --graphic-gold: var(--gmh-color-tertiary-container);
+  --graphic-gold-soft: color-mix(in srgb, var(--graphic-gold) 60%, white);
+  --graphic-gold-wash: color-mix(in srgb, var(--graphic-gold) 22%, var(--graphic-ground));
   display: block;
   flex-shrink: 0;
   overflow: visible;
 }
 /* Not `primary`: M3's dark primary is a light blue meant for controls. */
 .dark .graphic {
-  --graphic-ink: var(--mfy-color-icon-default-secondary);
+  --graphic-ink: var(--gmh-color-on-surface-variant);
 }
 /* After .dark on purpose: a brand band is navy in both modes. */
 .section-variant-brand .graphic,
 .card-variant-brand .graphic,
 .graphic-on-brand .graphic {
-  --graphic-ground: var(--mfy-color-background-brand-default);
-  --graphic-ink: var(--mfy-color-icon-brand-on-brand);
+  --graphic-ground: var(--gmh-color-brand-band);
+  --graphic-ink: var(--gmh-color-on-brand-band);
 }
 /* A light card inside a brand band is paper again (cards.css resets its
    colour the same way). */
 .section-variant-brand .card:not(.card-variant-brand) .graphic {
-  --graphic-ground: var(--mfy-color-background-default-default);
-  --graphic-ink: var(--mfy-color-icon-brand-default);
+  --graphic-ground: var(--gmh-color-surface);
+  --graphic-ink: var(--gmh-color-primary);
 }
 .dark .section-variant-brand .card:not(.card-variant-brand) .graphic {
-  --graphic-ink: var(--mfy-color-icon-default-secondary);
+  --graphic-ink: var(--gmh-color-on-surface-variant);
 }
 /* …unless the card holds its own navy panel (the home glyph art). */
 .section-variant-brand .card .graphic-on-brand .graphic {
-  --graphic-ground: var(--mfy-color-background-brand-default);
-  --graphic-ink: var(--mfy-color-icon-brand-on-brand);
+  --graphic-ground: var(--gmh-color-brand-band);
+  --graphic-ink: var(--gmh-color-on-brand-band);
 }
 
 /* The GMH mark inside a graphic (ContourGlobe `centerpiece="mark"`) takes
    the logo's own roles: navy on paper, white after dark and on a brand band
    — not --graphic-ink, which is a muted line tone after dark. */
 .graphic-mark {
-  --logo-mark-ink: var(--mfy-color-icon-brand-default);
+  --logo-mark-ink: var(--gmh-color-primary);
   --logo-mark-gold: var(--graphic-gold);
 }
 .dark .graphic-mark {
-  --logo-mark-ink: var(--mfy-color-icon-default-default);
+  --logo-mark-ink: var(--gmh-color-on-surface);
 }
 .section-variant-brand .graphic-mark,
 .graphic-on-brand .graphic-mark {
-  --logo-mark-ink: var(--mfy-color-icon-brand-on-brand);
+  --logo-mark-ink: var(--gmh-color-on-brand-band);
 }
 
 /* ── Backdrops ─────────────────────────────────────────────────────── */
@@ -143,8 +143,8 @@
    band's own surface, so the photo reads as tinted paper rather than a
    picture pasted on, and the bottom edge fades into the next band. */
 .graphic-photo {
-  --graphic-photo-wash: var(--mfy-color-background-default-default);
-  background: var(--mfy-color-background-accent-default);
+  --graphic-photo-wash: var(--gmh-color-surface);
+  background: var(--gmh-color-tertiary-container);
   inset: 0;
   isolation: isolate;
   opacity: 0;
@@ -165,7 +165,7 @@
     width: 100%;
   }
   &::before {
-    background: var(--mfy-color-brand-800);
+    background: var(--gmh-color-navy);
     content: "";
     inset: 0;
     mix-blend-mode: lighten;
@@ -184,7 +184,7 @@
 }
 .page-hero .graphic-photo,
 .section-variant-neutral > .graphic-photo {
-  --graphic-photo-wash: var(--mfy-color-background-default-tertiary);
+  --graphic-photo-wash: var(--gmh-color-surface-container-high);
 }
 /* Even: one strength across, for centred copy — and every narrow screen,
    where the copy spans the width. */
@@ -192,7 +192,7 @@
 .graphic-photo-wash-start::after {
   background:
     linear-gradient(to bottom, transparent 55%, var(--graphic-photo-wash)),
-    color-mix(in oklch, var(--graphic-photo-wash) 80%, transparent);
+    color-mix(in srgb, var(--graphic-photo-wash) 80%, transparent);
 }
 /* Start: reading strength under the copy column, opening to the right where
    the graphic's centrepiece stands. */
@@ -203,8 +203,8 @@
       linear-gradient(
         90deg,
         var(--graphic-photo-wash) 0 30%,
-        color-mix(in oklch, var(--graphic-photo-wash) 78%, transparent) 52%,
-        color-mix(in oklch, var(--graphic-photo-wash) 45%, transparent) 100%
+        color-mix(in srgb, var(--graphic-photo-wash) 78%, transparent) 52%,
+        color-mix(in srgb, var(--graphic-photo-wash) 45%, transparent) 100%
       );
   }
 }
@@ -226,7 +226,7 @@
 /* Oversized top radii are scaled down to half the width — a true semicircle
    at any aspect ratio. */
 .graphic-mask-arch {
-  border-radius: 999px 999px var(--mfy-size-radius-100) var(--mfy-size-radius-100);
+  border-radius: 999px 999px var(--gmh-shape-corner-extra-small) var(--gmh-shape-corner-extra-small);
 }
 
 /* ── Glyphs ────────────────────────────────────────────────────────── */
@@ -256,18 +256,18 @@
   width: 100%;
 }
 .graphic-wave-carve {
-  fill: var(--graphic-wave-fill, var(--mfy-color-background-default-default));
+  fill: var(--graphic-wave-fill, var(--gmh-color-surface));
 }
 /* The echo sits on the carved (paper) side, so it takes the paper ink even
    inside the brand band. */
 .graphic-wave-echo {
   fill: none;
   opacity: 0.3;
-  stroke: var(--mfy-color-icon-brand-default);
+  stroke: var(--gmh-color-primary);
   stroke-width: 1.25;
 }
 .dark .graphic-wave-echo {
-  stroke: var(--mfy-color-icon-default-secondary);
+  stroke: var(--gmh-color-on-surface-variant);
 }
 .graphic-wave-edge {
   fill: none;
@@ -309,7 +309,7 @@
 }
 .graphic-pathway-goal {
   background: var(--graphic-gold);
-  box-shadow: 0 0 0 0.625rem color-mix(in oklch, var(--graphic-gold) 20%, transparent);
+  box-shadow: 0 0 0 0.625rem color-mix(in srgb, var(--graphic-gold) 20%, transparent);
   height: 1.25rem;
   width: 1.25rem;
 }

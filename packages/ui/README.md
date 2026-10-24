@@ -44,12 +44,12 @@ export function Example() {
 The package deliberately contains two, and it matters which one you're extending:
 
 - **shadcn/Tailwind primitives** (`Button`, `Dialog`, `DropdownMenu`, `Input`, `Accordion`, …) — Tailwind v4 utilities via `class-variance-authority`, themed by the Tailwind color variables. These emit `data-slot` attributes and **no semantic class name**: target `[data-slot="navigation-menu"]`, not `.navigation`.
-- **MFY layout primitives** (`Flex`, `Grid`, `Section`, `Image`) — plain co-located CSS driven by `--mfy-*` tokens and component-local custom properties. Note `Flex` emits the class **`flex-mfy`**, and `Grid` emits `grid-mfy`.
+- **Layout primitives** (`Flex`, `Grid`, `Section`, `Image`) — plain co-located CSS driven by `--gmh-*` tokens and component-local custom properties. Note `Flex` emits the class **`flex-gmh`**, and `Grid` emits `grid-gmh`.
 
 ## Gotchas
 
 - **`Button` with a non-`<button>` `render` prop needs `nativeButton={false}`.** Base UI defaults it to `true`, and swapping the element without it logs a `console.error` on every render. This is invisible to `tsc` and to server rendering.
-- **Theming keys off a `.dark` class on `<html>`** — both the `--mfy-*` tokens and the Tailwind theme switch together.
+- **Theming keys off a `.dark` class on `<html>`** — both the `--gmh-*` tokens and the Tailwind theme switch together.
 - **Server components need a client wrapper.** Any component using hooks (`Header`, `Footer`, anything calling `useMediaQuery`) must be rendered from a `"use client"` boundary.
 - **`useMediaQuery` returns `false` for every query on the server**, so responsive components render their desktop branch into SSR HTML and swap after hydration. Prefer CSS breakpoints where the layout allows it.
 

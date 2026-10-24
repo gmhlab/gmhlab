@@ -1,58 +1,58 @@
 .section {
   box-sizing: border-box;
-  padding: var(--padding-y-top) var(--mfy-size-space-600)
+  padding: var(--padding-y-top) var(--gmh-space-600)
     var(--padding-y-bottom);
   position: relative;
   width: 100%;
 }
 .section-padding-bottom-0 {
-  --padding-y-bottom: var(--mfy-size-space-0);
+  --padding-y-bottom: var(--gmh-space-0);
 }
 .section-padding-top-0 {
-  --padding-y-top: var(--mfy-size-space-0);
+  --padding-y-top: var(--gmh-space-0);
 }
 .section-padding-bottom-400 {
-  --padding-y-bottom: var(--mfy-size-space-400);
+  --padding-y-bottom: var(--gmh-space-400);
 }
 .section-padding-top-400 {
-  --padding-y-top: var(--mfy-size-space-400);
+  --padding-y-top: var(--gmh-space-400);
 }
 .section-padding-bottom-600 {
-  --padding-y-bottom: var(--mfy-size-space-600);
+  --padding-y-bottom: var(--gmh-space-600);
 }
 .section-padding-top-600 {
-  --padding-y-top: var(--mfy-size-space-600);
+  --padding-y-top: var(--gmh-space-600);
 }
 .section-padding-bottom-800 {
-  --padding-y-bottom: var(--mfy-size-space-800);
+  --padding-y-bottom: var(--gmh-space-800);
 }
 .section-padding-top-800 {
-  --padding-y-top: var(--mfy-size-space-800);
+  --padding-y-top: var(--gmh-space-800);
 }
 .section-padding-bottom-1200 {
-  --padding-y-bottom: var(--mfy-size-space-1200);
+  --padding-y-bottom: var(--gmh-space-1200);
 }
 .section-padding-top-1200 {
-  --padding-y-top: var(--mfy-size-space-1200);
+  --padding-y-top: var(--gmh-space-1200);
 }
 .section-padding-bottom-1600 {
-  --padding-y-bottom: var(--mfy-size-space-1600);
+  --padding-y-bottom: var(--gmh-space-1600);
 }
 .section-padding-top-1600 {
-  --padding-y-top: var(--mfy-size-space-1600);
+  --padding-y-top: var(--gmh-space-1600);
 }
 .section-padding-bottom-4000 {
-  --padding-y-bottom: var(--mfy-size-space-4000);
+  --padding-y-bottom: var(--gmh-space-4000);
 }
 .section-padding-top-4000 {
-  --padding-y-top: var(--mfy-size-space-4000);
+  --padding-y-top: var(--gmh-space-4000);
 }
 
 .section-variant-image {
   overflow: hidden;
   &::before {
     content: "";
-    background-color: var(--mfy-color-background-utilities-scrim);
+    background-color: color-mix(in srgb, var(--gmh-color-surface) 80%, transparent);
     z-index: -1;
   }
   .section-image {
@@ -76,27 +76,27 @@
    surfaces stay navy after dark, the same glow works in both. */
 .section-variant-brand {
   --text-heading-color: currentColor;
-  --text-heading-em-color: var(--mfy-color-gold-300);
-  --text-eyebrow-color: var(--mfy-color-gold-300);
+  --text-heading-em-color: var(--gmh-color-brand-band-accent);
+  --text-eyebrow-color: var(--gmh-color-brand-band-accent);
   background:
     radial-gradient(
       80% 130% at 12% 0%,
-      color-mix(in oklch, var(--mfy-color-gold-500) 30%, transparent),
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 30%, transparent),
       transparent 62%
     ),
     linear-gradient(
       175deg,
       transparent 45%,
-      color-mix(in oklch, var(--mfy-color-brand-950) 80%, transparent)
+      color-mix(in srgb, var(--gmh-ref-palette-primary10) 80%, transparent)
     ),
-    var(--mfy-color-background-brand-default);
-  color: var(--mfy-color-text-brand-on-brand);
+    var(--gmh-color-brand-band);
+  color: var(--gmh-color-on-brand-band);
   isolation: isolate;
   /* The graphics kit's contour texture, drawn in the on-brand ink across the
      band's top 28rem — under the gold bloom, behind the content. The mask
      lives in graphics.css (--graphic-contour-mask). */
   &::before {
-    background: var(--mfy-color-icon-brand-on-brand);
+    background: var(--gmh-color-on-brand-band);
     content: "";
     inset: 0;
     mask: var(--graphic-contour-mask) top center / 100% min(100%, 28rem)
@@ -106,34 +106,34 @@
     z-index: -1;
   }
   .logo svg {
-    --logo-color: var(--mfy-color-icon-brand-on-brand);
-    --logo-crest-ink: var(--mfy-color-icon-brand-on-brand);
-    --logo-mark-ink: var(--mfy-color-icon-brand-on-brand);
+    --logo-color: var(--gmh-color-on-brand-band);
+    --logo-crest-ink: var(--gmh-color-on-brand-band);
+    --logo-mark-ink: var(--gmh-color-on-brand-band);
   }
   /* Icon renders <svg class="icon">, so the class is ON the svg — a
      descendant selector (`.icon svg`) never matches and left icons at
      their default dark brand colour on the dark brand background. */
   .icon {
-    --icon-color: var(--mfy-color-icon-brand-on-brand);
+    --icon-color: var(--gmh-color-on-brand-band);
   }
 }
 
 .section-variant-neutral {
-  background: var(--mfy-color-background-default-tertiary);
+  background: var(--gmh-color-surface-container-high);
 }
 /* The quiet alternate band — GW's `panel`. Lighter than `neutral`, for
    alternating long pages without the weight of a full tone change. */
 .section-variant-tint {
-  background: var(--mfy-color-background-default-secondary);
+  background: var(--gmh-color-surface-container-low);
 }
 .section-variant-stroke {
   &:not(:last-child) {
-    border-bottom: var(--mfy-size-stroke-border) solid
-      var(--mfy-color-border-default-default);
+    border-bottom: var(--gmh-stroke-border) solid
+      var(--gmh-color-outline-variant);
   }
   &:not(:first-child) {
-    border-top: var(--mfy-size-stroke-border) solid
-      var(--mfy-color-border-default-default);
+    border-top: var(--gmh-stroke-border) solid
+      var(--gmh-color-outline-variant);
   }
   & + .section-variant-stroke {
     border-top: none;

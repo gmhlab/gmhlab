@@ -1,14 +1,14 @@
 /*
  * Global CSS custom properties and base element styling.
- * Value layer only — no Tailwind directives. Depends on the --mfy-* tokens
- * defined in ./variables.css and reacts to light/dark via the same `.dark`
+ * Value layer only — no Tailwind directives. Depends on the --gmh-* tokens
+ * in ./color.css and ./system.css and reacts to light/dark via the same `.dark`
  * class the design-token theme uses.
  */
 :root {
-  --global-focus-ring-size: var(--mfy-size-stroke-focus-ring);
+  --global-focus-ring-size: var(--gmh-stroke-focus-ring);
   /* Gold, at the text-capable M3 tertiary (6.1:1 light, 10.9:1 dark) — the
      #AA9868 fill would miss the 3:1 non-text bar. Flips with the scheme. */
-  --global-focus-ring-color: var(--md-sys-color-tertiary);
+  --global-focus-ring-color: var(--gmh-color-tertiary);
   --global-line-height-paragraph: 1.4;
   --global-stack-top: 999;
   --global-stack-focus: 999;
@@ -28,7 +28,7 @@
      surfaces. Any surface that sets its own foreground — a brand section or
      card, a hand-painted brand panel — resets this to `currentColor`, or the
      heading would come out navy-on-navy. */
-  --text-heading-color: var(--mfy-color-text-brand-default);
+  --text-heading-color: var(--gmh-color-primary);
 
   /* Motion, shared by every hover lift and reveal in the system. */
   --global-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -37,15 +37,15 @@
 }
 
 .display-none-to-flex {
-  display: var(--mfy-responsive-display-none-to-flex) !important;
+  display: var(--gmh-responsive-display-none-to-flex) !important;
 }
 .display-flex-to-none {
-  display: var(--mfy-responsive-display-flex-to-none) !important;
+  display: var(--gmh-responsive-display-flex-to-none) !important;
 }
 
 ::selection {
-  background: var(--md-sys-color-tertiary-container);
-  color: var(--md-sys-color-on-tertiary-container);
+  background: var(--gmh-color-tertiary-container);
+  color: var(--gmh-color-on-tertiary-container);
 }
 
 /* Element defaults live in `@layer base` so they sit UNDER utilities. Left
@@ -60,8 +60,8 @@
   }
 
   body {
-    background: var(--mfy-color-background-default-default);
-    color: var(--mfy-color-text-default-default);
+    background: var(--gmh-color-surface);
+    color: var(--gmh-color-on-surface);
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -83,12 +83,13 @@
   textarea,
   input,
   select {
-    font: var(--mfy-font-body-base);
+    font: var(--gmh-typescale-body-large);
   }
 
   pre,
   code {
-    font: var(--mfy-font-body-code);
+    font: var(--gmh-typescale-body-medium);
+    font-family: var(--gmh-ref-typeface-mono);
   }
 
   h1,
@@ -97,7 +98,7 @@
   h4,
   h5,
   h6 {
-    font: var(--mfy-font-heading);
+    font: var(--gmh-typescale-headline-small);
   }
 
   h1,

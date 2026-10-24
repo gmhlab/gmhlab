@@ -1,16 +1,16 @@
-/* @gmhlab/tokens — design-token value layer (the --mfy-* namespace).
+/* @gmhlab/tokens — design-token value layer (the --gmh-* namespace).
  *
- * This is the pure value/theme layer: primitives, light/dark theme vars,
+ * This is the pure value/theme layer: colour (Material 3 palettes and roles,
+ * light/dark), the M3 system tokens (shape, type, elevation, state, motion),
  * responsive vars, icon sizing, and global base styles. It carries NO Tailwind
  * directives — the Tailwind glue (@theme inline / @custom-variant / @apply)
  * lives in @gmhlab/ui's tailwind.css. Light/dark theming works via the `.dark`
- * class (see ./variables.css), the same hook Tailwind/shadcn uses.
+ * class (see ./color.css), the same hook Tailwind/shadcn uses.
  */
  
 /* @import url("./reset.css"); */
 @import url("./responsive.css");
-@import url("./material.css");
-@import url("./material-system.css");
-@import url("./variables.css");
+@import url("./color.css");
+@import url("./system.css");
 @import url("./icons.css");
 @import url("./globals.css");

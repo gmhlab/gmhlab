@@ -6,7 +6,7 @@
 
 .page-hero .graphic {
   /* Knock-outs (the care-rings hub) cut to this band's surface, not paper. */
-  --graphic-ground: var(--mfy-color-background-default-tertiary);
+  --graphic-ground: var(--gmh-color-surface-container-high);
 }
 
 /* A hero's height, so the 1440x640 motif is sliced to something that still

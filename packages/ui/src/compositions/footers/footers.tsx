@@ -112,7 +112,7 @@ export function SocialButtons({ links }: { links: SocialLink[] }) {
           variant="ghost"
           nativeButton={false}
           aria-label={SOCIAL_NETWORKS[network].label}
-          className="rounded-full hover:[--icon-color:var(--mfy-color-icon-default-default)]"
+          className="rounded-full hover:[--icon-color:var(--gmh-color-on-surface)]"
           render={<a href={href} />}
         >
           {SOCIAL_NETWORKS[network].icon}

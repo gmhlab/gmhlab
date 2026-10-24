@@ -1,37 +1,39 @@
-/* Type roles follow the M3 type scale (@gmhlab/tokens material-system.css):
-   the --mfy-font-* shorthands carry each role's size AND line-height, and
-   tracking is set here per role. body = body-large, small = body-medium,
-   subtitle = title-large, subheading = body-large, heading = headline-small,
-   page title = display-medium, hero = display-large. */
+/* Type roles are the M3 type scale (@gmhlab/tokens system.css): the
+   --gmh-typescale-<role> shorthands carry each role's size AND line-height,
+   and tracking is set here per role. body = body-large, small = body-medium,
+   strong = title-medium, small strong = label-large, subtitle = title-large,
+   subheading = body-large, heading = headline-small, page title =
+   display-medium, hero = display-large. */
 .text-body-base {
-  font: var(--mfy-font-body-base);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font: var(--gmh-typescale-body-large);
+  letter-spacing: var(--gmh-typescale-body-large-tracking);
 }
 .text-body-small {
-  font: var(--mfy-font-body-small);
-  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  font: var(--gmh-typescale-body-medium);
+  letter-spacing: var(--gmh-typescale-body-medium-tracking);
 }
 .text-body-small-strong {
-  font: var(--mfy-font-body-small-strong);
-  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  font: var(--gmh-typescale-label-large);
+  letter-spacing: var(--gmh-typescale-body-medium-tracking);
 }
 .text-body-strong {
-  font: var(--mfy-font-body-strong);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font: var(--gmh-typescale-title-medium);
+  letter-spacing: var(--gmh-typescale-body-large-tracking);
 }
 .text-body-emphasis {
-  font: var(--mfy-font-body-emphasis);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font: var(--gmh-typescale-body-large);
+  font-style: italic;
+  letter-spacing: var(--gmh-typescale-body-large-tracking);
 }
 
 .text-body-link {
-  --border-radius: var(--mfy-size-radius-100);
+  --border-radius: var(--gmh-shape-corner-extra-small);
   color: inherit;
   cursor: pointer;
-  font: var(--mfy-font-body-link);
+  font: var(--gmh-typescale-body-large);
   position: relative;
   text-decoration: underline;
-  text-decoration-color: var(--mfy-color-border-accent-default);
+  text-decoration-color: var(--gmh-color-tertiary-container);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   transition: text-decoration-thickness var(--global-duration-fast) ease;
@@ -40,7 +42,7 @@
   }
   &:focus-visible {
     outline: none;
-    --offset: calc(var(--mfy-size-stroke-border) * 2);
+    --offset: calc(var(--gmh-stroke-border) * 2);
     &::before {
       content: "";
       border-radius: calc(var(--border-radius) + var(--offset));
@@ -56,19 +58,18 @@
   }
 }
 
-.text-input-value {
-  font: var(--mfy-font-body-code);
-}
+.text-input-value,
 .text-body-code {
-  font: var(--mfy-font-body-code);
+  font: var(--gmh-typescale-body-medium);
+  font-family: var(--gmh-ref-typeface-mono);
 }
 .text-subtitle {
-  font: var(--mfy-font-subtitle);
-  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+  font: var(--gmh-typescale-title-large);
+  letter-spacing: var(--gmh-typescale-title-large-tracking);
 }
 .text-subheading {
-  font: var(--mfy-font-subheading);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font: var(--gmh-typescale-body-large);
+  letter-spacing: var(--gmh-typescale-body-large-tracking);
 }
 
 /* Display type. Line-heights come from the M3 shorthands, except where the
@@ -89,42 +90,40 @@
   text-wrap: balance;
 }
 .text-heading {
-  font: var(--mfy-font-heading);
+  font: var(--gmh-typescale-headline-small);
 }
 .text-title-hero {
-  font: var(--mfy-font-title-hero);
-  font-size: clamp(2.375rem, 5.6vw, var(--mfy-typography-title-hero-size));
+  font: var(--gmh-typescale-display-large);
+  font-size: clamp(2.375rem, 5.6vw, var(--gmh-typescale-display-large-size));
   line-height: 1.123; /* display-large: 64 / 57 */
 }
 .text-title-page {
-  font: var(--mfy-font-title-page);
-  font-size: clamp(1.8rem, 4vw, var(--mfy-typography-title-page-size-base));
+  font: var(--gmh-typescale-display-medium);
+  font-size: clamp(1.8rem, 4vw, var(--gmh-typescale-display-medium-size));
   line-height: 1.156; /* display-medium: 52 / 45 */
 }
 
 /* Italic accent inside a display title: `<TextTitleHero>Care that reaches
-   <em>the people</em></TextTitleHero>`. gold-600, not the #aa9868 anchor:
-   the anchor is 2.7:1 on paper and misses even the 3:1 large-text bar;
-   gold-600 is 3.8:1. Brand surfaces lift it to gold-300 (7.4:1 on navy). */
+   <em>the people</em></TextTitleHero>`. Gold text is `tertiary`, never the
+   #AA9868 fill (tertiary-container), which is 2.7:1 on paper and misses even
+   the 3:1 large-text bar. Brand surfaces set --text-heading-em-color to
+   brand-band-accent. `tertiary` flips to light gold after dark on its own. */
 :is(.text-title-hero, .text-title-page, .text-heading) em {
-  color: var(--text-heading-em-color, var(--mfy-color-gold-600));
+  color: var(--text-heading-em-color, var(--gmh-color-tertiary));
   font-style: italic;
-}
-.dark :is(.text-title-hero, .text-title-page, .text-heading) em {
-  color: var(--mfy-color-gold-400);
 }
 
 /* The kicker above a heading. */
 .text-eyebrow {
   align-items: center;
-  color: var(--text-eyebrow-color, var(--mfy-color-text-accent-default));
+  color: var(--text-eyebrow-color, var(--gmh-color-tertiary));
   display: flex;
   /* label-medium, tracked out for an uppercase kicker. */
-  font: var(--mfy-font-body-small-strong);
-  font-size: var(--md-sys-typescale-label-medium-size);
-  gap: var(--mfy-size-space-300);
+  font: var(--gmh-typescale-label-large);
+  font-size: var(--gmh-typescale-label-medium-size);
+  gap: var(--gmh-space-300);
   letter-spacing: 0.18em;
-  line-height: var(--md-sys-typescale-label-medium-line-height);
+  line-height: var(--gmh-typescale-label-medium-line-height);
   margin: 0;
   text-transform: uppercase;
 
@@ -133,10 +132,10 @@
   }
 }
 .text-eyebrow-rule::after {
-  background: var(--mfy-color-border-accent-default);
+  background: var(--gmh-color-tertiary-container);
   content: "";
   flex: 1;
-  height: var(--mfy-size-stroke-border);
+  height: var(--gmh-stroke-border);
   max-width: 7.5rem;
   opacity: 0.55;
 }
@@ -146,9 +145,9 @@
   margin: 0;
 
   blockquote {
-    border-left: 3px solid var(--mfy-color-border-accent-default);
+    border-left: 3px solid var(--gmh-color-tertiary-container);
     color: var(--text-heading-color, inherit);
-    font-family: var(--mfy-typography-family-serif);
+    font-family: var(--gmh-ref-typeface-brand);
     font-size: clamp(1.45rem, 3.1vw, 2.375rem);
     font-style: italic;
     line-height: 1.3;
@@ -160,17 +159,17 @@
 .text-blockquote-attribution {
   display: flex;
   flex-direction: column;
-  font: var(--mfy-font-body-small);
-  gap: var(--mfy-size-space-050);
-  margin-top: var(--mfy-size-space-600);
+  font: var(--gmh-typescale-body-medium);
+  gap: var(--gmh-space-050);
+  margin-top: var(--gmh-space-600);
   padding-left: calc(clamp(1.25rem, 2.6vw, 2.125rem) + 3px);
 }
 .text-blockquote-name {
   color: var(--text-heading-color, inherit);
-  font: var(--mfy-font-body-strong);
+  font: var(--gmh-typescale-title-medium);
 }
 .text-blockquote-role {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
 }
 
 .text-list {
@@ -179,16 +178,16 @@
   margin: 0;
 
   &.text-list-density-default {
-    gap: var(--mfy-size-space-300);
+    gap: var(--gmh-space-300);
     .text-list-title {
-      margin-bottom: var(--mfy-size-space-400);
+      margin-bottom: var(--gmh-space-400);
     }
   }
 
   &.text-list-density-tight {
-    gap: var(--mfy-size-space-200);
+    gap: var(--gmh-space-200);
     .text-list-title {
-      margin-bottom: var(--mfy-size-space-100);
+      margin-bottom: var(--gmh-space-100);
     }
   }
 
@@ -198,13 +197,13 @@
   }
 
   &:not(.text-link-list) {
-    color: var(--mfy-color-text-default-secondary);
+    color: var(--gmh-color-on-surface-variant);
     padding-left: 1rem;
   }
 }
 
 .text-list-item {
-  font: var(--mfy-font-body-base);
+  font: var(--gmh-typescale-body-large);
 }
 
 .text-price {
@@ -212,24 +211,24 @@
   display: flex;
 
   &.text-price-size-small {
-    gap: var(--mfy-size-space-100);
+    gap: var(--gmh-space-100);
 
     > .text-body-small {
-      margin-bottom: var(--mfy-size-space-100);
+      margin-bottom: var(--gmh-space-100);
     }
   }
 
   &.text-price-size-large {
-    gap: var(--mfy-size-space-200);
+    gap: var(--gmh-space-200);
 
     > .text-body-small {
-      margin-bottom: var(--mfy-size-space-300);
+      margin-bottom: var(--gmh-space-300);
     }
   }
 
   .text-price-currency {
     font-size: 0.6em;
-    margin-right: var(--mfy-size-space-050);
+    margin-right: var(--gmh-space-050);
   }
 }
 

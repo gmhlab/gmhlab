@@ -14,17 +14,16 @@ const badgeVariants = cva(
           "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
         destructive:
           "bg-destructive/10 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
-        // Status tones. These take the tinted surface straight from the token
-        // pair rather than the alpha-over-solid trick `destructive` uses —
-        // 10% of yellow-400 is not a readable pill. See --info/--warning/
-        // --success in styles/tailwind.css.
-        // The secondary brand colour as a tag: gold wash with gold-800 text
-        // (7:1). For a category label, not a status.
+        // The secondary brand colour as a tag: a wash of the gold fill with
+        // gold text (M3 tertiary). For a category label, not a status.
         accent:
-          "bg-surface-accent-tertiary text-content-on-accent-tertiary [a]:hover:bg-surface-accent-tertiary-hover",
-        info: "bg-info text-info-foreground [a]:hover:bg-info/80",
-        warning: "bg-warning text-warning-foreground [a]:hover:bg-warning/80",
-        success: "bg-success text-success-foreground [a]:hover:bg-success/80",
+          "bg-tertiary-container/25 text-tertiary [a]:hover:bg-tertiary-container/40",
+        // Status tones: the M3 custom-colour container pairs (generated in
+        // @gmhlab/tokens), not the alpha-over-solid trick `destructive` uses —
+        // a 10% wash of a warning yellow is not a readable pill.
+        info: "bg-info-container text-on-info-container [a]:hover:bg-info-container/80",
+        warning: "bg-warning-container text-on-warning-container [a]:hover:bg-warning-container/80",
+        success: "bg-success-container text-on-success-container [a]:hover:bg-success-container/80",
         outline:
           "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
         ghost:

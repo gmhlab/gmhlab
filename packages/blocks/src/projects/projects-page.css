@@ -32,29 +32,29 @@
 .projects-stat {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
+  gap: var(--gmh-space-050);
 }
 
 .projects-stat-value {
-  color: var(--mfy-color-text-brand-default);
-  font-size: var(--mfy-typography-scale-07);
+  color: var(--gmh-color-primary);
+  font-size: var(--gmh-typescale-display-small-size);
   /* Serif figures, regular weight: the same voice as the system StatsCard. */
-  font-family: var(--mfy-typography-family-serif);
-  font-weight: var(--mfy-typography-weight-regular);
+  font-family: var(--gmh-ref-typeface-brand);
+  font-weight: var(--gmh-ref-typeface-weight-regular);
   line-height: 1;
 }
 
 /* Band surface — see the contrast note above. */
 .projects-stat-label {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
 }
 
 /* ------------------------------------------------------------------- toolbar
  * Shares the hero's neutral surface and closes it with a hairline, so header,
  * search and facets read as one band rather than three stacked sections. */
 .projects-toolbar {
-  border-bottom: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-default);
+  border-bottom: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline-variant);
   /* Above the cards, whose status rail is painted with a pseudo-element. */
   position: relative;
   z-index: 1;
@@ -77,19 +77,19 @@
  * this wins against Tailwind's own `dark:bg-input/30` (0,2,0) regardless of
  * which stylesheet the consumer's bundler emits first. */
 .projects-page .projects-search [data-slot="input"] {
-  background: var(--mfy-color-background-default-default);
-  border-color: var(--mfy-color-border-default-default);
+  background: var(--gmh-color-surface);
+  border-color: var(--gmh-color-outline-variant);
 }
 
 .projects-result-count {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
   font-variant-numeric: tabular-nums;
 }
 
 /* Fixed inline-size on the facet label so Status and Region chips start on a
  * common left edge, which makes the two rows read as one control block. */
 .projects-facet-label {
-  color: var(--mfy-color-text-default-default);
+  color: var(--gmh-color-on-surface);
   flex: 0 0 auto;
   font-weight: 600;
   min-width: 4rem;
@@ -99,13 +99,13 @@
  * text colour, so it works on both the selected (solid) and unselected
  * (outline) variants without needing a rule per state. */
 .projects-facet-count {
-  background: color-mix(in oklch, currentColor 12%, transparent);
-  border-radius: var(--mfy-size-radius-full);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  border-radius: var(--gmh-shape-corner-full);
   font-size: 0.6875rem;
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  margin-inline-start: var(--mfy-size-space-100);
-  padding: 0.1875rem var(--mfy-size-space-150);
+  margin-inline-start: var(--gmh-space-100);
+  padding: 0.1875rem var(--gmh-space-150);
 }
 
 /* ----------------------------------------------------------------- spotlight
@@ -116,7 +116,7 @@
  * brand section (navy in both themes), where gold-300 is 7.4:1 and a
  * hardcoded default colour would paint it dark-on-navy. */
 .projects-spotlight-eyebrow {
-  color: var(--mfy-color-gold-300);
+  color: var(--gmh-color-brand-band-accent);
   font-weight: 600;
   letter-spacing: 0.0625rem;
   text-transform: uppercase;
@@ -136,28 +136,28 @@
  * global navy, which would vanish on the dark-mode umber. */
 .projects-page .projects-spotlight {
   --text-heading-color: currentColor;
-  background: var(--mfy-color-background-accent-tertiary);
+  background: color-mix(in srgb, var(--gmh-color-tertiary-container) 24%, var(--gmh-color-surface));
   box-shadow:
-    inset 0 3px 0 var(--mfy-color-border-accent-default),
-    inset 0 0 0 var(--mfy-size-stroke-border)
-      var(--mfy-color-border-accent-secondary);
-  color: var(--mfy-color-text-brand-default);
+    inset 0 3px 0 var(--gmh-color-tertiary-container),
+    inset 0 0 0 var(--gmh-stroke-border)
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 60%, var(--gmh-color-surface));
+  color: var(--gmh-color-primary);
 }
 
 /* Separates the dependents from the lead column. A vertical rule on desktop,
  * horizontal once `Flex type="third"` has stacked the two FlexItems. */
 .projects-spotlight-aside {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-accent-secondary);
-  padding-top: var(--mfy-size-space-600);
+  border-top: var(--gmh-stroke-border) solid
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 60%, var(--gmh-color-surface));
+  padding-top: var(--gmh-space-600);
 }
 
 @media (min-width: 600px) {
   .projects-spotlight-aside {
-    border-inline-start: var(--mfy-size-stroke-border) solid
-      var(--mfy-color-border-accent-secondary);
+    border-inline-start: var(--gmh-stroke-border) solid
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 60%, var(--gmh-color-surface));
     border-top: none;
-    padding-inline-start: var(--mfy-size-space-800);
+    padding-inline-start: var(--gmh-space-800);
     padding-top: 0;
   }
 }
@@ -165,9 +165,9 @@
 .projects-spotlight-list {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   list-style: none;
-  margin: var(--mfy-size-space-400) 0 0;
+  margin: var(--gmh-space-400) 0 0;
   padding: 0;
 }
 
@@ -175,13 +175,13 @@
 .projects-spotlight-list li {
   align-items: center;
   display: flex;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
 }
 
 .projects-spotlight-item {
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-050);
+  gap: var(--gmh-space-050);
   min-width: 0;
 }
 
@@ -228,33 +228,33 @@
  * `.card-interaction::before` draws outside the card. Matching the top corner
  * radii does the same job and keeps the ring intact. */
 .project-card::before {
-  background: var(--project-rail, var(--mfy-color-border-default-default));
-  border-start-end-radius: var(--mfy-size-radius-200);
-  border-start-start-radius: var(--mfy-size-radius-200);
+  background: var(--project-rail, var(--gmh-color-outline-variant));
+  border-start-end-radius: var(--gmh-shape-corner-small);
+  border-start-start-radius: var(--gmh-shape-corner-small);
   content: "";
-  height: var(--mfy-size-space-050);
+  height: var(--gmh-space-050);
   inset-block-start: 0;
   inset-inline: 0;
   position: absolute;
 }
 
 .project-card-status-active {
-  --project-rail: var(--mfy-color-background-positive-default);
+  --project-rail: var(--gmh-color-success);
 }
 .project-card-status-ongoing {
-  --project-rail: var(--mfy-color-background-brand-default);
+  --project-rail: var(--gmh-color-brand-band);
 }
 .project-card-status-closed {
-  --project-rail: var(--mfy-color-border-default-default);
+  --project-rail: var(--gmh-color-outline-variant);
 }
 
 /* Card already handles the hover *surface* via
  * `:has(.card-interaction[data-hovered])`; this adds the lift. */
 .project-card:hover {
   box-shadow:
-    inset 0 0 0 var(--mfy-size-stroke-border)
-      var(--mfy-color-border-default-default),
-    var(--mfy-effects-shadows-drop-shadow-600);
+    inset 0 0 0 var(--gmh-stroke-border)
+      var(--gmh-color-outline-variant),
+    var(--gmh-elevation-level5);
   transform: translateY(-2px);
 }
 
@@ -265,7 +265,7 @@
 
 .project-design,
 .project-tagline {
-  color: var(--mfy-color-text-default-secondary);
+  color: var(--gmh-color-on-surface-variant);
 }
 
 .project-design {
@@ -276,13 +276,13 @@
  * the values aligned to the longest label in *that* card, which is steadier
  * than a fixed gutter across cards with different rows. */
 .project-meta {
-  border-top: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
-  column-gap: var(--mfy-size-space-400);
+  border-top: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
+  column-gap: var(--gmh-space-400);
   display: grid;
   grid-template-columns: auto 1fr;
-  padding-top: var(--mfy-size-space-400);
-  row-gap: var(--mfy-size-space-100);
+  padding-top: var(--gmh-space-400);
+  row-gap: var(--gmh-space-100);
 }
 
 /* Defensive: every row is conditional, and a project with none of the four
@@ -292,15 +292,15 @@
 }
 
 .project-meta dt {
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.03125rem;
   text-transform: uppercase;
 }
 
 .project-meta dd {
-  color: var(--mfy-color-text-default-default);
-  font-size: var(--mfy-typography-scale-01);
+  color: var(--gmh-color-on-surface);
+  font-size: var(--gmh-typescale-label-medium-size);
   margin: 0;
 }
 
@@ -311,7 +311,7 @@
 }
 
 .project-card-cta {
-  color: var(--mfy-color-text-brand-default);
+  color: var(--gmh-color-primary);
 }
 
 .project-card-arrow {
@@ -328,23 +328,23 @@
 /* `default`, not `secondary`: the chip's own gray-100 surface drops #757575 to
  * 4.23:1, just under AA. Size keeps it quiet instead of colour. */
 .project-buildson {
-  background: var(--mfy-color-background-default-secondary);
-  border-radius: var(--mfy-size-radius-full);
-  color: var(--mfy-color-text-default-default);
-  font-size: var(--mfy-typography-scale-01);
-  padding: var(--mfy-size-space-050) var(--mfy-size-space-200);
+  background: var(--gmh-color-surface-container-low);
+  border-radius: var(--gmh-shape-corner-full);
+  color: var(--gmh-color-on-surface);
+  font-size: var(--gmh-typescale-label-medium-size);
+  padding: var(--gmh-space-050) var(--gmh-space-200);
 }
 
 /* --------------------------------------------------------------- empty state */
 .projects-empty {
-  border: var(--mfy-size-stroke-border) dashed
-    var(--mfy-color-border-brand-secondary);
-  border-radius: var(--mfy-size-radius-200);
+  border: var(--gmh-stroke-border) dashed
+    color-mix(in srgb, var(--gmh-color-primary) 60%, var(--gmh-color-surface));
+  border-radius: var(--gmh-shape-corner-small);
   display: flex;
   flex-direction: column;
-  gap: var(--mfy-size-space-400);
+  gap: var(--gmh-space-400);
   max-width: 34rem;
-  padding: var(--mfy-size-space-1200);
+  padding: var(--gmh-space-1200);
   text-align: center;
 
   /* The graphics-kit spot illustration over the message. */
@@ -358,13 +358,13 @@
  * The chip carries its own white surface, so `secondary` text is on white
  * here and clears AA even though the band behind it does not. */
 .projects-partner {
-  background: var(--mfy-color-background-default-default);
-  border: var(--mfy-size-stroke-border) solid
-    var(--mfy-color-border-default-secondary);
-  border-radius: var(--mfy-size-radius-full);
-  color: var(--mfy-color-text-default-secondary);
-  font-size: var(--mfy-typography-scale-01);
-  padding: var(--mfy-size-space-150) var(--mfy-size-space-400);
+  background: var(--gmh-color-surface);
+  border: var(--gmh-stroke-border) solid
+    var(--gmh-color-outline);
+  border-radius: var(--gmh-shape-corner-full);
+  color: var(--gmh-color-on-surface-variant);
+  font-size: var(--gmh-typescale-label-medium-size);
+  padding: var(--gmh-space-150) var(--gmh-space-400);
 }
 
 /* Measure cap for the CTA paragraph only — the heading above it runs the full

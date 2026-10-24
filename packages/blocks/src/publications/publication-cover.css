@@ -9,8 +9,8 @@
 
 .publication-cover {
   --publication-cover-size: 4rem;
-  border-radius: var(--mfy-size-radius-200);
-  box-shadow: var(--mfy-effects-shadows-drop-shadow-100);
+  border-radius: var(--gmh-shape-corner-small);
+  box-shadow: var(--gmh-elevation-level1);
   display: grid;
   flex-shrink: 0;
   /* Both axes, not `aspect-ratio`: `.card-asset` stretches its child, and a
@@ -26,8 +26,8 @@
 /* Drawn over the image, so a white cover still has an edge. */
 .publication-cover::after {
   border-radius: inherit;
-  box-shadow: inset 0 0 0 var(--mfy-size-stroke-border)
-    var(--mfy-color-border-default-default);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    var(--gmh-color-outline-variant);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -44,7 +44,7 @@
 /* No cover: the theme glyph on a neutral tile, flat — a stand-in should not
  * look like a printed object. */
 .publication-cover-fallback {
-  background: var(--mfy-color-background-default-secondary);
+  background: var(--gmh-color-surface-container-low);
   box-shadow: none;
 }
 

@@ -1,0 +1,237 @@
+/* GMH Lab system tokens: everything except colour (./color.css, generated).
+ * Hand-maintained.
+ *
+ * Shape, type, elevation, state and motion are Material Design 3's system
+ * tokens under the --gmh- prefix: M3's --md-sys-X is --gmh-X here, and
+ * --md-ref-X is --gmh-ref-X, names otherwise unchanged — so anything written
+ * against the M3 spec or the M3 Figma kit reads the same. The last section
+ * holds the few things M3 does not tokenise (spacing, strokes, icon sizes).
+ *
+ * GMH Lab departures from the M3 baseline, deliberate:
+ *   - Typefaces are GMH's, not Roboto. "brand" (display, headline) is the
+ *     Baskerville stack; "plain" (title, body, label) is Avenir Next / Nunito
+ *     Sans. Each stack has a web-font hook (--gmh-ref-typeface-*-web) the
+ *     apps fill from their font loader.
+ *   - A semibold (600) weight, for strong body text and labels: Avenir Next's
+ *     Demi Bold is part of the GW look, and M3's 500/700 straddle it.
+ *   - Tracking is 0 for display, headline, body-large and body-medium. M3's
+ *     values are tuned for Roboto: its negative display tracking tightens a
+ *     serif too far, and its positive body tracking makes Avenir Next (already
+ *     a wide face) look airy. Title, label and body-small keep the spec.
+ *   - Each type role also has a `font` shorthand, --gmh-typescale-<role>
+ *     (style, weight, size/line-height, family), for the common case of
+ *     setting the whole role at once. Tracking is not part of `font`. */
+
+:root {
+  /* -- Shape: the M3 corner scale ---------------------------------------- */
+  --gmh-shape-corner-none: 0;
+  --gmh-shape-corner-extra-small: 0.25rem; /* 4px */
+  --gmh-shape-corner-small: 0.5rem; /* 8px */
+  --gmh-shape-corner-medium: 0.75rem; /* 12px */
+  --gmh-shape-corner-large: 1rem; /* 16px */
+  --gmh-shape-corner-large-increased: 1.25rem; /* 20px */
+  --gmh-shape-corner-extra-large: 1.75rem; /* 28px */
+  --gmh-shape-corner-extra-large-increased: 2rem; /* 32px */
+  --gmh-shape-corner-extra-extra-large: 3rem; /* 48px */
+  --gmh-shape-corner-full: 9999px;
+
+  /* -- Typography --------------------------------------------------------- */
+  /* Native faces first (macOS ships both), then the web-font hook, then
+     fallbacks. */
+  --gmh-ref-typeface-brand: Baskerville, "Baskerville Old Face", var(--gmh-ref-typeface-brand-web, "Libre Baskerville"), Georgia, serif;
+  --gmh-ref-typeface-plain: "Avenir Next", Avenir, var(--gmh-ref-typeface-plain-web, "Nunito Sans"), "Segoe UI", system-ui, sans-serif;
+  --gmh-ref-typeface-mono: "Roboto Mono", ui-monospace, monospace;
+  --gmh-ref-typeface-weight-regular: 400;
+  --gmh-ref-typeface-weight-medium: 500;
+  --gmh-ref-typeface-weight-semibold: 600;
+  --gmh-ref-typeface-weight-bold: 700;
+
+  /* Display — brand */
+  --gmh-typescale-display-large-font: var(--gmh-ref-typeface-brand);
+  --gmh-typescale-display-large-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-display-large-size: 3.5625rem; /* 57px */
+  --gmh-typescale-display-large-line-height: 4rem; /* 64px */
+  --gmh-typescale-display-large-tracking: 0;
+  --gmh-typescale-display-medium-font: var(--gmh-ref-typeface-brand);
+  --gmh-typescale-display-medium-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-display-medium-size: 2.8125rem; /* 45px */
+  --gmh-typescale-display-medium-line-height: 3.25rem; /* 52px */
+  --gmh-typescale-display-medium-tracking: 0;
+  --gmh-typescale-display-small-font: var(--gmh-ref-typeface-brand);
+  --gmh-typescale-display-small-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-display-small-size: 2.25rem; /* 36px */
+  --gmh-typescale-display-small-line-height: 2.75rem; /* 44px */
+  --gmh-typescale-display-small-tracking: 0;
+
+  /* Headline — brand */
+  --gmh-typescale-headline-large-font: var(--gmh-ref-typeface-brand);
+  --gmh-typescale-headline-large-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-headline-large-size: 2rem; /* 32px */
+  --gmh-typescale-headline-large-line-height: 2.5rem; /* 40px */
+  --gmh-typescale-headline-large-tracking: 0;
+  --gmh-typescale-headline-medium-font: var(--gmh-ref-typeface-brand);
+  --gmh-typescale-headline-medium-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-headline-medium-size: 1.75rem; /* 28px */
+  --gmh-typescale-headline-medium-line-height: 2.25rem; /* 36px */
+  --gmh-typescale-headline-medium-tracking: 0;
+  --gmh-typescale-headline-small-font: var(--gmh-ref-typeface-brand);
+  --gmh-typescale-headline-small-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-headline-small-size: 1.5rem; /* 24px */
+  --gmh-typescale-headline-small-line-height: 2rem; /* 32px */
+  --gmh-typescale-headline-small-tracking: 0;
+
+  /* Title — plain */
+  --gmh-typescale-title-large-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-title-large-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-title-large-size: 1.375rem; /* 22px */
+  --gmh-typescale-title-large-line-height: 1.75rem; /* 28px */
+  --gmh-typescale-title-large-tracking: 0;
+  --gmh-typescale-title-medium-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-title-medium-weight: var(--gmh-ref-typeface-weight-medium);
+  --gmh-typescale-title-medium-size: 1rem; /* 16px */
+  --gmh-typescale-title-medium-line-height: 1.5rem; /* 24px */
+  --gmh-typescale-title-medium-tracking: 0.009375rem; /* 0.15px */
+  --gmh-typescale-title-small-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-title-small-weight: var(--gmh-ref-typeface-weight-medium);
+  --gmh-typescale-title-small-size: 0.875rem; /* 14px */
+  --gmh-typescale-title-small-line-height: 1.25rem; /* 20px */
+  --gmh-typescale-title-small-tracking: 0.00625rem; /* 0.1px */
+
+  /* Body — plain */
+  --gmh-typescale-body-large-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-body-large-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-body-large-size: 1rem; /* 16px */
+  --gmh-typescale-body-large-line-height: 1.5rem; /* 24px */
+  --gmh-typescale-body-large-tracking: 0; /* spec 0.5px — see header */
+  --gmh-typescale-body-medium-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-body-medium-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-body-medium-size: 0.875rem; /* 14px */
+  --gmh-typescale-body-medium-line-height: 1.25rem; /* 20px */
+  --gmh-typescale-body-medium-tracking: 0; /* spec 0.25px — see header */
+  --gmh-typescale-body-small-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-body-small-weight: var(--gmh-ref-typeface-weight-regular);
+  --gmh-typescale-body-small-size: 0.75rem; /* 12px */
+  --gmh-typescale-body-small-line-height: 1rem; /* 16px */
+  --gmh-typescale-body-small-tracking: 0.025rem; /* 0.4px */
+
+  /* Label — plain */
+  --gmh-typescale-label-large-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-label-large-weight: var(--gmh-ref-typeface-weight-medium);
+  --gmh-typescale-label-large-size: 0.875rem; /* 14px */
+  --gmh-typescale-label-large-line-height: 1.25rem; /* 20px */
+  --gmh-typescale-label-large-tracking: 0.00625rem; /* 0.1px */
+  --gmh-typescale-label-medium-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-label-medium-weight: var(--gmh-ref-typeface-weight-medium);
+  --gmh-typescale-label-medium-size: 0.75rem; /* 12px */
+  --gmh-typescale-label-medium-line-height: 1rem; /* 16px */
+  --gmh-typescale-label-medium-tracking: 0.03125rem; /* 0.5px */
+  --gmh-typescale-label-small-font: var(--gmh-ref-typeface-plain);
+  --gmh-typescale-label-small-weight: var(--gmh-ref-typeface-weight-medium);
+  --gmh-typescale-label-small-size: 0.6875rem; /* 11px */
+  --gmh-typescale-label-small-line-height: 1rem; /* 16px */
+  --gmh-typescale-label-small-tracking: 0.03125rem; /* 0.5px */
+
+
+  /* Shorthands: `font: var(--gmh-typescale-body-large)`. */
+  --gmh-typescale-display-large: normal var(--gmh-typescale-display-large-weight) var(--gmh-typescale-display-large-size)/var(--gmh-typescale-display-large-line-height) var(--gmh-typescale-display-large-font);
+  --gmh-typescale-display-medium: normal var(--gmh-typescale-display-medium-weight) var(--gmh-typescale-display-medium-size)/var(--gmh-typescale-display-medium-line-height) var(--gmh-typescale-display-medium-font);
+  --gmh-typescale-display-small: normal var(--gmh-typescale-display-small-weight) var(--gmh-typescale-display-small-size)/var(--gmh-typescale-display-small-line-height) var(--gmh-typescale-display-small-font);
+  --gmh-typescale-headline-large: normal var(--gmh-typescale-headline-large-weight) var(--gmh-typescale-headline-large-size)/var(--gmh-typescale-headline-large-line-height) var(--gmh-typescale-headline-large-font);
+  --gmh-typescale-headline-medium: normal var(--gmh-typescale-headline-medium-weight) var(--gmh-typescale-headline-medium-size)/var(--gmh-typescale-headline-medium-line-height) var(--gmh-typescale-headline-medium-font);
+  --gmh-typescale-headline-small: normal var(--gmh-typescale-headline-small-weight) var(--gmh-typescale-headline-small-size)/var(--gmh-typescale-headline-small-line-height) var(--gmh-typescale-headline-small-font);
+  --gmh-typescale-title-large: normal var(--gmh-typescale-title-large-weight) var(--gmh-typescale-title-large-size)/var(--gmh-typescale-title-large-line-height) var(--gmh-typescale-title-large-font);
+  --gmh-typescale-title-medium: normal var(--gmh-typescale-title-medium-weight) var(--gmh-typescale-title-medium-size)/var(--gmh-typescale-title-medium-line-height) var(--gmh-typescale-title-medium-font);
+  --gmh-typescale-title-small: normal var(--gmh-typescale-title-small-weight) var(--gmh-typescale-title-small-size)/var(--gmh-typescale-title-small-line-height) var(--gmh-typescale-title-small-font);
+  --gmh-typescale-body-large: normal var(--gmh-typescale-body-large-weight) var(--gmh-typescale-body-large-size)/var(--gmh-typescale-body-large-line-height) var(--gmh-typescale-body-large-font);
+  --gmh-typescale-body-medium: normal var(--gmh-typescale-body-medium-weight) var(--gmh-typescale-body-medium-size)/var(--gmh-typescale-body-medium-line-height) var(--gmh-typescale-body-medium-font);
+  --gmh-typescale-body-small: normal var(--gmh-typescale-body-small-weight) var(--gmh-typescale-body-small-size)/var(--gmh-typescale-body-small-line-height) var(--gmh-typescale-body-small-font);
+  --gmh-typescale-label-large: normal var(--gmh-typescale-label-large-weight) var(--gmh-typescale-label-large-size)/var(--gmh-typescale-label-large-line-height) var(--gmh-typescale-label-large-font);
+  --gmh-typescale-label-medium: normal var(--gmh-typescale-label-medium-weight) var(--gmh-typescale-label-medium-size)/var(--gmh-typescale-label-medium-line-height) var(--gmh-typescale-label-medium-font);
+  --gmh-typescale-label-small: normal var(--gmh-typescale-label-small-weight) var(--gmh-typescale-label-small-size)/var(--gmh-typescale-label-small-line-height) var(--gmh-typescale-label-small-font);
+
+  /* -- Elevation ---------------------------------------------------------- *
+   * M3 expresses elevation mainly as surface colour (the surface-container-*
+   * roles); these shadows are for things that genuinely float — menus,
+   * dialogs, a lifted card. Two layers each (key + ambient), per the spec. */
+  --gmh-elevation-level0: none;
+  --gmh-elevation-level1:
+    0 1px 2px 0 color-mix(in srgb, var(--gmh-color-shadow) 30%, transparent),
+    0 1px 3px 1px color-mix(in srgb, var(--gmh-color-shadow) 15%, transparent);
+  --gmh-elevation-level2:
+    0 1px 2px 0 color-mix(in srgb, var(--gmh-color-shadow) 30%, transparent),
+    0 2px 6px 2px color-mix(in srgb, var(--gmh-color-shadow) 15%, transparent);
+  --gmh-elevation-level3:
+    0 1px 3px 0 color-mix(in srgb, var(--gmh-color-shadow) 30%, transparent),
+    0 4px 8px 3px color-mix(in srgb, var(--gmh-color-shadow) 15%, transparent);
+  --gmh-elevation-level4:
+    0 2px 3px 0 color-mix(in srgb, var(--gmh-color-shadow) 30%, transparent),
+    0 6px 10px 4px color-mix(in srgb, var(--gmh-color-shadow) 15%, transparent);
+  --gmh-elevation-level5:
+    0 4px 4px 0 color-mix(in srgb, var(--gmh-color-shadow) 30%, transparent),
+    0 8px 12px 6px color-mix(in srgb, var(--gmh-color-shadow) 15%, transparent);
+
+  /* -- State layers -------------------------------------------------------- *
+   * An interactive element's hover/focus/press is its content colour laid
+   * over its container at these opacities:
+   *   color-mix(in srgb, <container>, <on-container> calc(<opacity> * 100%))
+   * Disabled: container = on-surface at 12%, content = on-surface at 38%. */
+  --gmh-state-hover-state-layer-opacity: 0.08;
+  --gmh-state-focus-state-layer-opacity: 0.1;
+  --gmh-state-pressed-state-layer-opacity: 0.1;
+  --gmh-state-dragged-state-layer-opacity: 0.16;
+  --gmh-state-disabled-container-opacity: 0.12;
+  --gmh-state-disabled-content-opacity: 0.38;
+
+  /* -- Motion -------------------------------------------------------------- */
+  --gmh-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --gmh-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --gmh-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  /* CSS has no multi-segment curve; this is M3's single-bezier stand-in. */
+  --gmh-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --gmh-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --gmh-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --gmh-motion-duration-short1: 50ms;
+  --gmh-motion-duration-short2: 100ms;
+  --gmh-motion-duration-short3: 150ms;
+  --gmh-motion-duration-short4: 200ms;
+  --gmh-motion-duration-medium1: 250ms;
+  --gmh-motion-duration-medium2: 300ms;
+  --gmh-motion-duration-medium3: 350ms;
+  --gmh-motion-duration-medium4: 400ms;
+  --gmh-motion-duration-long1: 450ms;
+  --gmh-motion-duration-long2: 500ms;
+  --gmh-motion-duration-long3: 550ms;
+  --gmh-motion-duration-long4: 600ms;
+  --gmh-motion-duration-extra-long1: 700ms;
+  --gmh-motion-duration-extra-long2: 800ms;
+  --gmh-motion-duration-extra-long3: 900ms;
+  --gmh-motion-duration-extra-long4: 1000ms;
+
+  /* -- Not in M3 ---------------------------------------------------------- *
+   * Spacing is Tailwind's 4px grid: --gmh-space-N is Tailwind's N/100 step
+   * (space-400 = 1rem = p-4), so plain CSS and utilities stay in step. */
+  --gmh-space-0: 0rem;
+  --gmh-space-050: 0.125rem;
+  --gmh-space-100: 0.25rem;
+  --gmh-space-150: 0.375rem;
+  --gmh-space-200: 0.5rem;
+  --gmh-space-300: 0.75rem;
+  --gmh-space-400: 1rem;
+  --gmh-space-500: 1.25rem;
+  --gmh-space-600: 1.5rem;
+  --gmh-space-800: 2rem;
+  --gmh-space-1200: 3rem;
+  --gmh-space-1600: 4rem;
+  --gmh-space-2400: 6rem;
+  --gmh-space-4000: 10rem;
+
+  --gmh-stroke-border: 0.0625rem; /* 1px */
+  --gmh-stroke-focus-ring: 0.125rem; /* 2px */
+
+  --gmh-icon-size-small: 1.5rem; /* 24px */
+  --gmh-icon-size-medium: 2rem; /* 32px */
+  --gmh-icon-size-large: 2.5rem; /* 40px */
+  --gmh-icon-size-extra-large: 3rem; /* 48px */
+
+  --gmh-blur: 0.25rem;
+}

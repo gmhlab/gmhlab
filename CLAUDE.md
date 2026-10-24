@@ -10,12 +10,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Workspace layout
 
-Workspaces are `apps/*` and `packages/*` (see `pnpm-workspace.yaml`). Internal packages reference each other with `workspace:*`. Build/consume order is **tokens, core → ui, data → blocks → apps** (`core` and `tokens` are independent roots; `data` depends only on `core`, `ui` on `tokens` + `core`). A package restructure ran on 2026-10-18: `core`, `data`, and moving template residue out of `ui`/`blocks` (GMH Lab content stays as overridable defaults) are done. A Material Design 3 migration started the same day — see "The brand is fixed" below.
+Workspaces are `apps/*` and `packages/*` (see `pnpm-workspace.yaml`). Internal packages reference each other with `workspace:*`. Build/consume order is **tokens, core → ui, data → blocks → apps** (`core` and `tokens` are independent roots; `data` depends only on `core`, `ui` on `tokens` + `core`). A package restructure ran on 2026-10-18: `core`, `data`, and moving template residue out of `ui`/`blocks` (GMH Lab content stays as overridable defaults) are done. A Material Design 3 migration started the same day; on 2026-10-24 the tokens became one `--gmh-*` layer — see "One token layer" below.
 
-- `packages/tokens` (`@gmhlab/tokens`) — the **design-token value layer** (the `--mfy-*` namespace). `src/index.css` chains `responsive.css` → `variables.css` → `icons.css` → `globals.css` (`reset.css` exists but is currently commented out). This is a pure value/theme layer — it carries **no** Tailwind directives. `variables.css` is the full token set and is **hand-maintained** — it began as generator output but has since been edited (the GMH brand ramp prepended and `@media (prefers-color-scheme: dark)` swapped for the `.dark` class). It is **GMH Lab's brand, and fixed** — teams do not re-theme it; see "The brand is fixed" below. The generator now writes `src/theme.css` *alongside* it as a drift report; see "Design tokens from Figma" below. `src/index.ts` is now **CSS-only** (`import "./index.css"`) — the former typed `tokens` JS object was removed as an unused stub that drifted from `variables.css`; consume tokens as CSS vars. CSS is exposed to consumers as **`@gmhlab/tokens/tokens.css`** (physical file is `dist/index.css`). Published (not `private` — `ui`'s CSS imports it at runtime); has no runtime/peer deps.
+- `packages/tokens` (`@gmhlab/tokens`) — the **design-token value layer**: one layer, the `--gmh-*` namespace, Material Design 3 names (see "One token layer" below). `src/index.css` chains `responsive.css` → `color.css` → `system.css` → `icons.css` → `globals.css` (`reset.css` exists but is commented out). This is a pure value/theme layer — it carries **no** Tailwind directives. `color.css` is **generated** (`script:color`); `system.css` is hand-maintained. It is **GMH Lab's brand, and fixed** — teams do not re-theme it; see "The brand is fixed" below. `src/index.ts` is **CSS-only** (`import "./index.css"`); consume tokens as CSS vars. CSS is exposed to consumers as **`@gmhlab/tokens/tokens.css`** (physical file is `dist/index.css`). Published (not `private` — `ui`'s CSS imports it at runtime); has no runtime/peer deps.
 - `packages/core` (`@gmhlab/core`) — the **framework-agnostic domain layer**: shared record types (`Product`, `PricingPlan`, `User`, …), the service interfaces a backend implements (`AuthService`, `PricingService`, `ProductsService`), and pure helpers (`filterProducts`, `sortProducts`, `searchProducts`, `cartTotal`). No React, no CSS, **no data** — the main entry must stay DOM-free. Invented demo records and mock services live behind a second entry, **`@gmhlab/core/mocks`** (`MOCK_PRODUCTS`, `mockAuthService`, …; two tsup entries), so they only reach bundles that import them on purpose. Session persistence is the `AuthService`'s own job (`login` stores, `getCurrentUser` restores) — providers never touch storage. Only types shared *across* packages belong here; a block's own record contract stays co-located with the block.
 - `packages/data` (`@gmhlab/data`) — the **React side of the data layer**: auth/pricing/products contexts, providers (`AuthProvider`, `PricingProvider`, `ProductsProvider`, `AllProviders`) and hooks (`useAuth`, `usePricing`, `useProducts`), plus the `*ContextType` interfaces and `DataServices`. **Every provider takes its backend as a required `service` prop** (`AllProviders` takes `services={{ auth, pricing, products }}`) — there are no defaults, so `@gmhlab/core/mocks` reaches a bundle only when the app passes the mocks in. Each provider re-runs its load when `service` changes, so services must be stable references (module-level constants). Does not re-export core's types. Only `useAuth` has a consumer in the repo (`apps/web`'s header) — `usePricing`/`useProducts` lost theirs when the MonoFly examples were deleted. Bundled with a `"use client"` banner; `external`s `react`, `react-dom`, `@gmhlab/core`; no CSS, `sideEffects: false`. `ProductsProvider` still persists cart/favorites/recently-viewed to `localStorage` itself — that is UI state, unlike the session, which is the `AuthService`'s job.
-- `packages/ui` (`@gmhlab/ui`) — the component library. `src/styles/index.css` is just two imports: `@gmhlab/tokens/tokens.css` (the value layer) followed by `./tailwind.css` (the Tailwind glue). The tokens CSS is **not** inlined: because tsup's `.css` loader is `copy`, esbuild never parses the file, so `dist/index.css` ships a literal `@import "@gmhlab/tokens/tokens.css"` on line 1 (its *relative* imports do get inlined). `@gmhlab/tokens` is therefore a genuine runtime dependency that must be published and resolvable by the consumer's CSS toolchain — it cannot be made `private`. The barrel (`src/index.ts`) imports `./styles/index.css` and re-exports `compositions` (cards, footers, forms, headers, sections), `graphics` (the GMH graphics kit — see "The graphics kit" below), `hooks` (`useMediaQuery`), `icons`, `images` (SVGs bundled as data URLs via tsup's `.svg` `dataurl` loader), `layouts`, `lib/utils`, and `primitives`. `src/types/react.d.ts` is an ambient-only augmentation (not exported) that widens `React.CSSProperties` to accept `--*` keys — this is what lets the MFY layout/primitive components pass custom properties via `style={{ "--flex-gap": … }}` without a cast. Deleting it breaks typecheck across the repo.
+- `packages/ui` (`@gmhlab/ui`) — the component library. `src/styles/index.css` is just two imports: `@gmhlab/tokens/tokens.css` (the value layer) followed by `./tailwind.css` (the Tailwind glue). The tokens CSS is **not** inlined: because tsup's `.css` loader is `copy`, esbuild never parses the file, so `dist/index.css` ships a literal `@import "@gmhlab/tokens/tokens.css"` on line 1 (its *relative* imports do get inlined). `@gmhlab/tokens` is therefore a genuine runtime dependency that must be published and resolvable by the consumer's CSS toolchain — it cannot be made `private`. The barrel (`src/index.ts`) imports `./styles/index.css` and re-exports `compositions` (cards, footers, forms, headers, sections), `graphics` (the GMH graphics kit — see "The graphics kit" below), `hooks` (`useMediaQuery`), `icons`, `images` (SVGs bundled as data URLs via tsup's `.svg` `dataurl` loader), `layouts`, `lib/utils`, and `primitives`. `src/types/react.d.ts` is an ambient-only augmentation (not exported) that widens `React.CSSProperties` to accept `--*` keys — this is what lets the CSS layout/primitive components pass custom properties via `style={{ "--flex-gap": … }}` without a cast. Deleting it breaks typecheck across the repo.
 - `packages/blocks` (`@gmhlab/blocks`) — higher-level composed blocks built from `ui` + `tokens`. `src/` groups, **all seven re-exported from the barrel**: `home/` (`HomePage`, the record-driven landing page — see "The GW landing page" below), `innovations/`, `projects/`, `publications/`, `team/` (the GW site pages — **record-driven renderers only**; the records live in `apps/web/src/content/`, see "GW page blocks" below), `shared/` (the `PageCta`/`PageAction` copy types, plus `gmh-copy.ts` — the GW Center's default copy, exported as `GMH_*_COPY`; the `PageCtaSection`/`PageActions` components in `shared/page-cta.tsx` are internal, not exported), and `slides/` (`BrandSlide`, `SlideHeader`, `SlideFooter` with co-located CSS). The MonoFly `examples/` sections and the `/showcase` route were **deleted** (2026-10-18) — demo content with hardcoded SDS/Figma copy. The data layer moved out to `@gmhlab/data`; blocks no longer depends on it or on `@gmhlab/core`. blocks is bundled with a `"use client"` banner. tsup `external`s `react`, `react-dom`, `@gmhlab/ui` and `@gmhlab/tokens` so they resolve from the consumer rather than being bundled. **Every new workspace dependency must be added to that list** — a bundled copy of a package that defines React contexts splits context identity, and hooks then throw "must be used within a provider" at runtime with no type error. CSS exposed as `@gmhlab/blocks/styles.css`.
 - `apps/docs` (`docs`) — Vite + React 19 reference app that consumes every package. Uses `react-router` (`createBrowserRouter` in `src/App.tsx`, pages under `src/pages/`, shared `RootLayout`). `ComponentsPage` is the `@gmhlab/ui` gallery and `BlocksPage` is its `@gmhlab/blocks` counterpart; the seven **record-driven page blocks** get live demo routes under `/blocks/*` (`src/pages/blocks/`), fed by the synthetic corpus in **`src/fixtures/sample-content.ts`** — an invented institute, since a block that could only render the GW Center's records would not be library code. Those routes are mounted a level down from where `apps/web` mounts the same blocks, which is what exercises the `basePath` prop; the fixture also carries one deliberately unresolvable publication slug so the fail-soft reference resolution is visible. Each demo route wrapper passes its own `basePath`, so moving a route means editing the wrapper too.
 - `apps/web` (`web`) — Next.js 16 App Router site consuming every package (own copy of `theme-provider`). Routes: `/` (the GW landing page — `HomePage` fed `HOME_CONTENT`), plus five GW pages that are each a thin wrapper passing content records into a block — `/projects`, `/projects/reshape`, `/publications`, `/innovations`, `/innovations/equip`, and `/team`. **`src/content/` holds those records** (the landing page, the portfolio, the 343-work bibliography, the innovations, the team, and the RESHAPE/EQUIP detail records). Team headshots are static files in `public/team/` — served by Vercel's CDN, no bucket. Project logos are `public/projects/<slug>.png` (`Project.logo`; EQUIP's is reused by `Innovation.logo`/`InnovationDetail.logo`, all rendered by the internal `shared/project-mark.tsx`); the untouched originals pulled from the live Wix site (plus the wide index logos and the unshipped partner logos) are in **`apps/web/assets/gw-site/`**, which is not served — its README records each file's source and any edit. The index-page copy (subtitles, CTAs) is **not** here — it is the blocks' default (`shared/gmh-copy.ts`), so the route files pass none. The exception is `PUBLICATIONS_NOTE` in `publications-data.ts`, which the publications route passes as `note`. — see "GW page blocks" below. Tailwind runs via `@tailwindcss/postcss` (not the Vite plugin); `src/app/globals.css` follows the same pattern as the docs app (import ui/blocks styles + `@source` the package `dist`s). Scripts: `dev` (`next dev`), `build` (`next build`), `start`, `typecheck`. Site chrome lives in the layout — see "The apps/web app shell" below.
@@ -90,10 +90,63 @@ Three things make the shell work:
 
 The split is deliberate — know which side you're editing:
 
-- **`@gmhlab/tokens` = values only.** The Material 3 colour roles (`material.css`, generated — see below), all `--mfy-*` primitives, light/dark theme vars, responsive vars, icon sizing, and global base styles (`--global-*`). No Tailwind directives.
-- **`@gmhlab/ui/src/styles/tailwind.css` = Tailwind glue, compiled by the *consumer's* Tailwind.** Holds `@custom-variant dark (&:is(.dark *))`, `@theme inline` (maps Tailwind color/radius/font vars onto shadcn `--background`/`--primary`/… vars, *and* onto the full `--mfy-*` set — see below), the shadcn `:root` + `.dark` OKLCH color definitions, the `type-*` `@utility` block, and an `@layer base` block. Because this is shipped as CSS (via the `.css` copy loader, not compiled by tsup), the app's Tailwind is what processes `@theme`/`@apply`.
+- **`@gmhlab/tokens` = values only, one layer, `--gmh-*`.** `color.css` (generated), `system.css` (shape, type, elevation, state, motion, plus space/stroke/icon sizes), `responsive.css`, `icons.css`, `globals.css`. No Tailwind directives.
+- **`@gmhlab/ui/src/styles/tailwind.css` = Tailwind glue, compiled by the *consumer's* Tailwind.** Holds `@custom-variant dark (&:is(.dark *))`, `@theme inline` (M3 roles → Tailwind colour keys, shadcn aliases, radius, elevation, fonts), the shadcn `:root` alias block, the `type-*` `@utility` block, and an `@layer base` block. Because this is shipped as CSS (via the `.css` copy loader, not compiled by tsup), the app's Tailwind is what processes `@theme`/`@apply`.
 
-Both light/dark systems key off the **same `.dark` class** on `<html>`, so the `--mfy-*` token theme and the shadcn/Tailwind theme switch together.
+Both key off the **same `.dark` class** on `<html>`.
+
+### One token layer, Material 3 names (since 2026-10-24)
+
+There used to be two layers — M3's `--md-*` roles with a `--mfy-*` semantic
+bridge on top. **Both are gone; don't reintroduce either, and don't add an
+alias layer for old names.** The rule is mechanical: M3's `--md-sys-X` is
+`--gmh-X`, `--md-ref-X` is `--gmh-ref-X`, names otherwise unchanged:
+
+- **Colour roles** `--gmh-color-<m3-role>` — `primary`, `on-primary-container`,
+  `surface-container-low`, `on-surface-variant`, `outline-variant`, `inverse-surface`, …
+  Tonal palettes `--gmh-ref-palette-<family><tone>`.
+- **Shape** `--gmh-shape-corner-*` (4/8/12/16/20/28/32/48px, full). **Type**
+  `--gmh-typescale-<role>-{font,weight,size,line-height,tracking}` for M3's 15
+  roles, plus a `font` shorthand `--gmh-typescale-<role>` (tracking is not part
+  of `font`; set it alongside). **Elevation** `--gmh-elevation-level0…5`.
+  **State** `--gmh-state-*-opacity`. **Motion** `--gmh-motion-*`.
+- **GMH additions, in M3's shape**: custom colours `success` / `warning` /
+  `info` (x, on-x, x-container, on-x-container, generated from seeds);
+  `brand-band` / `on-brand-band` (the full-width navy band: `primary` in light,
+  `primary-container` after dark, because M3's dark `primary` is a light blue
+  for controls), `brand-band-accent` (gold for text and rules on the band,
+  tertiary T80), `navy` (GW navy in both modes — marks, duotones, fixed artwork;
+  not a surface). Typefaces `--gmh-ref-typeface-{brand,plain,mono}` with
+  web-font hooks `--gmh-ref-typeface-{brand,plain}-web`; weight `semibold`
+  (600) alongside M3's 400/500/700.
+- **Not in M3**: `--gmh-space-N` (= Tailwind's `N/100` step), `--gmh-stroke-{border,focus-ring}`,
+  `--gmh-icon-size-{small,medium,large,extra-large}` (24/32/40/48), `--gmh-blur`,
+  `--gmh-responsive-*`.
+
+Mapping old intent onto roles, for reading old code or designs: page surface →
+`surface`; tinted band → `surface-container-low`; muted text →
+`on-surface-variant`; hairline → `outline-variant`; stronger edge / tertiary
+text tone → `outline` (~4.2:1, **not body text**); brand text/icons →
+`primary`; brand band → `brand-band`; tonal brand tint → `secondary-container`;
+neutral slab → `inverse-surface`; gold fill → `tertiary-container`; gold text →
+`tertiary`. Hovers are M3 state layers, written in place:
+`color-mix(in srgb, var(--gmh-color-X), var(--gmh-color-on-X) calc(var(--gmh-state-hover-state-layer-opacity) * 100%))`.
+Lighter steps of a fill are a mix toward the surface in place
+(`color-mix(in srgb, var(--gmh-color-tertiary-container) 24%, var(--gmh-color-surface))`),
+not new tokens.
+
+**Mix in sRGB, never OKLCH**, whenever one side is `transparent` or a
+near-neutral: an OKLCH mix there leaves the hue undefined and Chrome renders
+it as hue 0 — the sticky header was tinted pink for a week because of it. The
+repo is at zero `in oklch` mixes outside the dead `components.css`.
+
+Type role choices: body = `body-large`, small = `body-medium`, strong body =
+`title-medium`, strong small / button-ish labels = `label-large`, 12px
+eyebrows = `label-medium` size, subtitle = `title-large`, heading =
+`headline-small`, page title = `display-medium`, hero = `display-large`. Tracking
+is 0 for display, headline, body-large and body-medium (M3's values are
+Roboto-tuned). The medium weight (500) is real: both apps load Nunito Sans
+400/500/600/700.
 
 ### The brand is fixed (since 2026-10-18)
 
@@ -105,174 +158,108 @@ was built and then reverted the same day for this reason — don't rebuild one,
 and don't document override hooks. CSS variables cannot be technically
 locked, so this is enforced by docs and review.
 
-What *is* required, so a brand change happens in one place:
+- **No literal brand colours anywhere** — tint from a token instead:
+  `color-mix(in srgb, var(--gmh-color-navy) 9%, transparent)`. Neutral
+  black/white alphas are fine, but prefer `--gmh-color-scrim` /
+  `--gmh-color-shadow` mixes.
+- **The colour source is a Material Theme Builder export** seeded with GW navy
+  `#033C5A` and gold `#AA9868`, standard contrast only. The exact GW colours are
+  pinned inside the M3 roles (the builder's own tone mapping shifts navy to
+  `#28638A` and gold to an ochre). **Where M3 and old GW behaviour differ,
+  prefer whichever looks better** — don't preserve old quirks for their own
+  sake. Still to do (phase 3): components applying state layers themselves,
+  M3 component shapes (pill buttons, 28px dialogs) and motion.
 
-- **No literal brand colours anywhere** — not in component CSS, not in
-  `variables.css` semantic tokens. Tint from a token instead:
-  `color-mix(in oklch, var(--mfy-color-brand-800) 9%, transparent)`. The
-  header and card shadows (`rgb(3 60 90 / …)`) and the `border-default-default`
-  hairline (literal in both modes) were converted on 2026-10-18. Neutral
-  black/white alphas (blanket, overlay, scrim, swatch) are fine.
-- **Material 3 migration in progress (2026-10-18).** The system is moving to
-  Material Design 3, sourced from a Material Theme Builder export seeded with
-  GW navy `#033C5A` and gold `#AA9868`, standard contrast only. Decisions: the
-  exact GW colours are pinned inside the M3 roles (the builder's own tone
-  mapping shifts navy to `#28638A` and gold to an ochre), full M3 in phases
-  (colour → shape/type/elevation/state → component variants), the M3 type
-  scale uses the GMH brand faces, not Roboto, and **where M3 and the old GW
-  behaviour differ, prefer whichever looks better** — don't preserve old
-  quirks for their own sake.
+### `color.css` is generated
 
-### Material 3 colour (phase 1, 2026-10-18)
+`pnpm --filter @gmhlab/tokens script:color` runs `scripts/color.mjs` over
+`scripts/material-theme.json` (a committed copy of the builder export;
+`.files/` is gitignored). **Never hand-edit `color.css`.** Primary/tertiary
+roles keep the builder's *tone* but take the colour from the export's own
+palettes (which hold the true GW hues), then `BRAND_PINS` apply: light
+`primary` = `#033C5A`, `tertiary-container` = `#AA9868` with navy-ink
+`on-tertiary-container` in both modes. Custom colours (`CUSTOM`) get a tonal
+palette from their seed at a capped chroma (`CUSTOM_CHROMA`, 36 Lab — uncapped
+seeds make neon containers) and the tones the export uses for `error`. GMH
+roles are `GMH_ROLES`. The script measures every content/container pairing
+(status and brand band included) and refuses to write on a failure — to
+change a colour, change the JSON, the pins, the seeds or `GMH_ROLES` and
+re-run. `system.css` is hand-maintained (M3 spec values).
 
-- **`packages/tokens/src/material.css` is generated** —
-  `pnpm --filter @gmhlab/tokens script:material` runs `scripts/material.mjs`
-  over `scripts/material-theme.json` (a committed copy of the builder export;
-  `.files/` is gitignored). Never hand-edit it. It emits `--md-ref-palette-*`
-  and `--md-sys-color-*` (M3's standard names) for `:root` (light) and
-  `.dark`. Primary/tertiary roles keep the builder's *tone* but take the
-  colour from the export's own palettes (which hold the true GW hues), then
-  `BRAND_PINS` apply: light `primary` = `#033C5A`, `tertiary-container` =
-  `#AA9868` with navy-ink `on-tertiary-container` in both modes. Other roles
-  are the export's values. The script measures every M3 content/container
-  pairing and refuses to write on a failure — to change a colour, change the
-  JSON or the pins and re-run.
-- **The `--mfy-color-*` semantic tokens are a bridge** onto those roles for
-  the default, brand, accent, danger and disabled groups (mapping documented
-  at the top of the colour block in `variables.css`); those groups have no
-  `.dark` entries because the M3 roles flip themselves. **Brand bands are the
-  exception**: `background-brand-default` is `primary` in light and
-  `primary-container` (T30 navy) in dark, because M3's dark `primary` is a
-  light blue meant for controls. Positive, warning, neutral (slate) and
-  utilities have no M3 role and still sit on their ramps.
-- **shadcn aliases in `tailwind.css` point at `--md-sys-color-*` directly**:
-  `--primary` = filled button (dark mode is M3's light blue — the old "primary
-  turns gold after dark" rule is gone), `--secondary` = tonal button
-  (`secondary-container`), `--input` = `outline`, `--ring` and the global focus
-  ring = `tertiary` (gold that passes 3:1; `#AA9868` itself does not).
-- **Not migrated yet:** ~25 raw ramp references in component CSS
-  (`--mfy-color-gold-300` on navy surfaces, `brand-900` utility bar, duotone
-  image, section/footer glows). They still render GW colours, so the brand is
-  intact, but later phases should move them to M3 roles. The `stone` ramp is
-  now unreferenced by the semantic layer.
+### Things that still hold from the GW re-skin (2026-10-07)
 
-### Material 3 foundations (phase 2, 2026-10-18)
+- Headings are Baskerville regular (display/headline roles use the brand
+  face); family stacks put the macOS faces first with a web fallback reachable
+  through the `-web` hooks. `apps/web` fills them from `next/font`;
+  `apps/docs` loads the literal families from Google Fonts.
+- **Heading colour** is navy via `--text-heading-color` (`--gmh-color-primary`,
+  set in `globals.css`, consumed by the Text title/heading classes). **Any
+  surface that paints its own foreground must reset it to `currentColor`** —
+  `Section`/`Card` brand variants do, as do the two hand-painted brand panels
+  in blocks. Forget it and a heading goes navy-on-navy.
+- **`globals.css` element defaults are in `@layer base`.** Unlayered,
+  `button { font: … }` beat every Tailwind utility on a `<button>`. Never move
+  element rules back out of the layer.
 
-`packages/tokens/src/material-system.css` (hand-maintained, M3 spec values)
-holds `--md-sys-shape-corner-*`, `--md-sys-typescale-*`, `--md-sys-elevation-level0…5`,
-`--md-sys-state-*` opacities and `--md-sys-motion-*` easing/durations. The
-`--mfy-*` equivalents bridge onto them, so components changed without edits:
+**There is no `--sds-*` or `--mfy-*` namespace.** The repo descends from SDS
+(→ `--mfy-*` → `--gmh-*`) and is at zero references to either. Unset custom
+properties fail silently — a stale name means no border, no padding and a
+transparent background rather than an error — so after any token change, check
+that every `var(--gmh-*)` in the built `dist/` CSS/JS has a definition.
 
-- **Shape.** `--mfy-size-radius-100/200/400` → corner extra-small/small/medium
-  (4/8/12px — one step rounder than the old 2/4/8). The shadcn `rounded-*`
-  ramp is now the M3 corner scale step for step (sm 4, md 8, lg 12, xl 16,
-  2xl 28, 3xl 32, 4xl 48) instead of multiples of `--radius`.
-- **Type.** M3's 15 roles in the GMH faces: `--md-ref-typeface-brand`
-  (Baskerville stack) for display and headline, `--md-ref-typeface-plain`
-  (Avenir Next / Nunito Sans) for title, body and label. Text primitives map
-  hero → display-large, page title → display-medium, subtitle → title-large,
-  heading → headline-small, subheading and body → body-large, small →
-  body-medium. Tracking is 0 for display, headline and body (M3's values are
-  Roboto-tuned and made Avenir look airy); title and label keep the spec.
-  The medium weight (500) is real: both apps now load Nunito Sans 500.
-- **Elevation.** `--mfy-effects-shadows-drop-shadow-*` → M3 levels. In M3,
-  elevation is mostly surface colour (`surface-container-*`); shadows are for
-  things that float.
-- **State.** The bridge's hover layers use
-  `calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)` in `color-mix`,
-  disabled uses the 12%/38% tokens. Components do not yet apply state layers
-  themselves — that is phase 3 (component variants), along with M3 component
-  shapes (pill buttons, 28px dialogs) and motion.
+### The Tailwind bridge (`tailwind.css`)
 
-### The GW palette (2026-10-07 — colour superseded by M3, see above)
+The block is `@theme inline`, so keys are **substituted into utilities rather
+than emitted to `:root`** — unused keys cost zero bytes and every utility
+resolves its `var()` at the element, so dark mode flips for free. The file's
+header comment is the reference; the essentials:
 
-The colour bullets below describe the pre-M3 values and are kept as history;
-the radius, font, heading-colour and `@layer base` notes still hold.
+- **Colour keys are the M3 role names, verbatim**: `bg-primary-container`,
+  `text-on-surface-variant`, `border-outline-variant`, `bg-success-container`,
+  `bg-brand-band`. Roles already encode surface vs. content, so there is no
+  prefix scheme. Opacity modifiers work (`bg-tertiary-container/25`).
+- **shadcn names are aliases** onto roles (background, foreground, card,
+  popover, muted, accent, destructive, border, input, ring, sidebar-*,
+  chart-*). Two names exist in both vocabularies: `primary` (same meaning) and
+  **`secondary`, which keeps shadcn's meaning — the tonal button
+  (`secondary-container`)** — so upstream shadcn code stays correct. M3's solid
+  `secondary`/`on-secondary`, `background`/`on-background`, `shadow` and
+  `surface-tint` get no utility.
+- **Type is `type-<m3-role>`** (`type-body-large`, `type-label-large`): font
+  shorthand + tracking. M3 sizes are deliberately **not** `--text-*` keys,
+  because the `Text` primitive owns the `text-<word>` class namespace
+  (`text.css`: `text-body-small`, `text-heading`, `text-subtitle` …) and a
+  same-named utility silently fights it. The shadcn layer claims names there
+  too: `--color-input` generates a `text-input` utility, which collided with
+  the old `.text-input` class — hence `TextInput` emits **`.text-input-value`**.
+  Check any new `text-<word>` class in `text.css` against the colour keys
+  *and* the shadcn aliases.
+- **Radius**: the shadcn `rounded-*` ramp is the M3 corner scale step for step
+  (sm 4, md 8, lg 12, xl 16, 2xl 28, 3xl 32, 4xl 48). **Elevation**:
+  `shadow-level1…5`.
+- **Spacing is deliberately not mapped**: `--gmh-space-N` already equals
+  Tailwind's `N/100` step (`space-400` = `p-4`); a `--spacing-100` key would
+  silently redefine `p-100` from 25rem to 4px. Font weights and icon sizes are
+  skipped for the same reason.
 
-The system was re-skinned to the GW reference design (`.files/gw-global-mental-health.html`). What changed in `variables.css`, and why:
+The Material 3 role list in `@theme inline` is generated from `color.css`'s
+role names when the file is rewritten, but nothing regenerates it
+automatically: **a new role in `color.mjs` needs a matching `--color-<role>`
+line by hand.**
 
-- **Primary is unchanged** — `brand-800` already was GW navy `#033c5a`.
-- **Secondary brand colour = GW gold `#aa9868`**, primitive ramp `--mfy-color-gold-50…950` (anchored at 500; 100/300 pinned to the reference's `#f0ebe0`/`#d8cdb2`), semantic group **`accent`** mirroring the brand group step for step (`background-accent-*`, `text-accent-*`, `on-accent`, …; Tailwind `surface-accent`, `content-accent`, `line-accent`, `icon-accent`, plus clean `gold-*`). Not called "secondary": that word is already a *step* name (`surface-secondary`). `#aa9868` is **2.7:1 on paper** — rules, fills, borders and solid buttons only (with navy text, 5.8:1). Gold *text* is `text-accent-default` = gold-700 (AA on all light surfaces); display italics use gold-600. The reference HTML's own 12px gold eyebrows fail AA — don't copy its colours literally.
-- **The `default` group sits on a new `stone` ramp** (warm paper at the light end, GW navy-ink at the dark end) instead of `gray`. Dark mode is navy-ink, not charcoal.
-- **Brand surfaces stay navy after dark.** `background-brand-default/hover` and `text/icon-brand-on-brand` no longer flip to a pale tint in `.dark`; instead the shadcn `--primary` turns gold in `.dark` (in `tailwind.css`), since a navy button on a navy-ink page has no affordance.
-- Radii were crisper (2/4/8px) — superseded by the M3 corner scale in phase 2; headings (`heading-font-*`) are Baskerville regular, and family stacks put the macOS faces first with a web fallback reachable through an optional hook: `var(--mfy-typography-family-{serif,sans}-web, "Libre Baskerville" | "Nunito Sans")`. `apps/web` fills the hook from `next/font`; `apps/docs` loads the literal families from Google Fonts.
-- **Heading colour** is navy via `--text-heading-color` (set in `globals.css`, consumed by the Text title/heading classes). **Any surface that paints its own foreground must reset it to `currentColor`** — `Section`/`Card` brand variants do, as do the two hand-painted brand panels in blocks. Forget it and a heading goes navy-on-navy.
-- **`globals.css` element defaults are in `@layer base`.** Unlayered, `button { font: … }` beat every Tailwind utility on a `<button>` — `Button`'s `text-sm font-semibold` was silently ignored, and only Buttons rendered as `<a>` looked right. Never move element rules back out of the layer.
-
-**There is no `--sds-*` namespace.** The repo descends from SDS and the prefix
-was renamed to `--mfy-*`. The repo is at zero `sds-` references; anything pasted
-in from an SDS source needs the same rename. Note that unset custom properties
-fail silently — a stale `--sds-*` reference means no border, no padding and a
-transparent background rather than an error.
-
-The shadcn vars in `tailwind.css` are a thin **alias layer** over the M3 `--md-sys-color-*` roles (status tones over `--mfy-*`), which is why almost nothing needs a `.dark` entry — the aliased role already flips. Only vars with no semantic source live in `.dark`: the chart ramp, and `--info`. Beyond the stock shadcn set the file also defines three **status tones** consumed by `Badge`'s `info`/`warning`/`success` variants:
-
-- `--warning` / `--success` alias `--mfy-color-background-{warning,positive}-secondary` + `--mfy-color-text-{warning,positive}-default`, so they theme for free.
-- `--info` has **no MFY semantic set** (there is no `info` alongside danger/warning/positive — only the raw `--mfy-color-blue-*` ramp), so it aliases `blue-200`/`blue-800` and needs the explicit `.dark` override. Adding an `info` set to `variables.css` would let those two lines go.
-- Note the asymmetry with `--destructive`, which is the *solid* danger surface: these three are **subtle pairs** (tinted surface + readable on-surface text) because that is what a status pill needs. `bg-destructive/10` works for red but 10% of `yellow-400` is not a readable pill, so the status variants do not use that alpha trick.
-
-### The full `--mfy-*` token set is reachable from Tailwind utilities
-
-Beyond the shadcn aliases, `tailwind.css` maps essentially every `--mfy-*` token
-into `@theme inline`, so `bg-surface-brand` and `text-content-secondary` work
-without an arbitrary `[var(--mfy-…)]` value. Because the block is `inline`, the
-keys are **substituted into utilities rather than emitted to `:root`** — unused
-keys cost zero bytes, and every utility resolves its `var()` at the element, so
-dark mode flips for free. The file's own header comment is the reference; the
-essentials:
-
-- **Colors carry a role dimension Tailwind's flat namespace lacks** — `text-default-secondary`
-  is `gray-500` while `background-default-secondary` is `gray-100`, so one key
-  cannot serve both. The role becomes the prefix: `background-*` → **`surface-*`**,
-  `text-*` → **`content-*`**, `border-*` → **`line-*`**, `icon-*` → **`icon-*`**.
-  The rest is mechanical — drop the role word, drop every `default`, drop the
-  `utilities` group word, collapse `{group}-on-{group}` to `on-{group}`. So
-  `background-default-default` → `surface-default`, `text-default-secondary` →
-  `content-secondary`, `text-brand-on-brand` → `content-on-brand`. Collision-free
-  across all 157 semantic tokens (accent included) with one marked exception (`icon-annotation`).
-- **The accessibility traps above apply under the new names too**: `content-tertiary`
-  is the ~2:1 hairline tone and `content-on-brand-secondary` inverts.
-  (`line-default` is now an alpha hairline that reads on every surface; it no
-  longer equals `surface-tertiary`.)
-- **Raw ramps are namespaced `mfy-`** (`bg-mfy-gray-300`) because Tailwind ships
-  its own gray/blue/red/green/pink/yellow/slate and this repo uses them. Only
-  `brand-*` gets a clean name, since Tailwind has no brand palette.
-- **Semantic type sizes sit behind a `size` segment** — `text-size-heading-large`,
-  not `text-heading-large` — because the `Text` primitive already owns the bare
-  `text-<semantic>` namespace (`text.tsx` emits `text-heading`, `text-subtitle`,
-  `text-body-small` … as plain classes backed by `text.css`). Two of those
-  collided before the prefix went in. The raw ramp is unprefixed (`text-scale-05`).
-  The **shadcn alias layer claims names in that namespace too**: `--color-input`
-  makes Tailwind generate a `text-input` utility, which collided with the `Text`
-  primitive's own `.text-input` class — hence `TextInput` now emits
-  **`.text-input-value`**. Whichever rule Tailwind orders last wins, so the
-  symptom is a font that silently becomes a colour. Check any new
-  `text-<word>` class in `text.css` against both the `@theme inline` keys *and*
-  the shadcn aliases.
-- **`--mfy-font-*` are `font` shorthands, not families**, so they cannot live in
-  the `--font-*` namespace (Tailwind would emit them as `font-family`). They are
-  static utilities instead: `type-title-hero`, `type-body-small-strong`. Since
-  the M3 phase 2 bridge each shorthand carries its role's line-height
-  (`size/line-height`), so they no longer reset it to `normal` — but they do
-  still override any earlier `line-height`, which is why `text.css` keeps its
-  `.text-line-height-*` overrides at the end of the file.
-- **Spacing is deliberately not mapped.** MFY's scale is already stock Tailwind:
-  `--mfy-size-space-N` equals Tailwind's `N/100` step exactly (`space-400` = 1rem
-  = `p-4`, `space-050` = `p-0.5`). Adding `--spacing-100` would not add a value,
-  it would silently redefine `p-100` from 25rem to 4px. Font weights and icon
-  sizes are skipped for the same reason (value-identical to stock).
-
-Nothing generates `tailwind.css` — it is hand-maintained like `variables.css`.
-Adding a token to `variables.css` means applying the rule above by hand.
+The `Badge` `info`/`warning`/`success` variants use the container pairs
+(`bg-success-container text-on-success-container`), not the
+alpha-over-solid trick `destructive` uses — a 10% wash of a warning yellow is
+not a readable pill.
 
 ## The Figma files
 
-- **`xoEDlF54N0QE84TMGlSYvw` ("GMH Lab - Foundations")**, built 2026-10-19 from `packages/tokens`, is the new foundations library, the first of three (ui and blocks files to follow). It has 540 variables in eight collections: `Palette` (M3 tonal palettes plus the GW ramps, no scopes), `Scheme` (the 49 `--md-sys-color-*` roles, Light/Dark), `Color` (the 157 `--mfy-color-*` semantic tokens, Light/Dark), `Shape`, `Size`, `Typography`, `State` and `Motion`. It also has 19 text styles bound to the Typography variables, 5 `Elevation/Level` effect styles, and the `GMH Crest` / `GMH Logo` component sets (Colorway=Navy/White). Every variable's WEB code syntax is its CSS name. Where code computes a colour (`color-mix` hovers, disabled alphas), Figma stores the resolved value and the formula sits in the variable description, so **re-resolve those when the tokens change**; nothing syncs them.
+- **`xoEDlF54N0QE84TMGlSYvw` ("GMH Lab - Foundations")**, built 2026-10-19 from `packages/tokens`, is the new foundations library, the first of three (ui and blocks files to follow). It has 540 variables in eight collections: `Palette` (M3 tonal palettes plus the GW ramps, no scopes), `Scheme` (the 49 M3 colour roles, Light/Dark), `Color` (the 157 old semantic tokens, Light/Dark), `Shape`, `Size`, `Typography`, `State` and `Motion`. It also has 19 text styles bound to the Typography variables, 5 `Elevation/Level` effect styles, and the `GMH Crest` / `GMH Logo` component sets (Colorway=Navy/White). Every variable's WEB code syntax is its CSS name **as of 2026-10-19 — `--md-*`/`--mfy-*`, which no longer exist.** The file predates the 2026-10-24 single-layer `--gmh-*` change: `Scheme`'s code syntax needs `--md-sys-color-` → `--gmh-color-`, the custom/brand-band roles need adding, and the `Color` collection is obsolete. Where code computes a colour (`color-mix` hovers, disabled alphas), Figma stores the resolved value and the formula sits in the variable description, so **re-resolve those when the tokens change**; nothing syncs them.
 
 The older two:
 
 - **`a8t0tmguLdEKoVMc3wVoL7` ("GMH Lab DSP")** is the live component library — this is the one to read when implementing or updating a component. It holds the `Header` component set (`platform` Desktop/Mobile × `state` Default/Open, node `2287:22651`), the `Badge` page (`3241:2`), the GMH brand mark (`5007:49`), and the variable collections: `Color Primitives` (1 mode), `Color` (MonoFly Light / MonoFly Dark), `Typography Primitives`, `Typography`, `Size`, `Responsive` (Desktop/Mobile/Tablet).
-- **`jdTRzc3vWF5pEOUna8rrkR` ("MonoFly DSP")** is the token source only — see below.
+- **`jdTRzc3vWF5pEOUna8rrkR` ("MonoFly DSP")** was the old token source; nothing reads it now.
 
 **`get_metadata` with no `nodeId` is misleading here**: it returns only `Cover` and `Logo` for *either* key, because it reports the currently-open desktop file rather than the key you passed. Query a concrete node id, or use `search_design_system` to locate a component.
 
@@ -282,40 +269,25 @@ Component descriptions in the GMH Lab DSP still say **`@monofly/ui`**, not `@gmh
 
 Cloning a variant to add a new one to a component set silently loses the children's property wiring, so the set's TEXT/BOOLEAN properties accept values that never render. After `clone()` + `appendChild`, re-set them explicitly on the children (`txt.componentPropertyReferences = { characters: "Text#…" }`). Verify by reading them back, not by looking at `componentProperties` on an instance — that reports the value correctly either way.
 
-## Design tokens from Figma
+## Design tokens and Figma
 
-Token source is **`jdTRzc3vWF5pEOUna8rrkR`** ("MonoFly DSP"); key and PAT live in `packages/tokens/.env`.
+There is no Figma → code token pipeline any more. The MonoFly ingestion
+(`script:tokens`, the Figma plugin, `tokens.json`/`styles.json`, the
+`theme.css` drift report) was deleted on 2026-10-24 with the `--mfy-*` layer:
+it read the MonoFly DSP file and emitted `--mfy-*`. Code is the source of
+truth; Figma is built *from* the tokens (see "The Figma files").
 
-**Ingestion is a Figma plugin, not the REST API.** `/v1/files/{key}/variables/local` requires the Enterprise-only `file_variables:read` scope, which this plan cannot grant — regenerating the token will not help. Run `scripts/plugins/figma-plugin-token-json` inside Figma; it renders two panes, which you paste over `scripts/tokens.json` and `scripts/styles.json`. Both panes come from one run, which matters: the two files are joined by Figma variable id, and mixing versions silently degrades font tokens to `undefined undefined …` (`app.mjs` warns on this).
+## Contrast traps
 
-**Transform is offline.** `pnpm --filter @gmhlab/tokens script:tokens` reads those two JSON files and writes `src/theme.css`. No network, no `.env` needed.
+Muted text is `on-surface-variant` (8.9:1 on the light surface). `outline`
+(~4.2:1) is an outline role, not body text. Blocks CSS comments that cite
+`#757575`, `#d9d9d9`, `#b3b3b3` or stone steps describe pre-M3 values.
 
-```bash
-pnpm --filter @gmhlab/tokens script:tokens   # tokens.json + styles.json -> src/theme.css
-```
-
-Two traps:
-
-- **`theme.css` is a drift report, not shippable output.** `src/index.css` imports `variables.css`, and `variables.css` is ahead of Figma: Figma's `brand-*` ramp is still placeholder gray. Adopting `theme.css` wholesale would delete the brand colour.
-- **`COLLECTION_DATA` in `app.mjs` hardcodes Figma mode names** (`monofly_light`/`monofly_dark`). Rename a mode in Figma and the matching CSS block silently emits empty (`:root { ; }`) rather than erroring. Renaming a mode is effectively a code change.
-
-`scripts/plugins/figma-plugin-token-json/code.js` must keep `NAMESPACE` identical to `app.mjs` (`com.figma.monofly`) — a mismatch collapses every token to a single `default` mode and drops all light/dark data, again silently.
-
-## Muted text and the remaining contrast traps
-
-Since the M3 bridge (2026-10-18), muted text is `text-default-secondary` →
-`on-surface-variant` (8.9:1 on the light surface), and
-`text-default-tertiary` → `outline` (~4.2:1) — an outline role, still not
-body text. `text-brand-on-brand-secondary` no longer inverts; it is the same
-as `on-brand`, so the old navy-on-navy trap is retired. `border-default-default`
-→ `outline-variant` (opaque). Blocks CSS comments that cite `#757575`,
-`#d9d9d9`, `#b3b3b3` or stone steps describe pre-M3 values.
-
-Gold remains the one live trap: `#AA9868` (`tertiary-container`) is ~2.7:1 on
-a light surface — fills, rules and solid buttons only; gold text is
-`tertiary`. Light mode is still where contrast breaks; never verify in dark
-alone. Measure rather than eyeball, converting `lab()`/`oklch()` through a
-canvas 2d `fillStyle` first.
+Gold is the one live trap: `#AA9868` (`tertiary-container`) is ~2.7:1 on a
+light surface — fills, rules and solid buttons only; gold text is `tertiary`,
+and gold on a brand band is `brand-band-accent`. Light mode is still where
+contrast breaks; never verify in dark alone. Measure rather than eyeball,
+converting `lab()`/`oklch()` through a canvas 2d `fillStyle` first.
 
 ## Generating section mockups (Nano Banana Pro)
 
@@ -534,7 +506,7 @@ point-in-time and never re-fetched at runtime.
 Be deliberate about which one you're extending. `src/primitives/` components are now mostly **flat single files** (`src/primitives/button.tsx`) — only `icon`, `image`, `logo`, and `text` keep their own subdir; the `layouts/` and `compositions/` groups still use per-component directories (`src/<group>/<name>/<name>.tsx`):
 
 1. **shadcn/Tailwind primitives** (most of `src/primitives/` — button, dialog, dropdown-menu, input, navigation, accordion, …) — Tailwind v4 utility classes via `class-variance-authority` (`cva`), merged with `cn()` (`clsx` + `tailwind-merge`) from `src/lib/utils.ts`. Built on `@base-ui/react` (`button`, `dialog`, `dropdown-menu` — composition via the `render` prop) plus `radix-ui`/`react-aria-components` elsewhere, with `data-slot`/`data-variant`/`data-size` attributes for styling hooks. Theme is driven by the Tailwind color vars in `tailwind.css`.
-2. **MFY layout/primitive components** (`src/layouts/` — `flex`, `grid`, `section`; plus `src/primitives/image`) — plain co-located `*.css` files imported directly by each `.tsx`, driven by `--mfy-*` tokens and component-local CSS custom properties (e.g. `--flex-*`). Props map to BEM-ish class names (`flex-gap-600`, `section-variant-stroke`). Not Tailwind-based.
+2. **CSS layout/primitive components** (`src/layouts/` — `flex`, `grid`, `section`; plus `src/primitives/image`) — plain co-located `*.css` files imported directly by each `.tsx`, driven by `--gmh-*` tokens and component-local CSS custom properties (e.g. `--flex-*`). Props map to BEM-ish class names (`flex-gap-600`, `section-variant-stroke`). Not Tailwind-based.
 
 **Selector traps when writing CSS against these**, all of which fail silently — the rule simply never matches, or the layout quietly does the wrong thing:
 
@@ -554,7 +526,7 @@ Be deliberate about which one you're extending. `src/primitives/` components are
   `group-has-*` looks for a *descendant*. It is now
   `group-data-[orientation=horizontal]/field:`, matching the
   `group-data-[disabled=true]/field:` pattern already in the same file.
-- `Flex` emits **`flex-mfy`**, not `flex` (`Grid` emits `grid-mfy`). A `> .flex` child selector matches nothing. Three dead rules in `headers.css` came from exactly this.
+- `Flex` emits **`flex-gmh`**, not `flex` (`Grid` emits `grid-gmh`). A `> .flex` child selector matches nothing. Three dead rules in `headers.css` came from exactly this.
 - shadcn primitives emit `data-slot` attributes plus Tailwind utilities and **no semantic class**. There is no `.navigation`, `.badge`, etc. — target `[data-slot="navigation-menu"]`.
 - `FlexItem`'s `size` prop (`major`/`minor`/`half`) only does anything when the parent `Flex` has `type="half" | "quarter" | "third"`. Under the default `type="auto"` it is inert.
 - `.card-content > *` is forced to `width: 100%`, so an intrinsically-sized child (a `Badge` pill) stretches across the card unless you wrap it.
@@ -592,11 +564,11 @@ It **defaults `href="/"`**, so a logo in site chrome navigates home without the 
 
 `GmhLogo` was regenerated on 2026-10-19 from the designer's files, replacing the single-colour Figma mark (`a8t0tmguLdEKoVMc3wVoL7` node `5007:49`, which Figma still holds). The mark ships in **two drawings** of the same geometry, both in `logo/gmh-mark-art.tsx` and each from a navy + gold / white + gold pair of sources: **simple** (`source/gmh-mark-simple-{light,dark}.svg`, a stylised evenodd globe) is `GmhLogo`'s default and the favicons — at 48px the coastlines would be noise; **detailed** (`source/gmh-mark-{light,dark}.svg`, real coastlines) is `GmhLogo variant="detailed"` and the contour hero's centrepiece. Regenerate rather than hand-edit the path data. Things to know about its CSS:
 
-- It is a **near-square** mark (a little wider than tall), so `logo.css` sizes it by *height* via a `.logo-gmh > svg` rule (`height: var(--mfy-typography-scale-08)` = 48px, the size Figma specs) that overrides the generic portrait `.logo > svg` rule (which still supplies `--logo-color`) by source order at equal specificity. Reordering those two rules silently shrinks it. The typography token is deliberate: there is no `--mfy-size-icon-*` at 48px (`large` is 40px), and `icons.css` already maps `.icon-size-48` to that same token.
+- It is a **near-square** mark (a little wider than tall), so `logo.css` sizes it by *height* via a `.logo-gmh > svg` rule (`height: var(--gmh-icon-size-extra-large)` = 48px, the size Figma specs) that overrides the generic portrait `.logo > svg` rule (which still supplies `--logo-color`) by source order at equal specificity. Reordering those two rules silently shrinks it. `icons.css` maps `.icon-size-48` to the same token.
 - **Its width must stay explicit** — `calc(var(--logo-gmh-height) * 1144.11 / 945)`, not `auto`. The `AnchorOrButton` wrapper renders a `<button>`, which clips its content, and an auto-width replaced element gives that button an unreliable shrink-to-fit width; the result was the mark's right edge being sliced off in the header and footer. For the same reason `.logo-gmh` sets `flex-shrink: 0` (it is a flex item in both rows) and the svg sets `overflow: visible` (the heads touch the viewBox's top edge). If you restyle this, keep all three.
 - Its colours are two roles, like the crest's: `--logo-mark-ink` (navy; on-surface after `.dark`; on-brand inside a brand section) and `--logo-mark-gold` (always `#AA9868`, a fill). In both drawings the land is left open, so the continents show the surface behind.
 
-`section.css` overrides `--logo-mark-ink`, `--logo-crest-ink` and the generic `--logo-color` (for a consumer's own single-colour mark) to `--mfy-color-icon-brand-on-brand` inside `.section-variant-brand` — that is what re-colours the footer logo. `apps/web/src/app/icon.svg` and `apps/docs/public/favicon.svg` are the light colourway with a `prefers-color-scheme: dark` style that turns the ink white.
+`section.css` overrides `--logo-mark-ink`, `--logo-crest-ink` and the generic `--logo-color` (for a consumer's own single-colour mark) to `--gmh-color-on-brand-band` inside `.section-variant-brand` — that is what re-colours the footer logo. `apps/web/src/app/icon.svg` and `apps/docs/public/favicon.svg` are the light colourway with a `prefers-color-scheme: dark` style that turns the ink white.
 
 ## The graphics kit (`@gmhlab/ui` `src/graphics/`, 2026-10-19)
 
@@ -619,7 +591,7 @@ Shared dependency versions are pinned centrally in `pnpm-workspace.yaml` under `
 
 `src/hooks/useMediaQuery.tsx` (breakpoints mobile 375 / tablet 600 / desktop 1024) is a `useSyncExternalStore` over `matchMedia` whose `getServerSnapshot` returns **`false` for every query**. Any component that branches on it — `Header` (`isMobile`), `Card` (`direction`), `TextContentTitle` (hero vs page title) — therefore renders its **desktop** branch into the Next SSR HTML and swaps after hydration. Visible as a flash in `apps/web`.
 
-Where the layout can be expressed in CSS, prefer that: the tokens layer already ships `--mfy-responsive-display-flex-to-none` / `-none-to-flex` (and the `.display-*` helpers in `globals.css`) for exactly this. A component that switches in JS must also keep its CSS breakpoints in step by hand — `headers.{tsx,css}` both pivot at 600px and each carries a comment pointing at the other.
+Where the layout can be expressed in CSS, prefer that: the tokens layer already ships `--gmh-responsive-display-flex-to-none` / `-none-to-flex` (and the `.display-*` helpers in `globals.css`) for exactly this. A component that switches in JS must also keep its CSS breakpoints in step by hand — `headers.{tsx,css}` both pivot at 600px and each carries a comment pointing at the other.
 
 ## Theming in the apps
 

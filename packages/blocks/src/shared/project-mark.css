@@ -4,11 +4,11 @@
 .project-mark {
   --project-mark-size: 4rem;
   background: white;
-  border-radius: var(--md-sys-shape-corner-medium);
+  border-radius: var(--gmh-shape-corner-medium);
   box-shadow:
-    inset 0 0 0 var(--mfy-size-stroke-border)
-      color-mix(in oklch, var(--mfy-color-brand-800) 12%, transparent),
-    var(--md-sys-elevation-level1);
+    inset 0 0 0 var(--gmh-stroke-border)
+      color-mix(in srgb, var(--gmh-color-navy) 12%, transparent),
+    var(--gmh-elevation-level1);
   box-sizing: border-box;
   display: inline-flex;
   flex: 0 0 auto;
@@ -26,12 +26,12 @@
 
 .project-mark-small {
   --project-mark-size: 3rem;
-  border-radius: var(--md-sys-shape-corner-small);
+  border-radius: var(--gmh-shape-corner-small);
 }
 
 .project-mark-large {
   --project-mark-size: 6.5rem;
-  border-radius: var(--md-sys-shape-corner-large);
+  border-radius: var(--gmh-shape-corner-large);
 }
 
 @media (min-width: 600px) {

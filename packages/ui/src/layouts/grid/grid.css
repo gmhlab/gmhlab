@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-.grid-mfy {
+.grid-gmh {
   --grid-gap: 0px;
   --grid-column-gap: var(--grid-gap);
   --grid-row-gap: var(--grid-gap);
@@ -107,101 +107,101 @@
 
   /* Gap sizes */
   &.grid-gap-100 {
-    --grid-gap: var(--mfy-size-space-100);
+    --grid-gap: var(--gmh-space-100);
   }
 
   &.grid-gap-200 {
-    --grid-gap: var(--mfy-size-space-200);
+    --grid-gap: var(--gmh-space-200);
   }
 
   &.grid-gap-300 {
-    --grid-gap: var(--mfy-size-space-300);
+    --grid-gap: var(--gmh-space-300);
   }
 
   &.grid-gap-400 {
-    --grid-gap: var(--mfy-size-space-400);
+    --grid-gap: var(--gmh-space-400);
   }
 
   &.grid-gap-600 {
-    --grid-gap: var(--mfy-size-space-600);
+    --grid-gap: var(--gmh-space-600);
   }
 
   &.grid-gap-800 {
-    --grid-gap: var(--mfy-size-space-800);
+    --grid-gap: var(--gmh-space-800);
   }
 
   &.grid-gap-1200 {
-    --grid-gap: var(--mfy-size-space-1200);
+    --grid-gap: var(--gmh-space-1200);
   }
 
   &.grid-gap-1600 {
-    --grid-gap: var(--mfy-size-space-1600);
+    --grid-gap: var(--gmh-space-1600);
   }
 
   /* Column gap sizes */
   &.grid-column-gap-100 {
-    --grid-column-gap: var(--mfy-size-space-100);
+    --grid-column-gap: var(--gmh-space-100);
   }
 
   &.grid-column-gap-200 {
-    --grid-column-gap: var(--mfy-size-space-200);
+    --grid-column-gap: var(--gmh-space-200);
   }
 
   &.grid-column-gap-300 {
-    --grid-column-gap: var(--mfy-size-space-300);
+    --grid-column-gap: var(--gmh-space-300);
   }
 
   &.grid-column-gap-400 {
-    --grid-column-gap: var(--mfy-size-space-400);
+    --grid-column-gap: var(--gmh-space-400);
   }
 
   &.grid-column-gap-600 {
-    --grid-column-gap: var(--mfy-size-space-600);
+    --grid-column-gap: var(--gmh-space-600);
   }
 
   &.grid-column-gap-800 {
-    --grid-column-gap: var(--mfy-size-space-800);
+    --grid-column-gap: var(--gmh-space-800);
   }
 
   &.grid-column-gap-1200 {
-    --grid-column-gap: var(--mfy-size-space-1200);
+    --grid-column-gap: var(--gmh-space-1200);
   }
 
   &.grid-column-gap-1600 {
-    --grid-column-gap: var(--mfy-size-space-1600);
+    --grid-column-gap: var(--gmh-space-1600);
   }
 
   /* Row gap sizes */
   &.grid-row-gap-100 {
-    --grid-row-gap: var(--mfy-size-space-100);
+    --grid-row-gap: var(--gmh-space-100);
   }
 
   &.grid-row-gap-200 {
-    --grid-row-gap: var(--mfy-size-space-200);
+    --grid-row-gap: var(--gmh-space-200);
   }
 
   &.grid-row-gap-300 {
-    --grid-row-gap: var(--mfy-size-space-300);
+    --grid-row-gap: var(--gmh-space-300);
   }
 
   &.grid-row-gap-400 {
-    --grid-row-gap: var(--mfy-size-space-400);
+    --grid-row-gap: var(--gmh-space-400);
   }
 
   &.grid-row-gap-600 {
-    --grid-row-gap: var(--mfy-size-space-600);
+    --grid-row-gap: var(--gmh-space-600);
   }
 
   &.grid-row-gap-800 {
-    --grid-row-gap: var(--mfy-size-space-800);
+    --grid-row-gap: var(--gmh-space-800);
   }
 
   &.grid-row-gap-1200 {
-    --grid-row-gap: var(--mfy-size-space-1200);
+    --grid-row-gap: var(--gmh-space-1200);
   }
 
   &.grid-row-gap-1600 {
-    --grid-row-gap: var(--mfy-size-space-1600);
+    --grid-row-gap: var(--gmh-space-1600);
   }
 }
 

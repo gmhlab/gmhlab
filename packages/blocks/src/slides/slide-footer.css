@@ -12,7 +12,7 @@
 .slide-footer-rule {
   height: 0;
   border: none;
-  border-top: var(--mfy-size-stroke-border, 1px) solid
+  border-top: var(--gmh-stroke-border) solid
     color-mix(in srgb, currentColor 65%, transparent);
   margin: 0;
 }
