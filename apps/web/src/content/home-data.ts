@@ -21,6 +21,13 @@
  *     placeholder `background` photo (see `./hero-images`). The research cards
  *     draw their theme's graphics-kit glyph (`PUBLICATION_THEME_GLYPHS`)
  *     rather than photographs.
+ *   - The "How we work" section is the live /about page's three pillars —
+ *     Areas of Research, Capacity Building, Consultation — with their bullet
+ *     lists condensed, and the photo the about page sets beside each. The
+ *     photos are the about page's uploads (`/public/home/`, provenance in
+ *     `assets/gw-site/about/README.md`); two are Unsplash stock and one is
+ *     Wix stock, so they get descriptive alt text and NO caption — the live
+ *     alt text names Nepal, which nothing about the photos confirms.
  *   - There is no pull quote. The reference's quote is unattributed design
  *     copy; putting it under a GW role would invent a statement. `HomePage`
  *     renders a `quote` record when there is a real one to give it.
@@ -123,6 +130,54 @@ export const HOME_CONTENT: HomeContent = {
     unreachedLabel: "Receives none",
     source:
       "Source: WHO Mental Health Action Plan — 76–85% of people with severe mental disorders in low- and middle-income countries receive no treatment. Shown at the most generous end of that range.",
+  },
+  approach: {
+    eyebrow: "How we work",
+    heading: "Supporting wellbeing worldwide.",
+    lede: "A cross-disciplinary research collective studying whether mental health and psychosocial support reaches people in low- and middle-income countries, whether it works when it does, and whether it scales — with the people who will use it at the forefront.",
+    items: [
+      {
+        heading: "Research",
+        body: "Community-based, participatory studies of what works and how it is delivered where specialists are scarce.",
+        points: [
+          "Adapting and validating mental health tools and interventions",
+          "Evaluating mental health provider competency",
+          "Reducing mental health stigma",
+          "Integrating passive sensing technology into care",
+        ],
+        image: {
+          src: "/home/research.jpg",
+          alt: "Seen from above, children and adults sit on a woven mat around a carrom board.",
+        },
+      },
+      {
+        heading: "Capacity building",
+        body: "Training the people who deliver care, and the researchers who will lead the next studies.",
+        points: [
+          "Competency-assessment trainings on the EQUIP platform, worldwide",
+          "Global mental health courses taught in LMIC settings",
+          "Networking and professional development for early-career LMIC researchers",
+        ],
+        image: {
+          src: "/home/capacity-building.jpg",
+          alt: "A health worker holds hands with children dancing in a circle outdoors.",
+        },
+      },
+      {
+        heading: "Consultation",
+        body: "Advising teams that are adapting tools and programs for their own settings.",
+        points: [
+          "Using the EQUIP platform",
+          "Cultural adaptation and validation of tools in LMIC settings",
+          "Involving people with lived experience in developing interventions",
+        ],
+        image: {
+          src: "/home/consultation.jpg",
+          alt: "A facilitator at a flip chart presents to colleagues seated around a table.",
+        },
+      },
+    ],
+    action: { label: "Meet the team", href: "/team" },
   },
   focus: {
     eyebrow: "What we work on",

@@ -11,8 +11,17 @@
   width: 100%;
 }
 
+/* Hidden while the placeholder shows — but never `display: none`: Chrome
+   never fetches a `loading="lazy"` image that has no box, so onLoad would
+   never fire and the placeholder would stay forever. A 1px transparent box
+   at the img's own static position keeps it in the lazy loader's view.
+   `max-*` beat any width/height a call site sets on the img. */
 img.image-loading {
-  display: none;
+  max-height: 1px;
+  max-width: 1px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
 }
 
 .image-variant-rounded {

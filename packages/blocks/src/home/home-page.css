@@ -242,6 +242,98 @@
   opacity: 1;
 }
 
+/* ── How we work ────────────────────────────────────────────────────── */
+
+/* Three photographs with the work they stand for. Natural colour, not the
+   duotone: this is the one place the page shows its people as they are. On
+   desktop the middle column drops, so the row reads as a set of pictures
+   laid down rather than a card grid. */
+.home-approach {
+  display: grid;
+  gap: clamp(2.5rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  > * {
+    min-width: 0;
+  }
+}
+@media (min-width: 940px) {
+  .home-approach-item:nth-child(3n + 2) {
+    margin-top: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+.home-approach-figure {
+  margin: 0 0 var(--gmh-space-600);
+  overflow: hidden;
+  border-radius: var(--gmh-shape-corner-medium);
+  box-shadow: var(--gmh-elevation-level1);
+
+  .home-caption {
+    padding: var(--gmh-space-300) var(--gmh-space-400);
+  }
+}
+/* Without a treatment `Image` is the bare img (no wrapper), so it is sized
+   and cropped directly. */
+.home-approach-image {
+  aspect-ratio: 4 / 5;
+  border-radius: 0;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  transition: scale var(--global-duration-slow) var(--global-ease-out);
+  width: 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-approach-item:hover .home-approach-image {
+    scale: 1.03;
+  }
+}
+
+.home-approach-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-300);
+
+  .text-body-base {
+    color: var(--gmh-color-on-surface-variant);
+  }
+}
+.home-approach-index {
+  color: var(--gmh-color-tertiary);
+  font: var(--gmh-typescale-label-large);
+  letter-spacing: 0.12em;
+}
+.home-approach-points {
+  border-top: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  color: var(--gmh-color-on-surface);
+  font: var(--gmh-typescale-body-medium);
+  list-style: none;
+  margin: var(--gmh-space-200) 0 0;
+  padding: 0;
+
+  li {
+    border-bottom: var(--gmh-stroke-border) solid
+      var(--gmh-color-outline-variant);
+    padding: var(--gmh-space-300) 0 var(--gmh-space-300) 1.25rem;
+    position: relative;
+  }
+  /* A short gold rule in place of a bullet. */
+  li::before {
+    background: var(--gmh-color-tertiary-container);
+    content: "";
+    height: 2px;
+    left: 0;
+    position: absolute;
+    top: calc(var(--gmh-space-300) + 0.6em);
+    width: 0.625rem;
+  }
+}
+
 /* ── Focus cards ────────────────────────────────────────────────────── */
 
 .home-focus-grid {

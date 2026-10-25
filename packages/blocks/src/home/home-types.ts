@@ -85,6 +85,19 @@ export type HomeFocusItem = {
   glyph?: ResearchGlyphName;
 };
 
+/**
+ * One way the organisation works — a photograph with the work it stands for.
+ * Rendered in natural colour: these are the page's people, and the duotone
+ * is kept for backdrops.
+ */
+export type HomeApproachItem = {
+  heading: string;
+  body?: string;
+  /** Short list under the body — the concrete activities. */
+  points?: string[];
+  image?: HomeImage;
+};
+
 export type HomeSectionHead = {
   eyebrow?: string;
   heading: string;
@@ -118,6 +131,10 @@ export type HomeContent = {
   hero: HomeHero;
   stats: HomeStat[];
   gap?: HomeGap;
+  approach?: HomeSectionHead & {
+    items: HomeApproachItem[];
+    action?: HomeLink;
+  };
   focus?: HomeSectionHead & { items: HomeFocusItem[] };
   quote?: HomeQuote;
   partners?: HomeSectionHead & { items: HomePartner[] };

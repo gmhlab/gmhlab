@@ -39,7 +39,7 @@ import "./home-page.css";
  * reference design and the GMH graphics kit: serif headline over the contour
  * backdrop (the globe around a hero photo, or the GMH mark when there is
  * none) over an optional duotone background photo, a navy stat band carved in by the gold wave, the "care gap" field
- * figure, research cards (photo or kit glyph), a pull quote, a partner wall
+ * figure, how the organisation works (photographs in natural colour), research cards (photo or kit glyph), a pull quote, a partner wall
  * and a closing call to action over the care rings.
  *
  * Record-driven — see `home-types.ts`. Page content only: the site header and
@@ -53,7 +53,7 @@ import "./home-page.css";
  */
 export function HomePage({ content }: { content: HomeContent }) {
   const rootRef = useReveal();
-  const { hero, stats, gap, focus, quote, partners, cta } = content;
+  const { hero, stats, gap, approach, focus, quote, partners, cta } = content;
 
   return (
     <div className="home-page" ref={rootRef}>
@@ -84,6 +84,53 @@ export function HomePage({ content }: { content: HomeContent }) {
       )}
 
       {gap && <HomeGapSection gap={gap} />}
+
+      {approach && approach.items.length > 0 && (
+        <Section variant="tint" padding="1600" className="home-approach-band">
+          <Flex container direction="column" gap="1200">
+            <SectionHead head={approach} />
+            <ol className="home-approach">
+              {approach.items.map((item, i) => (
+                <li key={item.heading} className="home-approach-item home-reveal">
+                  {item.image && (
+                    <figure className="home-approach-figure">
+                      <Image
+                        aspectRatio="natural"
+                        className="home-approach-image"
+                        src={item.image.src}
+                        alt={item.image.alt}
+                        loading="lazy"
+                      />
+                      {item.image.caption && (
+                        <figcaption className="home-caption">
+                          {item.image.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  )}
+                  <div className="home-approach-body">
+                    <span className="home-approach-index" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <TextHeading>{item.heading}</TextHeading>
+                    {item.body && <Text>{item.body}</Text>}
+                    {item.points && item.points.length > 0 && (
+                      <ul className="home-approach-points">
+                        {item.points.map((point) => (
+                          <li key={point}>{point}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            {approach.action && (
+              <ArrowButton link={approach.action} variant="outline" />
+            )}
+          </Flex>
+        </Section>
+      )}
 
       {focus && focus.items.length > 0 && (
         <Section variant="brand" padding="1600" className="home-focus-band">
