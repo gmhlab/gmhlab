@@ -1,7 +1,21 @@
 "use client";
 
 import { useNewsletter } from "@gmhlab/data";
-import { Footer, NewsletterSignup, type FooterColumn } from "@gmhlab/ui";
+import {
+  Footer,
+  NewsletterSignup,
+  SocialButtons,
+  type FooterColumn,
+  type SocialLink,
+} from "@gmhlab/ui";
+
+const SOCIAL_LINKS: SocialLink[] = [
+  {
+    network: "linkedin",
+    href: "https://www.linkedin.com/company/gwglobalmentalhealth",
+  },
+  { network: "github", href: "https://github.com/gmhlab" },
+];
 
 /**
  * Every link here resolves to a route this app actually serves. Three columns
@@ -41,6 +55,7 @@ export function SiteFooter() {
   return (
     <Footer
       columns={COLUMNS}
+      aside={<SocialButtons links={SOCIAL_LINKS} />}
       newsletter={
         <NewsletterSignup
           onSubscribe={subscribe}

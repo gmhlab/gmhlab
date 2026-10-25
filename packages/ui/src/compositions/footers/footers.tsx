@@ -1,6 +1,12 @@
 import clsx from "clsx";
 import { useMediaQuery } from "../../hooks";
-import { IconInstagram, IconLinkedin, IconXLogo, IconYoutube } from "../../icons";
+import {
+  IconGithub,
+  IconInstagram,
+  IconLinkedin,
+  IconXLogo,
+  IconYoutube,
+} from "../../icons";
 import { Flex, FlexItem, Section, type SectionProps } from "../../layouts";
 import {
   Button,
@@ -30,7 +36,7 @@ export type FooterProps = Omit<SectionProps, "variant" | "padding" | "src"> & {
   logo?: ReactNode;
   /** Link columns. None by default. */
   columns?: FooterColumn[];
-  /** Rendered under the logo — e.g. {@link SocialButtons}. Omitted when unset. */
+  /** Rendered to the right of the logo — e.g. {@link SocialButtons}. Omitted when unset. */
   aside?: ReactNode;
   /**
    * A signup panel — {@link NewsletterSignup} — beside the columns from
@@ -72,7 +78,9 @@ export function Footer({
           <Flex wrap type="quarter" gap="600" className="footer-columns">
             {(logo || aside) && (
               <FlexItem size="minor">
-                <Flex direction="column" gap="600" alignSecondary="start">
+                {/* 16px gap + the ghost buttons' 10px inset ≈ the 24px
+                    column gutter between the mark and the first icon. */}
+                <Flex wrap gap="400" alignSecondary="start">
                   {logo && <FlexItem>{logo}</FlexItem>}
                   {aside && <FlexItem>{aside}</FlexItem>}
                 </Flex>
@@ -100,7 +108,12 @@ export function Footer({
   );
 }
 
-export type SocialNetwork = "x" | "instagram" | "youtube" | "linkedin";
+export type SocialNetwork =
+  | "x"
+  | "instagram"
+  | "youtube"
+  | "linkedin"
+  | "github";
 export type SocialLink = {
   network: SocialNetwork;
   href: string;
@@ -114,12 +127,13 @@ const SOCIAL_NETWORKS: Record<
   instagram: { label: "Instagram", icon: <IconInstagram /> },
   youtube: { label: "YouTube", icon: <IconYoutube /> },
   linkedin: { label: "LinkedIn", icon: <IconLinkedin /> },
+  github: { label: "GitHub", icon: <IconGithub /> },
 };
 
 /** Icon buttons for a site's social accounts, in the order given. */
 export function SocialButtons({ links }: { links: SocialLink[] }) {
   return (
-    <Flex alignSecondary="center" gap="100">
+    <Flex alignSecondary="center" gap="100" className="social-buttons">
       {links.map(({ network, href }) => (
         <Button
           key={network}

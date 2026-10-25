@@ -42,6 +42,25 @@
   }
 }
 
+/* Social buttons on the band follow the links: gold, brightening to white.
+ * The ghost variant's `bg-muted` hover is a light chip, which would put the
+ * band's white icon on near-white; tint from the band's own ink instead. */
+.footer .social-buttons {
+  /* Beside the logo, top-aligned: lift the 36px buttons by their inset so
+     the 16px glyphs, not the invisible hover chips, sit on the mark's top. */
+  margin-top: calc((2.25rem - 1rem) / -2);
+
+  .icon {
+    --icon-color: var(--gmh-color-brand-band-accent);
+  }
+  [data-slot="button"]:hover {
+    background: color-mix(in srgb, var(--gmh-color-on-brand-band) 12%, transparent);
+    .icon {
+      --icon-color: var(--gmh-color-on-brand-band);
+    }
+  }
+}
+
 .footer-legal {
   align-self: stretch; /* the hairline spans the footer, not just the text */
   border-top: var(--gmh-stroke-border) solid

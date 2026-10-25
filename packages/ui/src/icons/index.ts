@@ -120,7 +120,7 @@ export { IconChevronUp } from "./IconChevronUp";
 // export { IconGitCommit } from "./IconGitCommit.tsx";
 // export { IconGitMerge } from "./IconGitMerge.tsx";
 // export { IconGitPullRequest } from "./IconGitPullRequest.tsx";
-// export { IconGithub } from "./IconGithub.tsx";
+export { IconGithub } from "./IconGithub";
 // export { IconGitlab } from "./IconGitlab.tsx";
 // export { IconGlobe } from "./IconGlobe.tsx";
 // export { IconGrid } from "./IconGrid.tsx";
