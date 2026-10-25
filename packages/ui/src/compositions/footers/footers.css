@@ -43,6 +43,7 @@
 }
 
 .footer-legal {
+  align-self: stretch; /* the hairline spans the footer, not just the text */
   border-top: var(--gmh-stroke-border) solid
     color-mix(in srgb, var(--gmh-color-tertiary-container) 28%, transparent);
   color: color-mix(in srgb, var(--gmh-color-brand-band-accent) 78%, transparent);
@@ -53,4 +54,30 @@
   gap: var(--gmh-space-300) var(--gmh-space-600);
   justify-content: space-between;
   padding-top: var(--gmh-space-600);
+}
+
+/* With a newsletter panel: under the columns below 1200px, beside them from
+ * there. The panel is bottom-aligned, so it lands at the footer's bottom
+ * right, directly over the legal row's end — where the live site has it. At
+ * 1200px the columns' track is ~750px, enough for four quarter columns; any
+ * narrower and "George Washington University" breaks over three lines. */
+.footer-main {
+  width: 100%;
+}
+.footer-main-with-newsletter {
+  display: grid;
+  gap: var(--gmh-space-1200);
+
+  @media (min-width: 1200px) {
+    align-items: end;
+    gap: var(--gmh-space-1600);
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 25rem);
+
+    > .footer-columns {
+      align-self: start;
+    }
+  }
+}
+.footer-newsletter {
+  min-width: 0;
 }

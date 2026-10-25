@@ -42,5 +42,6 @@ import { mockProductsService, MOCK_PRODUCTS } from "@gmhlab/core/mocks";
 
 Exports `mockAuthService` (any credentials except `error@example.com`, session
 kept in `localStorage`), `mockPricingService` / `MOCK_PRICING_PLANS`, and
-`mockProductsService` / `MOCK_PRODUCTS`. The services add a short artificial
+`mockProductsService` / `MOCK_PRODUCTS`, and `mockNewsletterService` (accepts
+any address except `error@example.com`, stores none). The services add a short artificial
 delay so loading states are visible.

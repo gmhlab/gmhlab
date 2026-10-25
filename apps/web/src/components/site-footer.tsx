@@ -1,6 +1,7 @@
 "use client";
 
-import { Footer, type FooterColumn } from "@gmhlab/ui";
+import { useNewsletter } from "@gmhlab/data";
+import { Footer, NewsletterSignup, type FooterColumn } from "@gmhlab/ui";
 
 /**
  * Every link here resolves to a route this app actually serves. Three columns
@@ -36,9 +37,17 @@ const COLUMNS: FooterColumn[] = [
  * "use client" banner of its own, so this is not what makes Footer work.
  */
 export function SiteFooter() {
+  const { subscribe } = useNewsletter();
   return (
     <Footer
       columns={COLUMNS}
+      newsletter={
+        <NewsletterSignup
+          onSubscribe={subscribe}
+          description="News from the Center and our partners: new research, project milestones and publications."
+          fineprint="Just your email address. Unsubscribe any time."
+        />
+      }
       legal={
         <>
           <span>

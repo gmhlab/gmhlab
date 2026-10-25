@@ -11,6 +11,7 @@ import {
   CardGrid,
   Footer,
   type FooterColumn,
+  NewsletterSignup,
   FormBox,
   Header,
   type HeaderNavItem,
@@ -199,6 +200,19 @@ const DEMO_NAV_ITEMS: HeaderNavItem[] = [
   { label: "Pricing" },
   { label: "Contact" },
 ];
+
+/* Stands in for a NewsletterService: accepts any address after a beat, and
+   rejects error@example.com so the error state can be tried. Stores nothing. */
+const demoSubscribe = (email: string) =>
+  new Promise<void>((resolve, reject) =>
+    setTimeout(
+      () =>
+        email.toLowerCase() === "error@example.com"
+          ? reject(new Error("We couldn’t add that address. Please try again."))
+          : resolve(),
+      900,
+    ),
+  );
 
 const DEMO_FOOTER_COLUMNS: FooterColumn[] = [
   {
@@ -1790,6 +1804,20 @@ export function ComponentsPage() {
               logo={<GmhLogo />}
               columns={DEMO_FOOTER_COLUMNS}
               aside={<SocialButtons links={DEMO_SOCIAL_LINKS} />}
+            />
+          </BleedSpec>
+
+          <BleedSpec label="Footer with newsletter (NewsletterSignup in the newsletter slot; try error@example.com)">
+            <Footer
+              logo={<GmhLogo />}
+              columns={DEMO_FOOTER_COLUMNS}
+              newsletter={
+                <NewsletterSignup
+                  onSubscribe={demoSubscribe}
+                  fineprint="Just your email address. Unsubscribe any time."
+                />
+              }
+              legal={<span>© GMH Lab</span>}
             />
           </BleedSpec>
         </Flex>

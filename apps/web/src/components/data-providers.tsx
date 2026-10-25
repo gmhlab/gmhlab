@@ -2,6 +2,7 @@
 
 import {
   mockAuthService,
+  mockNewsletterService,
   mockPricingService,
   mockProductsService,
 } from "@gmhlab/core/mocks";
@@ -19,6 +20,9 @@ const SERVICES: DataServices = {
   auth: mockAuthService,
   pricing: mockPricingService,
   products: mockProductsService,
+  // Accepts every address and stores none — the footer signup is a demo
+  // until the Center's mailing list is wired in here.
+  newsletter: mockNewsletterService,
 };
 
 /** `AllProviders` bound to the site's services. Renders no DOM. */

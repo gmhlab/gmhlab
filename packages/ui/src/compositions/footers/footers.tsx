@@ -32,6 +32,12 @@ export type FooterProps = Omit<SectionProps, "variant" | "padding" | "src"> & {
   columns?: FooterColumn[];
   /** Rendered under the logo — e.g. {@link SocialButtons}. Omitted when unset. */
   aside?: ReactNode;
+  /**
+   * A signup panel — {@link NewsletterSignup} — beside the columns from
+   * 1200px (bottom-aligned, so it sits over the legal row's right end), and
+   * full width under them below that. Omitted when unset.
+   */
+  newsletter?: ReactNode;
   /** The base row under the hairline — copyright and credits. Omitted when unset. */
   legal?: ReactNode;
 };
@@ -40,6 +46,7 @@ export function Footer({
   logo = <GmhLogo />,
   columns = [],
   aside,
+  newsletter,
   legal,
   ...props
 }: FooterProps) {
@@ -56,29 +63,37 @@ export function Footer({
       {...props}
     >
       <Flex direction="column" gap="800" container>
-        <Flex wrap type="quarter" gap="600" className="footer-columns">
-          {(logo || aside) && (
-            <FlexItem size="minor">
-              <Flex direction="column" gap="600" alignSecondary="start">
-                {logo && <FlexItem>{logo}</FlexItem>}
-                {aside && <FlexItem>{aside}</FlexItem>}
-              </Flex>
-            </FlexItem>
+        <div
+          className={clsx(
+            "footer-main",
+            newsletter && "footer-main-with-newsletter",
           )}
-          {columns.map((column) => (
-            <TextLinkList
-              key={column.title}
-              density={listDensity}
-              title={<span className="footer-column-title">{column.title}</span>}
-            >
-              {column.links.map((link) => (
-                <TextListItem key={link.label}>
-                  <TextLink href={link.href}>{link.label}</TextLink>
-                </TextListItem>
-              ))}
-            </TextLinkList>
-          ))}
-        </Flex>
+        >
+          <Flex wrap type="quarter" gap="600" className="footer-columns">
+            {(logo || aside) && (
+              <FlexItem size="minor">
+                <Flex direction="column" gap="600" alignSecondary="start">
+                  {logo && <FlexItem>{logo}</FlexItem>}
+                  {aside && <FlexItem>{aside}</FlexItem>}
+                </Flex>
+              </FlexItem>
+            )}
+            {columns.map((column) => (
+              <TextLinkList
+                key={column.title}
+                density={listDensity}
+                title={<span className="footer-column-title">{column.title}</span>}
+              >
+                {column.links.map((link) => (
+                  <TextListItem key={link.label}>
+                    <TextLink href={link.href}>{link.label}</TextLink>
+                  </TextListItem>
+                ))}
+              </TextLinkList>
+            ))}
+          </Flex>
+          {newsletter && <div className="footer-newsletter">{newsletter}</div>}
+        </div>
         {legal && <div className="footer-legal">{legal}</div>}
       </Flex>
     </Section>

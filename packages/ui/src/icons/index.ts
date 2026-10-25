@@ -16,7 +16,7 @@
 // export { IconArrowDownRight } from "./IconArrowDownRight.tsx";
 // export { IconArrowLeft } from "./IconArrowLeft.tsx";
 // export { IconArrowLeftCircle } from "./IconArrowLeftCircle.tsx";
-// export { IconArrowRight } from "./IconArrowRight.tsx";
+export { IconArrowRight } from "./IconArrowRight";
 // export { IconArrowRightCircle } from "./IconArrowRightCircle.tsx";
 // export { IconArrowUp } from "./IconArrowUp.tsx";
 // export { IconArrowUpCircle } from "./IconArrowUpCircle.tsx";

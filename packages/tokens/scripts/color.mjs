@@ -31,7 +31,8 @@
 //     its seed (the seed's hue, chroma capped to the sRGB gamut at each tone)
 //     and the four roles M3 gives a custom colour — x, on-x, x-container,
 //     on-x-container — at the same tones the export uses for `error`.
-//   - GMH roles. brand-band / on-brand-band / brand-band-accent: a full-width
+//   - GMH roles. brand-band / on-brand-band / brand-band-accent /
+//     brand-band-error: a full-width
 //     navy band is `primary` in light, but M3's dark `primary` is a light blue
 //     meant for controls, so after dark the band is `primary-container`
 //     instead. navy: GW navy in both modes, for artwork that must not flip.
@@ -78,6 +79,11 @@ const GMH_ROLES = {
   // Gold for rules and display type ON a brand band: the tertiary palette at
   // T80 in both modes (M3's dark tertiary), since the band is dark in both.
   brandBandAccent: ["palette:tertiary:80", "palette:tertiary:80"],
+  // Error text ON a brand band (form validation in the footer): M3's error
+  // T80 — the export's dark `error` — in both modes, for the same reason as
+  // the accent: light `error` is a dark red that vanishes on navy. A literal,
+  // because the export ships no error palette.
+  brandBandError: ["#FFB4AB", "#FFB4AB"],
   // GW navy in both modes, for marks, duotones and fixed artwork that must
   // not flip with the scheme. Not a surface role: use brand-band for bands.
   navy: ["#033C5A", "#033C5A"],
@@ -273,6 +279,7 @@ const PAIRS = [
   }),
   ["onBrandBand", "brandBand", 4.5],
   ["brandBandAccent", "brandBand", 4.5],
+  ["brandBandError", "brandBand", 4.5],
 ];
 
 let failed = 0;

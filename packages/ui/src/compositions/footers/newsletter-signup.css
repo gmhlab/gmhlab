@@ -1,0 +1,410 @@
+/* Newsletter signup: a navy panel a step lighter than the band it sits on,
+ * framed in a gold hairline, with the care rings radiating in from the top
+ * corner. It paints its own surface, so it works outside a brand band too.
+ *
+ * Text contrast on the panel (light mode, panel ≈ #0F4562):
+ *   on-brand-band 11:1 · description (80%) 8:1 · brand-band-accent 6.5:1 ·
+ *   brand-band-error 6.5:1. The field is paper in both modes (the band
+ *   never flips), so its ink is fixed navy: 11:1, placeholder (72%) 5:1.
+ *
+ * Layout answers to the panel's own width (a container query), not the
+ * viewport: narrow it stacks the button under the field, wide (the footer
+ * between tablet and desktop) it puts the copy left and the form right. */
+.newsletter {
+  --newsletter-surface: color-mix(
+    in srgb,
+    var(--gmh-color-brand-band),
+    var(--gmh-color-on-brand-band) 5%
+  );
+  /* The field: the brightest thing in the footer, so the eye lands on it.
+     White to a whisper of navy, top to bottom, like paper catching light. */
+  --newsletter-paper: linear-gradient(
+    180deg,
+    #fff,
+    color-mix(in srgb, #fff, var(--gmh-color-navy) 7%)
+  );
+  --newsletter-ink: var(--gmh-color-navy);
+  --newsletter-lift: 0 10px 28px -14px
+    color-mix(in srgb, var(--gmh-color-shadow) 70%, transparent);
+  --newsletter-line: color-mix(
+    in srgb,
+    var(--gmh-color-on-brand-band) 26%,
+    transparent
+  );
+  /* A hand-painted brand surface: headings must not go navy-on-navy. */
+  --text-heading-color: currentColor;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--gmh-color-brand-band-accent) 16%, transparent),
+      transparent 60%
+    ),
+    var(--newsletter-surface);
+  border: var(--gmh-stroke-border) solid
+    color-mix(in srgb, var(--gmh-color-brand-band-accent) 34%, transparent);
+  border-radius: var(--gmh-shape-corner-extra-large);
+  color: var(--gmh-color-on-brand-band);
+  container: newsletter / inline-size;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--gmh-space-800);
+  position: relative;
+}
+
+/* Only a quarter of the motif shows: the hub sits just inside the corner,
+   so the figures arc across it like a ripple reaching the panel. */
+.newsletter-rings.graphic {
+  height: 20rem;
+  opacity: 0.55;
+  pointer-events: none;
+  position: absolute;
+  right: -8.5rem;
+  top: -8.5rem;
+  transition: opacity var(--global-duration-slow) var(--global-ease-out);
+  width: 20rem;
+  z-index: -1;
+}
+.newsletter-is-done .newsletter-rings.graphic {
+  opacity: 0.9;
+}
+
+.newsletter-copy {
+  /* Keep the copy clear of the rings' densest arc. */
+  padding-right: var(--gmh-space-1600);
+}
+
+.newsletter-eyebrow {
+  align-items: center;
+  color: var(--gmh-color-brand-band-accent);
+  display: flex;
+  font: var(--gmh-typescale-label-medium);
+  gap: var(--gmh-space-300);
+  letter-spacing: 0.16em;
+  margin: 0 0 var(--gmh-space-300);
+  text-transform: uppercase;
+
+  &::before {
+    background: currentColor;
+    content: "";
+    height: 1px;
+    width: var(--gmh-space-600);
+  }
+}
+
+.newsletter-title {
+  color: inherit;
+  font: var(--gmh-typescale-headline-small);
+  letter-spacing: 0;
+  margin: 0;
+  outline: none;
+  text-wrap: balance;
+}
+
+.newsletter-description {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 80%, transparent);
+  font: var(--gmh-typescale-body-medium);
+  letter-spacing: 0;
+  margin: var(--gmh-space-200) 0 0;
+  text-wrap: pretty;
+}
+
+.newsletter-form {
+  margin-top: var(--gmh-space-600);
+}
+
+.newsletter-label {
+  color: var(--gmh-color-on-brand-band);
+  display: block;
+  font: var(--gmh-typescale-label-large);
+  margin-bottom: var(--gmh-space-200);
+}
+
+/* The field and its button are one pill; the field's ring is drawn here,
+   on the pill, so focus reads as the whole control lighting up. */
+.newsletter-field {
+  align-items: center;
+  background: var(--newsletter-paper);
+  border: var(--gmh-stroke-border) solid
+    color-mix(in srgb, #fff 70%, transparent);
+  box-shadow: var(--newsletter-lift);
+  border-radius: var(--gmh-shape-corner-full);
+  display: flex;
+  gap: var(--gmh-space-100);
+  padding: var(--gmh-space-100);
+  transition:
+    border-color var(--global-duration-fast) ease,
+    box-shadow var(--global-duration-fast) ease,
+    background-color var(--global-duration-fast) ease;
+
+  &:hover {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, #fff 12%, transparent),
+      var(--newsletter-lift);
+  }
+  &:focus-within {
+    border-color: var(--gmh-color-brand-band-accent);
+    box-shadow:
+      0 0 0 3px var(--gmh-color-brand-band-accent),
+      var(--newsletter-lift);
+  }
+  &[data-invalid] {
+    border-color: var(--gmh-color-brand-band-error);
+    box-shadow:
+      0 0 0 3px var(--gmh-color-brand-band-error),
+      var(--newsletter-lift);
+  }
+}
+
+.newsletter-input {
+  background: transparent;
+  border: 0;
+  caret-color: var(--newsletter-ink);
+  color: var(--newsletter-ink);
+  flex: 1;
+  font: var(--gmh-typescale-body-large); /* 16px: no iOS zoom on focus */
+  letter-spacing: 0;
+  min-width: 0;
+  outline: none;
+  padding: 0 var(--gmh-space-300) 0 var(--gmh-space-400);
+  height: 2.75rem;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--newsletter-ink) 72%, #fff);
+    opacity: 1;
+  }
+  /* Autofill paints its own opaque wash over the pill; keep ours. */
+  &:-webkit-autofill {
+    -webkit-text-fill-color: var(--newsletter-ink);
+    caret-color: var(--newsletter-ink);
+    transition: background-color 600000s 0s;
+  }
+}
+
+.newsletter-submit {
+  --icon-color: currentColor;
+
+  /* The pill already lights up on focus; the button's own ring would sit
+     inside it, so the ring is the gold outline of the button instead. */
+  &:focus-visible {
+    outline: 2px solid var(--gmh-color-on-brand-band);
+    outline-offset: 2px;
+  }
+  /* Submitting is aria-disabled, not :disabled, so focus stays put. */
+  &[data-disabled] {
+    cursor: progress;
+  }
+  .icon {
+    transition: translate var(--global-duration-fast) var(--global-ease-out);
+  }
+  &:hover .icon {
+    translate: 2px 0;
+  }
+}
+
+/* 16px outside, like the arrow icon it replaces. */
+.newsletter-spinner {
+  aspect-ratio: 1;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-right-color: transparent;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 1rem;
+}
+
+.newsletter-message {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 72%, transparent);
+  font: var(--gmh-typescale-body-small);
+  margin: var(--gmh-space-300) 0 0 var(--gmh-space-400);
+  min-height: 1lh; /* the error line never shifts the panel */
+}
+.newsletter-message-error {
+  color: var(--gmh-color-brand-band-error);
+}
+
+/* Off-screen rather than display: none, which some bots know to skip. */
+.newsletter-trap {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+/* -- Confirmation ----------------------------------------------------------- */
+
+.newsletter-done {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: var(--gmh-space-1200);
+}
+
+.newsletter-done-mark {
+  align-items: center;
+  background: var(--gmh-color-tertiary-container);
+  border-radius: var(--gmh-shape-corner-full);
+  box-shadow: 0 0 0 6px
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 22%, transparent);
+  color: var(--gmh-color-on-tertiary-container);
+  display: inline-flex;
+  height: 2.75rem;
+  justify-content: center;
+  margin-bottom: var(--gmh-space-500);
+  width: 2.75rem;
+
+  svg {
+    fill: none;
+    height: 1.375rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.25;
+    width: 1.375rem;
+  }
+}
+
+.newsletter-address {
+  color: var(--gmh-color-on-brand-band);
+  font-weight: var(--gmh-ref-typeface-weight-semibold, 600);
+  overflow-wrap: anywhere;
+}
+
+.newsletter-reset {
+  background: none;
+  border: 0;
+  border-radius: var(--gmh-shape-corner-extra-small);
+  color: var(--gmh-color-brand-band-accent);
+  cursor: pointer;
+  font: var(--gmh-typescale-label-large);
+  margin-top: var(--gmh-space-500);
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.25em;
+  transition:
+    color var(--global-duration-fast) ease,
+    text-decoration-color var(--global-duration-fast) ease;
+
+  &:hover {
+    color: var(--gmh-color-on-brand-band);
+    text-decoration-color: currentColor;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--gmh-color-brand-band-accent);
+    outline-offset: 3px;
+  }
+}
+
+/* -- Width-driven layout ---------------------------------------------------- */
+
+/* Too narrow for a docked button: field and button become two pills. */
+@container newsletter (max-width: 19rem) {
+  .newsletter-copy {
+    padding-right: var(--gmh-space-800);
+  }
+  .newsletter-rings.graphic {
+    height: 14rem;
+    opacity: 0.4;
+    right: -7rem;
+    top: -7rem;
+    width: 14rem;
+  }
+  .newsletter-field {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    flex-direction: column;
+    gap: var(--gmh-space-200);
+    padding: 0;
+
+    &:hover,
+    &:focus-within,
+    &[data-invalid] {
+      background: none;
+      box-shadow: none;
+    }
+  }
+  .newsletter-input {
+    align-self: stretch;
+    background: var(--newsletter-paper);
+    border: var(--gmh-stroke-border) solid
+      color-mix(in srgb, #fff 70%, transparent);
+    border-radius: var(--gmh-shape-corner-full);
+    box-shadow: var(--newsletter-lift);
+    flex: none;
+    height: 3rem;
+  }
+  .newsletter-field:focus-within .newsletter-input {
+    border-color: var(--gmh-color-brand-band-accent);
+    box-shadow:
+      0 0 0 3px var(--gmh-color-brand-band-accent),
+      var(--newsletter-lift);
+  }
+  .newsletter-field[data-invalid] .newsletter-input {
+    border-color: var(--gmh-color-brand-band-error);
+    box-shadow:
+      0 0 0 3px var(--gmh-color-brand-band-error),
+      var(--newsletter-lift);
+  }
+  .newsletter-submit {
+    width: 100%;
+  }
+}
+
+/* Wide: copy left, form right, baselines meeting at the bottom. */
+@container newsletter (min-width: 46rem) {
+  .newsletter-body {
+    align-items: end;
+    column-gap: var(--gmh-space-1200);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
+  }
+  .newsletter-copy {
+    padding-right: 0;
+  }
+  .newsletter-form {
+    margin-top: 0;
+  }
+  /* The form sits under the corner here, so only the outer arcs show. */
+  .newsletter-rings.graphic {
+    right: -12rem;
+    top: -12rem;
+  }
+}
+
+/* -- Motion ----------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .newsletter-spinner {
+    animation: newsletter-spin 0.7s linear infinite;
+  }
+
+  .newsletter-done {
+    transition:
+      opacity 0.45s var(--global-ease-out),
+      translate 0.45s var(--global-ease-out);
+    @starting-style {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+  }
+  .newsletter-done-mark {
+    animation: newsletter-pop 0.5s var(--global-ease-out) both;
+  }
+  .newsletter-done-mark path {
+    animation: newsletter-draw 0.45s 0.25s var(--global-ease-out) both;
+    stroke-dasharray: 1;
+  }
+}
+@keyframes newsletter-spin {
+  to { rotate: 1turn; }
+}
+@keyframes newsletter-pop {
+  from { opacity: 0; scale: 0.6; }
+}
+@keyframes newsletter-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}

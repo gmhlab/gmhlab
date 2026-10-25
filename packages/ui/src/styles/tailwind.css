@@ -144,6 +144,7 @@
     --color-brand-band:                 var(--gmh-color-brand-band);
     --color-on-brand-band:              var(--gmh-color-on-brand-band);
     --color-brand-band-accent:          var(--gmh-color-brand-band-accent);
+    --color-brand-band-error:           var(--gmh-color-brand-band-error);
     --color-navy:                       var(--gmh-color-navy);
 
     /* The shadcn radius ramp IS the M3 corner scale, step for step:

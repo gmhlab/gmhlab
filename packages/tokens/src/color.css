@@ -228,6 +228,7 @@
   --gmh-color-brand-band: #033C5A; /* = primary */
   --gmh-color-on-brand-band: #FFFFFF; /* = on-primary */
   --gmh-color-brand-band-accent: #D9C591; /* tertiary T80 */
+  --gmh-color-brand-band-error: #FFB4AB; /* GW pin */
   --gmh-color-navy: #033C5A; /* GW pin */
 }
 
@@ -296,5 +297,6 @@
   --gmh-color-brand-band: #1B4B69; /* = primary-container */
   --gmh-color-on-brand-band: #CAE6FF; /* = on-primary-container */
   --gmh-color-brand-band-accent: #D9C591; /* tertiary T80 */
+  --gmh-color-brand-band-error: #FFB4AB; /* GW pin */
   --gmh-color-navy: #033C5A; /* GW pin */
 }

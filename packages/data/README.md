@@ -24,6 +24,7 @@ opt-in from `@gmhlab/core/mocks`:
 
 import {
   mockAuthService,
+  mockNewsletterService,
   mockPricingService,
   mockProductsService,
 } from "@gmhlab/core/mocks";
@@ -34,6 +35,7 @@ const services: DataServices = {
   auth: mockAuthService,
   pricing: mockPricingService,
   products: mockProductsService,
+  newsletter: mockNewsletterService,
 };
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -69,6 +71,7 @@ Need only some domains? Compose the individual providers:
 | Auth | `AuthProvider` | `useAuth` | `AuthContextType` |
 | Pricing | `PricingProvider` | `usePricing` | `PricingContextType` |
 | Products | `ProductsProvider` | `useProducts` | `ProductsContextType` |
+| Newsletter | `NewsletterProvider` | `useNewsletter` | `NewsletterContextType` |
 
 Plus `AllProviders` and its `DataServices` type. Domain types (`User`,
 `Product`, …) are not re-exported — import them from `@gmhlab/core`.
