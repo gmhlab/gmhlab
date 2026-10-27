@@ -15,6 +15,7 @@ import { BlocksPublicationsPage } from "./pages/blocks/BlocksPublicationsPage";
 import { BlocksInnovationsPage } from "./pages/blocks/BlocksInnovationsPage";
 import { BlocksInnovationDetailPage } from "./pages/blocks/BlocksInnovationDetailPage";
 import { BlocksTeamPage } from "./pages/blocks/BlocksTeamPage";
+import { BlocksContactPage } from "./pages/blocks/BlocksContactPage";
 
 /**
  * The `blocks/*` routes mirror the GW routes in `apps/web`, one level
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
         element: <BlocksInnovationDetailPage />,
       },
       { path: "blocks/team", element: <BlocksTeamPage /> },
+      { path: "blocks/contact", element: <BlocksContactPage /> },
       { path: "tokens", element: <TokensPage /> },
       { path: "slides", element: <SlidesPage /> },
       { path: "flex", element: <FlexPage /> },

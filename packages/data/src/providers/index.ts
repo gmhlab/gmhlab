@@ -3,3 +3,4 @@ export * from "./AuthProvider";
 export * from "./PricingProvider";
 export * from "./ProductsProvider";
 export * from "./NewsletterProvider";
+export * from "./ContactProvider";

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@gmhlab/blocks": "workspace:*",
+    "@gmhlab/core": "workspace:*",
     "@gmhlab/tokens": "workspace:*",
     "@gmhlab/ui": "workspace:*",
     "lucide-react": "catalog:",

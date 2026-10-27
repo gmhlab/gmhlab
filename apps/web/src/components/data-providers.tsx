@@ -2,6 +2,7 @@
 
 import {
   mockAuthService,
+  mockContactService,
   mockNewsletterService,
   mockPricingService,
   mockProductsService,
@@ -23,6 +24,9 @@ const SERVICES: DataServices = {
   // Accepts every address and stores none — the footer signup is a demo
   // until the Center's mailing list is wired in here.
   newsletter: mockNewsletterService,
+  // Sends nothing — the contact form is a demo until a real service, one
+  // that routes each inquiry's `topic` to the right inbox, is wired in here.
+  contact: mockContactService,
 };
 
 /** `AllProviders` bound to the site's services. Renders no DOM. */

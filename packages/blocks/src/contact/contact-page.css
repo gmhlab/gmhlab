@@ -1,0 +1,569 @@
+/* ContactPage. Scoped under `.contact-page`; every class prefixed `contact-`.
+ *
+ * Three bands: the hero, a paper band holding the care notice (pulled up
+ * over the hero's bottom edge) and the route cards, then a brand band with
+ * the form on paper beside the address.
+ *
+ * Contrast (light): card copy on-surface-variant 8.9:1 · route links and
+ * the care resources primary on paper 11:1 · on the brand band, the aside's
+ * kickers brand-band-accent 6.5:1, its notes on-brand-band at 80% 8:1. */
+
+.contact-page {
+  width: 100%;
+}
+
+.contact-container {
+  margin: 0 auto;
+  max-width: var(--global-container-max-width);
+  width: 100%;
+}
+
+/* Room under the hero's copy for the care notice to overlap into. */
+.contact-page .page-hero {
+  --padding-y-bottom: calc(var(--gmh-space-1600) + 4.5rem);
+}
+
+/* Icons follow the text they sit in. `.icon` sets its own colour (primary)
+   and a brand band resets it on the icon itself, so the override has to
+   land on the icon, three classes deep. */
+.contact-page .icon.icon {
+  --icon-color: currentColor;
+}
+
+/* -- Care notice ------------------------------------------------------------ */
+
+.contact-care {
+  background: var(--gmh-color-surface-container-lowest);
+  border: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  border-radius: var(--gmh-shape-corner-extra-large);
+  box-shadow: var(--gmh-elevation-level3);
+  display: grid;
+  gap: var(--gmh-space-600);
+  grid-template-areas: "copy" "resources" "emergency";
+  margin-top: -4.5rem;
+  overflow: hidden;
+  padding: var(--gmh-space-800);
+  position: relative;
+  z-index: 1;
+
+  /* A gold rule down the leading edge: this is the panel to read first. */
+  &::before {
+    background: var(--gmh-color-tertiary-container);
+    content: "";
+    inset: 0 auto 0 0;
+    position: absolute;
+    width: 0.375rem;
+  }
+}
+
+.contact-care-copy {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--gmh-space-500);
+  grid-area: copy;
+}
+
+.contact-care-mark {
+  align-items: center;
+  background: var(--gmh-color-secondary-container);
+  border-radius: var(--gmh-shape-corner-full);
+  color: var(--gmh-color-on-secondary-container);
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 3.5rem;
+  justify-content: center;
+  width: 3.5rem;
+
+  svg {
+    fill: none;
+    height: 1.75rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+    width: 1.75rem;
+  }
+  path:first-child {
+    fill: var(--gmh-color-tertiary-container);
+    stroke: var(--gmh-color-tertiary-container);
+  }
+}
+
+.contact-care-heading {
+  color: var(--gmh-color-primary);
+  font: var(--gmh-typescale-headline-small);
+  letter-spacing: 0;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.contact-care-body {
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-large);
+  letter-spacing: 0;
+  margin: var(--gmh-space-200) 0 0;
+  max-width: 34rem;
+  text-wrap: pretty;
+}
+
+.contact-care-resources {
+  display: grid;
+  gap: var(--gmh-space-200);
+  grid-area: resources;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-care-resource {
+  background: var(--gmh-color-surface-container-low);
+  border: var(--gmh-stroke-border) solid transparent;
+  border-radius: var(--gmh-shape-corner-large);
+  color: var(--gmh-color-on-surface-variant);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-050);
+  height: 100%;
+  padding: var(--gmh-space-400) var(--gmh-space-500);
+  text-decoration: none;
+  transition:
+    background-color var(--global-duration-fast) ease,
+    border-color var(--global-duration-fast) ease;
+
+  &:hover {
+    background: color-mix(
+      in srgb,
+      var(--gmh-color-surface-container-low),
+      var(--gmh-color-primary)
+        calc(var(--gmh-state-hover-state-layer-opacity) * 100%)
+    );
+    border-color: var(--gmh-color-outline-variant);
+  }
+  &:focus-visible {
+    outline: 3px solid var(--gmh-color-tertiary-container);
+    outline-offset: 2px;
+  }
+  .icon {
+    transition: translate var(--global-duration-fast) var(--global-ease-out);
+  }
+  &:hover .icon {
+    translate: 3px 0;
+  }
+}
+
+.contact-care-resource-label {
+  align-items: center;
+  color: var(--gmh-color-primary);
+  display: flex;
+  font: var(--gmh-typescale-title-medium);
+  gap: var(--gmh-space-200);
+  justify-content: space-between;
+}
+
+.contact-care-resource-detail {
+  font: var(--gmh-typescale-body-small);
+}
+
+.contact-care-emergency {
+  border-top: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  color: var(--gmh-color-on-surface);
+  font: var(--gmh-typescale-body-medium);
+  font-weight: 600;
+  grid-area: emergency;
+  margin: 0;
+  padding-top: var(--gmh-space-500);
+}
+
+@media (min-width: 900px) {
+  .contact-care {
+    column-gap: var(--gmh-space-1200);
+    grid-template-areas:
+      "copy resources"
+      "emergency emergency";
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    padding: var(--gmh-space-1200);
+  }
+  .contact-care-resources {
+    align-self: center;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* -- Route cards ------------------------------------------------------------ */
+
+.contact-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-200);
+  margin: var(--gmh-space-1600) 0 var(--gmh-space-800);
+  max-width: 44rem;
+
+  /* A step above the cards' own headings, which are headline-small too. */
+  .text-heading {
+    font: var(--gmh-typescale-headline-large);
+    letter-spacing: 0;
+  }
+}
+
+.contact-route-grid {
+  display: grid;
+  gap: var(--gmh-space-600);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: flex;
+    min-width: 0;
+  }
+}
+
+/* Five routes, as the GW Center has: the two it most wants to hear about
+   take half the row each, the other three share the next. */
+@media (min-width: 1024px) {
+  .contact-route-grid[data-count="5"] {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+
+    > li {
+      grid-column: span 2;
+    }
+    > li:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+  }
+}
+
+.contact-route-card {
+  background: var(--gmh-color-surface-container-lowest);
+  border: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  border-radius: var(--gmh-shape-corner-large);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: var(--gmh-space-800);
+  transition:
+    border-color var(--global-duration-fast) ease,
+    box-shadow var(--global-duration-fast) ease,
+    translate var(--global-duration-fast) var(--global-ease-out);
+
+  &:hover {
+    border-color: var(--gmh-color-outline);
+    box-shadow: var(--gmh-elevation-level2);
+    translate: 0 -2px;
+  }
+  &[data-selected] {
+    border-color: var(--gmh-color-primary);
+    box-shadow:
+      inset 0 0 0 1px var(--gmh-color-primary),
+      var(--gmh-elevation-level2);
+  }
+}
+
+/* The kit's glyph on a pale gold wash — the innovation cards' tile. */
+.contact-route-glyph {
+  align-items: center;
+  align-self: flex-start;
+  background: color-mix(
+    in srgb,
+    var(--gmh-color-tertiary-container) 24%,
+    var(--gmh-color-surface)
+  );
+  border: var(--gmh-stroke-border) solid
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 55%, transparent);
+  border-radius: var(--gmh-shape-corner-medium);
+  display: inline-flex;
+  height: 4rem;
+  justify-content: center;
+  margin-bottom: var(--gmh-space-600);
+  width: 4rem;
+}
+
+.contact-route-heading {
+  color: var(--gmh-color-primary);
+  font: var(--gmh-typescale-headline-small);
+  letter-spacing: 0;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.contact-route-summary {
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-large);
+  letter-spacing: 0;
+  margin: var(--gmh-space-300) 0 0;
+  text-wrap: pretty;
+}
+
+.contact-route-offers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-200);
+  list-style: none;
+  margin: var(--gmh-space-500) 0 0;
+  padding: 0;
+
+  li {
+    color: var(--gmh-color-on-surface);
+    font: var(--gmh-typescale-body-medium);
+    padding-left: var(--gmh-space-600);
+    position: relative;
+
+    /* A short gold rule, the kit's accent, in place of a bullet. */
+    &::before {
+      background: var(--gmh-color-tertiary-container);
+      content: "";
+      height: 2px;
+      left: 0;
+      position: absolute;
+      top: 0.65em;
+      width: var(--gmh-space-400);
+    }
+  }
+}
+
+/* Pinned to the card's bottom edge, so the buttons line up across a row. */
+.contact-route-footer {
+  align-items: center;
+  border-top: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: var(--gmh-space-500);
+}
+/* The footer's auto margin can shrink to nothing in the tallest card. */
+.contact-route-card > :nth-last-child(2) {
+  margin-bottom: var(--gmh-space-600);
+}
+
+.contact-route-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gmh-space-100) var(--gmh-space-400);
+  list-style: none;
+  margin: var(--gmh-space-500) 0 0;
+  padding: 0;
+
+  a {
+    color: var(--gmh-color-primary);
+    font: var(--gmh-typescale-body-medium);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+    text-underline-offset: 0.25em;
+
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+}
+
+.contact-route-choose {
+  align-items: center;
+  border: var(--gmh-stroke-border) solid var(--gmh-color-primary);
+  border-radius: var(--gmh-shape-corner-full);
+  color: var(--gmh-color-primary);
+  display: inline-flex;
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-200);
+  min-height: 2.75rem;
+  padding: 0 var(--gmh-space-500);
+  text-decoration: none;
+  transition:
+    background-color var(--global-duration-fast) ease,
+    color var(--global-duration-fast) ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: color-mix(
+      in srgb,
+      var(--gmh-color-surface-container-lowest),
+      var(--gmh-color-primary)
+        calc(var(--gmh-state-hover-state-layer-opacity) * 100%)
+    );
+  }
+  &:focus-visible {
+    outline: 3px solid var(--gmh-color-tertiary-container);
+    outline-offset: 2px;
+  }
+  .icon {
+    rotate: 90deg;
+    transition: translate var(--global-duration-fast) var(--global-ease-out);
+  }
+  &:hover .icon {
+    translate: 0 2px;
+  }
+}
+.contact-route-card[data-selected] .contact-route-choose {
+  background: var(--gmh-color-primary);
+  color: var(--gmh-color-on-primary);
+}
+
+/* -- Form band -------------------------------------------------------------- */
+
+/* Lands under the sticky header, with the wave still in view. */
+#contact-form {
+  scroll-margin-top: 2rem;
+}
+
+.contact-form-layout {
+  display: grid;
+  gap: var(--gmh-space-1200);
+  grid-template-columns: minmax(0, 1fr);
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .contact-form-layout {
+    align-items: start;
+    grid-template-columns: minmax(0, 7fr) minmax(16rem, 4fr);
+  }
+}
+
+.contact-aside {
+  color: var(--gmh-color-on-brand-band);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-1200);
+  padding-top: var(--gmh-space-400);
+}
+
+.contact-aside-heading {
+  align-items: center;
+  color: var(--gmh-color-brand-band-accent);
+  display: flex;
+  font: var(--gmh-typescale-label-medium);
+  gap: var(--gmh-space-300);
+  letter-spacing: 0.16em;
+  margin: 0 0 var(--gmh-space-300);
+  text-transform: uppercase;
+
+  &::after {
+    background: currentColor;
+    content: "";
+    flex: 1;
+    height: 1px;
+    max-width: var(--gmh-space-1200);
+    opacity: 0.6;
+  }
+}
+
+.contact-aside-email {
+  color: inherit;
+  font: var(--gmh-typescale-headline-small);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--gmh-color-brand-band-accent) 70%,
+    transparent
+  );
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+
+  &:hover {
+    text-decoration-color: var(--gmh-color-brand-band-accent);
+    text-decoration-thickness: 2px;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--gmh-color-brand-band-accent);
+    outline-offset: 4px;
+  }
+}
+
+.contact-aside-note {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 80%, transparent);
+  font: var(--gmh-typescale-body-small);
+  margin: var(--gmh-space-300) 0 0;
+}
+
+.contact-address {
+  display: flex;
+  flex-direction: column;
+  font: var(--gmh-typescale-body-large);
+  font-style: normal;
+  gap: var(--gmh-space-050);
+  letter-spacing: 0;
+
+  strong {
+    font: var(--gmh-typescale-title-medium);
+  }
+}
+
+.contact-address-affiliation {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 80%, transparent);
+  font: var(--gmh-typescale-body-medium);
+}
+
+.contact-address-lines {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--gmh-space-300);
+}
+
+.contact-aside-link {
+  align-items: center;
+  color: var(--gmh-color-brand-band-accent);
+  display: inline-flex;
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-150);
+  margin-top: var(--gmh-space-400);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .icon {
+    rotate: -45deg;
+  }
+}
+
+.contact-aside-care {
+  border-top: var(--gmh-stroke-border) solid
+    color-mix(in srgb, var(--gmh-color-on-brand-band) 22%, transparent);
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 80%, transparent);
+  font: var(--gmh-typescale-body-small);
+  margin: 0;
+  padding-top: var(--gmh-space-500);
+
+  a {
+    color: var(--gmh-color-on-brand-band);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.contact-aside-rings.graphic {
+  align-self: flex-end;
+  height: auto;
+  opacity: 0.4;
+  pointer-events: none;
+  width: min(100%, 15rem);
+}
+
+@media (max-width: 1023.98px) {
+  .contact-aside {
+    display: grid;
+    gap: var(--gmh-space-800) var(--gmh-space-1200);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+  .contact-aside-care {
+    grid-column: 1 / -1;
+  }
+  .contact-aside-rings.graphic {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-route-card,
+  .contact-care-resource .icon,
+  .contact-route-choose .icon {
+    transition: none;
+  }
+  .contact-route-card:hover {
+    translate: none;
+  }
+}

@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 import type {
   AuthService,
+  ContactService,
   NewsletterService,
   PricingService,
   ProductsService,
 } from "@gmhlab/core";
 import { AuthProvider } from "./AuthProvider";
+import { ContactProvider } from "./ContactProvider";
 import { NewsletterProvider } from "./NewsletterProvider";
 import { PricingProvider } from "./PricingProvider";
 import { ProductsProvider } from "./ProductsProvider";
@@ -19,6 +21,7 @@ export type DataServices = {
   pricing: PricingService;
   products: ProductsService;
   newsletter: NewsletterService;
+  contact: ContactService;
 };
 
 export type AllProvidersProps = {
@@ -36,6 +39,7 @@ export type AllProvidersProps = {
  * ```tsx
  * import {
  *   mockAuthService,
+ *   mockContactService,
  *   mockNewsletterService,
  *   mockPricingService,
  *   mockProductsService,
@@ -46,6 +50,7 @@ export type AllProvidersProps = {
  *   pricing: mockPricingService,
  *   products: mockProductsService,
  *   newsletter: mockNewsletterService,
+ *   contact: mockContactService,
  * };
  *
  * function App() {
@@ -62,7 +67,9 @@ export function AllProviders({ services, children }: AllProvidersProps) {
     <AuthProvider service={services.auth}>
       <PricingProvider service={services.pricing}>
         <ProductsProvider service={services.products}>
-          <NewsletterProvider service={services.newsletter}>{children}</NewsletterProvider>
+          <NewsletterProvider service={services.newsletter}>
+            <ContactProvider service={services.contact}>{children}</ContactProvider>
+          </NewsletterProvider>
         </ProductsProvider>
       </PricingProvider>
     </AuthProvider>

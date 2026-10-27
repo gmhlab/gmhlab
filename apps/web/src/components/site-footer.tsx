@@ -24,7 +24,10 @@ const SOCIAL_LINKS: SocialLink[] = [
 const COLUMNS: FooterColumn[] = [
   {
     title: "The Center",
-    links: [{ label: "Our team", href: "/team" }],
+    links: [
+      { label: "Our team", href: "/team" },
+      { label: "Work with us", href: "/contact" },
+    ],
   },
   {
     title: "Research",

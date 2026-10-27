@@ -89,6 +89,9 @@ importers:
       '@gmhlab/blocks':
         specifier: workspace:*
         version: link:../../packages/blocks
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -181,6 +184,9 @@ importers:
 
   packages/blocks:
     dependencies:
+      '@gmhlab/core':
+        specifier: workspace:*
+        version: link:../core
       '@gmhlab/tokens':
         specifier: workspace:*
         version: link:../tokens

@@ -1,3 +1,4 @@
+import type { CareNotice } from "../contact/contact-types";
 import type { PageCta } from "./page-copy";
 
 /**
@@ -14,7 +15,8 @@ import type { PageCta } from "./page-copy";
  *
  * Kept out of the defaults on purpose: anything that makes a factual claim
  * about a specific dataset (the publications page's provenance `note`), since
- * it would be false when rendered over another team's records.
+ * it would be false when rendered over another team's records — and any
+ * promise only an inbox's owner can make (the contact page's `replyTime`).
  */
 
 export const GMH_CONTACT_EMAIL = "info@gwglobalmentalhealth.com";
@@ -62,12 +64,50 @@ export const GMH_INNOVATIONS_COPY = {
   cta: {
     heading: "Implement Our Innovations",
     body: "Interested in using EQUIP, our assessment tools, or other innovations in your setting? We provide training, consultation, and implementation support.",
-    // `#` until the Center has a training-request and contact page to link.
+    // Deep links into the contact page with the EQUIP route already chosen.
     actions: [
-      { label: "Request Training", href: "#" },
-      { label: "Contact Us", href: "#", variant: "secondary" },
+      { label: "Request Training", href: "/contact?topic=equip#contact-form" },
+      { label: "Contact Us", href: "/contact", variant: "secondary" },
     ],
   } satisfies PageCta,
+};
+
+export const GMH_CONTACT_COPY = {
+  subtitle:
+    "We partner with universities, ministries, NGOs and people with lived experience to make mental health care work where specialists are scarce. Tell us what you have in mind.",
+  topicsEyebrow: "Work with us",
+  topicsHeading: "What are you reaching out about?",
+  topicsSubheading:
+    "Pick the closest match. Each one says what we can offer, and helps your message reach the right person.",
+  formHeading: "Send us a message",
+  /**
+   * First on the page, above the form, because people looking for help land
+   * here. 988 is US-only; findahelpline.com covers the rest of the audience,
+   * most of which is outside the US.
+   */
+  careNotice: {
+    heading: "Looking for mental health support?",
+    body: "The Center is a research group, not a care provider. We can't offer clinical services or crisis support, and this inbox isn't watched around the clock.",
+    resources: [
+      {
+        label: "Call 988",
+        detail: "988 Suicide & Crisis Lifeline · US, 24/7",
+        href: "tel:988",
+      },
+      {
+        label: "Text 988",
+        detail: "Prefer to type? Text the same line",
+        href: "sms:988",
+      },
+      {
+        label: "Find a helpline",
+        detail: "Free, confidential support outside the US · findahelpline.com",
+        href: "https://findahelpline.com",
+      },
+    ],
+    emergency:
+      "If you or someone else is in immediate danger, call your local emergency number (911 in the US).",
+  } satisfies CareNotice,
 };
 
 export const GMH_TEAM_COPY = {

@@ -452,8 +452,12 @@ export function TextContentTitle({
           {eyebrow}
         </TextEyebrow>
       )}
+      {/* h1 in both branches: TextTitlePage defaults to h2, which left every
+          page with no h1 once a phone hydrated to the mobile branch. */}
       {isMobile ? (
-        <TextTitlePage className={`text-align-${align}`}>{title}</TextTitlePage>
+        <TextTitlePage elementType="h1" className={`text-align-${align}`}>
+          {title}
+        </TextTitlePage>
       ) : (
         <TextTitleHero className={`text-align-${align}`}>{title}</TextTitleHero>
       )}

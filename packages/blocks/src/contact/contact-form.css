@@ -1,0 +1,472 @@
+/* ContactForm. Every class prefixed `contact-`; nothing touches an element
+ * selector outside the form's own root.
+ *
+ * A paper panel lifted off the band it sits on. Layout answers to the
+ * panel's own width (a container query), not the viewport: two columns of
+ * fields when there is room, one when there is not.
+ *
+ * Contrast (light): labels on-surface 15:1 · prompt and notes
+ * on-surface-variant 8.9:1 · errors M3 error on the panel 5.6:1 · the
+ * chosen chip on-primary on navy 11:1. */
+
+.contact-form {
+  background: var(--gmh-color-surface-container-lowest);
+  border: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  border-radius: var(--gmh-shape-corner-extra-large);
+  box-shadow: var(--gmh-elevation-level2);
+  color: var(--gmh-color-on-surface);
+  container: contact-form / inline-size;
+  padding: var(--gmh-space-800);
+  /* Paper, wherever it sits: a heading in navy even inside a brand band. */
+  --text-heading-color: var(--gmh-color-primary);
+}
+
+/* The glyphs follow the text they sit beside, so the chosen chip draws its
+   glyph in on-primary. Three classes deep to beat the brand band's and
+   dark mode's own `.graphic` rules (two), which set the roles on the
+   graphic itself. */
+.contact-form .graphic.graphic-glyph {
+  --graphic-ground: var(--gmh-color-surface);
+  --graphic-ink: currentColor;
+}
+
+.contact-form-header {
+  margin-bottom: var(--gmh-space-800);
+}
+
+.contact-form-heading {
+  color: var(--text-heading-color, var(--gmh-color-primary));
+  font: var(--gmh-typescale-headline-small);
+  letter-spacing: 0;
+  margin: 0;
+  outline: none;
+  text-wrap: balance;
+}
+
+.contact-form-reply {
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-medium);
+  margin: var(--gmh-space-200) 0 0;
+}
+
+.contact-label {
+  align-items: baseline;
+  color: var(--gmh-color-on-surface);
+  display: flex;
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-200);
+  letter-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-label-note {
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-small);
+}
+
+/* Icons follow the text they sit in. `.icon` sets its own colour (primary)
+   and a brand band resets it on the icon itself, so the override has to
+   land on the icon, three classes deep. */
+.contact-form .icon.icon {
+  --icon-color: currentColor;
+}
+
+/* -- Topic chips ------------------------------------------------------------ */
+
+.contact-topics {
+  border: 0;
+  margin: 0 0 var(--gmh-space-800);
+  min-width: 0;
+  padding: 0;
+}
+
+.contact-topics > .contact-label {
+  margin-bottom: var(--gmh-space-300);
+}
+
+.contact-topic-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gmh-space-200);
+}
+
+.contact-topic-option {
+  cursor: pointer;
+  position: relative;
+
+  input {
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+    width: 1px;
+  }
+}
+
+.contact-topic-chip {
+  align-items: center;
+  background: var(--gmh-color-surface);
+  border: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  border-radius: var(--gmh-shape-corner-full);
+  color: var(--gmh-color-on-surface);
+  display: inline-flex;
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-200);
+  min-height: 2.75rem;
+  padding: var(--gmh-space-150) var(--gmh-space-400) var(--gmh-space-150)
+    var(--gmh-space-300);
+  transition:
+    background-color var(--global-duration-fast) ease,
+    border-color var(--global-duration-fast) ease,
+    color var(--global-duration-fast) ease;
+}
+
+.contact-topic-option:hover .contact-topic-chip {
+  background: color-mix(
+    in srgb,
+    var(--gmh-color-surface),
+    var(--gmh-color-on-surface)
+      calc(var(--gmh-state-hover-state-layer-opacity) * 100%)
+  );
+  border-color: var(--gmh-color-outline);
+}
+
+.contact-topic-option input:checked + .contact-topic-chip {
+  background: var(--gmh-color-primary);
+  border-color: var(--gmh-color-primary);
+  color: var(--gmh-color-on-primary);
+}
+
+.contact-topic-option input:focus-visible + .contact-topic-chip {
+  outline: 3px solid var(--gmh-color-tertiary-container);
+  outline-offset: 2px;
+}
+
+.contact-topic-option input:disabled + .contact-topic-chip {
+  cursor: progress;
+}
+
+.contact-topics[aria-invalid] .contact-topic-chip {
+  border-color: var(--gmh-color-error);
+}
+
+/* -- Fields ----------------------------------------------------------------- */
+
+.contact-fields {
+  display: grid;
+  gap: var(--gmh-space-600);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-200);
+  min-width: 0;
+}
+
+/* The shadcn fields, sized for a form people type a paragraph into: 44px
+   targets and 16px text (no iOS zoom on focus). Unlayered, so this wins
+   over the primitives' Tailwind utilities without a specificity fight. */
+.contact-form .contact-input,
+.contact-form .contact-textarea {
+  background: var(--gmh-color-surface);
+  border-color: var(--gmh-color-outline);
+  border-radius: var(--gmh-shape-corner-medium);
+  font: var(--gmh-typescale-body-large);
+  letter-spacing: 0;
+  padding-inline: var(--gmh-space-400);
+}
+
+.contact-form .contact-input {
+  height: 2.75rem;
+}
+
+.contact-form .contact-textarea {
+  min-height: 9rem;
+  padding-block: var(--gmh-space-300);
+  resize: vertical;
+}
+
+.contact-form .contact-input:focus-visible,
+.contact-form .contact-textarea:focus-visible {
+  border-color: var(--gmh-color-primary);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--gmh-color-primary) 22%, transparent);
+}
+
+.contact-form .contact-input[aria-invalid],
+.contact-form .contact-textarea[aria-invalid] {
+  border-color: var(--gmh-color-error);
+}
+
+.contact-form .contact-input::placeholder,
+.contact-form .contact-textarea::placeholder {
+  color: var(--gmh-color-on-surface-variant);
+  opacity: 0.8;
+}
+
+/* The chosen route's guidance, between the label and the box. */
+.contact-prompt {
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-medium);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.contact-error {
+  align-items: center;
+  color: var(--gmh-color-error);
+  display: flex;
+  font: var(--gmh-typescale-body-small);
+  font-weight: 600;
+  gap: var(--gmh-space-150);
+  margin: var(--gmh-space-100) 0 0;
+
+  &::before {
+    background: currentColor;
+    border-radius: var(--gmh-shape-corner-full);
+    content: "";
+    flex-shrink: 0;
+    height: 0.375rem;
+    width: 0.375rem;
+  }
+}
+
+@container contact-form (min-width: 34rem) {
+  .contact-form {
+    padding: var(--gmh-space-1200);
+  }
+  .contact-fields {
+    column-gap: var(--gmh-space-500);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .contact-field-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Off-screen rather than display: none, which some bots know to skip. */
+.contact-trap {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+/* -- Send ------------------------------------------------------------------- */
+
+.contact-failed {
+  background: var(--gmh-color-error-container);
+  border-radius: var(--gmh-shape-corner-medium);
+  color: var(--gmh-color-on-error-container);
+  font: var(--gmh-typescale-body-medium);
+  margin-top: var(--gmh-space-600);
+  padding: var(--gmh-space-400) var(--gmh-space-500);
+
+  p {
+    margin: 0;
+  }
+  a {
+    color: inherit;
+    display: inline-block;
+    font-weight: 600;
+    margin-top: var(--gmh-space-200);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.contact-form-footer {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gmh-space-400) var(--gmh-space-600);
+  margin-top: var(--gmh-space-800);
+}
+
+.contact-submit {
+  /* Sending is aria-disabled, not :disabled, so focus stays put. */
+  &[data-disabled] {
+    cursor: progress;
+  }
+  .icon {
+    transition: translate var(--global-duration-fast) var(--global-ease-out);
+  }
+  &:hover .icon {
+    translate: 2px 0;
+  }
+}
+
+.contact-spinner {
+  aspect-ratio: 1;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-right-color: transparent;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 1rem;
+}
+
+.contact-route {
+  align-items: center;
+  color: var(--gmh-color-on-surface-variant);
+  display: flex;
+  font: var(--gmh-typescale-body-medium);
+  gap: var(--gmh-space-200);
+  margin: 0;
+
+  strong {
+    color: var(--gmh-color-on-surface);
+    font-weight: 600;
+  }
+}
+
+/* -- Sent ------------------------------------------------------------------- */
+
+.contact-sent {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--gmh-space-400);
+}
+
+.contact-sent-mark {
+  align-items: center;
+  background: var(--gmh-color-tertiary-container);
+  border-radius: var(--gmh-shape-corner-full);
+  box-shadow: 0 0 0 8px
+    color-mix(in srgb, var(--gmh-color-tertiary-container) 22%, transparent);
+  color: var(--gmh-color-on-tertiary-container);
+  display: inline-flex;
+  height: 3.25rem;
+  justify-content: center;
+  margin-bottom: var(--gmh-space-600);
+  width: 3.25rem;
+
+  svg {
+    fill: none;
+    height: 1.625rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.25;
+    width: 1.625rem;
+  }
+}
+
+.contact-sent-body {
+  color: var(--gmh-color-on-surface-variant);
+  font: var(--gmh-typescale-body-large);
+  letter-spacing: 0;
+  margin: var(--gmh-space-300) 0 0;
+  max-width: 38rem;
+  text-wrap: pretty;
+
+  strong {
+    color: var(--gmh-color-on-surface);
+    font-weight: 600;
+  }
+}
+
+.contact-sent-address {
+  overflow-wrap: anywhere;
+}
+
+.contact-sent-next {
+  border-top: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
+  margin-top: var(--gmh-space-800);
+  padding-top: var(--gmh-space-600);
+  width: 100%;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gmh-space-200) var(--gmh-space-600);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    align-items: center;
+    color: var(--gmh-color-primary);
+    display: inline-flex;
+    font: var(--gmh-typescale-label-large);
+    gap: var(--gmh-space-150);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+    }
+  }
+}
+
+.contact-sent-next-label {
+  color: var(--gmh-color-tertiary);
+  font: var(--gmh-typescale-label-medium);
+  letter-spacing: 0.16em;
+  margin: 0 0 var(--gmh-space-300);
+  text-transform: uppercase;
+}
+
+.contact-sent-reset {
+  background: none;
+  border: 0;
+  border-radius: var(--gmh-shape-corner-extra-small);
+  color: var(--gmh-color-primary);
+  cursor: pointer;
+  font: var(--gmh-typescale-label-large);
+  margin-top: var(--gmh-space-800);
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.25em;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--gmh-color-primary);
+    outline-offset: 3px;
+  }
+}
+
+/* -- Motion ----------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-spinner {
+    animation: contact-spin 0.7s linear infinite;
+  }
+  .contact-prompt {
+    animation: contact-fade 0.35s var(--global-ease-out) both;
+  }
+  .contact-sent {
+    animation: contact-rise 0.45s var(--global-ease-out) both;
+  }
+  .contact-sent-mark {
+    animation: contact-pop 0.5s var(--global-ease-out) both;
+  }
+  .contact-sent-mark path {
+    animation: contact-draw 0.45s 0.25s var(--global-ease-out) both;
+    stroke-dasharray: 1;
+  }
+}
+@keyframes contact-spin {
+  to { rotate: 1turn; }
+}
+@keyframes contact-fade {
+  from { opacity: 0; }
+}
+@keyframes contact-rise {
+  from { opacity: 0; translate: 0 0.5rem; }
+}
+@keyframes contact-pop {
+  from { opacity: 0; scale: 0.6; }
+}
+@keyframes contact-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}

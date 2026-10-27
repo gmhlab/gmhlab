@@ -44,7 +44,7 @@ const SECTIONS = [
   { id: "slides", label: "Slides" },
 ];
 
-/** The six export groups. */
+/** The eight export groups. */
 const GROUPS = [
   {
     name: "home/",
@@ -81,6 +81,18 @@ const GROUPS = [
     exports: ["InnovationsPage", "InnovationDetailPage"],
   },
   {
+    name: "team/",
+    blurb:
+      "The team page, and the People strip the two detail pages reuse — one person format, bios that expand in place, publications resolved by exact author name.",
+    exports: ["TeamPage", "PeopleSection", "projectPeople"],
+  },
+  {
+    name: "contact/",
+    blurb:
+      "A contact page that pitches: a care notice with crisis lines, one card per inquiry route, and the form — exported separately, since the page takes it as a slot rather than a send function.",
+    exports: ["ContactPage", "ContactForm", "contactMailto"],
+  },
+  {
     name: "shared/",
     blurb:
       "The copy contracts every page block takes its voice through, and the GW Center's default copy. Omit a copy prop for the Center's wording, pass your own, or null to drop it.",
@@ -90,6 +102,7 @@ const GROUPS = [
       "GMH_PROJECTS_COPY",
       "GMH_PUBLICATIONS_COPY",
       "GMH_INNOVATIONS_COPY",
+      "GMH_CONTACT_COPY",
       "gmhProjectDetailCta",
       "GMH_CONTACT_EMAIL",
     ],
@@ -152,6 +165,13 @@ const PAGE_BLOCKS = [
     blurb:
       "Core team, affiliates, students and alumni in one person format. Bios expand in place; project tags filter the page, and the same records give the detail pages their People section.",
     props: "people, projects, publications, detailSlugs, heroImage, projectsBasePath, title, subtitle, cta",
+  },
+  {
+    to: "/blocks/contact",
+    name: "ContactPage",
+    blurb:
+      "Contact as a pitch: the care notice first, one card per inquiry route, then the form. Cards and form share the chosen route; ?topic= deep links it.",
+    props: "topics, form, location, email, replyTime, careNotice, heroImage, title, subtitle, topicsEyebrow, topicsHeading, topicsSubheading",
   },
 ];
 
@@ -230,7 +250,7 @@ export function BlocksPage() {
       <Demo
         id="shape"
         title="Package shape"
-        description="src/ groups, all six re-exported from the barrel. Build order is tokens → core → data → ui → blocks, and blocks externals react and every @gmhlab package it uses so they resolve from the consumer."
+        description="src/ groups, all eight re-exported from the barrel. Build order is tokens → core → data → ui → blocks, and blocks externals react and every @gmhlab package it uses so they resolve from the consumer."
       >
         <Flex type="half" wrap gap="600" alignSecondary="stretch">
           {GROUPS.map((group) => (

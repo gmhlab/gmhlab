@@ -39,6 +39,8 @@ import type {
   PublicationsPageProps,
   Person,
   TeamPageProps,
+  ContactLocation,
+  ContactTopic,
 } from "@gmhlab/blocks";
 
 /** Deterministic placeholder imagery — the hero variants require a `src`. */
@@ -355,7 +357,7 @@ export const INNOVATION_DETAIL_SLUGS = ["atlas"];
  * section renders no heading for it — `apps/web`'s own records are sparser
  * than this one, which is the behaviour worth seeing here.
  */
-const CENTRE_EMAIL = "hello@example.invalid";
+export const CENTRE_EMAIL = "hello@example.invalid";
 
 export const HARBOUR_DETAIL: ProjectDetail = {
   slug: "harbour",
@@ -922,4 +924,54 @@ export const TEAM_PAGE_COPY: Pick<TeamPageProps, "subtitle" | "cta"> = {
     heading: "Join the Centre",
     actions: [{ label: "Email the Centre", href: `mailto:${CENTRE_EMAIL}` }],
   },
+};
+
+/* -- Contact ---------------------------------------------------------------- */
+
+/**
+ * Four routes, not the GW Center's five, so the grid's general layout is what
+ * renders here (the five-route layout is the GW case). `media` has no offers
+ * and `other` has no links, so both optional parts are seen missing.
+ */
+export const CONTACT_TOPICS: ContactTopic[] = [
+  {
+    id: "partner",
+    label: "Partner on a study",
+    glyph: "community",
+    summary: "The Centre co-designs harbour-town studies with district health offices.",
+    offers: ["Protocol design with local teams", "Shared measurement tools"],
+    links: [{ label: "Projects", href: "/blocks/projects" }],
+    prompt: "Tell us about your district and the question you have.",
+    organization: "required",
+  },
+  {
+    id: "atlas",
+    label: "Atlas training",
+    glyph: "competency",
+    summary: "We train supervisors to run the Atlas competency platform.",
+    offers: ["Two-day supervisor trainings"],
+    links: [{ label: "About Atlas", href: "/blocks/innovations/atlas" }],
+    prompt: "How many supervisors, and where?",
+    organization: "required",
+  },
+  {
+    id: "media",
+    label: "Press",
+    glyph: "lived-experience",
+    summary: "Our researchers comment on coastal mental health.",
+    links: [{ label: "Publications", href: "/blocks/publications" }],
+    prompt: "Your outlet and deadline.",
+  },
+  {
+    id: "other",
+    label: "Anything else",
+    glyph: "care-delivery",
+    summary: "Write to us and we will find the right person.",
+  },
+];
+
+export const CONTACT_LOCATION: ContactLocation = {
+  name: "The Halden Centre",
+  affiliation: ["Faculty of Health", "Northgate University"],
+  address: ["14 Quay Street", "Halden HD1 2AB"],
 };

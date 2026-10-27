@@ -31,6 +31,7 @@ const NAV_ITEMS: HeaderNavItem[] = [
     href: "/publications",
     render: <Link href="/publications" />,
   },
+  { label: "Contact", href: "/contact", render: <Link href="/contact" /> },
 ];
 
 /** The ui Header wired to the @gmhlab/data auth layer and the app router. */

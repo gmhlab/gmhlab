@@ -52,6 +52,7 @@
     "tailwindcss": "catalog:"
   },
   "dependencies": {
+    "@gmhlab/core": "workspace:*",
     "@gmhlab/tokens": "workspace:*",
     "@gmhlab/ui": "workspace:*",
     "class-variance-authority": "catalog:",
