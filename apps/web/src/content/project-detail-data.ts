@@ -1241,20 +1241,23 @@ export const EQUIP_PROJECT_DETAIL: ProjectDetail = {
 /* -------------------------------------------------------------------------- */
 
 /*
- * Transcribed from the Center's R01 summary ("RECOUP-NY R01 (Final).docx",
- * Drive `1PY6N4BANc4reOat5UAfpjTfOdDHphxqF`): the arms, the objectives and
- * their instruments, the eligibility criteria and the assessment schedule.
+ * Two sources in one Drive file ("RECOUP-NY R01 (Final).docx",
+ * `1PY6N4BANc4reOat5UAfpjTfOdDHphxqF`, revised 2026-10-28):
  *
- * The enrollment figures are **not** the summary's. It gives 30 CBO sites and
- * 50 clients per site; the published protocol (Kohrt et al., Psychiatric
- * Research and Clinical Practice, 2025) gives 42 sites randomized 1:1, about
- * 1,000 clients and about 45 staff, so the page uses the published design.
- * The grant number, the primary-outcome timepoint and the 2022 access figure
- * in the rationale are from the protocol too.
+ *   - The R01 summary table: the objectives and their ranks, the measures,
+ *     the hypothesis and the assessment schedule.
+ *   - An excerpt of the results manuscript (abstract, introduction, methods,
+ *     participant characteristics), added by the project team for the page.
+ *     It describes the trial **as run**, so it wins wherever it and the grant
+ *     table differ: five *sessions* (not weeks), the participant and helper
+ *     eligibility, the 42 sites from 28 organizations, 95 staff trained, and
+ *     the national and NYC access figures. The excerpt ends before the
+ *     effect estimates, so the page reports no outcomes — add a `findings`
+ *     block when the results paper is out.
  *
- * Status, actual enrollment, collaborators and the principal investigator are
- * from the ClinicalTrials.gov record (NCT04913766, last updated 2026-05-28):
- * completed 2026-02-09 with 1,206 participants enrolled.
+ * The team named the protocol (PMID 40932843) as the main publication. The
+ * grant number and the collaborators are from ClinicalTrials.gov
+ * (NCT04913766).
  *
  * Each track's weeks count from that person's own enrollment, so the two
  * clocks are not one calendar; the timeline note says so.
@@ -1270,12 +1273,12 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
   statusLabel: "Completed",
   heroImage: RECOUP_NY_HERO_IMAGE,
   lede:
-    "RECOUP-NY is a hybrid effectiveness-implementation, cluster-randomized controlled trial in New York City, completed in February 2026. Staff at community-based organizations who are not mental health clinicians are trained to deliver Problem Management Plus, the World Health Organization's brief psychological intervention, and the trial compares their clients' outcomes with standard care — for effectiveness, for cost, and for what it takes to run in a community setting.",
+    "RECOUP-NY is a cluster-randomized trial of community-initiated care in New York City, run with the Mayor's Office of Community Mental Health and a community advisory group. Staff at community-based organizations who are not clinicians — case managers, financial counselors, immigration aides — were trained to deliver Problem Management Plus, the World Health Organization's five-session psychological intervention, and their clients' outcomes were compared with usual services. Its 1,206 participants were 74% women; 58% were Latino, 22% Black and 11% Asian.",
 
   facts: [
     {
       term: "Design",
-      detail: "Hybrid effectiveness-implementation cluster-randomized trial",
+      detail: "Two-group cluster-randomized superiority trial",
     },
     {
       term: "Funder",
@@ -1283,37 +1286,37 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
     },
     { term: "Location", detail: "New York City" },
     { term: "Intervention", detail: "Problem Management Plus (WHO)" },
+    { term: "Enrollment", detail: "October 2022 – August 2025" },
+    { term: "Final follow-up", detail: "9 February 2026" },
     { term: "Registration", detail: "ClinicalTrials.gov NCT04913766" },
-    { term: "Data collection", detail: "October 2022 – February 2026" },
   ],
 
-  /* Enrollment is the registry's actual count; the site and staff numbers
-     are the protocol's design, labeled as such. */
   figures: [
-    { value: "1,206", label: "Participants", note: "Enrolled" },
+    { value: "1,206", label: "Adults enrolled", note: "Of 2,189 screened" },
     {
       value: "42",
-      label: "Community organizations",
-      note: "Randomized 1:1, per protocol",
+      label: "Community sites",
+      note: "From 28 organizations, randomized 1:1",
     },
-    { value: "~45", label: "Staff trained in PM+", note: "Protocol target" },
-    { value: "20", label: "Weeks", note: "Primary outcome timepoint" },
+    { value: "95", label: "Staff trained in PM+", note: "Nonclinicians at PM+ sites" },
+    { value: "74%", label: "Completed 20-week follow-up", note: "892 of 1,206" },
   ],
 
   rationale: [
-    "COVID-19 hit New York City's health disparity populations hardest. In a 2020 poll of the pandemic's mental health impact, Latinx and Asian American New Yorkers reported reduced work hours, job loss, financial stress or job-related anxiety at rates about 15–20% higher than White Americans — and greater exposure to stressors like these raises the risk of depression.",
-    "Care has not kept up: in 2022, half a million New Yorkers reported being unable to access mental health services. Community-initiated care is one answer. Staff at the community organizations people already use identify clients in distress and deliver a brief psychological intervention themselves, which lowers the barriers of cost, access and stigma that keep people from a clinic.",
+    "Of the 60 million people in the United States living with a mental health condition, only half received treatment in the past year — and the gap is widest for racial and ethnic minoritized communities. 58% of non-Latino White adults with a condition receive care, against 44% of Latino, 39% of Black and 33% of Asian Americans.",
+    "New York City shows that more clinicians alone do not close it. The city has one mental health provider for every 250 residents, against a national average of one per 320, and still a million New Yorkers a year cannot access mental health services. COVID-19 widened the gap: in a 2020 poll, Latinx and Asian American New Yorkers reported job loss, reduced hours and financial stress at rates about 15–20% higher than White Americans.",
+    "Community-initiated care is one answer. Community-based organizations — the nonprofits that provide food, housing, employment and family support — already employ people from the communities they serve, who share their clients' cultures and languages. Trained, those staff can identify clients in distress and deliver a brief psychological intervention themselves, outside the health care system.",
   ],
 
   arms: [
     {
-      name: "Standard care",
-      body: "The community organization's care as usual.",
+      name: "Usual services",
+      body: "Routine social services and, when indicated, referral to public-sector mental health services or the organization's contracted specialists — so the trial measures what PM+ adds to existing services.",
     },
     {
       name: "Problem Management Plus",
       abbr: "PM+",
-      body: "Non-clinical staff at the organization, trained and supervised, deliver PM+ to clients experiencing distress.",
+      body: "Nonclinical staff at the organization, trained and supervised, deliver five individual PM+ sessions to clients in distress, building on service relationships they already have.",
       isIntervention: true,
     },
   ],
@@ -1321,21 +1324,25 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
   strategy: {
     heading: "What Problem Management Plus is",
     body: [
-      "Problem Management Plus (PM+) is a five-week, manualized intervention for mild-to-moderate distress, designed by the World Health Organization. It is built on the principles of cognitive behavioural therapy and has been used successfully around the world for rapid deployment by people who are not licensed clinicians.",
-      "RECOUP-NY tests it in a new setting: delivered by the staff and volunteers of New York City community-based organizations, to the clients those organizations already serve.",
+      "Problem Management Plus (PM+) is a five-session, manualized, transdiagnostic intervention designed by the World Health Organization for delivery by nonclinicians. It combines stress management, problem solving, behavioural activation and strengthening social support, and it works on the problems clients themselves rank as most pressing rather than on clinical symptoms alone.",
+      "PM+ has shown benefit in 12 randomized controlled trials in 10 countries, including Jordan, Kenya, Nepal, Pakistan and Turkey. RECOUP-NY is the first trial of individually delivered PM+ with the general population in the United States.",
     ],
     elements: [
       {
-        term: "Non-specialist helpers",
-        body: "PM+ helpers are volunteers or employees of an enrolled organization. Anyone holding a clinical degree or licence — MD, PsyD, MSW, LCSW or LMSW — is excluded, because the point is to grow the non-clinical workforce.",
+        term: "Nonclinician helpers",
+        body: "Staff aged 20 or older who provide nonclinical services at a PM+ site. Licensed clinicians are excluded, because the point is to grow the nonclinical workforce. Of the 95 trained, 48% were Latino, 27% Black, 10% Asian and 6% White.",
       },
       {
-        term: "Trained, then supervised",
-        body: "Twelve weeks of training are followed by twelve weeks of closely supervised delivery, then continued delivery to a year.",
+        term: "Remote training, weekly supervision",
+        body: "Twelve remote 2.5-hour sessions, one or two a week, plus two hours a week of asynchronous work, then an hour of supervision every week for the rest of the study. Training and supervision were also offered in Spanish.",
       },
       {
-        term: "Competency, not attendance",
-        body: "Helpers' skills are assessed with ENACT, the foundational-helping-skills tool from EQUIP, before training and at each stage after it.",
+        term: "Competency checked with EQUIP",
+        body: "The WHO–UNICEF EQUIP platform monitored each helper's competency and flagged potentially harmful behaviours.",
+      },
+      {
+        term: "Case-finding by staff",
+        body: "Staff refer clients they think may be in distress using the Community Informant Detection Tool — short descriptions of how distress, depression and anxiety commonly show up, tailored to the local population.",
       },
     ],
   },
@@ -1360,13 +1367,21 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
       measures: [
         {
           abbr: "PSYCHLOPS",
-          name: "Psychological Outcome Profiles",
+          name: "Psychological Outcomes Profile",
           detail:
-            "The primary outcome measure: a personalized measure of psychological distress, assessed 20 weeks after baseline.",
+            "The primary outcome, at 20 weeks: a personalized measure in which participants name the problems that trouble them most and rate how much they are affected, scored 0–20. It was registered as primary on 6 October 2022, before recruitment began, replacing the PHQ-9.",
         },
-        { abbr: "PHQ-9", name: "Patient Health Questionnaire-9" },
-        { abbr: "GAD-7", name: "Generalized Anxiety Disorder-7" },
-        { abbr: "PCL-5", name: "PTSD Checklist for DSM-5" },
+        {
+          abbr: "PHQ-9",
+          name: "Patient Health Questionnaire-9",
+          detail: "Depression, 0–27. Also scored for treatment response and remission.",
+        },
+        {
+          abbr: "GAD-7",
+          name: "Generalized Anxiety Disorder-7",
+          detail: "Anxiety, 0–21. Also scored for treatment response and remission.",
+        },
+        { abbr: "PCL-5", name: "PTSD Checklist for DSM-5", detail: "The 4-item version, 0–16." },
         { abbr: "EQ-5D-5L", name: "EuroQol five-dimension scale" },
         { abbr: "RTC", name: "Reducing Tension Checklist" },
         { abbr: "IUS", name: "Intolerance of Uncertainty Scale" },
@@ -1377,7 +1392,12 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
       title: "Cost effectiveness of PM+",
       measures: [
         { abbr: "EQ-5D-5L", name: "EuroQol five-dimension scale" },
-        { abbr: "CSRI", name: "Client Service Receipt Inventory" },
+        {
+          abbr: "CSRI",
+          name: "Client Service Receipt Inventory",
+          detail:
+            "Service use: outpatient care, emergency department visits, psychiatric hospitalization, insurance coverage.",
+        },
       ],
     },
     {
@@ -1394,25 +1414,24 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
   ],
 
   hypotheses: [
-    "PM+ delivered by non-specialists significantly reduces distress — problem severity and symptoms of depression, anxiety and PTSD — compared with standard care, through psychosocial behavioural change.",
+    "PM+ delivered by non-specialists significantly reduces distress — problem severity and symptoms of depression, anxiety and PTSD — compared with usual services, through psychosocial behavioural change.",
   ],
 
   tracks: [
     {
       id: "helper",
       label: "PM+ helpers",
-      population:
-        "Non-clinical staff and volunteers at organizations in the PM+ arm",
+      population: "95 nonclinical staff at organizations in the PM+ arm",
     },
     {
       id: "participant",
       label: "Participants",
-      population: "Adult clients of the enrolled community organizations",
+      population: "1,206 adult clients of 39 community sites",
     },
   ],
 
   timelineNote:
-    "Each track's weeks count from that person's own enrollment. Every participant assessment covers symptom severity (PHQ-9, GAD-7, PCL-5), further clinical effectiveness outcomes (such as the EQ-5D-5L) and cost-effectiveness outcomes.",
+    "Each track's weeks count from that person's own enrollment. Participants were assessed by phone, video or in person, in their preferred language, with the baseline within two weeks of enrollment.",
   timeline: [
     {
       kind: "point",
@@ -1432,22 +1451,23 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
       kind: "phase",
       track: "participant",
       when: "Weeks 1–10",
-      title: "Standard care or PM+",
+      title: "Usual services or PM+",
       detail:
-        "The randomized contrast: organizations are assigned to one arm or the other.",
+        "The randomized contrast: each site was assigned to one arm before any client was recruited, and every client follows their site's arm.",
     },
     {
       kind: "point",
       track: "participant",
       code: "T1",
       when: "Week 10",
-      title: "Post-assessment",
+      title: "Midline assessment",
     },
     {
       kind: "phase",
       track: "helper",
       when: "Weeks 1–12",
       title: "PM+ training",
+      detail: "Twelve remote 2.5-hour sessions.",
     },
     {
       kind: "point",
@@ -1461,7 +1481,7 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
       track: "participant",
       code: "T2",
       when: "Week 20",
-      title: "Post-assessment",
+      title: "Endline assessment",
       detail: "The primary outcome timepoint.",
     },
     {
@@ -1499,38 +1519,41 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
     },
   ],
 
-  eligibilityNote: "Every criterion marked self-report is as the person reports it.",
+  eligibilityNote:
+    "The criteria the trial ran on. Clients were referred by organization staff and screened by researchers; anyone excluded for higher-acuity needs was referred to specialized services.",
   eligibility: [
     {
-      group: "PM+ helpers — inclusion",
+      group: "Community-based organizations",
       criteria: [
-        "Aged 18 or older",
-        "Documented volunteer, part-time or full-time work with an enrolled community-based organization",
+        "Nonprofit, reachable by public transportation, serving 50 or more clients a month",
+        "Mental health services are not its primary mission",
+        "Each site a single location; an organization's sites count separately only if they serve different neighbourhoods and clients",
       ],
     },
     {
-      group: "PM+ helpers — exclusion",
+      group: "PM+ helpers",
       criteria: [
-        "Holds an MD, PsyD, MSW, LCSW or LMSW",
-        "Emergency room admission or hospitalization for an alcohol- or drug-related concern in the past 60 days (self-report)",
-        "Emergency room admission or hospitalization for active suicidal ideation or a suicide attempt in the past 60 days (self-report)",
-        "Active suicidal ideation in the past 14 days (self-report)",
+        "Aged 20 or older",
+        "Provides nonclinical services to clients at a PM+ site",
+        "Not a licensed clinical professional",
       ],
     },
     {
       group: "Participants — inclusion",
       criteria: [
-        "Aged 18 or older",
-        "PHQ-4 score of 3 or more (self-report)",
-        "Global Assessment of Functioning score below 90 (self-report)",
+        "Aged 18 or older and living in New York City",
+        "Fluent in English, Spanish, Mandarin, Cantonese or French",
+        "Psychological distress: PHQ-4 score of 3 or more",
+        "Functional impairment: self-reported Global Assessment of Functioning of 90 or below",
       ],
     },
     {
       group: "Participants — exclusion",
       criteria: [
-        "A current diagnosis of Alzheimer's disease, significant cognitive impairment, or a hearing or speech impairment (self-report)",
-        "Emergency room admission or hospitalization for an alcohol- or drug-related concern in the past 60 days (self-report)",
-        "Active suicidal ideation in the past 14 days (self-report)",
+        "A psychiatric emergency department visit or hospitalization in the past 6 months",
+        "A suicide attempt in the past 2 weeks, or current suicidal ideation",
+        "Diagnosed cognitive impairment",
+        "Ongoing substance use treatment, or other acute clinical risk found at screening",
       ],
     },
   ],
@@ -1542,14 +1565,20 @@ export const RECOUP_NY_DETAIL: ProjectDetail = {
     },
     {
       slug: "remote-delivered-psychosocial-support-to-improve-the-wellbeing-and-fun",
-      note: "Remote PM+ in New York City",
+      note: "Pilot study",
     },
   ],
   publicationsNote:
-    "The trial protocol, and the team's earlier work delivering PM+ remotely in New York City.",
+    "The trial protocol, and the pilot that established remote PM+ training and delivery in New York City.",
 
-  /* The registry's collaborators. */
-  partners: ["The New School", "Duke University", "Human Sciences Research Council"],
+  /* The registry's collaborators, and the city office the trial was run
+     with. */
+  partners: [
+    "NYC Mayor's Office of Community Mental Health",
+    "The New School",
+    "Duke University",
+    "Human Sciences Research Council",
+  ],
 
   resources: [
     {
