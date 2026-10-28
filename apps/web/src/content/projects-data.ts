@@ -51,15 +51,15 @@ export const PROJECTS: Project[] = [
     slug: "equip",
     logo: "/projects/equip.png",
     name: "EQUIP",
-    tagline: "Ensuring Quality in Psychosocial and Mental Healthcare",
+    tagline: "Ensuring Quality in Psychosocial and Mental Health Care",
     summary:
       "A worldwide platform that improves the quality and consistency of mental health training, supervision, and service delivery among specialists and non-specialists alike. Offers competency assessment tools, foundational helping-skills resources, and e-learning courses.",
     status: "ongoing",
     design: "Global platform",
     method: "Competency-based training & supervision",
-    /* WHO and UNICEF developed EQUIP; they did not fund it. The development
-       paper (Lancet Psychiatry 2025) credits USAID for the platform and the
-       implementation research, with an NIMH COVID-19 supplement. */
+    /* WHO and UNICEF developed EQUIP; they did not fund it. USAID funded
+       WHO and UNICEF, and NIMH funded Brandon Kohrt (R01MH120649) — the
+       wording the EQUIP team confirmed in the project summary doc. */
     funder: "USAID · National Institute of Mental Health",
     locations: ["Worldwide"],
     regions: ["Global"],
@@ -72,9 +72,12 @@ export const PROJECTS: Project[] = [
     tagline: "Community-Based Psychological Services in NYC",
     summary:
       "Evaluates the efficacy and implementation of Problem Management Plus — a task-sharing intervention for mild-to-moderate distress — as delivered by community workers in New York City community-based organizations.",
-    status: "active",
+    /* Completed 2026-02-09, per ClinicalTrials.gov NCT04913766. */
+    status: "closed",
     design: "R01 cluster-randomized trial",
     method: "Problem Management Plus",
+    /* From the Center's R01 summary and the published protocol. */
+    funder: "National Institute of Mental Health",
     locations: ["United States"],
     regions: ["North America"],
     buildsOn: "EQUIP",
@@ -83,18 +86,20 @@ export const PROJECTS: Project[] = [
   {
     slug: "unicef-mmapp",
     logo: "/projects/unicef-mmapp.png",
-    /* The live site says "UNICEF-MMAPP" / "Measuring Mental Health Among
-       Adolescents and Young People"; UNICEF and every publication call the
-       initiative MMAP, with the name below. The slug keeps the live URL. */
-    name: "UNICEF-MMAP",
-    tagline: "Measurement of Mental Health Among Adolescents at the Population Level",
+    /* The name the project team confirmed. The 2021–2024 papers call the
+       initiative MMAP, its earlier name. */
+    name: "UNICEF-MMAPP",
+    tagline:
+      "Measurement of Mental Health Among Adolescents and Young People at the Population Level",
     summary:
       "A multi-organization research project developing a transculturally adapted, validated measure of adolescent anxiety and depression for low- and middle-income country settings.",
     status: "ongoing",
     design: "Measurement validation",
-    /* UNICEF leads MMAP; the protocol credits a Gates Foundation
-       data-strengthening grant to UNICEF HQ (2017–2018). */
-    funder: "Bill & Melinda Gates Foundation",
+    /* The funders the project team listed: UNICEF, the Gates Foundation
+       (the protocol's data-strengthening grant to UNICEF HQ) and the
+       Governments of Italy and Kenya. */
+    funder:
+      "UNICEF · Bill & Melinda Gates Foundation · Government of Italy · Government of Kenya",
     /* The protocol's four initial validation sites. */
     locations: ["Belize", "Kenya", "Nepal", "South Africa"],
     regions: ["Global"],

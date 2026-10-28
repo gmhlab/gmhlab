@@ -44,6 +44,7 @@
 import type { ProjectDetail } from "@gmhlab/blocks";
 import {
   EQUIP_PROJECT_HERO_IMAGE,
+  RECOUP_NY_HERO_IMAGE,
   RESHAPE_HERO_IMAGE,
   UNICEF_MMAP_HERO_IMAGE,
 } from "./hero-images";
@@ -389,10 +390,14 @@ export const RESHAPE_DETAIL: ProjectDetail = {
 };
 
 /* -------------------------------------------------------------------------- */
-/* UNICEF-MMAP                                                                 */
+/* UNICEF-MMAPP                                                                */
 /* -------------------------------------------------------------------------- */
 
 /*
+ * The name is the one the project team confirmed (UNICEF-MMAPP, "…Adolescents
+ * and Young People…"). The 2021–2024 papers say MMAP, the initiative's name
+ * at the time; their titles are left as published.
+ *
  * A validation study, not a trial: no arms, no ranked endpoints. The protocol
  * does not rank its objectives, so none carries a `rank` — the page then says
  * nothing about powering. Its own nomenclature is nine numbered steps, so the
@@ -400,21 +405,25 @@ export const RESHAPE_DETAIL: ProjectDetail = {
  */
 export const UNICEF_MMAP_DETAIL: ProjectDetail = {
   slug: "unicef-mmapp",
-  name: "UNICEF-MMAP",
+  name: "UNICEF-MMAPP",
   expandedName:
-    "Measurement of Mental Health Among Adolescents at the Population Level",
+    "Measurement of Mental Health Among Adolescents and Young People at the Population Level",
   tagline:
     "Adapting and clinically validating brief measures of adolescent depression and anxiety, so countries can count what they cannot yet see",
   status: "ongoing",
   statusLabel: "Ongoing",
   heroImage: UNICEF_MMAP_HERO_IMAGE,
   lede:
-    "UNICEF-MMAP is a multicountry, mixed-methods study led by UNICEF. It culturally adapts brief, open-access measures of adolescent mental health, then tests them against clinicians' diagnostic interviews, so that national surveys can report how many adolescents live with depression and anxiety — comparably, across countries and over time.",
+    "UNICEF-MMAPP is a multicountry, mixed-methods study led by UNICEF. It culturally adapts brief, open-access measures of adolescent mental health, then tests them against clinicians' diagnostic interviews, so that national surveys can report how many adolescents live with depression and anxiety — comparably, across countries and over time. The result is UNICEF's open-access MMAPP toolkit.",
 
   facts: [
     { term: "Design", detail: "Multicountry mixed-methods validation study" },
     { term: "Led by", detail: "UNICEF Data and Analytics Section" },
-    { term: "Funder", detail: "Bill & Melinda Gates Foundation" },
+    {
+      term: "Funders",
+      detail:
+        "UNICEF, the Bill & Melinda Gates Foundation, and the Governments of Italy and Kenya",
+    },
     { term: "Initial sites", detail: "Belize, Kenya, Nepal, South Africa" },
     { term: "Ages", detail: "Adolescents aged 10–19" },
   ],
@@ -438,9 +447,9 @@ export const UNICEF_MMAP_DETAIL: ProjectDetail = {
   ],
 
   strategy: {
-    heading: "The MMAP method",
+    heading: "The MMAPP method",
     body: [
-      "MMAP is a replicable process rather than a single instrument: nine steps in two phases that any team can run to adapt and validate a measure in a new language and setting. Phase one establishes cultural equivalence through qualitative work; phase two tests the adapted tool against a gold-standard clinical interview.",
+      "MMAPP is a replicable process rather than a single instrument: nine steps in two phases that any team can run to adapt and validate a measure in a new language and setting. Phase one establishes cultural equivalence through qualitative work; phase two tests the adapted tool against a gold-standard clinical interview.",
       "Validated tools are then built into national and subnational surveys, so results can be reported by age, sex, socio-economic status and subnational area, and compared across countries.",
     ],
     elements: [
@@ -743,7 +752,14 @@ export const UNICEF_MMAP_DETAIL: ProjectDetail = {
       slug: "translation-cultural-adaptation-and-validation-of-patient-health-quest",
       note: "Nepal adaptation and validation",
     },
+    {
+      slug: "if-i-tell-you-my-problems-how-will-you-perceive-me-a-qualitative-study",
+      note: "Kenya adolescents' perspectives",
+    },
   ],
+  /* Every work here is co-authored by Liliana Carvajal-Vélez (UNICEF) and
+     Brandon Kohrt — the set the project team named as the source — and that
+     is all of their joint works in the bibliography. */
   publicationsNote:
     "The protocol, each site's adaptation and validation papers, and the lessons drawn across sites.",
 
@@ -759,9 +775,11 @@ export const UNICEF_MMAP_DETAIL: ProjectDetail = {
   ],
 
   resources: [
+    /* The project team's primary reference: the questionnaire, indicators
+       and guidance as UNICEF publishes them. */
     {
-      label: "MMAP at UNICEF Data",
-      href: "https://data.unicef.org/topic/child-health/mental-health/mmap/",
+      label: "The MMAPP toolkit at UNICEF Data",
+      href: "https://data.unicef.org/resources/mmapp/",
       kind: "site",
     },
   ],
@@ -806,20 +824,23 @@ export const EQUIP_PROJECT_DETAIL: ProjectDetail = {
     {
       term: "Funder",
       detail:
-        "USAID, with the National Institute of Mental Health (R01MH120649-02S1)",
+        "USAID, to WHO and UNICEF; and the US National Institute of Mental Health (NIMH), to Brandon Kohrt as principal investigator (R01MH120649)",
     },
     { term: "Design", detail: "Five-phase development programme with multi-site pilots" },
     { term: "Pilot sites", detail: "Ethiopia, Kenya, Lebanon, Peru, Uganda, Zambia" },
     { term: "Public launch", detail: "31 March 2022" },
   ],
 
-  /* Platform use from the Lancet Psychiatry development paper — results, not
-     targets, and dated so they are never read as current. */
+  /* Platform use since launch, cumulative, from the EQUIP team's usage
+     tracker ("Monthly data" tab) — the figures the team asked the site to
+     use. Dated so they are never read as live. The tracker carries no
+     country count; the published one (36, March 2024) is in the timeline.
+     The March 2024 rows of the tracker match the Lancet Psychiatry paper. */
   figures: [
-    { value: "36", label: "Countries", note: "Platform use, Mar 2022 – Mar 2024" },
-    { value: "794", label: "Training programmes", note: "Same period" },
-    { value: "3,760", label: "Trainees", note: "Same period" },
-    { value: "10,001", label: "Competency assessments", note: "Same period" },
+    { value: "7,122", label: "Platform registrations", note: "Mar 2022 – Oct 2026" },
+    { value: "2,518", label: "Trainings", note: "Same period" },
+    { value: "12,706", label: "Trainees assessed", note: "Same period" },
+    { value: "26,364", label: "Competency assessments", note: "Same period" },
   ],
 
   rationale: [
@@ -1215,11 +1236,346 @@ export const EQUIP_PROJECT_DETAIL: ProjectDetail = {
   relatedSlugs: ["equip-su", "recoup-ny", "restore", "reshape"],
 };
 
+/* -------------------------------------------------------------------------- */
+/* RECOUP-NY                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * Transcribed from the Center's R01 summary ("RECOUP-NY R01 (Final).docx",
+ * Drive `1PY6N4BANc4reOat5UAfpjTfOdDHphxqF`): the arms, the objectives and
+ * their instruments, the eligibility criteria and the assessment schedule.
+ *
+ * The enrollment figures are **not** the summary's. It gives 30 CBO sites and
+ * 50 clients per site; the published protocol (Kohrt et al., Psychiatric
+ * Research and Clinical Practice, 2025) gives 42 sites randomized 1:1, about
+ * 1,000 clients and about 45 staff, so the page uses the published design.
+ * The grant number, the primary-outcome timepoint and the 2022 access figure
+ * in the rationale are from the protocol too.
+ *
+ * Status, actual enrollment, collaborators and the principal investigator are
+ * from the ClinicalTrials.gov record (NCT04913766, last updated 2026-05-28):
+ * completed 2026-02-09 with 1,206 participants enrolled.
+ *
+ * Each track's weeks count from that person's own enrollment, so the two
+ * clocks are not one calendar; the timeline note says so.
+ */
+export const RECOUP_NY_DETAIL: ProjectDetail = {
+  slug: "recoup-ny",
+  name: "RECOUP-NY",
+  expandedName:
+    "Restoring Mental Health after COVID-19 Through Community-Based Psychological Services in New York City",
+  tagline:
+    "Training staff at New York City community organizations to deliver WHO's Problem Management Plus, and testing whether it reduces their clients' distress",
+  status: "closed",
+  statusLabel: "Completed",
+  heroImage: RECOUP_NY_HERO_IMAGE,
+  lede:
+    "RECOUP-NY is a hybrid effectiveness-implementation, cluster-randomized controlled trial in New York City, completed in February 2026. Staff at community-based organizations who are not mental health clinicians are trained to deliver Problem Management Plus, the World Health Organization's brief psychological intervention, and the trial compares their clients' outcomes with standard care — for effectiveness, for cost, and for what it takes to run in a community setting.",
+
+  facts: [
+    {
+      term: "Design",
+      detail: "Hybrid effectiveness-implementation cluster-randomized trial",
+    },
+    {
+      term: "Funder",
+      detail: "National Institute of Mental Health (R01 MH127767)",
+    },
+    { term: "Location", detail: "New York City" },
+    { term: "Intervention", detail: "Problem Management Plus (WHO)" },
+    { term: "Registration", detail: "ClinicalTrials.gov NCT04913766" },
+    { term: "Data collection", detail: "October 2022 – February 2026" },
+  ],
+
+  /* Enrollment is the registry's actual count; the site and staff numbers
+     are the protocol's design, labeled as such. */
+  figures: [
+    { value: "1,206", label: "Participants", note: "Enrolled" },
+    {
+      value: "42",
+      label: "Community organizations",
+      note: "Randomized 1:1, per protocol",
+    },
+    { value: "~45", label: "Staff trained in PM+", note: "Protocol target" },
+    { value: "20", label: "Weeks", note: "Primary outcome timepoint" },
+  ],
+
+  rationale: [
+    "COVID-19 hit New York City's health disparity populations hardest. In a 2020 poll of the pandemic's mental health impact, Latinx and Asian American New Yorkers reported reduced work hours, job loss, financial stress or job-related anxiety at rates about 15–20% higher than White Americans — and greater exposure to stressors like these raises the risk of depression.",
+    "Care has not kept up: in 2022, half a million New Yorkers reported being unable to access mental health services. Community-initiated care is one answer. Staff at the community organizations people already use identify clients in distress and deliver a brief psychological intervention themselves, which lowers the barriers of cost, access and stigma that keep people from a clinic.",
+  ],
+
+  arms: [
+    {
+      name: "Standard care",
+      body: "The community organization's care as usual.",
+    },
+    {
+      name: "Problem Management Plus",
+      abbr: "PM+",
+      body: "Non-clinical staff at the organization, trained and supervised, deliver PM+ to clients experiencing distress.",
+      isIntervention: true,
+    },
+  ],
+
+  strategy: {
+    heading: "What Problem Management Plus is",
+    body: [
+      "Problem Management Plus (PM+) is a five-week, manualized intervention for mild-to-moderate distress, designed by the World Health Organization. It is built on the principles of cognitive behavioural therapy and has been used successfully around the world for rapid deployment by people who are not licensed clinicians.",
+      "RECOUP-NY tests it in a new setting: delivered by the staff and volunteers of New York City community-based organizations, to the clients those organizations already serve.",
+    ],
+    elements: [
+      {
+        term: "Non-specialist helpers",
+        body: "PM+ helpers are volunteers or employees of an enrolled organization. Anyone holding a clinical degree or licence — MD, PsyD, MSW, LCSW or LMSW — is excluded, because the point is to grow the non-clinical workforce.",
+      },
+      {
+        term: "Trained, then supervised",
+        body: "Twelve weeks of training are followed by twelve weeks of closely supervised delivery, then continued delivery to a year.",
+      },
+      {
+        term: "Competency, not attendance",
+        body: "Helpers' skills are assessed with ENACT, the foundational-helping-skills tool from EQUIP, before training and at each stage after it.",
+      },
+    ],
+  },
+
+  objectives: [
+    {
+      rank: "primary",
+      title: "Competency of PM+ helpers",
+      measures: [
+        {
+          abbr: "ENACT",
+          name: "Enhancing Assessment of Common Therapeutic Factors",
+        },
+        { abbr: "CASES-G", name: "Counselor Activity Self-Efficacy Scale" },
+        { abbr: "RTC", name: "Reducing Tension Checklist" },
+        { abbr: "CHS", name: "Cultural Humility Scale" },
+      ],
+    },
+    {
+      rank: "primary",
+      title: "Clinical effectiveness of PM+ for participants",
+      measures: [
+        {
+          abbr: "PSYCHLOPS",
+          name: "Psychological Outcome Profiles",
+          detail:
+            "The primary outcome measure: a personalized measure of psychological distress, assessed 20 weeks after baseline.",
+        },
+        { abbr: "PHQ-9", name: "Patient Health Questionnaire-9" },
+        { abbr: "GAD-7", name: "Generalized Anxiety Disorder-7" },
+        { abbr: "PCL-5", name: "PTSD Checklist for DSM-5" },
+        { abbr: "EQ-5D-5L", name: "EuroQol five-dimension scale" },
+        { abbr: "RTC", name: "Reducing Tension Checklist" },
+        { abbr: "IUS", name: "Intolerance of Uncertainty Scale" },
+      ],
+    },
+    {
+      rank: "secondary",
+      title: "Cost effectiveness of PM+",
+      measures: [
+        { abbr: "EQ-5D-5L", name: "EuroQol five-dimension scale" },
+        { abbr: "CSRI", name: "Client Service Receipt Inventory" },
+      ],
+    },
+    {
+      rank: "secondary",
+      title: "Implementation of PM+ in community-based organizations",
+      measures: [
+        { name: "Qualitative interviews" },
+        {
+          abbr: "Be-FITS-MH",
+          name: "Barriers and Facilitators in Implementation of Task-Sharing in Mental Health",
+        },
+      ],
+    },
+  ],
+
+  hypotheses: [
+    "PM+ delivered by non-specialists significantly reduces distress — problem severity and symptoms of depression, anxiety and PTSD — compared with standard care, through psychosocial behavioural change.",
+  ],
+
+  tracks: [
+    {
+      id: "helper",
+      label: "PM+ helpers",
+      population:
+        "Non-clinical staff and volunteers at organizations in the PM+ arm",
+    },
+    {
+      id: "participant",
+      label: "Participants",
+      population: "Adult clients of the enrolled community organizations",
+    },
+  ],
+
+  timelineNote:
+    "Each track's weeks count from that person's own enrollment. Every participant assessment covers symptom severity (PHQ-9, GAD-7, PCL-5), further clinical effectiveness outcomes (such as the EQ-5D-5L) and cost-effectiveness outcomes.",
+  timeline: [
+    {
+      kind: "point",
+      track: "helper",
+      code: "T0",
+      when: "Week 1",
+      title: "Screening, enrollment and pre-training assessment",
+    },
+    {
+      kind: "point",
+      track: "participant",
+      code: "T0",
+      when: "Week 1",
+      title: "Screening, enrollment and baseline assessment",
+    },
+    {
+      kind: "phase",
+      track: "participant",
+      when: "Weeks 1–10",
+      title: "Standard care or PM+",
+      detail:
+        "The randomized contrast: organizations are assigned to one arm or the other.",
+    },
+    {
+      kind: "point",
+      track: "participant",
+      code: "T1",
+      when: "Week 10",
+      title: "Post-assessment",
+    },
+    {
+      kind: "phase",
+      track: "helper",
+      when: "Weeks 1–12",
+      title: "PM+ training",
+    },
+    {
+      kind: "point",
+      track: "helper",
+      code: "T1",
+      when: "Week 12",
+      title: "Post-training assessment",
+    },
+    {
+      kind: "point",
+      track: "participant",
+      code: "T2",
+      when: "Week 20",
+      title: "Post-assessment",
+      detail: "The primary outcome timepoint.",
+    },
+    {
+      kind: "phase",
+      track: "helper",
+      when: "Weeks 12–24",
+      title: "Closely supervised PM+ delivery",
+    },
+    {
+      kind: "point",
+      track: "helper",
+      code: "T2",
+      when: "Week 24",
+      title: "Post-training assessment",
+    },
+    {
+      kind: "phase",
+      track: "helper",
+      when: "Weeks 24–52",
+      title: "Continued PM+ delivery",
+    },
+    {
+      kind: "point",
+      track: "helper",
+      code: "T3",
+      when: "Week 52",
+      title: "Post-training assessment and qualitative interviews",
+    },
+    {
+      kind: "point",
+      track: "participant",
+      code: "T3",
+      when: "Week 52",
+      title: "Qualitative interviews",
+    },
+  ],
+
+  eligibilityNote: "Every criterion marked self-report is as the person reports it.",
+  eligibility: [
+    {
+      group: "PM+ helpers — inclusion",
+      criteria: [
+        "Aged 18 or older",
+        "Documented volunteer, part-time or full-time work with an enrolled community-based organization",
+      ],
+    },
+    {
+      group: "PM+ helpers — exclusion",
+      criteria: [
+        "Holds an MD, PsyD, MSW, LCSW or LMSW",
+        "Emergency room admission or hospitalization for an alcohol- or drug-related concern in the past 60 days (self-report)",
+        "Emergency room admission or hospitalization for active suicidal ideation or a suicide attempt in the past 60 days (self-report)",
+        "Active suicidal ideation in the past 14 days (self-report)",
+      ],
+    },
+    {
+      group: "Participants — inclusion",
+      criteria: [
+        "Aged 18 or older",
+        "PHQ-4 score of 3 or more (self-report)",
+        "Global Assessment of Functioning score below 90 (self-report)",
+      ],
+    },
+    {
+      group: "Participants — exclusion",
+      criteria: [
+        "A current diagnosis of Alzheimer's disease, significant cognitive impairment, or a hearing or speech impairment (self-report)",
+        "Emergency room admission or hospitalization for an alcohol- or drug-related concern in the past 60 days (self-report)",
+        "Active suicidal ideation in the past 14 days (self-report)",
+      ],
+    },
+  ],
+
+  publications: [
+    {
+      slug: "expanding-the-non-clinical-mental-health-workforce-protocol-for-a-rand",
+      note: "Trial protocol",
+    },
+    {
+      slug: "remote-delivered-psychosocial-support-to-improve-the-wellbeing-and-fun",
+      note: "Remote PM+ in New York City",
+    },
+  ],
+  publicationsNote:
+    "The trial protocol, and the team's earlier work delivering PM+ remotely in New York City.",
+
+  /* The registry's collaborators. */
+  partners: ["The New School", "Duke University", "Human Sciences Research Council"],
+
+  resources: [
+    {
+      label: "Trial registration (NCT04913766)",
+      href: "https://clinicaltrials.gov/study/NCT04913766",
+      kind: "site",
+    },
+  ],
+
+  contact: {
+    name: "Brandon Kohrt, MD, PhD",
+    role: "Principal investigator",
+    email: "bkohrt@gwu.edu",
+  },
+
+  /* PM+ in Nepal, EQUIP for helper competency, and the portfolio's other
+     WHO psychological intervention. */
+  relatedSlugs: ["standstrong", "equip", "restore"],
+};
+
 /** Every project with a detail record, keyed by slug. */
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
   [RESHAPE_DETAIL.slug]: RESHAPE_DETAIL,
   [UNICEF_MMAP_DETAIL.slug]: UNICEF_MMAP_DETAIL,
   [EQUIP_PROJECT_DETAIL.slug]: EQUIP_PROJECT_DETAIL,
+  [RECOUP_NY_DETAIL.slug]: RECOUP_NY_DETAIL,
 };
 
 /**

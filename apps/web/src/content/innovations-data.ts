@@ -21,7 +21,7 @@ export const INNOVATIONS: Innovation[] = [
     statusTone: "info",
     heading: "EQUIP Platform",
     body: "Competency-based training and supervision system for non-specialist mental health providers. Standardizes quality assessment across diverse healthcare settings.",
-    reach: "25+ countries",
+    reach: "36+ countries",
     publications: "12 publications",
   },
   {

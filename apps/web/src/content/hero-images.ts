@@ -48,5 +48,7 @@ export const RESHAPE_HERO_IMAGE =
 export const EQUIP_HERO_IMAGE = "https://picsum.photos/seed/gw-equip/1920/1080";
 export const EQUIP_PROJECT_HERO_IMAGE =
   "https://picsum.photos/seed/gw-equip-research/1920/1080";
+export const RECOUP_NY_HERO_IMAGE =
+  "https://picsum.photos/seed/gw-recoup-ny/1920/1080";
 export const UNICEF_MMAP_HERO_IMAGE =
   "https://picsum.photos/seed/gw-unicef-mmap/1920/1080";

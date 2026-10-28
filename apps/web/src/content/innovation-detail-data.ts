@@ -7,7 +7,8 @@
  * ## Provenance
  *
  * The EQUIP record is transcribed from the Center's EQUIP platform page (the
- * `gw-innovation-detail-wireframe.html` mock rebuilt in this repo). Stats,
+ * `gw-innovation-detail-wireframe.html` mock rebuilt in this repo). The stats
+ * are the EQUIP team's usage tracker (see the comment on `stats`); the
  * process stages, components and deployment sites come from that source.
  *
  * The publication list is the one thing that is **not** transcribed. It holds
@@ -30,7 +31,7 @@ import { EQUIP_HERO_IMAGE } from "./hero-images";
 export const EQUIP_DETAIL: InnovationDetail = {
   slug: "equip",
   name: "EQUIP Platform",
-  expandedName: "Ensuring Quality in Psychological Support",
+  expandedName: "Ensuring Quality in Psychosocial and Mental Health Care",
   logo: "/projects/equip.png",
   badges: [
     { label: "WHO/UNICEF Partnership", tone: "info" },
@@ -44,14 +45,15 @@ export const EQUIP_DETAIL: InnovationDetail = {
     { label: "Download Toolkit", href: "#", variant: "outline" },
   ],
   glyph: "competency",
-  /* Platform use from the Lancet Psychiatry development paper (March 2022 –
-     March 2024). The wireframe's "25+ countries / 5K+ providers / 12
-     publications" were placeholders, and contradicted the published figures
-     shown on the EQUIP project page. */
+  /* Cumulative platform use, March 2022 – October 2026, from the EQUIP
+     team's usage tracker — the same figures as the EQUIP project page. The
+     tracker has no country count, so the published 36 (March 2024) stays in
+     the deployments note rather than beside newer numbers. The wireframe's
+     "25+ countries / 5K+ providers / 12 publications" were placeholders. */
   stats: [
-    { value: "36", label: "Countries" },
-    { value: "3,760", label: "Trainees" },
-    { value: "10,001", label: "Competency assessments" },
+    { value: "2,518", label: "Trainings" },
+    { value: "12,706", label: "Trainees assessed" },
+    { value: "26,364", label: "Competency assessments" },
   ],
 
   processNote:
