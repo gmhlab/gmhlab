@@ -10,13 +10,22 @@ import {
   type SocialLink,
 } from "@gmhlab/ui";
 
+/**
+ * Fixed so the inbox can tell (and filter) mail started from the footer
+ * envelope apart from the contact page's, whose subject is the chosen route.
+ */
+const FOOTER_EMAIL_SUBJECT = "Message via the Center website";
+
 const SOCIAL_LINKS: SocialLink[] = [
   {
     network: "linkedin",
     href: "https://www.linkedin.com/company/gwglobalmentalhealth",
   },
   { network: "github", href: "https://github.com/gmhlab" },
-  { network: "email", href: `mailto:${GMH_CONTACT_EMAIL}` },
+  {
+    network: "email",
+    href: `mailto:${GMH_CONTACT_EMAIL}?subject=${encodeURIComponent(FOOTER_EMAIL_SUBJECT)}`,
+  },
 ];
 
 /**
