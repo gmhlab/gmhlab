@@ -13,7 +13,8 @@
  *   - **Address.** 2120 L St NW, 6th Floor, Washington, DC 20037 — the live
  *     contact page's "Where we're located".
  *   - **Email.** Not set here: the page uses `GMH_CONTACT_EMAIL`
- *     (info@gwglobalmentalhealth.com), the address on every live page. The
+ *     (globalmh@gwu.edu, the Center's new official address as of 2026-10-28;
+ *     every live page still shows info@gwglobalmentalhealth.com). The
  *     live envelope link pre-filled the subject "Stronger Together:
  *     Advocating for Mental Health Worldwide" — a campaign title that made
  *     every email look like a reply to it. The page now sets the subject

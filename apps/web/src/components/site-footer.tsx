@@ -1,5 +1,6 @@
 "use client";
 
+import { GMH_CONTACT_EMAIL } from "@gmhlab/blocks";
 import { useNewsletter } from "@gmhlab/data";
 import {
   Footer,
@@ -15,7 +16,7 @@ const SOCIAL_LINKS: SocialLink[] = [
     href: "https://www.linkedin.com/company/gwglobalmentalhealth",
   },
   { network: "github", href: "https://github.com/gmhlab" },
-  { network: "email", href: "mailto:globalmh@gwu.edu" },
+  { network: "email", href: `mailto:${GMH_CONTACT_EMAIL}` },
 ];
 
 /**

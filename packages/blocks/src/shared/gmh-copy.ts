@@ -19,7 +19,7 @@ import type { PageCta } from "./page-copy";
  * promise only an inbox's owner can make (the contact page's `replyTime`).
  */
 
-export const GMH_CONTACT_EMAIL = "info@gwglobalmentalhealth.com";
+export const GMH_CONTACT_EMAIL = "globalmh@gwu.edu";
 
 const emailTheCenter = {
   label: "Email the Center",
