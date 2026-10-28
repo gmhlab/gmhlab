@@ -465,8 +465,10 @@ pages. Its copy default is `GMH_CONTACT_COPY.careNotice`.
   (`error@example.com` demos the failure state).
 - **`replyTime` has no default** — a promise only the inbox owner can make.
   `apps/web/src/content/contact-data.ts`'s header lists what is still
-  unconfirmed: the reply time, the Center's exact name, and the affiliation
-  (the address block says SMHS, while the utility bar and footer say Milken).
+  unconfirmed: the reply time and the Center's exact name. The affiliation is
+  settled: the GW **School of Medicine and Health Sciences** (Psychiatry and
+  Behavioral Sciences), **not** the Milken Institute School of Public Health —
+  the address block, utility bar and footer all say SMHS.
 
 ### The team page (`team/`)
 

@@ -68,10 +68,10 @@ export function SiteHeader() {
 export function SiteUtilityBar() {
   return (
     <UtilityBar
-      start="The George Washington University · Milken Institute School of Public Health"
+      start="The George Washington University · School of Medicine and Health Sciences"
       end={
         <>
-          <a href="https://publichealth.gwu.edu/">Milken Institute SPH</a>
+          <a href="https://smhs.gwu.edu/">GW SMHS</a>
           {" · "}
           <a href="https://www.gwu.edu/">GW</a>
         </>

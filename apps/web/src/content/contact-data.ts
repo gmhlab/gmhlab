@@ -12,6 +12,10 @@
  *     that the About page does not list, except where noted below.
  *   - **Address.** 2120 L St NW, 6th Floor, Washington, DC 20037 — the live
  *     contact page's "Where we're located".
+ *   - **Affiliation.** The GW School of Medicine and Health Sciences
+ *     (Department of Psychiatry and Behavioral Sciences) — confirmed
+ *     2026-10-28; it is *not* the Milken Institute School of Public Health.
+ *     The utility bar and footer say the same.
  *   - **Email.** Not set here: the page uses `GMH_CONTACT_EMAIL`
  *     (globalmh@gwu.edu, the Center's new official address as of 2026-10-28;
  *     every live page still shows info@gwglobalmentalhealth.com). The
@@ -22,14 +26,6 @@
  *
  * Open questions for the Center — each one is a guess until confirmed:
  *
- *   - **Affiliation.** The old site's metadata names the GW School of
- *     Medicine and Health Sciences; this app's utility bar and footer name
- *     the Milken Institute School of Public Health. `CENTER_LOCATION` follows
- *     the evidence for SMHS: the core faculty hold Psychiatry and Behavioral
- *     Sciences appointments (Kohrt, Rai, Experton in `team-data.ts`), 2120
- *     L St NW is that department's building, and the repo's README credits
- *     SMHS. Kohrt also holds a Global Health appointment, which is Milken's.
- *     Once confirmed, make the utility bar and footer say the same thing.
  *   - **The Center's name.** Kohrt's bio and the About page say "Center for
  *     Global Mental Health *Equity*"; the crest, the footer © line and the
  *     site title drop "Equity". The address block uses the crest's name.

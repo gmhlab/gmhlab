@@ -53,7 +53,7 @@ const COLUMNS: FooterColumn[] = [
   {
     title: "The University",
     links: [
-      { label: "Milken Institute SPH", href: "https://publichealth.gwu.edu/" },
+      { label: "School of Medicine and Health Sciences", href: "https://smhs.gwu.edu/" },
       { label: "George Washington University", href: "https://www.gwu.edu/" },
     ],
   },
