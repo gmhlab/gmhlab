@@ -551,11 +551,14 @@ fail silently:
 
 **`cover` is derived, not stored**: `PUBLICATIONS` is the literal `RECORDS`
 mapped through `journalCover()` (`content/publication-covers.ts`), which matches
-on `journal` — exact titles plus the BMC, Lancet, Frontiers and Cambridge Prisms
-families, following the live site's own reuse of those marks. The 13 images are
-the live /publications page's uploads (originals and crop notes in
-`apps/web/assets/gw-site/publications/`). `PublicationCover` (exported from
-blocks) renders the cover or, with none, the theme glyph on a flat tile; callers
+on `journal` — exact titles plus the BMC, Lancet, Frontiers, Cambridge Prisms
+and JAMA families, following the live site's own reuse of those marks. 13 images
+are the live /publications page's uploads (originals and crop notes in
+`apps/web/assets/gw-site/publications/`); 27 more (2026-10-28) cover every other
+venue with 2+ works, from publisher cover CDNs and PMC mastheads (sources, edits
+and the four venues still missing in `apps/web/assets/publication-covers/`).
+**Look for a real cover before leaving a venue on the book glyph.** `PublicationCover` (exported from
+blocks) renders the cover or, with none, the kit's `publication` (book) glyph on a flat tile — one stand-in for every record, not the theme glyph, which the row already shows; callers
 size it with `--publication-cover-size`. A new journal image means a file in
 `public/publications/` plus a mapping line, never a field on the records.
 
@@ -635,7 +638,7 @@ It **defaults `href="/"`**, so a logo in site chrome navigates home without the 
 
 ## The graphics kit (`@gmhlab/ui` `src/graphics/`, 2026-10-19)
 
-Ported from the designer's "GMH Graphics Kit — v1" (the bundled HTML lives in `.files/gmh-graphics-kit-v1.html`, gitignored). Components: `ContourGlobe` (hero backdrop; `centerpiece` = `"globe"`, `"mark"` — the GMH mark in a clearing — or `"none"`; the mark's paths are shared with `GmhLogo` via `logo/gmh-mark-art.tsx`), `CareRings` (reach motif), `ResearchGlyph` (`RESEARCH_GLYPHS`: the kit's eight plus `maternal` and `sensing`, drawn to the same 48-grid/1.75-stroke/one-gold-accent rules), `BrandShape` (`BRAND_SHAPES`: eight duotone spot shapes), `WaveDivider`, `FigureBand`, `PathwayRule`, and `PhotoBackdrop` (a hero photo in the navy/gold duotone under a wash of the band's own surface — reading strength on the left, open on the right, faded at the bottom; it fades in on load so the gold ground never flashes). All `aria-hidden` unless given `label`.
+Ported from the designer's "GMH Graphics Kit — v1" (the bundled HTML lives in `.files/gmh-graphics-kit-v1.html`, gitignored). Components: `ContourGlobe` (hero backdrop; `centerpiece` = `"globe"`, `"mark"` — the GMH mark in a clearing — or `"none"`; the mark's paths are shared with `GmhLogo` via `logo/gmh-mark-art.tsx`), `CareRings` (reach motif), `ResearchGlyph` (`RESEARCH_GLYPHS`: the kit's eight plus `maternal`, `sensing` and `publication` (the book standing in for a missing journal cover), drawn to the same 48-grid/1.75-stroke/one-gold-accent rules), `BrandShape` (`BRAND_SHAPES`: eight duotone spot shapes), `WaveDivider`, `FigureBand`, `PathwayRule`, and `PhotoBackdrop` (a hero photo in the navy/gold duotone under a wash of the band's own surface — reading strength on the left, open on the right, faded at the bottom; it fades in on load so the gold ground never flashes). All `aria-hidden` unless given `label`.
 
 - **Colour is four roles, never literals** (`graphics.css`): `--graphic-ink` (navy; pale after `.dark` and in brand bands/brand cards; paper again in a light card inside a brand band), `--graphic-gold`, `--graphic-ground` (knock-outs), plus derived tints. The roles are set *on* `.graphic`, so overrides must target `.parent .graphic`, not the parent. In a filled button set `--graphic-ink: currentColor` (publications facet chips do).
 - **Gradient/clip/pattern ids go through `useSvgId`** (sanitised `useId`) — two graphics sharing an id paint the first one's definition.

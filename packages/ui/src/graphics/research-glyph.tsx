@@ -8,7 +8,8 @@ import "./graphics.css";
  * caps and joins, ink line work with one gold accent per glyph. `maternal` and
  * `sensing` are additions drawn to the same rules — the kit's eight have no
  * glyph for perinatal work or for passive-sensing technology, both of which
- * the Center's records need.
+ * the Center's records need. `publication` (an open book) is the stand-in for
+ * a publication with no journal cover.
  *
  * Inside a glyph, `ink` and `gold` stand for the two graphic roles.
  */
@@ -111,6 +112,15 @@ const GLYPHS = {
       <path d="M32 18 A8 8 0 0 1 32 30" stroke={gold} />
       <path d="M36 13 A15 15 0 0 1 36 35" stroke={gold} />
       <circle cx="18" cy="21" r="2.5" fill={gold} stroke={gold} />
+    </>
+  ),
+  /* An open book, its bookmark in gold. */
+  publication: (
+    <>
+      <path d="M24 14 C19 10 12 10 6 12 V37 C12 35 19 35 24 38" />
+      <path d="M24 14 C29 10 36 10 42 12 V37 C36 35 29 35 24 38" />
+      <line x1="24" y1="14" x2="24" y2="38" />
+      <path d="M31 11.2 V22 L33.5 19.5 L36 22 V10.9" stroke={gold} />
     </>
   ),
 } satisfies Record<string, ReactNode>;

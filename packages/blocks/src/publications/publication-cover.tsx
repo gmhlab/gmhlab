@@ -1,15 +1,14 @@
 import clsx from "clsx";
 import { ResearchGlyph } from "@gmhlab/ui";
-import {
-  PUBLICATION_THEME_GLYPHS,
-  type Publication,
-} from "./publications-types";
+import type { Publication } from "./publications-types";
 import "./publication-cover.css";
 
 /**
  * A publication's picture: its venue's cover or masthead when the record has
- * a `cover`, otherwise the theme's graphics-kit glyph on a tile of the same
- * size, so a list of mixed records keeps one even column.
+ * a `cover`, otherwise the graphics kit's book glyph on a tile of the same
+ * size, so a list of mixed records keeps one even column. One stand-in for
+ * every record, not the theme's glyph: the row already shows the theme, and a
+ * column of six different glyphs reads as noise.
  *
  * Decorative (`aria-hidden`, empty `alt`): every place that renders one also
  * names the journal in text, and "Journal logo" read aloud 343 times is noise.
@@ -43,7 +42,7 @@ export function PublicationCover({
           decoding="async"
         />
       ) : (
-        <ResearchGlyph name={PUBLICATION_THEME_GLYPHS[publication.theme]} />
+        <ResearchGlyph name="publication" />
       )}
     </span>
   );

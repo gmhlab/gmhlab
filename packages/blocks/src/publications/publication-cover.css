@@ -1,4 +1,4 @@
-/* PublicationCover — the journal's cover tile, or the theme glyph standing in
+/* PublicationCover — the journal's cover tile, or the book glyph standing in
  * for one. Shared by the publications index and the project and innovation
  * detail pages; each sets `--publication-cover-size` under its own class.
  *
@@ -41,7 +41,7 @@
   width: 100%;
 }
 
-/* No cover: the theme glyph on a neutral tile, flat — a stand-in should not
+/* No cover: the book glyph on a neutral tile, flat — a stand-in should not
  * look like a printed object. */
 .publication-cover-fallback {
   background: var(--gmh-color-surface-container-low);
