@@ -44,10 +44,14 @@ export const EQUIP_DETAIL: InnovationDetail = {
     { label: "Download Toolkit", href: "#", variant: "outline" },
   ],
   glyph: "competency",
+  /* Platform use from the Lancet Psychiatry development paper (March 2022 –
+     March 2024). The wireframe's "25+ countries / 5K+ providers / 12
+     publications" were placeholders, and contradicted the published figures
+     shown on the EQUIP project page. */
   stats: [
-    { value: "25+", label: "Countries" },
-    { value: "5K+", label: "Providers" },
-    { value: "12", label: "Publications" },
+    { value: "36", label: "Countries" },
+    { value: "3,760", label: "Trainees" },
+    { value: "10,001", label: "Competency assessments" },
   ],
 
   processNote:
@@ -108,7 +112,7 @@ export const EQUIP_DETAIL: InnovationDetail = {
   ],
 
   sitesNote:
-    "EQUIP has been implemented across 25+ countries in partnership with local organizations",
+    "EQUIP's digital platform was used in 36 countries in its first two years, in partnership with local organizations",
   mapCaption: "[ Interactive Map Showing Implementation Sites ]",
   sitesListHeading: "Active Implementation Sites",
   sites: [
@@ -139,6 +143,11 @@ export const EQUIP_DETAIL: InnovationDetail = {
 
   relatedNote: "Research initiatives that use or build upon the EQUIP platform",
   related: [
+    {
+      heading: "The EQUIP research programme",
+      body: "How the tools were developed, adapted with partners in seven countries, piloted in six and compared with standard training.",
+      href: "/projects/equip",
+    },
     {
       heading: "EQUIP-SU",
       body: "Extends EQUIP to include service users (people with lived experience) in competency assessment and training.",

@@ -21,6 +21,8 @@ import {
   resolveRelatedProjects,
   type Objective,
   type ProjectDetail,
+  type ProjectFinding,
+  type ResolvedProjectPublication,
   type TimelineEntry,
 } from "./project-detail-types";
 import type { Project } from "./projects-types";
@@ -245,7 +247,7 @@ function Strategy({ detail }: { detail: ProjectDetail }) {
         {arms?.length ? (
           <div className="pd-arms">
             <TextSmall className="pd-arms-label">
-              What the trial compares
+              {detail.armsLabel ?? "What the trial compares"}
             </TextSmall>
             {/* alignSecondary="stretch": Flex maps it straight onto
                 align-items and defaults to `start`, so the two arm cards
@@ -307,14 +309,16 @@ function ObjectiveRow({
           {index + 1}
         </span>
         <div className="pd-objective-heading">
-          <span
-            className={cx(
-              "pd-objective-rank",
-              `pd-objective-rank-${objective.rank}`,
-            )}
-          >
-            {objective.rank}
-          </span>
+          {objective.rank ? (
+            <span
+              className={cx(
+                "pd-objective-rank",
+                `pd-objective-rank-${objective.rank}`,
+              )}
+            >
+              {objective.rank}
+            </span>
+          ) : null}
           <TextHeading>{objective.title}</TextHeading>
         </div>
       </div>
@@ -342,19 +346,32 @@ function ObjectiveRow({
   );
 }
 
+/* The ranked default only claims the ranks are the protocol's when some
+   objective actually carries one; an unranked record gets the plain line. */
+const OBJECTIVES_NOTE_RANKED =
+  "What the trial set out to establish, and the instrument used for each. Primary and secondary are the protocol's own designations — they govern how the trial is powered.";
+const OBJECTIVES_NOTE_UNRANKED =
+  "What the project set out to establish, and the instruments used for each.";
+
 function Objectives({
   objectives,
   hypotheses,
+  note,
 }: {
   objectives: Objective[];
   hypotheses?: string[];
+  note?: string;
 }) {
+  const ranked = objectives.some((objective) => objective.rank);
   return (
     <Section padding="1600">
       <Flex container direction="column" alignSecondary="stretch" gap="800">
         <TextContentHeading
           heading="Objectives and measures"
-          subheading="What the trial set out to establish, and the instrument used for each. Primary and secondary are the protocol's own designations — they govern how the trial is powered."
+          subheading={
+            note ??
+            (ranked ? OBJECTIVES_NOTE_RANKED : OBJECTIVES_NOTE_UNRANKED)
+          }
         />
         <ol className="pd-objectives">
           {objectives.map((objective, index) => (
@@ -386,26 +403,41 @@ function Objectives({
 
 /* -- Timeline ------------------------------------------------------------- */
 
+/**
+ * A track's side of the spine, from its order in `tracks`: 1 is left, 2 is
+ * right. Keyed on position, never on the record's ids, so the stylesheet names
+ * no project's populations. Tracks past the second alternate sides.
+ */
+function trackPosition(tracks: ProjectDetail["tracks"], id: string): 1 | 2 {
+  const index = (tracks ?? []).findIndex((track) => track.id === id);
+  return index > 0 && index % 2 === 1 ? 2 : 1;
+}
+
 function TimelineRow({
   entry,
   trackLabel,
+  position,
 }: {
   entry: TimelineEntry;
   trackLabel: string;
+  position: 1 | 2;
 }) {
   return (
     <li
       className={cx(
         "pd-tl-entry",
-        `pd-tl-${entry.track}`,
+        `pd-tl-track-${position}`,
         `pd-tl-kind-${entry.kind}`,
       )}
     >
       <div className="pd-tl-marker" aria-hidden="true">
-        {entry.kind === "point" && entry.code ? (
+        {entry.kind === "phase" ? (
+          <span className="pd-tl-phase-dash" />
+        ) : entry.code ? (
           <span className="pd-tl-code">{entry.code}</span>
         ) : (
-          <span className="pd-tl-phase-dash" />
+          /* A dated milestone with no protocol code: a node, not a tick. */
+          <span className="pd-tl-dot" />
         )}
       </div>
       <div className="pd-tl-body">
@@ -434,19 +466,30 @@ function Timeline({ detail }: { detail: ProjectDetail }) {
   const timeline = detail.timeline ?? [];
   const labelFor = (id: string) =>
     tracks.find((track) => track.id === id)?.label ?? id;
+  /* One rail, not a spine with an empty side, when the schedule follows a
+     single population (or names no tracks at all). */
+  const single = tracks.length < 2;
 
   return (
     <Section variant="neutral" padding="1600">
       <Flex container direction="column" alignSecondary="stretch" gap="800">
         <TextContentHeading
-          heading="Assessment schedule"
-          subheading="Both populations run on their own clock, ordered here on one shared timeline. Lettered points are assessments; the bands between them are periods of activity where nothing is measured."
+          heading={detail.timelineHeading ?? "Assessment schedule"}
+          subheading={
+            detail.timelineNote ??
+            (single
+              ? "Lettered points are assessments; the bands between them are periods of activity where nothing is measured."
+              : "Both populations run on their own clock, ordered here on one shared timeline. Lettered points are assessments; the bands between them are periods of activity where nothing is measured.")
+          }
         />
         {tracks.length ? (
           <ul className="pd-tl-legend">
             {tracks.map((track) => (
               <li
-                className={cx("pd-tl-legend-item", `pd-tl-legend-${track.id}`)}
+                className={cx(
+                  "pd-tl-legend-item",
+                  `pd-tl-track-${trackPosition(tracks, track.id)}`,
+                )}
                 key={track.id}
               >
                 <span className="pd-tl-legend-swatch" aria-hidden="true" />
@@ -458,11 +501,12 @@ function Timeline({ detail }: { detail: ProjectDetail }) {
             ))}
           </ul>
         ) : null}
-        <ol className="pd-tl">
+        <ol className={cx("pd-tl", single && "pd-tl-single")}>
           {timeline.map((entry) => (
             <TimelineRow
               entry={entry}
               key={`${entry.track}-${entry.code ?? entry.when}-${entry.title}`}
+              position={trackPosition(tracks, entry.track)}
               trackLabel={labelFor(entry.track)}
             />
           ))}
@@ -481,7 +525,10 @@ function Eligibility({ detail }: { detail: ProjectDetail }) {
       <Flex container direction="column" alignSecondary="stretch" gap="800">
         <TextContentHeading
           heading="Who was eligible"
-          subheading="The criteria participants were screened against at enrollment."
+          subheading={
+            detail.eligibilityNote ??
+            "The criteria participants were screened against at enrollment."
+          }
         />
         <CardGrid type="half" gap="600" alignSecondary="stretch">
           {groups.map((group) => (
@@ -509,7 +556,132 @@ function Eligibility({ detail }: { detail: ProjectDetail }) {
   );
 }
 
+/* -- Findings ------------------------------------------------------------- */
+
+function FindingCard({
+  finding,
+  publications,
+}: {
+  finding: ProjectFinding;
+  publications: Publication[];
+}) {
+  /* Resolved like the evidence list, and failing the same way: an unknown
+     slug loses the citation line, never the finding. */
+  const source = finding.source
+    ? publications.find((publication) => publication.slug === finding.source)
+    : undefined;
+
+  return (
+    <li className="pd-finding">
+      <div className="pd-finding-head">
+        <TextHeading>{finding.heading}</TextHeading>
+        {finding.context ? (
+          <span className="pd-finding-context">{finding.context}</span>
+        ) : null}
+      </div>
+      {finding.stats?.length ? (
+        <dl
+          className={cx(
+            "pd-finding-stats",
+            `pd-finding-stats-${Math.min(finding.stats.length, 4)}`,
+          )}
+        >
+          {finding.stats.map((stat) => (
+            <div className="pd-finding-stat" key={stat.label}>
+              <dt className="pd-finding-stat-label">{stat.label}</dt>
+              <dd className="pd-finding-stat-value">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      <p className="pd-finding-takeaway">{finding.takeaway}</p>
+      {source ? (
+        <p className="pd-finding-source">
+          {source.doi ? (
+            <a className="pd-finding-source-link" href={source.doi}>
+              <em>{source.journal}</em>, {source.year}
+            </a>
+          ) : (
+            <>
+              <em>{source.journal}</em>, {source.year}
+            </>
+          )}
+        </p>
+      ) : null}
+    </li>
+  );
+}
+
+function Findings({
+  detail,
+  publications,
+}: {
+  detail: ProjectDetail;
+  publications: Publication[];
+}) {
+  const findings = detail.findings ?? [];
+  return (
+    <Section variant="brand" padding="1600" className="pd-findings-band">
+      <Flex container direction="column" alignSecondary="stretch" gap="800">
+        <TextContentHeading
+          heading="What it found"
+          subheading={detail.findingsNote}
+        />
+        <ul className="pd-findings">
+          {findings.map((finding) => (
+            <FindingCard
+              finding={finding}
+              key={finding.heading}
+              publications={publications}
+            />
+          ))}
+        </ul>
+      </Flex>
+    </Section>
+  );
+}
+
 /* -- Evidence ------------------------------------------------------------- */
+
+/** How many works the evidence section shows before the disclosure. */
+const FEATURED_PUBLICATIONS = 3;
+
+function PublicationRow({
+  publication,
+  note,
+}: ResolvedProjectPublication) {
+  return (
+    <li className="pd-pub">
+      <div className="pd-pub-meta">
+        <PublicationCover publication={publication} />
+        <span className="pd-pub-year">{publication.year}</span>
+        {note ? <span className="pd-pub-note">{note}</span> : null}
+      </div>
+      <div className="pd-pub-body">
+        <span className="pd-pub-title">
+          {publication.doi ? (
+            <TextLink href={publication.doi}>{publication.title}</TextLink>
+          ) : (
+            publication.title
+          )}
+        </span>
+        <span className="pd-pub-source">
+          {publication.authors[0]}
+          {publication.authorCount > 1 ? " et al." : ""} ·{" "}
+          <em>{publication.journal}</em>
+        </span>
+        <span className="pd-pub-tags">
+          {publication.openAccess ? (
+            <span className="pd-pub-tag pd-pub-tag-oa">Open access</span>
+          ) : null}
+          <span className="pd-pub-tag">
+            {publication.citations.toLocaleString()} citations
+          </span>
+        </span>
+      </div>
+    </li>
+  );
+}
 
 function Evidence({
   detail,
@@ -523,6 +695,23 @@ function Evidence({
   const entries = resolveProjectPublications(detail, publications);
   if (!entries.length) return null;
 
+  /* The first works the *record* lists are the featured ones — a record
+     leads with its protocol or development paper, which newest-first would
+     bury. The rest keep the resolver's newest-first order, behind a
+     disclosure, so a long bibliography never becomes the page's longest
+     section and nothing is dropped. */
+  const order = new Map(
+    (detail.publications ?? []).map((ref, index) => [ref.slug, index]),
+  );
+  const featured = [...entries]
+    .sort(
+      (a, b) =>
+        (order.get(a.publication.slug) ?? 0) -
+        (order.get(b.publication.slug) ?? 0),
+    )
+    .slice(0, FEATURED_PUBLICATIONS);
+  const rest = entries.filter((entry) => !featured.includes(entry));
+
   return (
     <Section variant="neutral" padding="1600">
       <Flex container direction="column" alignSecondary="stretch" gap="800">
@@ -531,46 +720,24 @@ function Evidence({
           subheading={detail.publicationsNote}
         />
         <ul className="pd-pubs">
-          {entries.map(({ publication, note }) => (
-            <li className="pd-pub" key={publication.slug}>
-              <div className="pd-pub-meta">
-                <PublicationCover publication={publication} />
-                <span className="pd-pub-year">{publication.year}</span>
-                {note ? <span className="pd-pub-note">{note}</span> : null}
-              </div>
-              <div className="pd-pub-body">
-                <span className="pd-pub-title">
-                  {publication.doi ? (
-                    <TextLink href={publication.doi}>
-                      {publication.title}
-                    </TextLink>
-                  ) : (
-                    publication.title
-                  )}
-                </span>
-                <span className="pd-pub-source">
-                  {publication.authors[0]}
-                  {publication.authorCount > 1 ? " et al." : ""} ·{" "}
-                  <em>{publication.journal}</em>
-                </span>
-                <span className="pd-pub-tags">
-                  {publication.openAccess ? (
-                    <span className="pd-pub-tag pd-pub-tag-oa">
-                      Open access
-                    </span>
-                  ) : null}
-                  <span className="pd-pub-tag">
-                    {publication.citations.toLocaleString()} citations
-                  </span>
-                </span>
-              </div>
-            </li>
+          {featured.map((entry) => (
+            <PublicationRow key={entry.publication.slug} {...entry} />
           ))}
         </ul>
+        {rest.length ? (
+          <details className="pd-pubs-more">
+            <summary className="pd-pubs-more-summary">
+              Show all {entries.length} publications from this project
+            </summary>
+            <ul className="pd-pubs">
+              {rest.map((entry) => (
+                <PublicationRow key={entry.publication.slug} {...entry} />
+              ))}
+            </ul>
+          </details>
+        ) : null}
         <Flex>
-          <TextLink href={publicationsHref}>
-            All publications →
-          </TextLink>
+          <TextLink href={publicationsHref}>All publications →</TextLink>
         </Flex>
       </Flex>
     </Section>
@@ -599,7 +766,9 @@ function Collaborate({ detail }: { detail: ProjectDetail }) {
                       <span className="pd-resource-kind">
                         {resource.kind === "document"
                           ? "PDF"
-                          : "External site"}
+                          : resource.kind === "page"
+                            ? "On this site"
+                            : "External site"}
                       </span>
                     </li>
                   ))}
@@ -742,11 +911,17 @@ export function ProjectDetailPage({
       {detail.objectives?.length ? (
         <Objectives
           hypotheses={detail.hypotheses}
+          note={detail.objectivesNote}
           objectives={detail.objectives}
         />
       ) : null}
       {detail.timeline?.length ? <Timeline detail={detail} /> : null}
       {detail.eligibility?.length ? <Eligibility detail={detail} /> : null}
+      {/* A brand band, so it sits between whichever light bands precede and
+          follow it without breaking their alternation. */}
+      {detail.findings?.length ? (
+        <Findings detail={detail} publications={publications} />
+      ) : null}
       <Evidence
         detail={detail}
         publications={publications}

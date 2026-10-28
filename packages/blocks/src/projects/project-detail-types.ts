@@ -83,16 +83,26 @@ export type Measure = {
  * A study objective. `rank` is the protocol's own primary/secondary
  * designation, not an editorial ordering — it governs statistical power, so it
  * is rendered as a label rather than implied by position.
+ *
+ * Omit `rank` when the source does not rank its objectives (a validation
+ * protocol, a development programme): inventing one would claim a powered
+ * endpoint that does not exist. Unranked objectives render with their number
+ * only, and the section stops describing the ranks as the protocol's.
  */
 export type Objective = {
-  rank: "primary" | "secondary";
+  rank?: "primary" | "secondary";
   title: string;
   /** A hypothesis qualifier, e.g. a non-inferiority statement. */
   note?: string;
   measures: Measure[];
 };
 
-/** A population followed through the study on its own schedule. */
+/**
+ * A population followed through the study on its own schedule. Tracks are
+ * placed by their order in `tracks` — the first on the left of the spine, the
+ * second on the right — never by `id`, so ids are free for the record to name.
+ * A single track renders as one rail.
+ */
 export type StudyTrack = {
   id: string;
   label: string;
@@ -104,7 +114,8 @@ export type StudyTrack = {
  * One row of the assessment schedule. `point` is an assessment timepoint and
  * carries the protocol's own code (T0, T1, …); `phase` is the interval of
  * activity between two timepoints and has no code because nothing is measured
- * at it.
+ * at it. A `point` without a code is a dated milestone, drawn as a plain node —
+ * leave `code` off rather than inventing numbering the source does not use.
  */
 export type TimelineEntry = {
   kind: "point" | "phase";
@@ -134,8 +145,32 @@ export type ProjectPublicationRef = PublicationRef;
 export type ProjectResource = {
   label: string;
   href: string;
-  /** Distinguishes a PDF download from an outbound page. */
-  kind?: "document" | "site";
+  /**
+   * Distinguishes a PDF download from an outbound page; `page` is a page on
+   * the same site (e.g. the project's innovation page).
+   */
+  kind?: "document" | "site" | "page";
+};
+
+/** One headline number inside a finding. */
+export type FindingStat = {
+  value: string;
+  label: string;
+};
+
+/**
+ * One published result: a site, a pilot or a sub-study, with the numbers it
+ * reported. `source` is a slug into the bibliography, resolved at render time
+ * like `publications`, so the citation under a finding is the real record and
+ * an unknown slug simply drops the citation line.
+ */
+export type ProjectFinding = {
+  heading: string;
+  /** Instrument, language, sample — what the numbers are numbers of. */
+  context?: string;
+  stats?: FindingStat[];
+  takeaway: string;
+  source?: string;
 };
 
 export type ProjectContact = {
@@ -171,11 +206,34 @@ export type ProjectDetail = {
     body: string[];
     elements?: StrategyElement[];
   };
+  /** Label above the arm cards. Defaults to "What the trial compares". */
+  armsLabel?: string;
   objectives?: Objective[];
+  /**
+   * Subheading for the objectives section. Omit for the default, which
+   * describes the ranks as the protocol's when any objective carries one.
+   */
+  objectivesNote?: string;
   hypotheses?: string[];
   tracks?: StudyTrack[];
   timeline?: TimelineEntry[];
+  /**
+   * Heading for the schedule. Defaults to "Assessment schedule"; a programme
+   * whose timeline is its history rather than a protocol names it here.
+   */
+  timelineHeading?: string;
+  /** Subheading for the schedule. Omit for a default fitted to the track count. */
+  timelineNote?: string;
   eligibility?: EligibilityGroup[];
+  /** Subheading for the eligibility section. */
+  eligibilityNote?: string;
+  /**
+   * Published results. Rendered as "What it found", one card per finding,
+   * after the schedule and eligibility and before the publication list.
+   */
+  findings?: ProjectFinding[];
+  /** Subheading for the findings section. */
+  findingsNote?: string;
   publications?: ProjectPublicationRef[];
   /** Subheading for the published-work section — what these works are to the project. */
   publicationsNote?: string;

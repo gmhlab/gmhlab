@@ -294,7 +294,9 @@ export const TEAM: Person[] = [
     affiliation: "Transcultural Psychosocial Organization Nepal",
     location: "Nepal",
     photo: photo("kamal-gautam"),
-    projects: ["reshape", "equip-su", "standstrong", "alive"],
+    /* "unicef-mmapp": his bio names integrating the MMAP tool into Nepal's
+       Multiple Indicator Cluster Survey with UNICEF. */
+    projects: ["reshape", "equip-su", "standstrong", "alive", "unicef-mmapp"],
     authorNames: ["Kamal Gautam"],
     bio: [
       "Dr. Kamal Gautam, MD is a Psychiatrist and Executive Director at a leading mental health organization in Nepal viz. Transcultural Psychosocial Organization Nepal (TPO Nepal). He is a Clinical Assistant Professor at the Center for Global Mental Health Equity, Department of Psychiatry and Behavioural Health, The George Washington University, Washington, D.C., USA. Over the past decade, he has been dedicated to global mental health especially focusing on integrating mental health into primary health care and communities; strengthening the government health, education and protection systems; and drafting, endorsement and implementation of policies and action plans to foster mental health care in Nepal. He also serves as a MHPSS Expert to Unicef.",

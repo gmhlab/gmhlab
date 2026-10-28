@@ -15,6 +15,16 @@
  * with their instruments come from that document. Partner and resource links
  * come from the live page, which is the only source for them.
  *
+ * The UNICEF-MMAP and EQUIP records (added 2026-10-28) are transcribed from
+ * the Center's project summaries in the same Drive folder ("UNICEF-MMAP
+ * (Project Summary)", `1mszKp4gDl6KuNq95UPVSp0SJ1nPVx99PosGay25KObI`;
+ * "EQUIP (Project Summary)", `19qLeAP6AiL_Y0_Swsfk4fTolT79mRD5hQKPifLDmuKw`),
+ * which were compiled from the published papers. Every number in them is a
+ * published one — the summaries cite each source — and the `findings` cards
+ * name the paper each figure is from. Nothing unpublished (usage dashboards,
+ * grant documents) is used. Neither source ranks its objectives, so neither
+ * record does.
+ *
  * Two things are deliberately *not* stored here:
  *
  *   - **Publications.** `publications` holds slugs into `PUBLICATIONS`
@@ -32,7 +42,11 @@
  */
 
 import type { ProjectDetail } from "@gmhlab/blocks";
-import { RESHAPE_HERO_IMAGE } from "./hero-images";
+import {
+  EQUIP_PROJECT_HERO_IMAGE,
+  RESHAPE_HERO_IMAGE,
+  UNICEF_MMAP_HERO_IMAGE,
+} from "./hero-images";
 
 /* -------------------------------------------------------------------------- */
 /* RESHAPE                                                                     */
@@ -374,9 +388,838 @@ export const RESHAPE_DETAIL: ProjectDetail = {
   relatedSlugs: ["scape-u", "equip", "equip-su"],
 };
 
+/* -------------------------------------------------------------------------- */
+/* UNICEF-MMAP                                                                 */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * A validation study, not a trial: no arms, no ranked endpoints. The protocol
+ * does not rank its objectives, so none carries a `rank` — the page then says
+ * nothing about powering. Its own nomenclature is nine numbered steps, so the
+ * schedule codes are step numbers, on the data-collection steps only.
+ */
+export const UNICEF_MMAP_DETAIL: ProjectDetail = {
+  slug: "unicef-mmapp",
+  name: "UNICEF-MMAP",
+  expandedName:
+    "Measurement of Mental Health Among Adolescents at the Population Level",
+  tagline:
+    "Adapting and clinically validating brief measures of adolescent depression and anxiety, so countries can count what they cannot yet see",
+  status: "ongoing",
+  statusLabel: "Ongoing",
+  heroImage: UNICEF_MMAP_HERO_IMAGE,
+  lede:
+    "UNICEF-MMAP is a multicountry, mixed-methods study led by UNICEF. It culturally adapts brief, open-access measures of adolescent mental health, then tests them against clinicians' diagnostic interviews, so that national surveys can report how many adolescents live with depression and anxiety — comparably, across countries and over time.",
+
+  facts: [
+    { term: "Design", detail: "Multicountry mixed-methods validation study" },
+    { term: "Led by", detail: "UNICEF Data and Analytics Section" },
+    { term: "Funder", detail: "Bill & Melinda Gates Foundation" },
+    { term: "Initial sites", detail: "Belize, Kenya, Nepal, South Africa" },
+    { term: "Ages", detail: "Adolescents aged 10–19" },
+  ],
+
+  /* From the protocol: these describe the method and its targets. The
+     sample-size figure is a per-site target, labeled as such. */
+  figures: [
+    { value: "4", label: "Countries", note: "Initial validation sites" },
+    {
+      value: "6",
+      label: "Language versions",
+      note: "Belizean English, Kriol, English, Kiswahili, Nepali, isiXhosa",
+    },
+    { value: "9", label: "Protocol steps", note: "Run at every site" },
+    { value: "300+", label: "Adolescents per site", note: "Protocol target" },
+  ],
+
+  rationale: [
+    "Mental disorders are among the leading causes of disability for adolescents aged 10 to 19, and most adolescents live in low- and middle-income countries. Yet more than 100 countries have no data on child and adolescent mental health, and in sub-Saharan Africa and parts of Asia and Latin America the data that exist describe fewer than 1% of adolescents.",
+    "Part of the gap is the instruments. Few brief adolescent measures have been validated in these settings, and a scale translated word for word can miss how adolescents actually describe distress. Without tools that are both culturally adapted and checked against clinical diagnosis, a country cannot measure its adolescents' mental health — or compare it with anyone else's.",
+  ],
+
+  strategy: {
+    heading: "The MMAP method",
+    body: [
+      "MMAP is a replicable process rather than a single instrument: nine steps in two phases that any team can run to adapt and validate a measure in a new language and setting. Phase one establishes cultural equivalence through qualitative work; phase two tests the adapted tool against a gold-standard clinical interview.",
+      "Validated tools are then built into national and subnational surveys, so results can be reported by age, sex, socio-economic status and subnational area, and compared across countries.",
+    ],
+    elements: [
+      {
+        term: "Transcultural translation and adaptation",
+        body: "Bilingual experts translate for meaning rather than word for word; clinicians, focus groups and cognitive interviews test every item for comprehensibility, acceptability, relevance, completeness and technical equivalence; an independent back-translation closes the loop.",
+      },
+      {
+        term: "An enriched sample",
+        body: "Teachers and community leaders use the Community Case Detection Tool, a set of short vignettes, to refer adolescents more and less likely to have depression or anxiety, so each site has enough cases to test a measure against diagnoses.",
+      },
+      {
+        term: "A gold-standard comparison",
+        body: "Within two days of completing the adapted tool, each adolescent has a K-SADS-PL diagnostic interview with a trained clinician, who has completed inter-rater reliability training so diagnoses are comparable across sites.",
+      },
+      {
+        term: "Cut-offs fitted to their use",
+        body: "Case-finding needs high sensitivity; a population estimate needs a balance that avoids inflating prevalence. Each site reports performance across thresholds so users can choose.",
+      },
+    ],
+  },
+
+  objectives: [
+    {
+      title: "Clinical validity of the adapted depression and anxiety measures",
+      measures: [
+        { abbr: "RCADS-25", name: "Revised Child Anxiety and Depression Scale" },
+        {
+          abbr: "PHQ-9",
+          name: "Patient Health Questionnaire-9",
+          detail: "The adolescent version, PHQ-A, in Nepal.",
+        },
+        { abbr: "GAD-7", name: "Generalized Anxiety Disorder-7" },
+        {
+          abbr: "K-SADS-PL",
+          name: "Kiddie Schedule for Affective Disorders and Schizophrenia (DSM-5)",
+          detail:
+            "The gold standard. At minimum the depression module and the generalized anxiety, panic, separation anxiety and social anxiety sections. Against it: sensitivity, specificity, predictive values, likelihood ratios, diagnostic odds ratio, Youden's index, area under the curve and scale reliability.",
+        },
+      ],
+    },
+    {
+      title: "Cultural equivalence of each translated item",
+      measures: [
+        {
+          abbr: "TTA",
+          name: "Transcultural translation monitoring form",
+          detail:
+            "Five equivalence domains: comprehensibility, acceptability, relevance, completeness and technical equivalence.",
+        },
+        {
+          name: "Focus group discussions and cognitive interviews",
+          detail: "Coded for the same five domains.",
+        },
+      ],
+    },
+    {
+      title: "Adaptation of further adolescent mental health domains",
+      measures: [
+        {
+          name: "UNICEF-developed measures",
+          detail:
+            "Functional limitations, suicidal behaviour, mental health care-seeking and connectedness.",
+        },
+        {
+          abbr: "PROMIS",
+          name: "Patient-Reported Outcomes Measurement Information System items",
+          detail: "Tested at two of the validation sites.",
+        },
+      ],
+    },
+    {
+      title: "Reliability of caregiver report for younger adolescents",
+      measures: [
+        {
+          name: "Parent version of the questionnaire",
+          detail:
+            "Given to 100–175 parents or caregivers of 10- to 14-year-olds in at least one setting.",
+        },
+      ],
+    },
+    {
+      title: "Usefulness of community-based case finding",
+      measures: [
+        {
+          abbr: "CCDT",
+          name: "Community Case Detection Tool",
+          detail: "Its positive predictive value as a referral route.",
+        },
+      ],
+    },
+  ],
+
+  tracks: [
+    {
+      id: "site",
+      label: "Each site",
+      population:
+        "Adolescents aged 10–14 and 15–19, and caregivers of the younger group — about six months from start to finish",
+    },
+  ],
+
+  timelineNote:
+    "Every site runs the same nine steps. Numbered points are the protocol's data-collection steps; the bands between them are translation, review and analysis. Durations are the protocol's estimates.",
+  timeline: [
+    {
+      kind: "phase",
+      track: "site",
+      when: "Phase 1 · Months 1–2",
+      title: "Steps 1–2 · Translation and expert review",
+      detail:
+        "Bilingual translators adapt the tools (a group of three is suggested); three or four clinicians fluent in the language review them on the monitoring form.",
+    },
+    {
+      kind: "point",
+      track: "site",
+      code: "3",
+      when: "Phase 1",
+      title: "Focus group discussions",
+      detail: "Four to eight groups of six to eight people, by age and gender.",
+      cohorts: [
+        "Younger adolescents, 10–14",
+        "Older adolescents, 15–19",
+        "Parents and caregivers of younger adolescents",
+      ],
+    },
+    {
+      kind: "point",
+      track: "site",
+      code: "4",
+      when: "Phase 1",
+      title: "Cognitive interviews",
+      detail:
+        "Ten to twenty one-on-one interviews using think-aloud and verbal probing, to check how each item and response option is understood.",
+    },
+    {
+      kind: "phase",
+      track: "site",
+      when: "Phase 1",
+      title: "Steps 5–6 · Synthesis and back-translation",
+      detail:
+        "Findings are integrated through framework analysis; an independent translator back-translates, and the local and international teams reconcile the final wording.",
+    },
+    {
+      kind: "phase",
+      track: "site",
+      when: "Month 3",
+      title: "Logistics and coordination between phases",
+    },
+    {
+      kind: "point",
+      track: "site",
+      code: "7",
+      when: "Phase 2 · Months 4–6",
+      title: "Adapted tools administered",
+      detail:
+        "Face to face, by trained enumerators, in a private setting, with a counsellor and a local referral pathway on hand.",
+    },
+    {
+      kind: "point",
+      track: "site",
+      code: "8",
+      when: "Phase 2 · Within 2 days",
+      title: "Diagnostic interview with a clinician",
+      detail:
+        "The K-SADS-PL, administered by mental health professionals trained for inter-rater reliability.",
+    },
+    {
+      kind: "phase",
+      track: "site",
+      when: "Phase 2",
+      title: "Step 9 · Psychometric analysis and cut-offs",
+      detail:
+        "Each site analysed on its own, then pooled across sites to look at how items behave in different settings and over time.",
+    },
+  ],
+
+  eligibilityNote:
+    "Recruitment criteria from the multicountry protocol, which publishes no formal exclusion criteria. Every site had a referral pathway for adolescents reporting suicidal ideation and a local emergency protocol.",
+  eligibility: [
+    {
+      group: "Adolescents — validation sample",
+      criteria: [
+        "Aged 10–14 or 15–19, boys and girls in both age bands",
+        "Referred through the Community Case Detection Tool, or recruited through schools, community centres, NGOs or health clinics",
+        "Written consent, or written assent with parental consent for minors",
+      ],
+    },
+    {
+      group: "Adolescents — focus groups and interviews",
+      criteria: [
+        "Aged 10–14 or 15–19",
+        "Fluent in the language being adapted",
+        "Chosen for diversity of education, literacy, ethnicity and socio-economic background",
+      ],
+    },
+    {
+      group: "Parents and caregivers",
+      criteria: ["Parent or caregiver of an adolescent aged 10–14"],
+    },
+  ],
+
+  /* Each site's own validation paper, numbers as published. */
+  findingsNote:
+    "Each site's adapted tool against clinicians' K-SADS diagnostic interviews. AUC is the area under the curve; sensitivity and specificity are at the cut-off each paper recommends.",
+  findings: [
+    {
+      heading: "Belize",
+      context: "RCADS-22 · Belizean English and Kriol · 256 adolescents, 10–19",
+      stats: [
+        { value: "0.82", label: "AUC, ages 15–19" },
+        { value: "0.72", label: "AUC, ages 10–14" },
+        { value: "0.83", label: "Depression sensitivity" },
+        { value: "0.77", label: "Depression specificity" },
+      ],
+      takeaway:
+        "Excellent classification for older adolescents and acceptable for younger ones, so the scale is recommended for 15- to 19-year-olds. Separation-anxiety items performed poorly, and thoughts of death were common even among adolescents without a diagnosis.",
+      source:
+        "validation-of-the-kriol-and-belizean-english-adaptation-of-the-revised",
+    },
+    {
+      heading: "Kenya",
+      context: "PHQ-9 · English and Kiswahili · 250 adolescents, 10–19",
+      stats: [
+        { value: "0.89", label: "AUC, English" },
+        { value: "0.87", label: "AUC, Kiswahili" },
+        { value: "95%", label: "Sensitivity, English" },
+        { value: "73%", label: "Specificity, English" },
+      ],
+      takeaway:
+        "Both language versions were reliable (Cronbach's α 0.86 and 0.83) and performed comparably in detecting major depressive disorder — usable for early identification in resource-limited settings.",
+      source:
+        "validation-of-the-english-and-swahili-adaptation-of-the-patient-health",
+    },
+    {
+      heading: "South Africa",
+      context: "PHQ-9 and GAD-7 · isiXhosa · 302 adolescents, 10–19",
+      stats: [
+        { value: "0.88", label: "PHQ-9 AUC" },
+        { value: "91%", label: "PHQ-9 sensitivity" },
+        { value: "76%", label: "PHQ-9 specificity" },
+        { value: "0.78", label: "GAD-7 AUC" },
+      ],
+      takeaway:
+        "The isiXhosa PHQ-9 is a valid depression measure for adolescents. The GAD-7 needed a low cut-off to balance sensitivity (67%) and specificity (75%), and the authors recommend further research on it.",
+      source:
+        "detecting-depression-and-anxiety-among-adolescents-in-south-africa-val",
+    },
+    {
+      heading: "Nepal",
+      context:
+        "PHQ-A and GAD-7 · Nepali · 413 adolescents, 12–19, Kathmandu district",
+      stats: [
+        { value: "0.93", label: "Sensitivity, ages 12–14" },
+        { value: "0.80", label: "Specificity, ages 12–14" },
+        { value: "0.89", label: "Sensitivity, ages 15–19" },
+        { value: "0.70", label: "Specificity, ages 15–19" },
+      ],
+      takeaway:
+        "Fair for depression screening, poor for anxiety. Even at validated cut-offs these tools would inflate population prevalence two- to four-fold, so survey estimates need adjusting — a finding only a clinical validation could surface.",
+      source:
+        "translation-cultural-adaptation-and-validation-of-patient-health-quest",
+    },
+  ],
+
+  publications: [
+    {
+      slug: "measurement-of-mental-health-among-adolescents-at-the-population-level",
+      note: "Multicountry protocol",
+    },
+    {
+      slug: "increasing-data-and-understanding-of-adolescent-mental-health-worldwid",
+      note: "The initiative",
+    },
+    {
+      slug: "the-path-forward-emerging-lessons-from-validating-a-multicountry-popul",
+      note: "Lessons across sites",
+    },
+    {
+      slug: "translation-and-adaptation-of-the-revised-children-s-anxiety-and-depre",
+      note: "Belize adaptation",
+    },
+    {
+      slug: "validation-of-the-kriol-and-belizean-english-adaptation-of-the-revised",
+      note: "Belize validation",
+    },
+    {
+      slug: "cultural-and-contextual-adaptation-of-mental-health-measures-in-kenya",
+      note: "Kenya adaptation",
+    },
+    {
+      slug: "validation-of-the-english-and-swahili-adaptation-of-the-patient-health",
+      note: "Kenya validation",
+    },
+    {
+      slug: "detecting-depression-and-anxiety-among-adolescents-in-south-africa-val",
+      note: "South Africa validation",
+    },
+    {
+      slug: "translation-cultural-adaptation-and-validation-of-patient-health-quest",
+      note: "Nepal adaptation and validation",
+    },
+  ],
+  publicationsNote:
+    "The protocol, each site's adaptation and validation papers, and the lessons drawn across sites.",
+
+  /* From the protocol's author affiliations and acknowledgments. */
+  partners: [
+    "UNICEF",
+    "Karolinska Institutet",
+    "University of Nairobi",
+    "TPO Nepal",
+    "Stellenbosch University",
+    "Hospital de Clínicas de Porto Alegre",
+    "War Child",
+  ],
+
+  resources: [
+    {
+      label: "MMAP at UNICEF Data",
+      href: "https://data.unicef.org/topic/child-health/mental-health/mmap/",
+      kind: "site",
+    },
+  ],
+
+  contact: {
+    name: "Brandon Kohrt, MD, PhD",
+    email: "bkohrt@gwu.edu",
+  },
+
+  /* The portfolio's other adolescent depression and anxiety work. */
+  relatedSlugs: ["idea", "alive"],
+};
+
+/* -------------------------------------------------------------------------- */
+/* EQUIP                                                                       */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * The *project* page: the research that built and tested EQUIP. The platform
+ * as a product — the four-stage cycle, the toolkit, requesting training — is
+ * the innovation page (`EQUIP_DETAIL` in `./innovation-detail-data`), which
+ * this page links to rather than repeats.
+ *
+ * The development paper frames its aims as phase objectives, not ranked
+ * endpoints, so no objective carries a `rank`. Its timeline is a history, so
+ * the milestones are codeless points rather than invented T-numbers.
+ */
+export const EQUIP_PROJECT_DETAIL: ProjectDetail = {
+  slug: "equip",
+  name: "EQUIP",
+  expandedName: "Ensuring Quality in Psychosocial and Mental Health Care",
+  tagline:
+    "Building and testing the WHO–UNICEF tools that show whether a helper can deliver psychological support safely",
+  status: "ongoing",
+  statusLabel: "Ongoing",
+  heroImage: EQUIP_PROJECT_HERO_IMAGE,
+  lede:
+    "EQUIP is a WHO–UNICEF initiative, begun in 2018, to make competency assessment standard for anyone delivering psychological and psychosocial support — specialist or not. This is the research behind it: five phases of development, pilots in six countries, two head-to-head comparisons with standard training, and the record of how the platform has been used since its launch.",
+
+  facts: [
+    { term: "Developed by", detail: "WHO and UNICEF" },
+    {
+      term: "Funder",
+      detail:
+        "USAID, with the National Institute of Mental Health (R01MH120649-02S1)",
+    },
+    { term: "Design", detail: "Five-phase development programme with multi-site pilots" },
+    { term: "Pilot sites", detail: "Ethiopia, Kenya, Lebanon, Peru, Uganda, Zambia" },
+    { term: "Public launch", detail: "31 March 2022" },
+  ],
+
+  /* Platform use from the Lancet Psychiatry development paper — results, not
+     targets, and dated so they are never read as current. */
+  figures: [
+    { value: "36", label: "Countries", note: "Platform use, Mar 2022 – Mar 2024" },
+    { value: "794", label: "Training programmes", note: "Same period" },
+    { value: "3,760", label: "Trainees", note: "Same period" },
+    { value: "10,001", label: "Competency assessments", note: "Same period" },
+  ],
+
+  rationale: [
+    "Most people with mental health conditions receive no effective care. Among people living with depression, 1 in 5 in high-income countries and 1 in 27 in lower-middle-income countries receive minimally adequate treatment, and most countries have about one trained mental health provider per 10,000 people.",
+    "Closing that gap depends on people who are not licensed clinicians: primary care and community health workers, psychosocial workers, teachers, peers. Licensed professionals have bodies that set and check standards. Non-specialists, usually trained in courses of a week or two, have nothing comparable — and globally there has been no standard way to know whether a helper has reached the competency to deliver care safely.",
+  ],
+
+  armsLabel: "What two of the pilots compared",
+  arms: [
+    {
+      name: "Training as usual",
+      body: "The intervention's standard training. In Lebanon the trainers were masked to trainees' competency results.",
+    },
+    {
+      name: "Competency-based training",
+      abbr: "EQUIP",
+      body: "The same training, time-matched, with trainers using pre-training and in-training competency assessments to adapt what they taught and to give each trainee competency-based feedback.",
+      isIntervention: true,
+    },
+  ],
+
+  strategy: {
+    heading: "How competency-based training works",
+    body: [
+      "Trainers assess trainees in brief, standardised role plays before training, after it and after supervision. Trainers use the results to adapt the training to the gaps they find, and to give trainees specific feedback rather than a pass or fail.",
+      "EQUIP is not tied to one intervention, framework or sector. It assesses common factors — the foundational helping skills every intervention depends on — and the techniques specific to classes of treatment, so it can sit inside a course of a few days or a multi-year degree.",
+    ],
+    elements: [
+      {
+        term: "One prompt per competency",
+        body: "A person playing a client delivers a scripted line — \"sometimes I go to sleep at night and wish that I wouldn't wake up in the morning\" — that should elicit a specific skill, here screening for self-harm and suicide risk.",
+      },
+      {
+        term: "Harm, not only skill",
+        body: "Each competency lists potentially harmful behaviours — being dismissive of suicidal thoughts, criticising a client's coping — alongside basic and advanced helpful ones, so trainers can see red flags as well as gaps.",
+      },
+      {
+        term: "Four levels",
+        body: "Level 1 is any harmful or unhelpful behaviour; 2, none but not every basic skill; 3, every basic skill; 4, every basic skill plus an advanced one.",
+      },
+      {
+        term: "Eleven tools",
+        body: "ENACT for adults (refined from 18 items to 15) and its remote version, WeACT for children and adolescents, GroupACT for groups, tools for Problem Management Plus and the Thinking Healthy Programme, and six treatment-class tools.",
+      },
+    ],
+  },
+
+  objectives: [
+    {
+      title: "Change in trainee competency over training and supervision",
+      measures: [
+        {
+          abbr: "ENACT",
+          name: "Enhancing Assessment of Common Therapeutic Factors",
+          detail:
+            "15 items. Reported as the number of competencies a trainee shows at level 1 (harmful) and at levels 3–4 (helpful).",
+        },
+        {
+          abbr: "WeACT",
+          name: "Working with Children – Assessment of Competencies Tool",
+          detail: "13 items.",
+        },
+        {
+          abbr: "GroupACT",
+          name: "Group Facilitation Competency Assessment Tool",
+        },
+        { name: "Intervention-specific tools for PM+ and the Thinking Healthy Programme" },
+      ],
+    },
+    {
+      title: "Competency-based training against training as usual",
+      measures: [
+        {
+          name: "WeACT, ENACT and GroupACT",
+          detail: "Randomised, time-matched comparison in Lebanon (EASE).",
+        },
+        { name: "ENACT", detail: "Standard against EQUIP training in Peru (Thinking Healthy Programme)." },
+      ],
+    },
+    {
+      title: "Reliability and feasibility of assessment across settings",
+      measures: [
+        { abbr: "ICC", name: "Intraclass correlation coefficients for inter-rater agreement" },
+        {
+          name: "Cognitive interviewing and the transcultural translation monitoring form",
+        },
+      ],
+    },
+    {
+      title: "Acceptability of competency-based feedback",
+      measures: [
+        {
+          name: "Key informant interviews and focus groups",
+          detail: "With supervisors, trainers and trainees at five sites.",
+        },
+      ],
+    },
+    {
+      title: "Cost of competency-based training",
+      measures: [{ name: "Incremental time and cost of EQUIP-based against standard PM+ training" }],
+    },
+    {
+      title: "Global uptake",
+      measures: [
+        {
+          name: "Platform usage data",
+          detail:
+            "Registrations, training programmes, countries, trainees, assessments and harmful behaviours identified. Paper-based use is not captured.",
+        },
+      ],
+    },
+  ],
+
+  timelineHeading: "Development timeline",
+  timelineNote:
+    "The five phases from the Lancet Psychiatry development paper, with the milestones since launch. Phases overlap because tool development, adaptation and piloting ran in parallel.",
+  tracks: [
+    {
+      id: "programme",
+      label: "EQUIP",
+      population: "WHO, UNICEF and a consortium of partners in seven countries",
+    },
+  ],
+  timeline: [
+    {
+      kind: "phase",
+      track: "programme",
+      when: "2018–2019",
+      title: "Phase 1 · A framework for competency-based training",
+      detail:
+        "Theory-of-change and human-centred design workshops with intervention developers, researchers and trainers based in low- and middle-income countries.",
+    },
+    {
+      kind: "phase",
+      track: "programme",
+      when: "2018–2020",
+      title: "Phase 2 · Competency assessment tools",
+      detail:
+        "Literature reviews — 56 tools with 1,081 competency items; 17 intervention manuals with 973 competencies — free-listing and expert consultation, distilled into eleven tools.",
+    },
+    {
+      kind: "phase",
+      track: "programme",
+      when: "July 2019 – December 2020",
+      title: "Phase 3 · Adaptation across settings",
+      detail:
+        "Consortium partners in Ethiopia, Jordan, Kenya, Lebanon, Peru, Uganda and Zambia translated the tools and role plays and tested them with cognitive interviews and inter-rater reliability checks.",
+    },
+    {
+      kind: "phase",
+      track: "programme",
+      when: "2019–2021",
+      title: "Phase 4 · Pilots in six countries",
+      detail:
+        "Trainees assessed before training, after it and after supervision, with a qualitative study at every site. A comparison with standard training was planned for each country; COVID-19 limited it to Lebanon and Peru.",
+    },
+    {
+      kind: "point",
+      track: "programme",
+      when: "31 March 2022",
+      title: "Public launch",
+      detail: "The digital platform opens to anyone, with online and offline use.",
+    },
+    {
+      kind: "phase",
+      track: "programme",
+      when: "2022 – ongoing",
+      title: "Phase 5 · Dissemination and monitoring",
+      detail:
+        "Simplified role plays, the Foundational Helping Skills curriculum, WHO competency-based training manuals for PM+ and Self-Help Plus, and usage monitoring.",
+    },
+    {
+      kind: "point",
+      track: "programme",
+      when: "2023",
+      title: "Global training courses",
+      detail:
+        "Two four-day courses for 74 participants from 48 organisations, and 12.5 hours of online training for 21 faculty from universities in 11 low- and middle-income countries.",
+    },
+    {
+      kind: "point",
+      track: "programme",
+      when: "March 2024",
+      title: "Two years of use",
+      detail:
+        "3,212 registrations; 794 training programmes in 36 countries; 3,760 trainees; 10,001 competency assessments identifying 9,810 unhelpful or potentially harmful behaviours. ENACT is available in 14 languages.",
+    },
+  ],
+
+  findingsNote:
+    "Pilot figures are the mean number of ENACT competencies per trainee rated harmful or unhelpful (level 1) or helpful (levels 3–4). Each card cites its source.",
+  findings: [
+    {
+      heading: "Ethiopia",
+      context: "Problem Management Plus · refugee facilitators · 24 trainees",
+      stats: [
+        { value: "4.06", label: "Harmful, before" },
+        { value: "0.04", label: "Harmful, after supervision" },
+        { value: "10.54", label: "Helpful, after supervision" },
+      ],
+      takeaway:
+        "Two weeks of training and observed supervision of each facilitator's first client took helpful competencies from 1.48 to 10.54 — face validity that the tool tracks change.",
+      source: "competency-based-training-and-supervision-development-of-the-who-unice",
+    },
+    {
+      heading: "Lebanon",
+      context: "Early Adolescent Skills for Emotions · 24 trainees, randomised 12:12",
+      stats: [
+        { value: "17%", label: "Greater WeACT competency" },
+        { value: "18%", label: "Greater GroupACT competency" },
+      ],
+      takeaway:
+        "Against time-matched training as usual, competency-based training raised child-focused and group-facilitation skills more without lengthening training. Both arms eliminated harmful behaviours equally; the ENACT difference was not significant.",
+      source: "evaluation-of-competency-driven-training-for-facilitators-delivering-a",
+    },
+    {
+      heading: "Peru",
+      context: "Thinking Healthy Programme · community health workers",
+      stats: [
+        { value: "1.22", label: "Harmful, EQUIP arm" },
+        { value: "1.71", label: "Harmful, usual training" },
+      ],
+      takeaway:
+        "Harmful behaviours fell from 2.66 to 1.22 with EQUIP training (14 workers) and from 2.00 to 1.71 with training as usual (17). COVID-19 disrupted supervision and services in between.",
+      source: "competency-based-training-and-supervision-development-of-the-who-unice",
+    },
+    {
+      heading: "Kenya",
+      context: "Adolescent TF-CBT-derived therapy · community health workers · 16 trainees",
+      stats: [
+        { value: "0.80", label: "Harmful, after supervision" },
+        { value: "3.83", label: "Helpful, after supervision" },
+      ],
+      takeaway:
+        "Harmful behaviours did not fall during training itself, then dropped from 1.53 to 0.80 once supervisors aimed online supervision at each trainee's weakest competencies.",
+      source: "competency-based-training-and-supervision-development-of-the-who-unice",
+    },
+    {
+      heading: "Uganda",
+      context: "Group Interpersonal Therapy · community health workers · 25 trainees",
+      stats: [
+        { value: "−1.56", label: "Harmful competencies" },
+        { value: "+3.21", label: "Helpful competencies" },
+      ],
+      takeaway:
+        "Change from before training to after supervision, across a literate, experienced cohort and a low-literacy remote one. Trainers reviewed the results but did not feed them back to trainees.",
+      source: "competency-based-training-and-supervision-development-of-the-who-unice",
+    },
+    {
+      heading: "Zambia",
+      context: "Telephone-delivered CETA refresher · 18 trainees",
+      stats: [
+        { value: "0.33", label: "Harmful, after supervision" },
+        { value: "0.71–0.89", label: "Inter-rater ICC" },
+      ],
+      takeaway:
+        "Harmful behaviours fell from 1.30, with EQUIP used for evaluation only. After practice with demonstration videos, raters reached good agreement on every ENACT item.",
+      source: "competency-based-training-and-supervision-development-of-the-who-unice",
+    },
+    {
+      heading: "Foundational Helping Skills",
+      context: "Nepal, Peru and Uganda · pre-service and in-service workers",
+      stats: [
+        { value: "150", label: "Trainees" },
+        { value: "13", label: "Trainings" },
+        { value: "20 h", label: "Average length" },
+      ],
+      takeaway:
+        "A brief competency-based curriculum significantly reduced harmful behaviours and increased helpful ones, across and within all three sites.",
+      source: "a-mixed-methods-evaluation-of-a-world-health-organization-competency-b",
+    },
+    {
+      heading: "Feedback",
+      context: "Ethiopia, Kenya, Lebanon, Peru, Uganda · 18 interviews, 5 focus groups",
+      stats: [{ value: "41", label: "Participants" }],
+      takeaway:
+        "Competency-based feedback was personal and goal-specific, sustained a feedback loop, felt more objective and comfortable, and made training and supervision more flexible.",
+      source: "perspectives-on-competency-based-feedback-for-training-non-specialists",
+    },
+    {
+      heading: "Cost",
+      context: "PM+ training of trainers, EQUIP-based against standard",
+      stats: [
+        { value: "85 h", label: "EQUIP-based" },
+        { value: "50 h", label: "Standard" },
+      ],
+      takeaway:
+        "About 70% more time and cost to train PM+ trainers the EQUIP way — with no added time once those trainers go on to train helpers.",
+      source: "competency-based-training-and-supervision-development-of-the-who-unice",
+    },
+  ],
+
+  publications: [
+    {
+      slug: "competency-based-training-and-supervision-development-of-the-who-unice",
+      note: "Development paper",
+    },
+    {
+      slug: "ensuring-quality-in-psychological-support-who-equip-developing-a-compe",
+      note: "Rationale",
+    },
+    {
+      slug: "evaluation-of-competency-driven-training-for-facilitators-delivering-a",
+      note: "Lebanon comparison",
+    },
+    {
+      slug: "a-mixed-methods-evaluation-of-a-world-health-organization-competency-b",
+      note: "Foundational Helping Skills evaluation",
+    },
+    {
+      slug: "perspectives-on-competency-based-feedback-for-training-non-specialists",
+      note: "Feedback study",
+    },
+    {
+      slug: "the-who-equip-foundational-helping-skills-trainer-s-curriculum",
+      note: "Curriculum",
+    },
+    {
+      slug: "assessment-of-service-provider-competency-for-child-and-adolescent-psy",
+      note: "WeACT",
+    },
+    {
+      slug: "sustainable-partnerships-to-ensure-quality-in-psychological-support-eq",
+      note: "EQUIP-Nairobi",
+    },
+    {
+      slug: "competency-based-pre-service-education-for-clinical-psychology-trainin",
+      note: "Pre-service education",
+    },
+    {
+      slug: "integrating-equip-competency-based-training-into-a-university-curricul",
+      note: "Pre-service evaluation",
+    },
+    {
+      slug: "piloting-competency-assessments-for-an-evidence-based-brief-psychologi",
+      note: "Switzerland pilot",
+    },
+    {
+      slug: "pretraining-skills-as-predictors-of-competence-of-nonspecialists-in-de",
+      note: "Trainee selection",
+    },
+    {
+      slug: "use-of-role-plays-to-assess-therapist-competency-and-its-association-w",
+      note: "Role-play review",
+    },
+    {
+      slug: "common-factors-in-psychological-treatments-delivered-by-non-specialist",
+      note: "Common-factors review",
+    },
+    {
+      slug: "identifying-core-competencies-for-remote-delivery-of-psychological-int",
+      note: "Remote-delivery review",
+    },
+    {
+      slug: "therapist-competence-in-global-mental-health-development-of-the-enhanc",
+      note: "ENACT",
+    },
+  ],
+  publicationsNote:
+    "The development paper, the pilot and evaluation studies, and the reviews the tools were built from.",
+
+  /* From the publications' author affiliations and acknowledgments. */
+  partners: [
+    "WHO",
+    "UNICEF",
+    "War Child",
+    "Center for Victims of Torture",
+    "University of Nairobi",
+    "Socios En Salud",
+    "HealthRight",
+    "Makerere University",
+    "Centre for Infectious Disease Research in Zambia",
+    "TPO Nepal",
+    "SystemSeed",
+  ],
+
+  resources: [
+    { label: "EQUIP platform", href: "https://equipcompetency.org", kind: "site" },
+    {
+      label: "Using EQUIP: the platform, its tools and training",
+      href: "/innovations/equip",
+      kind: "page",
+    },
+  ],
+
+  contact: {
+    name: "Ruta Rangel, MPH",
+    email: "rbraz@gwu.edu",
+  },
+
+  /* Projects that build on EQUIP, per the portfolio's `buildsOn`, plus
+     RESHAPE, which assesses its providers with ENACT. */
+  relatedSlugs: ["equip-su", "recoup-ny", "restore", "reshape"],
+};
+
 /** Every project with a detail record, keyed by slug. */
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
   [RESHAPE_DETAIL.slug]: RESHAPE_DETAIL,
+  [UNICEF_MMAP_DETAIL.slug]: UNICEF_MMAP_DETAIL,
+  [EQUIP_PROJECT_DETAIL.slug]: EQUIP_PROJECT_DETAIL,
 };
 
 /**

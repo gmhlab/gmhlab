@@ -554,6 +554,34 @@ export const HARBOUR_DETAIL: ProjectDetail = {
       ],
     },
   ],
+  /* Pilot-phase results, so the demo exercises `findings`. The second card's
+     `source` is deliberately unresolvable: it keeps its numbers and loses
+     only the citation line. */
+  findingsNote: "Results from the pilot that preceded the trial.",
+  findings: [
+    {
+      heading: "Rater reliability",
+      context: "COMPASS scale · 4 languages · 32 recorded sessions",
+      stats: [
+        { value: "0.81", label: "ICC" },
+        { value: "0.92", label: "Cronbach's α" },
+      ],
+      takeaway:
+        "Two raters blind to arm agreed closely enough for the scale to serve as the trial's fidelity measure.",
+      source: "competency-rating-across-four-languages-a-validation-study",
+    },
+    {
+      heading: "Nurse certification",
+      context: "Pilot clinics · 24 nurses",
+      stats: [
+        { value: "19", label: "Certified" },
+        { value: "2", label: "Rated sessions each" },
+      ],
+      takeaway:
+        "Most nurses cleared the certification threshold within the supervision window; the rest needed a second round.",
+      source: "not-a-real-slug",
+    },
+  ],
   publications: [
     {
       slug: "harbour-trial-protocol-stepped-care-counselling-in-coastal-primary",

@@ -431,20 +431,22 @@
 }
 
 /* Two tracks are distinguished by a single custom property, set once per
-   track and read by the legend swatch, the node ring and the code chip. */
-.project-detail-page .pd-tl-legend-provider,
-.project-detail-page .pd-tl-provider {
+   track and read by the legend swatch, the node ring and the code chip.
+   Keyed on the track's *position* in the record (`pd-tl-track-1`/`-2`, set
+   by the component), never on its id: these selectors once named RESHAPE's
+   `provider`/`patient`, and every other record's timeline silently lost its
+   colours and collapsed to one side. */
+.project-detail-page .pd-tl-track-1 {
   --pd-track-color: var(--gmh-color-brand-band);
   --pd-track-text: var(--gmh-color-on-brand-band);
 }
 
-.project-detail-page .pd-tl-legend-patient,
-.project-detail-page .pd-tl-patient {
+.project-detail-page .pd-tl-track-2 {
   --pd-track-color: var(--gmh-color-inverse-surface);
   --pd-track-text: var(--gmh-color-inverse-on-surface);
 }
 
-/* The spine. Desktop lays out [provider | spine | patient]; the rail itself
+/* The spine. Desktop lays out [track 1 | spine | track 2]; the rail itself
    is a background gradient on the grid, so it spans the full column height
    without a spacer element per row. */
 .project-detail-page .pd-tl {
@@ -508,6 +510,18 @@
   justify-content: center;
   letter-spacing: 0.03125rem;
   width: 2.25rem;
+}
+
+/* A milestone: a point the source gives no code, so a filled node on the
+   track's colour instead of a lettered chip. */
+.project-detail-page .pd-tl-dot {
+  background: var(--pd-track-color);
+  border-radius: var(--gmh-shape-corner-full);
+  box-shadow: 0 0 0 var(--gmh-space-100) var(--gmh-color-surface-container-high);
+  flex-shrink: 0;
+  height: 0.875rem;
+  margin-top: 0.75rem;
+  width: 0.875rem;
 }
 
 /* A phase measures nothing, so it gets no code and no filled node — just a
@@ -582,7 +596,212 @@
   width: 1px;
 }
 
+/* Findings ---------------------------------------------------------------- */
+
+/* Published results on the brand band. The Section variant resets the
+   heading colour to currentColor; everything here paints from the band's own
+   roles — on-brand-band for text, brand-band-accent (gold T80) for the
+   numbers, translucent on-brand-band for card edges — so it holds in both
+   themes, where the band stays navy. Mixes are sRGB: one side is
+   transparent. */
+/* Two columns, never three: a finding carries up to four numbers, which need
+   a card wide enough to sit them in one row. An odd last card spans both
+   columns rather than leaving a hole beside it. */
+.project-detail-page .pd-findings {
+  display: grid;
+  gap: var(--gmh-space-600);
+  grid-template-columns: repeat(auto-fit, minmax(min(30rem, 100%), 1fr));
+  list-style: none;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+/* Opaque, not a translucent wash: the band's contour texture would otherwise
+   run straight through the card's text. */
+.project-detail-page .pd-finding {
+  background: color-mix(
+    in srgb,
+    var(--gmh-color-on-brand-band) 6%,
+    var(--gmh-color-brand-band)
+  );
+  border-radius: var(--gmh-shape-corner-large);
+  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
+    color-mix(in srgb, var(--gmh-color-on-brand-band) 22%, transparent);
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-500);
+  min-width: 0;
+  padding: var(--gmh-space-800);
+}
+
+@media (min-width: 62rem) {
+  .project-detail-page .pd-finding:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+.project-detail-page .pd-finding-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-150);
+}
+
+.project-detail-page .pd-finding-context {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 80%, transparent);
+  font: var(--gmh-typescale-body-medium);
+}
+
+/* A row of numbers ruled off in gold: the value large in the brand face, the
+   label above it in small caps, so the eye lands on the figure first. */
+.project-detail-page .pd-finding-stats {
+  border-block: var(--gmh-stroke-border) solid
+    color-mix(in srgb, var(--gmh-color-brand-band-accent) 45%, transparent);
+  display: grid;
+  gap: var(--gmh-space-400) var(--gmh-space-600);
+  /* Two to a row in a narrow card, so four numbers make a square rather than
+     three and an orphan; the whole set in one row once the card is wide. The
+     count class comes from the component (capped at 4). */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding-block: var(--gmh-space-500);
+}
+
+.project-detail-page .pd-finding-stats-1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@container (min-width: 30rem) {
+  .project-detail-page .pd-finding-stats-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .project-detail-page .pd-finding-stats-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.project-detail-page .pd-finding-stat {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--gmh-space-100);
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.project-detail-page .pd-finding-stat-value {
+  color: var(--gmh-color-brand-band-accent);
+  font-family: var(--gmh-typescale-headline-large-font);
+  font-size: var(--gmh-typescale-headline-large-size);
+  font-variant-numeric: lining-nums tabular-nums;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.project-detail-page .pd-finding-stat-label {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 85%, transparent);
+  font-size: var(--gmh-typescale-label-medium-size);
+  font-weight: var(--gmh-ref-typeface-weight-semibold);
+  letter-spacing: 0.03125rem;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.project-detail-page .pd-finding-takeaway {
+  color: inherit;
+  font: var(--gmh-typescale-body-large);
+  margin: 0;
+}
+
+/* The citation sits at the card's foot whatever the takeaway's length. */
+.project-detail-page .pd-finding-source {
+  color: color-mix(in srgb, var(--gmh-color-on-brand-band) 80%, transparent);
+  font: var(--gmh-typescale-body-medium);
+  margin: auto 0 0;
+}
+
+.project-detail-page .pd-finding-source-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--gmh-color-brand-band-accent) 70%,
+    transparent
+  );
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+
+  &:hover {
+    color: var(--gmh-color-on-brand-band);
+    text-decoration-color: var(--gmh-color-brand-band-accent);
+    text-decoration-thickness: 2px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gmh-color-brand-band-accent);
+    outline-offset: 3px;
+  }
+}
+
 /* Publications ------------------------------------------------------------ */
+
+/* The disclosure under the featured works. The summary reads as a link-weight
+   control with its own chevron, which turns when open. */
+.project-detail-page .pd-pubs-more {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.project-detail-page .pd-pubs-more-summary {
+  align-items: center;
+  color: var(--gmh-color-primary);
+  cursor: pointer;
+  display: inline-flex;
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-200);
+  list-style: none;
+  width: fit-content;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::before {
+    border-bottom: var(--gmh-stroke-focus-ring) solid currentColor;
+    border-right: var(--gmh-stroke-focus-ring) solid currentColor;
+    content: "";
+    height: 0.45rem;
+    transform: rotate(-45deg);
+    transition: transform var(--gmh-motion-duration-short4)
+      var(--gmh-motion-easing-standard);
+    width: 0.45rem;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: var(--gmh-stroke-focus-ring) solid var(--gmh-color-primary);
+    outline-offset: 4px;
+  }
+}
+
+.project-detail-page .pd-pubs-more[open] > .pd-pubs-more-summary {
+  margin-bottom: var(--gmh-space-300);
+
+  &::before {
+    transform: rotate(45deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-detail-page .pd-pubs-more-summary::before {
+    transition: none;
+  }
+}
 
 .project-detail-page .pd-pubs {
   display: flex;
@@ -787,13 +1006,13 @@
     width: 4.5rem;
   }
 
-  .project-detail-page .pd-tl-provider .pd-tl-body {
+  .project-detail-page .pd-tl-track-1 .pd-tl-body {
     grid-column: 1;
     grid-row: 1;
     text-align: right;
   }
 
-  .project-detail-page .pd-tl-patient .pd-tl-body {
+  .project-detail-page .pd-tl-track-2 .pd-tl-body {
     grid-column: 3;
     grid-row: 1;
   }
@@ -817,6 +1036,7 @@
   }
 
   .project-detail-page .pd-tl-code,
+  .project-detail-page .pd-tl-dot,
   .project-detail-page .pd-tl-phase-dash {
     position: relative;
     z-index: 1;
@@ -828,9 +1048,36 @@
 
   /* Right-aligned prose needs its lists aligned too, or the bullets hang off
      the wrong edge. */
-  .project-detail-page .pd-tl-provider .pd-tl-cohorts {
+  .project-detail-page .pd-tl-track-1 .pd-tl-cohorts {
     padding-left: 0;
     padding-right: var(--gmh-space-600);
+  }
+
+  /* One population: a single left rail, the layout mobile already uses, at
+     desktop width. Each override is one class more specific than the
+     two-track rule it undoes. */
+  .project-detail-page .pd-tl-single .pd-tl-entry {
+    grid-template-columns: auto 1fr;
+  }
+
+  .project-detail-page .pd-tl-single .pd-tl-entry .pd-tl-marker {
+    grid-column: 1;
+  }
+
+  .project-detail-page .pd-tl-single .pd-tl-entry .pd-tl-body {
+    grid-column: 2;
+    max-width: 48rem;
+    text-align: left;
+  }
+
+  .project-detail-page .pd-tl-single .pd-tl-entry .pd-tl-cohorts {
+    padding-left: var(--gmh-space-600);
+    padding-right: 0;
+  }
+
+  /* Half the 4.5rem marker column, so the spine runs through the chips. */
+  .project-detail-page .pd-tl-single::before {
+    left: 2.25rem;
   }
 }
 
@@ -839,7 +1086,7 @@
 @media (max-width: 899px) {
   /* The only place the track is named on mobile, where both tracks share one
      column. Un-hides the screen-reader label. */
-  .project-detail-page .pd-tl-track-tag {
+  .project-detail-page .pd-tl:not(.pd-tl-single) .pd-tl-track-tag {
     clip-path: none;
     color: var(--gmh-color-on-surface-variant);
     font-size: var(--gmh-typescale-label-medium-size);

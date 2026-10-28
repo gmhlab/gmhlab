@@ -57,7 +57,10 @@ export const PROJECTS: Project[] = [
     status: "ongoing",
     design: "Global platform",
     method: "Competency-based training & supervision",
-    funder: "WHO · UNICEF",
+    /* WHO and UNICEF developed EQUIP; they did not fund it. The development
+       paper (Lancet Psychiatry 2025) credits USAID for the platform and the
+       implementation research, with an NIMH COVID-19 supplement. */
+    funder: "USAID · National Institute of Mental Health",
     locations: ["Worldwide"],
     regions: ["Global"],
     publications: 3,
@@ -80,14 +83,20 @@ export const PROJECTS: Project[] = [
   {
     slug: "unicef-mmapp",
     logo: "/projects/unicef-mmapp.png",
-    name: "UNICEF-MMAPP",
-    tagline: "Measuring Mental Health Among Adolescents and Young People",
+    /* The live site says "UNICEF-MMAPP" / "Measuring Mental Health Among
+       Adolescents and Young People"; UNICEF and every publication call the
+       initiative MMAP, with the name below. The slug keeps the live URL. */
+    name: "UNICEF-MMAP",
+    tagline: "Measurement of Mental Health Among Adolescents at the Population Level",
     summary:
       "A multi-organization research project developing a transculturally adapted, validated measure of adolescent anxiety and depression for low- and middle-income country settings.",
     status: "ongoing",
     design: "Measurement validation",
-    funder: "UNICEF",
-    locations: ["Multi-country"],
+    /* UNICEF leads MMAP; the protocol credits a Gates Foundation
+       data-strengthening grant to UNICEF HQ (2017–2018). */
+    funder: "Bill & Melinda Gates Foundation",
+    /* The protocol's four initial validation sites. */
+    locations: ["Belize", "Kenya", "Nepal", "South Africa"],
     regions: ["Global"],
     publications: 3,
   },

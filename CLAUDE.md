@@ -403,6 +403,31 @@ Four things worth knowing before extending it:
   timepoint chip. The media query documents this inline; keep each entry as its
   own three-column grid.
 
+Two more records exist since 2026-10-28 — `UNICEF_MMAP_DETAIL` (a validation
+study) and `EQUIP_PROJECT_DETAIL` (a development programme) — and they changed
+the contract in ways that matter for the next one:
+
+- **Timeline tracks are placed by their order in `tracks`, never by `id`.**
+  The CSS used to key on RESHAPE's `provider`/`patient` ids, so every other
+  record's timeline lost its colours and stacked on one side. One track renders
+  as a single left rail. A `point` with no `code` is a dated milestone (a dot);
+  never invent T-numbers a source does not use.
+- **`Objective.rank` is optional.** Omit it when the source does not rank its
+  objectives; the section then stops calling the ranks the protocol's.
+- **`findings`** renders published results as a "What it found" brand band,
+  each card citing a bibliography slug (`source`, fail-soft like
+  `publications`). Only published numbers go here.
+- **Published work shows the first three works the record lists**, with the
+  rest behind a "Show all N" disclosure — so order each record's
+  `publications` most-important first (protocol / development paper).
+- Section copy that assumed a trial is overridable per record (`armsLabel`,
+  `objectivesNote`, `timelineHeading`, `timelineNote`, `eligibilityNote`,
+  `findingsNote`).
+
+The EQUIP project page is the research; the platform as a product is the
+innovation page (`EQUIP_DETAIL`). They link to each other — keep content on
+its own side.
+
 A design-system trap this page hit, which fails silently (a second one —
 the default border matching the neutral band — was retired by the 2026-10-07
 re-skin; the `border-default-secondary` call sites it left are still fine): grid children of a `Flex container` need
