@@ -83,7 +83,10 @@ export function SiteFooter() {
             © {new Date().getFullYear()} The George Washington University ·
             Washington, DC
           </span>
-          <span>Built with @gmhlab/ui · @gmhlab/tokens · @gmhlab/blocks</span>
+          <span>
+            Built with @gmhlab/tokens · @gmhlab/core · @gmhlab/ui ·
+            @gmhlab/data · @gmhlab/blocks
+          </span>
         </>
       }
     />
