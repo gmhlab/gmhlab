@@ -18,9 +18,9 @@
  *     that range.
  *   - The hero has no side `image`, so it draws the contours fading into the
  *     GMH mark (the designer's "Contour hero — logo backdrop"), over a
- *     placeholder `background` photo (see `./hero-images`). The research cards
- *     draw their theme's graphics-kit glyph (`PUBLICATION_THEME_GLYPHS`)
- *     rather than photographs.
+ *     GW campus photo (Professors Gate) as its `background` (provenance in
+ *     `./hero-images`). The research cards draw their theme's graphics-kit
+ *     glyph (`PUBLICATION_THEME_GLYPHS`) rather than photographs.
  *   - The "How we work" section is the live /about page's three pillars —
  *     Areas of Research, Capacity Building, Consultation — with their bullet
  *     lists condensed, and the photo the about page sets beside each. The

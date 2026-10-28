@@ -2,7 +2,12 @@ import { ContactPage } from "@gmhlab/blocks";
 import type { Metadata } from "next";
 
 import { SiteContactForm } from "../../components/site-contact-form";
-import { CENTER_LOCATION, CONTACT_REPLY_TIME, CONTACT_TOPICS } from "@/content";
+import {
+  CENTER_LOCATION,
+  CONTACT_HERO_IMAGE,
+  CONTACT_REPLY_TIME,
+  CONTACT_TOPICS,
+} from "@/content";
 
 export const metadata: Metadata = {
   title: "Contact | GW Global Mental Health",
@@ -18,6 +23,7 @@ export default function Page() {
       topics={CONTACT_TOPICS}
       location={CENTER_LOCATION}
       replyTime={CONTACT_REPLY_TIME}
+      heroImage={CONTACT_HERO_IMAGE}
       form={<SiteContactForm />}
     />
   );
