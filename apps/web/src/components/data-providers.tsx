@@ -2,13 +2,12 @@
 
 import {
   mockAuthService,
-  mockContactService,
-  mockNewsletterService,
   mockPricingService,
   mockProductsService,
 } from "@gmhlab/core/mocks";
 import { AllProviders, type DataServices } from "@gmhlab/data";
 import type { ReactNode } from "react";
+import { siteContactService, siteNewsletterService } from "./site-services";
 
 /**
  * The site's backends. Mock services until the site has real ones — swap them
@@ -21,12 +20,10 @@ const SERVICES: DataServices = {
   auth: mockAuthService,
   pricing: mockPricingService,
   products: mockProductsService,
-  // Accepts every address and stores none — the footer signup is a demo
-  // until the Center's mailing list is wired in here.
-  newsletter: mockNewsletterService,
-  // Sends nothing — the contact form is a demo until a real service, one
-  // that routes each inquiry's `topic` to the right inbox, is wired in here.
-  contact: mockContactService,
+  // Both email the Center's inbox (globalmh@gwu.edu) through the route
+  // handlers in app/api — see server/mail.ts for the configuration.
+  newsletter: siteNewsletterService,
+  contact: siteContactService,
 };
 
 /** `AllProviders` bound to the site's services. Renders no DOM. */

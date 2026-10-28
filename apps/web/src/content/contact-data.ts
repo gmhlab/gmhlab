@@ -40,7 +40,7 @@
  *     contact service can deliver EQUIP requests and press requests to
  *     different people. Which inbox handles which route is the service's
  *     configuration (`components/data-providers.tsx`), not this file's —
- *     and today the service is the mock, which sends nothing.
+ *     today every route goes to globalmh@gwu.edu (`app/api/contact`).
  *   - **EQUIP "licensing".** EQUIP is distributed free by WHO, so the route
  *     says "training and support" rather than licensing.
  *   - **Students and jobs.** The About page lists courses and early-career
