@@ -4,6 +4,7 @@ import {
   IconGithub,
   IconInstagram,
   IconLinkedin,
+  IconMail,
   IconXLogo,
   IconYoutube,
 } from "../../icons";
@@ -113,9 +114,11 @@ export type SocialNetwork =
   | "instagram"
   | "youtube"
   | "linkedin"
-  | "github";
+  | "github"
+  | "email";
 export type SocialLink = {
   network: SocialNetwork;
+  /** For `email`, a `mailto:` URL. */
   href: string;
 };
 
@@ -128,6 +131,7 @@ const SOCIAL_NETWORKS: Record<
   youtube: { label: "YouTube", icon: <IconYoutube /> },
   linkedin: { label: "LinkedIn", icon: <IconLinkedin /> },
   github: { label: "GitHub", icon: <IconGithub /> },
+  email: { label: "Email", icon: <IconMail /> },
 };
 
 /** Icon buttons for a site's social accounts, in the order given. */

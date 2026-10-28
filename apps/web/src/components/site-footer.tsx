@@ -15,6 +15,7 @@ const SOCIAL_LINKS: SocialLink[] = [
     href: "https://www.linkedin.com/company/gwglobalmentalhealth",
   },
   { network: "github", href: "https://github.com/gmhlab" },
+  { network: "email", href: "mailto:globalmh@gwu.edu" },
 ];
 
 /**

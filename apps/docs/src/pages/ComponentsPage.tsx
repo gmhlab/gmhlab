@@ -234,6 +234,7 @@ const DEMO_SOCIAL_LINKS: SocialLink[] = [
   { network: "instagram", href: "#" },
   { network: "youtube", href: "#" },
   { network: "linkedin", href: "#" },
+  { network: "email", href: "mailto:hello@example.com" },
 ];
 
 const img = (seed: string, w: number, h: number) =>

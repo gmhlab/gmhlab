@@ -148,7 +148,7 @@ export { IconLinkedin } from "./IconLinkedin";
 // export { IconLock } from "./IconLock.tsx";
 // export { IconLogIn } from "./IconLogIn.tsx";
 // export { IconLogOut } from "./IconLogOut.tsx";
-// export { IconMail } from "./IconMail.tsx";
+export { IconMail } from "./IconMail";
 // export { IconMap } from "./IconMap.tsx";
 // export { IconMapPin } from "./IconMapPin.tsx";
 // export { IconMaximize } from "./IconMaximize.tsx";
