@@ -116,32 +116,6 @@ export const TEAM: Person[] = [
     ],
   },
   {
-    slug: "laure-experton",
-    name: "Laure Experton",
-    group: "core",
-    credentials: ["MD"],
-    role: "Assistant Professor",
-    photo: photo("laure-experton"),
-    projects: ["recoup-ny"],
-    bio: [
-      "Dr. Laure Experton is an Assistant Professor of Psychiatry and Behavioral Sciences and an outpatient psychiatrist at George Washington University. She completed her psychiatry residency at Georgetown University Hospital, where she served as Chief Resident and pursued advanced training in psychotherapy and global health through the Washington Baltimore Center for Psychoanalysis and the Global Health Equity Track. Dr. Experton earned her medical degree from the Royal College of Surgeons in Ireland and holds a Bachelor of Science from McGill University. Her dedication to education has earned her numerous awards, including recognition from the American Psychiatric Association and Georgetown University.",
-      "Dr. Experton is deeply committed to advancing mental health equity both locally and globally. Her work focuses on integrating mental health into primary care and supporting culturally tailored training of non-specialist providers in mental health delivery. She has collaborated with organizations such as MUSO in Mali to improve mental health care access in rural areas. Currently, she leads projects implementing WHO evidence-based psychological interventions to reduce distress among people facing adversity, including Problem Management Plus (PM+) in New York City and Washington, DC, and Self-Help Plus (SH+) in Senegal in collaboration with the World Bank. As a Population Health and Health Services Research Scholar, she has received grants to support her initiatives, driving innovative approaches to address mental health disparities. In addition to her clinical and global health work, Dr. Experton has conducted research on HIV and women's health, resulting in several peer-reviewed publications.",
-      "Dr. Experton combines her clinical expertise, cultural sensitivity, and dedication to health equity to address mental health disparities on both local and global scales. She is fluent in English, French, and proficient in Spanish.",
-    ],
-  },
-  {
-    slug: "georgia-eleftheriou",
-    name: "Georgia Eleftheriou",
-    group: "core",
-    credentials: ["PhD"],
-    role: "Senior Research Associate",
-    photo: photo("georgia-eleftheriou"),
-    authorNames: ["Georgia Eleftheriou"],
-    bio: [
-      "As an experienced Senior Research Associate, Georgia Eleftheriou collaborates with individuals, organisations and community-based networks aiming to reduce the burden of mental disorders in low- and middle-income resource settings (LMICs) globally. Georgia works on projects developing and testing preventive interventions, training, and educating mental health practitioners and translating evidence-based tools with a special focus on population with limited resources.",
-    ],
-  },
-  {
     slug: "ruta-rangel",
     name: "Ruta Rangel",
     group: "core",
@@ -183,21 +157,6 @@ export const TEAM: Person[] = [
       "Ruth Marie de Jong Montero, MSc is a dedicated Global Health professional with a strong academic foundation in International and European Law. She holds an MSc in Global Health from Georgetown University and an LLB in International and European Law from Rijksuniversiteit Groningen. Her expertise lies in maternal, reproductive, and mental health.",
       "Based in New York City, Ruth Marie works as a Research Assistant at the Center for Global Mental Health Equity at George Washington University. Most of her work focuses on supporting the RECOUP-NY study, which tests the effectiveness of Problem Management Plus (PM+) in New York City. Additionally, Ruth Marie supports the Center in publication writing.",
       "Fluent in English, Spanish, and Dutch, Ruth Marie thrives in diverse environments and is committed to advancing equitable healthcare worldwide.",
-    ],
-  },
-  {
-    slug: "ritika-singh",
-    name: "Ritika Singh",
-    group: "core",
-    credentials: ["MSc"],
-    role: "Senior Research Consultant",
-    location: "Kathmandu, Nepal",
-    photo: photo("ritika-singh"),
-    projects: ["reshape"],
-    authorNames: ["Ritika Singh"],
-    bio: [
-      "Ritika Singh, MSc, is a Senior Research Consultant at the GWU Center for Global Mental Health Equity and is based in Kathmandu, Nepal. She joined the Center in July 2021 as a Research Consultant with the NIMH R01 study RESHAPE (Reducing stigma among healthcare providers in Nepal). Her responsibilities include but are not limited to coordinating progress of the project by keeping track of deliverables; building study related tools and protocols; compiling routine results to contribute to technical reports and documentation of outcomes; and preparing manuscripts for publication. As a senior consultant, she is interested in designing, building, and implementing impact evaluation schemes across research projects.",
-      "She completed her M. Sc. from Jacobs University, Germany and University of Bremen, Germany in 2017. Her specialization is in International Relations: Global Governance and Social Theory. Since her graduation, she has been working on research and implementation projects in Nepal across a diverse array of fields including open governance, civic engagement, migration, minority rights, and mental health.",
     ],
   },
   {
@@ -325,6 +284,20 @@ export const TEAM: Person[] = [
       "I believe in sharing knowledge and building high quality systems to solve everyday problems of people and organisations. I always encourage people to write highly maintainable code following the best practices and standards.",
     ],
   },
+  {
+    slug: "laure-experton",
+    name: "Laure Experton",
+    group: "affiliate",
+    credentials: ["MD"],
+    role: "Assistant Professor",
+    photo: photo("laure-experton"),
+    projects: ["recoup-ny"],
+    bio: [
+      "Dr. Laure Experton is an Assistant Professor of Psychiatry and Behavioral Sciences and an outpatient psychiatrist at George Washington University. She completed her psychiatry residency at Georgetown University Hospital, where she served as Chief Resident and pursued advanced training in psychotherapy and global health through the Washington Baltimore Center for Psychoanalysis and the Global Health Equity Track. Dr. Experton earned her medical degree from the Royal College of Surgeons in Ireland and holds a Bachelor of Science from McGill University. Her dedication to education has earned her numerous awards, including recognition from the American Psychiatric Association and Georgetown University.",
+      "Dr. Experton is deeply committed to advancing mental health equity both locally and globally. Her work focuses on integrating mental health into primary care and supporting culturally tailored training of non-specialist providers in mental health delivery. She has collaborated with organizations such as MUSO in Mali to improve mental health care access in rural areas. Currently, she leads projects implementing WHO evidence-based psychological interventions to reduce distress among people facing adversity, including Problem Management Plus (PM+) in New York City and Washington, DC, and Self-Help Plus (SH+) in Senegal in collaboration with the World Bank. As a Population Health and Health Services Research Scholar, she has received grants to support her initiatives, driving innovative approaches to address mental health disparities. In addition to her clinical and global health work, Dr. Experton has conducted research on HIV and women's health, resulting in several peer-reviewed publications.",
+      "Dr. Experton combines her clinical expertise, cultural sensitivity, and dedication to health equity to address mental health disparities on both local and global scales. She is fluent in English, French, and proficient in Spanish.",
+    ],
+  },
 
   /* -- Students: the live page gives a field only -------------------------- */
   {
@@ -356,7 +329,9 @@ export const TEAM: Person[] = [
     photo: photo("radhika-wikramanayake"),
   },
 
-  /* -- Alumni: no photo (the live ones are stock), no `now` yet ------------ */
+  /* -- Alumni: no `now` yet; photos only where the headshot is the person -- */
+  { slug: "georgia-eleftheriou", name: "Georgia Eleftheriou", group: "alumni", credentials: ["PhD"], photo: photo("georgia-eleftheriou") },
+  { slug: "ritika-singh", name: "Ritika Singh", group: "alumni", credentials: ["MSc"], photo: photo("ritika-singh") },
   { slug: "mansurat-raji", name: "Mansurat Raji", group: "alumni", credentials: ["MPH"], year: 2024 },
   { slug: "christina-juan", name: "Christina Juan", group: "alumni", credentials: ["DrPH"], year: 2024 },
   { slug: "anvita-bhardwaj", name: "Anvita Bhardwaj", group: "alumni", credentials: ["DrPH"], year: 2024 },
