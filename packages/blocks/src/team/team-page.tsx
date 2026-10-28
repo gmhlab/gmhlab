@@ -251,7 +251,8 @@ function StudentRow({ person }: { person: Person }) {
 function AlumniRow({ person }: { person: Person }) {
   return (
     <li id={person.slug} className="team-row">
-      <Avatar person={person} size="small" />
+      {/* Alumni always get the monogram: no headshots in this list. */}
+      <Avatar person={{ ...person, photo: undefined }} size="small" />
       <div className="team-row-text">
         <TextStrong>{personDisplayName(person)}</TextStrong>
         <TextSmall className="team-role">
