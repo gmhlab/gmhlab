@@ -14,9 +14,9 @@ Workspaces are `apps/*` and `packages/*`; internal packages reference each other
 | `packages/core` | `@gmhlab/core` | Framework-agnostic domain layer: shared record types, backend service interfaces and pure helpers. No React, CSS or data; invented demo data is opt-in at `@gmhlab/core/mocks`. |
 | `packages/data` | `@gmhlab/data` | React bindings for the data layer: auth/pricing/products contexts, providers (`AllProviders`, …) and hooks (`useAuth`, …). Each provider takes its backend as a `service` prop — any implementation of the `@gmhlab/core` interfaces; there are no defaults. |
 | `packages/ui` | `@gmhlab/ui` | The component library (shadcn/Tailwind primitives + CSS layout primitives). Styles at `@gmhlab/ui/styles.css`, which `@import`s the tokens CSS rather than inlining it. |
-| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: example marketing sections (two of which read `@gmhlab/data`), slides, and the GW site pages (see [Site pages](#site-pages)). Styles at `@gmhlab/blocks/styles.css`. |
+| `packages/blocks` | `@gmhlab/blocks` | Higher-level composed blocks built from `ui` + `tokens`: the GW site pages (see [Site pages](#site-pages)) and brand slides. Styles at `@gmhlab/blocks/styles.css`. |
 | `apps/docs` | `docs` | Vite + React 19 reference app that consumes every package. |
-| `apps/web` | `web` | Next.js 16 App Router site consuming every package — the GW landing page at `/`, plus the GW pages at `/projects`, `/projects/reshape`, `/publications`, `/innovations` and `/innovations/equip`. Tailwind runs via `@tailwindcss/postcss`. |
+| `apps/web` | `web` | Next.js 16 App Router site consuming every package — the GW Center's site: `/`, `/team`, `/projects` and four project detail pages, `/innovations`, `/innovations/equip`, `/publications` and `/contact`. Tailwind runs via `@tailwindcss/postcss`. |
 
 The `packages/*` are built with tsup (ESM bundle + `.d.ts`, CSS copied into `dist/`).
 
@@ -56,7 +56,7 @@ pnpm dlx shadcn@latest add button -c apps/docs
 
 Keep the component as a **flat** `src/primitives/<name>.tsx` file — only `icon`, `image`, `logo`, and `text` retain their own subdirectories. After adding, export it from `packages/ui/src/primitives/index.ts` and rebuild `@gmhlab/ui`.
 
-Two things to fix up in generated components: rewrite shadcn's `@/lib/utils` import to the relative `../lib/utils` every other primitive uses, and replace any bare `data-horizontal:` / `data-vertical:` variant with `data-[orientation=horizontal]:` — Base UI emits `data-orientation`, so the bare form silently never matches. `CLAUDE.md` has the longer list of traps.
+Two things to fix up in generated components: rewrite shadcn's `@/lib/utils` import to the relative `../lib/utils` every other primitive uses, and replace any bare `data-horizontal:` / `data-vertical:` variant with `data-[orientation=horizontal]:` — Base UI emits `data-orientation`, so the bare form silently never matches. `packages/ui/CLAUDE.md` has the longer list of traps.
 
 ## Using components
 
@@ -115,11 +115,14 @@ export default function Page() {
 
 | Export | Mounted at | Notes |
 | --- | --- | --- |
+| `HomePage` | `/` | The landing page, from one `HomeContent` record; every figure on it is derived from the other records. |
+| `TeamPage` | `/team` | Core team, affiliates, students and alumni in one person format, with an initials monogram wherever there is no photo. |
 | `ProjectsPage` | `/projects` | Eleven research projects, filterable by status and region. Takes `projects`, plus `basePath` (default `/projects`) for the per-project detail links. |
-| `ProjectDetailPage` | `/projects/reshape` | One project's detail page. Takes a `ProjectDetail` record — see below. |
+| `ProjectDetailPage` | `/projects/reshape`, `/projects/equip`, `/projects/unicef-mmapp`, `/projects/recoup-ny` | One project's detail page. Takes a `ProjectDetail` record — see below. |
 | `PublicationsPage` | `/publications` | 343 publications (2015–2026), filterable by free text, year, theme, project and open access, sortable by date or citations. |
 | `InnovationsPage` | `/innovations` | The innovations index. Takes `innovations`. |
 | `InnovationDetailPage` | `/innovations/equip` | One innovation's detail page. Takes an `InnovationDetail` record. |
+| `ContactPage` | `/contact` | Contact-as-pitch: a care notice first, a card per inquiry route, then the form (`ContactForm`, passed in as a slot). |
 
 The blocks speak in the GW Center's voice by default — hero subtitles and
 closing calls to action come from `GMH_*_COPY` in `@gmhlab/blocks`, so teams that
@@ -138,21 +141,28 @@ adding a record plus a route wrapper — never editing the component.
 Their publications and related projects are stored as **slugs** resolved against
 `PUBLICATIONS`/`PROJECTS` at render time, so citations and metadata stay in one
 place; a card links only when its slug is in the `detailSlugs` prop, which is why
-the ten projects without records render as plain cards rather than 404s.
+the seven projects without records render as plain cards rather than 404s.
 
 `PUBLICATIONS` is the one **generated** dataset — a merge of the Center's own
 listing with the full OpenAlex records of two Center researchers, so it is a
 two-author merge rather than a complete Center archive. There is no generator
 script in the repo, and several of its conventions (how `slug` is derived, the
 precedence order behind `theme`, how records are deduplicated) fail silently when
-broken. Read its header and the `publications-data.ts` section of `CLAUDE.md`
-before adding or editing records by hand.
+broken. Read its header and `apps/web/CLAUDE.md` before adding or editing records by
+hand.
 
-Two conventions worth keeping if you add a fourth page: keep the page's CSS scoped
+Two conventions worth keeping if you add a page: keep the page's CSS scoped
 under a page-level class so it cannot leak into other consumers of
 `@gmhlab/blocks/styles.css`, and drive outbound links from props rather than
-hardcoding a path. `CLAUDE.md` covers both, along with the token traps that make
-muted text fail contrast in light mode.
+hardcoding a path. `packages/blocks/CLAUDE.md` covers both, and
+`packages/tokens/CLAUDE.md` the token traps that make muted text fail contrast
+in light mode.
+
+## Design files and agent docs
+
+The design system is also drawn in Figma, built *from* the code: **GMH - Foundations** (the tokens), **GMH - UI** and **GMH - Blocks** (the component libraries), and **GMH - App** (`apps/web`, route by route). `docs/figma.md` lists the files and how they are kept faithful to the code.
+
+The `CLAUDE.md` files are written for coding agents but double as the detailed developer notes: the root one covers the repo as a whole, and each of `packages/tokens`, `packages/ui`, `packages/blocks` and `apps/web` has its own next to the code it describes.
 
 ## Deploying `apps/web` to Vercel
 
@@ -189,7 +199,7 @@ All three currently apply to production, not just previews.
 
 ## Publishing
 
-The three `packages/*` publish to **public npm** under the `@gmhlab` scope. `apps/*` are `private: true` and never publish.
+The five `packages/*` publish to **public npm** under the `@gmhlab` scope. `apps/*` are `private: true` and never publish.
 
 ### Versioning
 
@@ -222,7 +232,7 @@ Then watch the run in the repo's **Actions** tab.
 
 **The tag must be annotated — `git tag -a`, not `git tag`.** `git push --follow-tags` pushes *only* annotated tags, so a lightweight tag stays on your machine, GitHub never sees it, no workflow fires, and nothing is published. It fails silently in both directions: the push reports success and Actions simply shows no new run. If a release seems not to have started, check `git ls-remote --tags origin` before anything else.
 
-`version:*` passes `--no-git-tag-version`, so npm bumps the manifests without creating three separate commits and three colliding tags — you make one commit and one tag by hand, covering every package. The filter keeps `apps/*` out of it.
+`version:*` passes `--no-git-tag-version`, so npm bumps the manifests without creating five separate commits and five colliding tags — you make one commit and one tag by hand, covering every package. The filter keeps `apps/*` out of it.
 
 Write the changelog entry **before** committing, while the changes are fresh. `CHANGELOG.md` has an `[Unreleased]` section with the Keep a Changelog headings to fill in.
 
@@ -239,7 +249,7 @@ pnpm release:check   # build + typecheck + `pnpm publish --dry-run` for every pa
 pnpm release         # publish locally — the fallback path, not the normal one
 ```
 
-`pnpm release` still works and is the escape hatch if CI is unavailable, but the account runs `auth-and-writes` 2FA, so it needs an OTP: `pnpm release --otp=<code>`. Codes rotate every 30 seconds and the three builds plus uploads take longer than that, so prefer publishing one package at a time with a fresh code, in the order tokens → core → data → ui → blocks. A local publish also produces **no provenance attestation**, since that requires CI's OIDC token.
+`pnpm release` still works and is the escape hatch if CI is unavailable, but the account runs `auth-and-writes` 2FA, so it needs an OTP: `pnpm release --otp=<code>`. Codes rotate every 30 seconds and the five builds plus uploads take longer than that, so prefer publishing one package at a time with a fresh code, in the order tokens → core → data → ui → blocks. A local publish also produces **no provenance attestation**, since that requires CI's OIDC token.
 
 Five things to know:
 
@@ -269,12 +279,12 @@ Shared versions are pinned centrally in `pnpm-workspace.yaml` under `catalog:`. 
 
 Developed and maintained by the GW Center of Global Mental Health, The George Washington University School of Medicine and Health Sciences.
 
-The three `@gmhlab/*` packages publish to **public npm**, but that is a distribution convenience only — it grants no right to use the software. Use requires a separate written agreement with GW. See [LICENSE](./LICENSE) for the full terms; direct licensing inquiries to terrancebrunner@gmail.com.
+The five `@gmhlab/*` packages publish to **public npm**, but that is a distribution convenience only — it grants no right to use the software. Use requires a separate written agreement with GW. See [LICENSE](./LICENSE) for the full terms; direct licensing inquiries to terrancebrunner@gmail.com.
 
-`LICENSE` is duplicated into each of `packages/*/` so it ships inside the published tarballs. **Edit the root copy and re-sync**, or the three will drift:
+`LICENSE` is duplicated into each of `packages/*/` so it ships inside the published tarballs. **Edit the root copy and re-sync**, or the copies will drift:
 
 ```bash
-for p in tokens ui blocks; do cp LICENSE packages/$p/LICENSE; done
+for p in tokens core data ui blocks; do cp LICENSE packages/$p/LICENSE; done
 ```
 
 The manifests declare `"license": "SEE LICENSE IN LICENSE"` — npm's convention for a custom license with no SPDX identifier. Don't replace it with an SPDX id.
