@@ -63,6 +63,13 @@ export type HeaderAuthProps = {
   onLogin?: () => void;
   onRegister?: () => void;
   onLogout?: () => void;
+  /**
+   * The signed-in user's "View profile" entry (the account menu on desktop,
+   * the user block in the mobile sheet). Without it the entry is inert.
+   */
+  onProfile?: () => void;
+  /** Label for that entry. Defaults to "View profile". */
+  profileLabel?: string;
 };
 
 export type HeaderNavProps = {
@@ -81,6 +88,8 @@ export function HeaderAuth({
   onLogin,
   onRegister,
   onLogout,
+  onProfile,
+  profileLabel = "View profile",
   navItems = [],
   activeHref,
   logo,
@@ -224,6 +233,17 @@ export function HeaderAuth({
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <Label>{user.name}</Label>
+              {onProfile && (
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setOpen(false);
+                    onProfile();
+                  }}
+                >
+                  {profileLabel}
+                </Button>
+              )}
               <Button variant="ghost" size="sm" onClick={onLogout}>
                 Log out
               </Button>
@@ -255,7 +275,7 @@ export function HeaderAuth({
             <IconChevronDown />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={onProfile}>
               <Flex gap="200" alignSecondary="center">
                 <Avatar>
                   {user.avatar && (
@@ -265,7 +285,7 @@ export function HeaderAuth({
                 </Avatar>
                 <Flex direction="column">
                   <TextStrong>{user.name}</TextStrong>
-                  <TextSmall>View profile</TextSmall>
+                  <TextSmall>{profileLabel}</TextSmall>
                 </Flex>
               </Flex>
             </DropdownMenuItem>
@@ -319,6 +339,8 @@ export function Header({
   onLogin,
   onRegister,
   onLogout,
+  onProfile,
+  profileLabel,
   navItems,
   activeHref,
   ...props
@@ -372,6 +394,8 @@ export function Header({
           onLogin={onLogin}
           onRegister={onRegister}
           onLogout={onLogout}
+          onProfile={onProfile}
+          profileLabel={profileLabel}
           navItems={navItems}
           activeHref={activeHref}
           logo={logo}

@@ -1,6 +1,6 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import type { AuthService, Credentials, User } from "@gmhlab/core";
+import type { AuthService, Credentials, Registration, User } from "@gmhlab/core";
 
 export type AuthProviderProps = {
   /** The auth backend. Pass a stable reference — a new object re-runs session restore. */
@@ -15,16 +15,22 @@ export function AuthProvider({ service, children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   // Restore an existing session on mount
   useEffect(() => {
     let cancelled = false;
-    service.getCurrentUser().then(
-      (storedUser) => {
-        if (!cancelled && storedUser) setUser(storedUser);
-      },
-      () => {},
-    );
+    service
+      .getCurrentUser()
+      .then(
+        (storedUser) => {
+          if (!cancelled && storedUser) setUser(storedUser);
+        },
+        () => {},
+      )
+      .finally(() => {
+        if (!cancelled) setIsReady(true);
+      });
     return () => {
       cancelled = true;
     };
@@ -40,6 +46,21 @@ export function AuthProvider({ service, children }: AuthProviderProps) {
     } catch (err) {
       setError(err as Error);
       throw err; // Re-throw so components can handle it
+    } finally {
+      setIsLoading(false);
+    }
+  }, [service]);
+
+  const register = useCallback(async (registration: Registration) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const user = await service.register(registration);
+      setUser(user);
+    } catch (err) {
+      setError(err as Error);
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -68,12 +89,14 @@ export function AuthProvider({ service, children }: AuthProviderProps) {
     () => ({
       user,
       isLoading,
+      isReady,
       error,
       login,
+      register,
       logout,
       clearError,
     }),
-    [user, isLoading, error, login, logout, clearError],
+    [user, isLoading, isReady, error, login, register, logout, clearError],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

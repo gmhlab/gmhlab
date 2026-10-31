@@ -31,6 +31,15 @@ export const mockAuthService: AuthService = {
     return user;
   },
 
+  async register({ name, email, password }) {
+    const user = await mockAuthService.login({ email, password });
+    const named = { ...user, name };
+    try {
+      localStorage.setItem(USER_KEY, JSON.stringify(named));
+    } catch {}
+    return named;
+  },
+
   async logout() {
     await delay(500);
     try {

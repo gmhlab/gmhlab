@@ -1,0 +1,462 @@
+/* The dashboard's look: the brand's navy and gold pushed further than the
+ * public site — depth from layered token gradients, a film-grain texture, the
+ * kit's contour lines, and gold used as light rather than as text.
+ *
+ * No literal brand colours: every tint is a color-mix of a --gmh-* token.
+ * Neutral white/black alphas are used for light and shade only.
+ * Everything that moves stops under prefers-reduced-motion (bottom of file). */
+
+.dash {
+  --dash-navy: var(--gmh-color-navy);
+  --dash-navy-deep: color-mix(in srgb, var(--gmh-color-navy) 72%, black);
+  --dash-gold: var(--gmh-color-tertiary-container);
+  --dash-gold-light: var(--gmh-color-brand-band-accent);
+  --dash-sky: var(--gmh-color-inverse-primary);
+  --dash-on-navy: var(--gmh-color-on-brand-band);
+  --dash-radius: var(--gmh-shape-corner-extra-large, 28px);
+  --dash-sidebar-w: 17.5rem;
+  --dash-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --dash-dots: radial-gradient(color-mix(in srgb, var(--gmh-color-on-surface) 14%, transparent) 1px, transparent 1.2px);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  /* The app's <body> is a 100%-tall flex column, and an explicit min-height
+     replaces a flex item's automatic one — without this the shell shrinks to
+     the viewport, its content overflows it, and the sticky sidebar has no
+     room to stick. */
+  flex: none;
+  background: var(--gmh-color-surface);
+  color: var(--gmh-color-on-surface);
+}
+
+/* The canvas: two soft brand lights and a dot grid, fixed behind everything. */
+.dash::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(55rem 38rem at 92% -8%, color-mix(in srgb, var(--dash-gold) 20%, transparent), transparent 62%),
+    radial-gradient(48rem 42rem at 18% 12%, color-mix(in srgb, var(--dash-navy) 11%, transparent), transparent 65%),
+    radial-gradient(40rem 30rem at 60% 110%, color-mix(in srgb, var(--dash-sky) 14%, transparent), transparent 70%);
+}
+.dash::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--dash-grain);
+  opacity: 0.09;
+  mix-blend-mode: multiply;
+}
+.dark .dash::after {
+  mix-blend-mode: screen;
+  opacity: 0.05;
+}
+/* Dashboard navy surfaces are the GW pin in both modes (not the dark-mode
+   brand band), so their ink stays the designer's reversed white rather than
+   dark mode's pale-blue on-brand role. */
+.dark .dash {
+  --dash-on-navy: white;
+}
+
+.dash-dots {
+  background-image: var(--dash-dots);
+  background-size: 18px 18px;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+.dash-sidebar {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--dash-on-navy);
+  background:
+    radial-gradient(22rem 16rem at 0% 0%, color-mix(in srgb, var(--dash-gold) 26%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--dash-navy) 0%, var(--dash-navy-deep) 100%);
+}
+.dash-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 22rem;
+  z-index: -1;
+  background: white;
+  opacity: 0.55;
+  mask: var(--graphic-contour-mask) bottom / 260% 100% no-repeat;
+  -webkit-mask: var(--graphic-contour-mask) bottom / 260% 100% no-repeat;
+  animation: dash-drift 38s linear infinite alternate;
+}
+.dash-sidebar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--dash-grain);
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.dash-nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--dash-on-navy) 78%, transparent);
+  transition: color 200ms, background-color 200ms;
+}
+.dash-nav-link:hover {
+  color: var(--dash-on-navy);
+  background: color-mix(in srgb, white 7%, transparent);
+}
+.dash-nav-link[aria-current="page"] {
+  color: var(--gmh-color-on-tertiary-container);
+}
+.dash-nav-pill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 999px;
+  background: linear-gradient(100deg, var(--dash-gold-light), var(--dash-gold));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, white 30%, transparent) inset,
+    0 8px 28px -8px color-mix(in srgb, var(--dash-gold) 80%, transparent);
+}
+.dash-nav-link:focus-visible {
+  outline: 2px solid var(--dash-gold-light);
+  outline-offset: 2px;
+}
+
+/* ── Hero bands ───────────────────────────────────────────────────────── */
+
+.dash-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--dash-radius);
+  color: var(--dash-on-navy);
+  background: linear-gradient(125deg, var(--dash-navy) 0%, var(--dash-navy-deep) 70%);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 18%, transparent) inset,
+    0 30px 60px -30px color-mix(in srgb, var(--dash-navy) 70%, transparent);
+}
+.dash-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--dash-grain);
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.dash-hero .graphic {
+  --graphic-ink: color-mix(in srgb, white 85%, var(--dash-sky));
+  --graphic-ground: var(--dash-navy);
+}
+
+/* Slow aurora: three blurred brand lights orbiting behind the copy. */
+.dash-aurora {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  filter: blur(60px);
+  opacity: 0.85;
+}
+.dash-aurora span {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+.dash-aurora span:nth-child(1) {
+  width: 46%;
+  height: 60%;
+  left: 52%;
+  top: 0%;
+  background: color-mix(in srgb, var(--dash-gold) 75%, transparent);
+  animation: dash-orbit-a 22s ease-in-out infinite alternate;
+}
+.dash-aurora span:nth-child(2) {
+  width: 40%;
+  height: 55%;
+  left: 20%;
+  top: 40%;
+  background: color-mix(in srgb, var(--dash-sky) 55%, transparent);
+  animation: dash-orbit-b 26s ease-in-out infinite alternate;
+}
+.dash-aurora span:nth-child(3) {
+  width: 30%;
+  height: 40%;
+  left: 70%;
+  top: 55%;
+  background: color-mix(in srgb, var(--dash-gold-light) 45%, transparent);
+  animation: dash-orbit-c 30s ease-in-out infinite alternate;
+}
+
+@keyframes dash-orbit-a {
+  to { transform: translate(-18%, 22%) scale(1.15); }
+}
+@keyframes dash-orbit-b {
+  to { transform: translate(30%, -18%) scale(0.9); }
+}
+@keyframes dash-orbit-c {
+  to { transform: translate(-40%, -30%) scale(1.25); }
+}
+@keyframes dash-drift {
+  to { mask-position: 100% 100%; -webkit-mask-position: 100% 100%; }
+}
+
+/* ── Surfaces ─────────────────────────────────────────────────────────── */
+
+.dash-panel {
+  position: relative;
+  border-radius: var(--dash-radius);
+  background: color-mix(in srgb, var(--gmh-color-surface-container-lowest) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gmh-color-outline-variant) 70%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 60%, transparent) inset,
+    0 18px 40px -28px color-mix(in srgb, var(--gmh-color-shadow, black) 45%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+.dark .dash-panel {
+  background: color-mix(in srgb, var(--gmh-color-surface-container) 78%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 7%, transparent) inset,
+    0 18px 40px -28px black;
+}
+
+/* Glare that follows the pointer on tilt cards (TiltCard sets --mx/--my). */
+.dash-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.dash-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, white 28%, transparent), transparent 45%);
+  transition: opacity 300ms;
+  mix-blend-mode: soft-light;
+}
+.dash-tilt:hover::after {
+  opacity: 1;
+}
+
+/* Art tiles: a module's glyph or shape on a lit, contoured ground. */
+.dash-art {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--dash-radius) - 8px);
+}
+.dash-art[data-tone="navy"] {
+  background:
+    radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--dash-gold) 45%, transparent), transparent 55%),
+    linear-gradient(150deg, var(--dash-navy), var(--dash-navy-deep));
+}
+.dash-art[data-tone="gold"] {
+  background:
+    radial-gradient(110% 90% at 15% 90%, color-mix(in srgb, var(--dash-navy) 30%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--dash-gold-light), var(--dash-gold));
+}
+.dash-art[data-tone="sky"] {
+  background:
+    radial-gradient(110% 90% at 80% 20%, color-mix(in srgb, white 50%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--gmh-color-primary-fixed), var(--gmh-color-primary-fixed-dim));
+}
+.dash-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: white;
+  opacity: 0.35;
+  mask: var(--graphic-contour-mask) center / 240% 120% no-repeat;
+  -webkit-mask: var(--graphic-contour-mask) center / 240% 120% no-repeat;
+}
+.dash-art[data-tone="gold"]::before,
+.dash-art[data-tone="sky"]::before {
+  background: var(--dash-navy);
+  opacity: 0.22;
+}
+.dash-art[data-tone="navy"] .graphic {
+  --graphic-ink: color-mix(in srgb, white 88%, var(--dash-sky));
+  --graphic-ground: var(--dash-navy);
+}
+.dash-art[data-tone="gold"] .graphic,
+.dash-art[data-tone="sky"] .graphic {
+  --graphic-ink: var(--dash-navy);
+  --graphic-ground: var(--dash-gold-light);
+  --graphic-gold: color-mix(in srgb, white 70%, var(--dash-gold));
+}
+.dash-art .graphic {
+  filter: drop-shadow(0 10px 18px color-mix(in srgb, black 25%, transparent));
+}
+
+/* Sweep of light across a button or chip. */
+.dash-shine {
+  position: relative;
+  overflow: hidden;
+}
+.dash-shine::after {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -60%;
+  width: 40%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, white 55%, transparent), transparent);
+  animation: dash-sweep 4.5s ease-in-out infinite;
+}
+@keyframes dash-sweep {
+  0%, 60% { left: -60%; }
+  100% { left: 140%; }
+}
+
+/* Gold gradient text on navy only (light gold on navy passes contrast;
+   never on paper — see the gold contrast rule). */
+.dash-gold-text {
+  background: linear-gradient(90deg, var(--dash-gold-light), color-mix(in srgb, var(--dash-gold-light) 60%, white));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dash-skeleton {
+  background: linear-gradient(90deg,
+    var(--gmh-color-surface-container) 0%,
+    var(--gmh-color-surface-container-high) 50%,
+    var(--gmh-color-surface-container) 100%);
+  background-size: 200% 100%;
+  animation: dash-skeleton 1.4s ease-in-out infinite;
+}
+@keyframes dash-skeleton {
+  to { background-position: -200% 0; }
+}
+
+/* Lesson prose. */
+.dash-prose p {
+  margin-block: 0.75em;
+  line-height: 1.7;
+}
+
+/* Slide previews: 16:9 boxes that scale their type with container width. */
+.dash-slide {
+  container-type: inline-size;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Sign-in brand panel. A flat navy ground on purpose: the contour field's
+   clearing around the mark is painted in --graphic-ground, so any gradient
+   behind it would show the clearing as a disc. Depth comes from a vignette
+   drawn *over* the art (::before, under the copy) and the grain. */
+.dash-auth-art {
+  position: relative;
+  isolation: isolate;
+  background: var(--dash-navy);
+  color: var(--dash-on-navy);
+}
+.dash-auth-art .graphic {
+  --graphic-ink: var(--dash-on-navy);
+  --graphic-ground: var(--dash-navy);
+}
+/* graphics.css sets the mark's ink per context; on this pinned navy it is
+   always the reversed white. */
+.dash .dash-auth-art .graphic-mark {
+  --logo-mark-ink: var(--dash-on-navy);
+}
+.dash-auth-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--dash-navy) 70%, transparent) 0%, transparent 16%),
+    linear-gradient(0deg, var(--dash-navy-deep) 0%, color-mix(in srgb, var(--dash-navy-deep) 85%, transparent) 26%, transparent 52%);
+}
+/* The sign-in banner: ContourGlobe (1440x640, mark centred 75% across and
+   48% down) placed so the mark sits in the middle of the free space. Sized in
+   container units — a `%` in `top` would resolve against height, not width.
+   Wide enough (≤ 210cqw) that the contours run off the panel's right edge,
+   capped by height (≤ 420cqh) so the mark never crowds the copy; where the
+   cap leaves the artwork short of the edge, the mask fades it out. */
+.dash-auth-banner {
+  container-type: size;
+}
+.dash-auth-banner-art {
+  --banner-w: min(210cqw, 420cqh);
+  position: absolute;
+  width: var(--banner-w);
+  left: calc(50cqw - var(--banner-w) * 0.75);
+  top: calc(50cqh - var(--banner-w) * 0.444 * 0.484);
+  /* The mark ends 85.4% across (x 930 + 300 of 1440), so the fade starts after it. */
+  mask-image: linear-gradient(90deg, #000 88%, transparent 99%);
+}
+.dash-auth-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--dash-grain);
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash *,
+  .dash *::before,
+  .dash *::after,
+  .dash::before {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The GMH mark on the navy sidebar: white ink, a little smaller. logo.css
+   sets the roles on `.logo-gmh > svg` itself (and again under .dark), so the
+   override targets the svg, with enough specificity to beat both. */
+.dash .dash-sidebar-brand .logo-gmh > svg {
+  --logo-gmh-height: 2.25rem;
+  --logo-mark-ink: var(--dash-on-navy);
+}
+
+.dash-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, white 22%, transparent) transparent;
+}
+
+/* The GMH mark in slide footers. Paper slides keep navy ink even when the UI
+   is dark (slides are print); reversed slides take white. Sized in container
+   units inside a preview, fixed off-screen where it is baked for export. */
+.dash .dash-slide-mark .logo-gmh > svg {
+  --logo-gmh-height: 48px;
+  --logo-mark-ink: var(--gmh-color-navy);
+}
+.dash .dash-slide .dash-slide-mark .logo-gmh > svg {
+  --logo-gmh-height: 4.4cqw;
+}
+.dash .dash-slide-mark-reversed .logo-gmh > svg {
+  --logo-mark-ink: white;
+}
+/* Paper slides stay paper in dark mode, so their graphics stay navy. */
+.dash-slide:not(.dash-hero) .graphic {
+  --graphic-ink: var(--gmh-color-navy);
+  --graphic-ground: white;
+}

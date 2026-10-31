@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Libre_Baskerville, Nunito_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import { DataProviders } from "../components/data-providers";
-import { SiteFooter } from "../components/site-footer";
-import { SiteHeader, SiteUtilityBar } from "../components/site-header";
 import { ThemeProvider } from "../components/theme-provider";
 import "./globals.css";
 
@@ -49,15 +47,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          {/* DataProviders renders no DOM, so the header, <main> and footer are
-              the body's own flex children — that is what lets Footer's
-              `margin-top: auto` pin it to the bottom on short pages. */}
-          <DataProviders>
-            <SiteUtilityBar />
-            <SiteHeader />
-            <main className="site-main">{children}</main>
-            <SiteFooter />
-          </DataProviders>
+          {/* DataProviders renders no DOM, so each route group's chrome is the
+              body's own flex children. The public site's header, <main> and
+              footer live in (site)/layout.tsx; the dashboard has its own shell
+              in (dashboard)/layout.tsx. */}
+          <DataProviders>{children}</DataProviders>
         </ThemeProvider>
       </body>
     </html>

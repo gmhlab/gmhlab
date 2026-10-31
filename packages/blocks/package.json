@@ -57,6 +57,7 @@
     "@gmhlab/ui": "workspace:*",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
+    "lucide-react": "catalog:",
     "motion": "catalog:",
     "radix-ui": "catalog:",
     "react-aria-components": "catalog:",

@@ -62,3 +62,14 @@ Titles never end in a period (APA venues include one), `authors` holds at most
 six names with the true total in `authorCount`, and the array is sorted **date
 descending** — the page relies on that order. `citations`/`openAccess` are
 point-in-time and never re-fetched at runtime.
+
+## Workspace records (`dashboard-*.ts`, `equip-training.ts`)
+
+The member workspace's content (see "The member workspace" in the root
+`CLAUDE.md`). Each header documents provenance; in short, **nearly all of it is
+demo**: storefront prices (no payment is taken), the noticeboard, the EQUIP
+Academy lessons, quizzes and role-play transcript (invented, modelled on the
+public EQUIP platform, shown with `EQUIP_DEMO_NOTE`), and the handbook outline.
+Project rooms are **derived from `PROJECTS`**, so a new project gets a room; their
+resources have no files yet. Never put invented copy under a real person's name:
+the seeded demo accounts live in `@gmhlab/core/mocks` and are fictional.

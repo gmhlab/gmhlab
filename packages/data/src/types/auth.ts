@@ -1,4 +1,4 @@
-import type { Credentials, User } from "@gmhlab/core";
+import type { Credentials, Registration, User } from "@gmhlab/core";
 
 /**
  * Authentication context type
@@ -20,6 +20,15 @@ export interface AuthContextType {
    * Method to log a user in
    */
   login: (credentials: Credentials) => Promise<void>;
+  /**
+   * Open sign-up: create an account and sign it in
+   */
+  register: (registration: Registration) => Promise<void>;
+  /**
+   * False until the stored session has been checked on load. Gate signed-in
+   * routes on this, or they redirect before the session is restored.
+   */
+  isReady: boolean;
   /**
    * Method to log a user out
    */

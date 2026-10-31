@@ -1,7 +1,7 @@
 import { ContactPage } from "@gmhlab/blocks";
 import type { Metadata } from "next";
 
-import { SiteContactForm } from "../../components/site-contact-form";
+import { SiteContactForm } from "@/components/site-contact-form";
 import {
   CENTER_LOCATION,
   CONTACT_HERO_IMAGE,

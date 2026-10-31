@@ -91,8 +91,9 @@ Four things worth knowing before extending it:
   so a typo shortens the list rather than breaking a row.
 - **Related projects are slugs into `PROJECTS`**, and a card only renders a
   link when its slug is in the `detailSlugs` prop (the app passes
-  `PROJECT_DETAIL_SLUGS`). Ten of the eleven projects have no detail record
-  yet; linking them all would ship ten 404s. `InnovationsPage` uses the same
+  `PROJECT_DETAIL_SLUGS`). Seven of the eleven projects have no detail record
+  yet (RESHAPE, EQUIP, UNICEF-MMAPP and RECOUP-NY do); linking them all
+  would ship seven 404s. `InnovationsPage` uses the same
   prop for the same reason.
 - **The timeline is chronological across both tracks, not grouped by track.**
   That ordering is the point — it shows patient enrollment opening while
@@ -208,3 +209,55 @@ New ui pieces it introduced, all reusable: `TextEyebrow`, `TextBlockquote`, the
 (navy shadows, gold highlights), `Button`/`Badge` `variant="accent"`,
 `Section variant="tint"`, the restyled `StatsCard`, and the brand-band gold glow
 on every `Section variant="brand"`.
+
+## The member workspace (`dashboard/`, 2026-10-31)
+
+The dashboard behind sign-in. It is the one group that **breaks two page-block
+rules on purpose**, so know which:
+
+- **It takes callbacks** (`onSave`, `onCheckout`, `onExport`, …). Its routes
+  are interactive and always rendered by client wrappers in `apps/web`, so the
+  "no function-valued props" rule (which protects server route files) does not
+  apply. It is still **hook-free**: no block here imports `@gmhlab/data`. The
+  app reads `useAccount`/`useLearning`/… and passes plain values in.
+- **It renders its own chrome.** `DashboardShell` (sidebar, top bar, ⌘K
+  palette, toaster) and `AuthScreen` are full-height layouts mounted *instead
+  of* the site header and footer, in their own route groups.
+
+Everything else holds: records are props (`DashboardModule`, `Course`,
+`PracticeScenario`, `ProjectRoom`, `HandbookSection` in `dashboard-types.ts`;
+the records are `apps/web/src/content/dashboard-*.ts` and `equip-training.ts`),
+copy defaults live in `GMH_DASHBOARD_COPY`, links go through a
+`linkComponent` prop (pass `next/link`), and invented content takes a `note`
+the page shows (`DemoNote`).
+
+- **Access is core's `canAccess`**, never re-derived here. `unlockHint` only
+  phrases a rule for the UI.
+- **The look lives in `dashboard.css`**, every class `dash-`-prefixed and all
+  colour from tokens: lit navy bands (`.dash-hero` + `.dash-aurora`), grain
+  (`--dash-grain`), the kit's contour mask on art tiles (`.dash-art`
+  `data-tone="navy|gold|sky"`), glass panels (`.dash-panel`), and a light sweep
+  (`.dash-shine`). Motion is `motion/react` (`kit.tsx`: `Stagger`/`Item`,
+  `TiltCard`, `ProgressRing`, `CountUp`, `Confetti`); the shell wraps
+  everything in `MotionConfig reducedMotion="user"` and the CSS stops every
+  animation under `prefers-reduced-motion`.
+- **`.dash` sets `flex: none`.** The app's `<body>` is a 100%-tall flex column,
+  and `min-height: 100vh` replaces a flex item's automatic minimum — without it
+  the shell shrinks to the viewport, content overflows it, and the sticky
+  sidebar scrolls away. The sidebar `aside` also needs `self-start`.
+- **Logo overrides target `.logo-gmh > svg`** (where `logo.css` sets the roles,
+  and again under `.dark`), with a `.dash` prefix to win on specificity.
+- **Exports bake colour.** `bakeSvg` (graphics kit) inlines computed paint so a
+  downloaded SVG looks right outside the page; the slide and signature tools
+  read hex from the tokens at runtime (`useTokenColors`). Slides are always
+  print — white paper, navy ink — using only the GW pins (navy, gold, light
+  gold), which are the same in light and dark. `exportDeckToPptx` takes the
+  `pptxgenjs` constructor as an argument, so blocks never depends on it.
+- **The sign-in banner is `ContourGlobe centerpiece="mark"` on flat navy.**
+  The mark's clearing is painted in `--graphic-ground`, so the panel must be
+  a flat colour (depth comes from a vignette *over* the art). The banner is
+  placed in container units (`cqw`/`cqh`, not `%` — `top` would resolve a `%`
+  against height) to centre the mark, and its edge fade starts after 85.4%
+  of the artwork, where the mark ends. On dashboard navy (the GW pin in both
+  modes) ink is white via `--dash-on-navy`, never dark mode's pale-blue
+  `on-brand-band`.

@@ -148,3 +148,23 @@ export function gmhProjectDetailCta(detail: {
     ],
   };
 }
+
+/**
+ * The member workspace (dashboard). Every string here is a default the
+ * dashboard blocks take as an overridable prop.
+ */
+export const GMH_DASHBOARD_COPY = {
+  /** Sidebar wordmark: eyebrow over name. */
+  workspaceEyebrow: "GMH Lab",
+  workspaceName: "Workspace",
+  /** Sign-in screen. */
+  authHeadline: "Tools, training and resources for everyone working with the Center.",
+  authBody:
+    "Sign up free to use the brand studio, the slide and graphics kits, and the EQUIP Academy. Partners and staff get their project rooms once approved.",
+  /** The organisation lines in the email signature and slide footers. */
+  organisation: "Center for Global Mental Health",
+  institution: "The George Washington University",
+  school: "School of Medicine and Health Sciences",
+  /** Storefront honesty line — the store takes no payment. */
+  storeNote: "Demo storefront: no payment is taken and nothing is charged.",
+};

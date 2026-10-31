@@ -8,10 +8,7 @@ import {
   UtilityBar,
 } from "@gmhlab/ui";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-// Mock credentials accepted by mockAuthService (see data-providers.tsx).
-const DEMO_CREDENTIALS = { email: "Charlie Brown", password: "snooptroupe" };
+import { usePathname, useRouter } from "next/navigation";
 
 /**
  * The site nav. `render` hands ui a ready-made `next/link` so the header
@@ -36,8 +33,9 @@ const NAV_ITEMS: HeaderNavItem[] = [
 
 /** The ui Header wired to the @gmhlab/data auth layer and the app router. */
 export function SiteHeader() {
-  const { user, login, logout } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   /* Match on route prefix, not equality, so a detail page like
    * /innovations/equip still lights up its section. Longest match wins, which
@@ -57,9 +55,11 @@ export function SiteHeader() {
       navItems={NAV_ITEMS}
       activeHref={activeHref}
       user={user ? { name: user.name, avatar: user.avatar } : null}
-      onLogin={() => login(DEMO_CREDENTIALS)}
-      onRegister={() => login(DEMO_CREDENTIALS)}
+      onLogin={() => router.push("/login")}
+      onRegister={() => router.push("/login?mode=signup")}
       onLogout={logout}
+      onProfile={() => router.push("/dashboard")}
+      profileLabel="Open your dashboard"
     />
   );
 }

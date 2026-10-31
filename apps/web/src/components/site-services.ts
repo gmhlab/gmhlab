@@ -1,4 +1,10 @@
-import type { ContactService, NewsletterService } from "@gmhlab/core";
+import type {
+  ContactService,
+  NewsletterService,
+  PricingService,
+  ProductsService,
+} from "@gmhlab/core";
+import { DASHBOARD_PLANS, DASHBOARD_PRODUCTS } from "@/content/dashboard-modules";
 
 /**
  * POST a JSON body to one of the site's own route handlers. Rejects with the
@@ -35,4 +41,14 @@ export const siteContactService: ContactService = {
 export const siteNewsletterService: NewsletterService = {
   subscribe: (email) =>
     post("/api/newsletter", { email }, "We couldn't add that address. Please try again."),
+};
+
+/** The workspace storefront's plans (`content/dashboard-modules.ts`). */
+export const sitePricingService: PricingService = {
+  getPlans: async () => DASHBOARD_PLANS,
+};
+
+/** The workspace's buyable modules, as a products catalogue for the cart. */
+export const siteProductsService: ProductsService = {
+  getProducts: async () => DASHBOARD_PRODUCTS,
 };
