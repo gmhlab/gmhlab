@@ -11,6 +11,7 @@ import type {
   PlanSku,
   Profile,
   ProfileSubmission,
+  PublishedProfile,
   ReviewQueue,
 } from "@gmhlab/core";
 
@@ -59,4 +60,14 @@ export interface MediaContextType {
 export interface CheckoutContextType {
   orders: Order[];
   checkout: (lines: OrderLine[], plan?: PlanSku) => Promise<Order>;
+}
+
+/**
+ * The approved public profiles, for the public site (the team page). Mounted
+ * at the root, unlike the workspace providers; call `refresh` when a page
+ * that shows them mounts, since approvals happen elsewhere.
+ */
+export interface ProfilesContextType {
+  profiles: PublishedProfile[];
+  refresh: () => Promise<void>;
 }

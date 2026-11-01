@@ -5,6 +5,7 @@ import { useAccount, useLearning } from "@gmhlab/data";
 import Link from "next/link";
 import { EQUIP_DEMO_NOTE } from "@/content/dashboard-notes";
 import { COURSES } from "@/content/equip-training";
+import { WORKSPACE_PHOTOS } from "@/content/workspace-images";
 
 export default function EquipRoute() {
   const { account } = useAccount();
@@ -18,6 +19,7 @@ export default function EquipRoute() {
       basePath="/dashboard/equip"
       practiceHref="/dashboard/equip/practice"
       storeHref="/dashboard#store"
+      heroImage={WORKSPACE_PHOTOS.homeVisit.src}
       note={EQUIP_DEMO_NOTE}
       linkComponent={Link as unknown as DashboardLinkComponent}
     />

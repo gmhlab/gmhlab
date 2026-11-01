@@ -33,6 +33,8 @@ type StoredAccount = Account & { password: string };
 
 type Db = {
   version: 1;
+  /** The seed this copy was made from; a different seed id reseeds it. */
+  seedId: string;
   accounts: StoredAccount[];
   sessionId: string | null;
   requests: AccessRequest[];
@@ -42,7 +44,11 @@ type Db = {
   orders: Order[];
 };
 
-/** The seeded demo people. Invented — never real lab members. */
+/**
+ * The default demo people: invented, so this published package carries no
+ * real names. A consuming app passes its own seed (real team members, say)
+ * through `configureMockWorkspace`.
+ */
 export const MOCK_WORKSPACE_ACCOUNTS: Account[] = [
   {
     id: "acc-member",
@@ -99,45 +105,76 @@ export const MOCK_WORKSPACE_ACCOUNTS: Account[] = [
   },
 ];
 
+/** What the demo store starts from. */
+export type MockWorkspaceSeed = {
+  /** Change it and every stored copy made from an older seed is replaced. */
+  id: string;
+  accounts: Account[];
+  requests?: AccessRequest[];
+  submissions?: ProfileSubmission[];
+  progress?: Record<string, Record<string, CourseProgress>>;
+};
+
+const DEFAULT_SEED: MockWorkspaceSeed = {
+  id: "default-1",
+  accounts: MOCK_WORKSPACE_ACCOUNTS,
+  requests: [
+    {
+      id: "req-seed-1",
+      accountId: "acc-member",
+      kind: "project",
+      project: "equip",
+      note: "I run a 30-person helper cohort and would like the partner toolkit.",
+      status: "pending",
+      at: "2026-10-28T14:12:00Z",
+    },
+  ],
+  submissions: [
+    {
+      id: "sub-seed-1",
+      accountId: "acc-staff",
+      before: {
+        title: "Research coordinator",
+        bio: "Ana Lucía coordinates study operations across the lab's projects.",
+      },
+      after: {
+        title: "Senior research coordinator",
+        bio: "Ana Lucía coordinates study operations across the lab's projects, leads one study's data team and mentors the lab's student research assistants.",
+      },
+      status: "pending",
+      at: "2026-10-30T09:40:00Z",
+    },
+  ],
+  progress: {
+    "acc-partner": {
+      "helping-skills": { completed: ["hs-1", "hs-2", "hs-3"], quizScore: 0.8 },
+      "competency-assessment": { completed: ["ca-1"] },
+    },
+    "acc-member": { "helping-skills": { completed: ["hs-1"] } },
+  },
+};
+
+let seedConfig: MockWorkspaceSeed = DEFAULT_SEED;
+
+/**
+ * Replace the demo store's seed. Call it at module scope, before any service
+ * is used (the app does it beside its providers). Every account gets
+ * `DEMO_PASSWORD`.
+ */
+export function configureMockWorkspace(next: MockWorkspaceSeed) {
+  seedConfig = next;
+  cache = null;
+}
+
 function seed(): Db {
   return {
     version: 1,
-    accounts: MOCK_WORKSPACE_ACCOUNTS.map((a) => ({ ...a, password: DEMO_PASSWORD })),
+    seedId: seedConfig.id,
+    accounts: seedConfig.accounts.map((a) => ({ ...a, password: DEMO_PASSWORD })),
     sessionId: null,
-    requests: [
-      {
-        id: "req-seed-1",
-        accountId: "acc-member",
-        kind: "project",
-        project: "equip",
-        note: "I run a 30-person helper cohort and would like the partner toolkit.",
-        status: "pending",
-        at: "2026-10-28T14:12:00Z",
-      },
-    ],
-    submissions: [
-      {
-        id: "sub-seed-1",
-        accountId: "acc-staff",
-        before: {
-          title: "Research coordinator",
-          bio: "Ana Lucía coordinates study operations across the lab's projects.",
-        },
-        after: {
-          title: "Senior research coordinator",
-          bio: "Ana Lucía coordinates study operations across the lab's projects, leads one study's data team and mentors the lab's student research assistants.",
-        },
-        status: "pending",
-        at: "2026-10-30T09:40:00Z",
-      },
-    ],
-    progress: {
-      "acc-partner": {
-        "helping-skills": { completed: ["hs-1", "hs-2", "hs-3"], quizScore: 0.8 },
-        "competency-assessment": { completed: ["ca-1"] },
-      },
-      "acc-member": { "helping-skills": { completed: ["hs-1"] } },
-    },
+    requests: seedConfig.requests ?? [],
+    submissions: seedConfig.submissions ?? [],
+    progress: seedConfig.progress ?? {},
     photos: [],
     orders: [],
   };
@@ -153,7 +190,7 @@ function read(): Db {
   try {
     const raw = localStorage.getItem(KEY);
     const parsed = raw ? (JSON.parse(raw) as Db) : null;
-    db = parsed?.version === 1 ? parsed : null;
+    db = parsed?.version === 1 && parsed.seedId === seedConfig.id ? parsed : null;
   } catch {
     // No storage (server render) — fall through to the seed, uncached.
     return seed();
@@ -206,6 +243,7 @@ const toUser = (account: Account): User => ({
   name: account.name,
   email: account.email,
   username: account.email.split("@")[0],
+  avatar: account.photo,
 });
 
 /** Put the seed back — every account, queue and purchase — keeping the session. */
@@ -340,7 +378,7 @@ export const mockAccountService: AccountService = {
     return {
       submissions: db.submissions,
       requests: db.requests,
-      people: db.accounts.map(({ id, name, email, tier, projects }) => ({ id, name, email, tier, projects })),
+      people: db.accounts.map(({ id, name, email, tier, projects, photo }) => ({ id, name, email, tier, projects, photo })),
     };
   },
 
@@ -365,6 +403,19 @@ export const mockAccountService: AccountService = {
           : db.accounts,
       };
     });
+  },
+
+  async getPublishedProfiles() {
+    return read()
+      .accounts.filter((a) => a.profileSlug)
+      .map((a) => ({
+        profileSlug: a.profileSlug!,
+        name: a.name,
+        title: a.published?.title ?? a.title,
+        bio: a.published?.bio ?? a.bio,
+        location: a.location,
+        photo: a.photo,
+      }));
   },
 
   async decideRequest(id, approve) {

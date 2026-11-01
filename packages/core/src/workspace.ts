@@ -46,6 +46,24 @@ export type Account = Profile & {
   joined: string;
   /** The public profile as last approved — what the public site shows. */
   published?: PublicProfile;
+  /** Headshot URL. Omit for an initials monogram. */
+  photo?: string;
+  /**
+   * The public profile this account owns (a team page slug). Set for people
+   * listed on the site; a plain sign-up has none and appears nowhere public.
+   */
+  profileSlug?: string;
+};
+
+/** An approved profile as the public site shows it. */
+export type PublishedProfile = {
+  profileSlug: string;
+  name: string;
+  title: string;
+  /** Paragraphs separated by a blank line. */
+  bio: string;
+  location: string;
+  photo?: string;
 };
 
 /** Open sign-up. */
@@ -86,7 +104,7 @@ export type ProfileSubmission = {
 export type ReviewQueue = {
   submissions: ProfileSubmission[];
   requests: AccessRequest[];
-  people: Pick<Account, "id" | "name" | "email" | "tier" | "projects">[];
+  people: Pick<Account, "id" | "name" | "email" | "tier" | "projects" | "photo">[];
 };
 
 /** One account's own requests and submissions, newest first. */
@@ -113,6 +131,11 @@ export interface AccountService {
   getReviewQueue(): Promise<ReviewQueue>;
   decideSubmission(id: string, approve: boolean, note?: string): Promise<void>;
   decideRequest(id: string, approve: boolean): Promise<void>;
+  /**
+   * Every approved profile owned by an account — public, no session needed.
+   * The public site overlays these on its own people records.
+   */
+  getPublishedProfiles(): Promise<PublishedProfile[]>;
 }
 
 /** Whether public profile copy changed against what is live. */

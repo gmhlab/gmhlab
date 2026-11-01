@@ -66,18 +66,24 @@ export function WordDiff({ before, after }: { before: string; after: string }) {
 }
 
 /** How a profile will read on the public team page. */
-function PublicCard({ name, title, location, bio }: Pick<Profile, "name" | "title" | "location" | "bio">) {
+function PublicCard({
+  name,
+  title,
+  location,
+  bio,
+  photo,
+}: Pick<Profile, "name" | "title" | "location" | "bio"> & { photo?: string }) {
   return (
     <div className="rounded-3xl bg-surface-container-lowest p-6 shadow-level1 ring-1 ring-outline-variant/60">
       <div className="flex items-center gap-4">
-        <Monogram name={name || "?"} className="size-16 text-lg" />
+        <Monogram name={name || "?"} photo={photo} className="size-16 text-lg" />
         <div>
           <div className="font-serif text-xl">{name || "Your name"}</div>
           <div className="text-sm font-semibold text-primary">{title || "Your role"}</div>
           {location && <div className="text-sm text-on-surface-variant">{location}</div>}
         </div>
       </div>
-      {bio && <p className="mt-4 text-sm leading-relaxed text-on-surface-variant">{bio}</p>}
+      {bio && <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-on-surface-variant">{bio}</p>}
     </div>
   );
 }
@@ -92,7 +98,8 @@ export type AccountProfilePageProps = {
   projects: { slug: string; name: string }[];
   onSave: (profile: Profile) => Promise<ProfileSubmission | null>;
   onRequestAccess: (input: Pick<AccessRequest, "kind" | "project" | "note">) => Promise<unknown>;
-  /** Whether this account's profile appears on the public team page. */
+  /** Whether this account's profile appears on the public team page.
+   *  Defaults to owning one (`profileSlug`). */
   publicOnSite?: boolean;
 };
 
@@ -108,7 +115,7 @@ export function AccountProfilePage({
   projects,
   onSave,
   onRequestAccess,
-  publicOnSite = tierAtLeast(account, "staff"),
+  publicOnSite = Boolean(account.profileSlug),
 }: AccountProfilePageProps) {
   const pending = activity.submissions.find((s) => s.status === "pending");
   // Edit from the version in review, if there is one — not the live one.
@@ -158,7 +165,7 @@ export function AccountProfilePage({
         description="Your name and location save straight away. Your public title and bio are reviewed before they go live."
       >
         <div className="mt-6 flex items-center gap-4">
-          <Monogram name={account.name} className="size-14 text-base" />
+          <Monogram name={account.name} photo={account.photo} className="size-14 text-base" />
           <div className="text-sm opacity-85">
             {account.email}
             <br />
@@ -196,9 +203,9 @@ export function AccountProfilePage({
               </label>
               <label className="mt-4 block">
                 <span className="mb-1.5 flex justify-between text-sm font-semibold">
-                  Bio <span className="font-normal tabular-nums text-on-surface-variant">{form.bio.length}/600</span>
+                  Bio <span className="font-normal tabular-nums text-on-surface-variant">{form.bio.length}/3000</span>
                 </span>
-                <textarea rows={6} maxLength={600} value={form.bio} onChange={set("bio")} className={cn(input, "py-2.5")} />
+                <textarea rows={8} maxLength={3000} value={form.bio} onChange={set("bio")} className={cn(input, "py-2.5")} />
               </label>
             </div>
             <div className="flex flex-wrap items-center gap-3">
@@ -233,7 +240,7 @@ export function AccountProfilePage({
               account.published && <Chip tone="success">Live</Chip>
             )}
           </div>
-          <PublicCard name={form.name} title={form.title} location={form.location} bio={form.bio} />
+          <PublicCard name={form.name} title={form.title} location={form.location} bio={form.bio} photo={account.photo} />
           {!publicOnSite && (
             <p className="text-sm text-on-surface-variant">
               Members aren't listed on the public team page; your profile shows to other members in the workspace.
@@ -465,7 +472,12 @@ export function ReviewQueuePage({ queue, projects, onDecideSubmission, onDecideR
               <Stagger className="space-y-4">
                 {bios.map((s) => (
                   <Item key={s.id}>
-                    <SubmissionCard submission={s} name={person(s.accountId)?.name ?? "Unknown"} onDecide={onDecideSubmission} />
+                    <SubmissionCard
+                      submission={s}
+                      name={person(s.accountId)?.name ?? "Unknown"}
+                      photo={person(s.accountId)?.photo}
+                      onDecide={onDecideSubmission}
+                    />
                   </Item>
                 ))}
               </Stagger>
@@ -481,7 +493,7 @@ export function ReviewQueuePage({ queue, projects, onDecideSubmission, onDecideR
                     <Item key={r.id}>
                       <Panel className="flex h-full flex-col p-5">
                         <div className="flex items-center gap-3">
-                          <Monogram name={p?.name ?? "?"} />
+                          <Monogram name={p?.name ?? "?"} photo={p?.photo} />
                           <div>
                             <div className="font-semibold">{p?.name}</div>
                             <div className="text-xs text-on-surface-variant">
@@ -546,10 +558,12 @@ function Empty({ text }: { text: string }) {
 function SubmissionCard({
   submission,
   name,
+  photo,
   onDecide,
 }: {
   submission: ProfileSubmission;
   name: string;
+  photo?: string;
   onDecide: (id: string, approve: boolean, note?: string) => Promise<unknown>;
 }) {
   const [note, setNote] = useState("");
@@ -566,7 +580,7 @@ function SubmissionCard({
     <Panel className="p-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Monogram name={name} />
+          <Monogram name={name} photo={photo} />
           <div>
             <div className="font-semibold">{name}</div>
             <div className="text-xs text-on-surface-variant">Submitted {fmt(submission.at)}</div>

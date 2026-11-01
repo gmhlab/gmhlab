@@ -4,12 +4,14 @@ import {
   CheckoutContext,
   LearningContext,
   MediaContext,
+  ProfilesContext,
 } from "../contexts/WorkspaceContexts";
 import type {
   AccountContextType,
   CheckoutContextType,
   LearningContextType,
   MediaContextType,
+  ProfilesContextType,
 } from "../types/workspace";
 
 function required<T>(value: T | null, hook: string, provider: string): T {
@@ -35,4 +37,9 @@ export function usePhotos(): MediaContextType {
 /** Storefront checkout. @throws outside a CheckoutProvider */
 export function useCheckout(): CheckoutContextType {
   return required(useContext(CheckoutContext), "useCheckout", "CheckoutProvider");
+}
+
+/** The approved public profiles. @throws outside a ProfilesProvider */
+export function useProfiles(): ProfilesContextType {
+  return required(useContext(ProfilesContext), "useProfiles", "ProfilesProvider");
 }

@@ -24,3 +24,4 @@ export * from "./slide-studio";
 export * from "./email-signature";
 export * from "./workspace-pages";
 export * from "./account-pages";
+export * from "./ornaments";

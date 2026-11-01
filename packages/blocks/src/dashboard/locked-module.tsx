@@ -2,7 +2,8 @@ import { Button } from "@gmhlab/ui";
 import { ArrowRight, Lock, ShoppingBag, Sparkles, UserPlus } from "lucide-react";
 import { motion } from "motion/react";
 import { type DashboardLinkComponent, type DashboardModule, unlockHint } from "./dashboard-types";
-import { ArtTile, EASE } from "./kit";
+import { EASE } from "./kit";
+import { Cover } from "./ornaments";
 
 const PlainLink: DashboardLinkComponent = ({ href, children, ...props }) => (
   <a href={href} {...props}>
@@ -45,7 +46,7 @@ export function LockedModule({
         transition={{ duration: 0.6, ease: EASE }}
       >
         <div className="relative">
-          <ArtTile art={module.art} tone="navy" size={110} className="aspect-[21/9] w-full !rounded-none blur-[1px] saturate-50" />
+          <Cover art={module.art} tone="navy" className="aspect-[21/9] w-full !rounded-none saturate-50" />
           <motion.div
             className="absolute inset-0 grid place-items-center"
             initial={{ scale: 0.6, opacity: 0 }}

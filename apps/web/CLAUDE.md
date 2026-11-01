@@ -71,5 +71,23 @@ demo**: storefront prices (no payment is taken), the noticeboard, the EQUIP
 Academy lessons, quizzes and role-play transcript (invented, modelled on the
 public EQUIP platform, shown with `EQUIP_DEMO_NOTE`), and the handbook outline.
 Project rooms are **derived from `PROJECTS`**, so a new project gets a room; their
-resources have no files yet. Never put invented copy under a real person's name:
-the seeded demo accounts live in `@gmhlab/core/mocks` and are fictional.
+resources have no files yet. Never put invented copy under a real person's name.
+**Every `TEAM` person has an account** (`workspace-demo-accounts.ts`, seeded
+into core's mock store by `configureMockWorkspace` in `data-providers.tsx`)
+owning their public profile (`profileSlug`), so `/team` shows each person's
+approved profile over their record. Tiers follow the team group (core →
+staff, Brandon Kohrt → admin, affiliates with a project → partner, students
+and alumni → member). The demo sign-ins are Farhana Alam, Laure Experton,
+Ruta Rangel and Brandon Kohrt. Profile fields start from `TEAM`; emails are
+`demo.gmhlab.org` addresses. Bump `SEED_ID` when the seed changes, or
+browsers keep their stored copy.
+
+`workspace-images.ts` lists the workspace's photographs: nine **Unsplash
+stock** images (photographer, place and source page for each), shipped from
+`public/workspace/` at 1600px. Same rule as the team page's stock photo: never
+caption one as anyone at the Center or as a Center project. **The EQUIP
+courses use the community set** (Brazil helping skills, Nepal group session,
+Nagpur field discussion; the Nepal home visit behind the EQUIP hero) — the
+user's choice after a clinical/training set was tried and reverted; that set
+is kept unused in the same file. No hardship or "traditional dress" imagery.
+Replace them all with the lab's own consented photos when those exist.

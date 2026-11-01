@@ -5,13 +5,9 @@ import { DEMO_PASSWORD } from "@gmhlab/core/mocks";
 import { useAuth } from "@gmhlab/data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { WORKSPACE_DEMO_ACCOUNTS } from "@/content/workspace-demo-accounts";
 
-const DEMO_ACCOUNTS = [
-  { email: "member@demo.gmhlab.org", label: "Member" },
-  { email: "partner@demo.gmhlab.org", label: "Project partner" },
-  { email: "staff@demo.gmhlab.org", label: "Staff" },
-  { email: "admin@demo.gmhlab.org", label: "Admin" },
-];
+const DEMO_ACCOUNTS = WORKSPACE_DEMO_ACCOUNTS;
 
 /** Only same-site paths, so `?next=` can't bounce someone off-site. */
 function safeNext(next: string | null) {

@@ -4,6 +4,7 @@ import type {
   Course,
   PracticeScenario,
 } from "@gmhlab/blocks";
+import { WORKSPACE_PHOTOS } from "./workspace-images";
 
 /**
  * EQUIP Academy — the dashboard's demo training content.
@@ -27,6 +28,7 @@ export const COURSES: Course[] = [
     level: "Foundation",
     access: { kind: "open" },
     glyph: "care-delivery",
+    image: WORKSPACE_PHOTOS.helpingSkills.src,
     lessons: [
       {
         id: "hs-1",
@@ -175,6 +177,7 @@ export const COURSES: Course[] = [
     level: "Practitioner",
     access: { kind: "plan", plan: "practitioner" },
     glyph: "competency",
+    image: WORKSPACE_PHOTOS.groupSession.src,
     lessons: [
       {
         id: "ca-1",
@@ -286,9 +289,10 @@ export const COURSES: Course[] = [
     id: "supervising",
     title: "Supervising with EQUIP",
     tagline: "Teams, trainings, assessments and results on the platform.",
-    level: "Practitioner",
+    level: "Supervisor",
     access: { kind: "plan", plan: "practitioner" },
     glyph: "task-sharing",
+    image: WORKSPACE_PHOTOS.fieldDiscussion.src,
     lessons: [
       {
         id: "sv-1",

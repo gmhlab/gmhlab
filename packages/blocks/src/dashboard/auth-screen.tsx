@@ -294,7 +294,10 @@ export function AuthScreen({
                           "hover:ring-primary disabled:opacity-60",
                         )}
                       >
-                        {a.label}
+                        <span className="min-w-0">
+                          <span className="block truncate">{a.label}</span>
+                          {a.role && <span className="block text-xs font-normal text-on-surface-variant">{a.role}</span>}
+                        </span>
                         <ArrowRight
                           className="size-3.5 text-on-surface-variant transition group-hover:translate-x-0.5 group-hover:text-primary"
                           aria-hidden

@@ -8,7 +8,7 @@ import {
   courseCompletion,
   planAtLeast,
 } from "@gmhlab/core";
-import { Button, CareRings, ContourGlobe, cn } from "@gmhlab/ui";
+import { Button, ContourGlobe, GmhLogo, Image, PhotoBackdrop, cn } from "@gmhlab/ui";
 import { ArrowRight, Check, ShoppingBag, Sparkles } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
@@ -22,6 +22,8 @@ import {
   TIER_LABEL,
   unlockHint,
 } from "./dashboard-types";
+import { ModuleIconGlyph } from "./dashboard-shell";
+import { Cover, FigureRule, LessonPath, Ornament, WaveRule } from "./ornaments";
 import {
   ArtTile,
   Chip,
@@ -60,6 +62,11 @@ export type DashboardHomeProps = {
   onChoosePlan: (plan: PricingPlan) => Promise<void>;
   linkComponent?: DashboardLinkComponent;
   storeNote?: string | null;
+  /**
+   * A photograph across the whole hero, in the brand duotone under a navy
+   * wash (copy on the left stays at reading strength). Decorative.
+   */
+  heroPhoto?: { src: string; position?: string };
 };
 
 function greeting(date = new Date()) {
@@ -87,6 +94,7 @@ export function DashboardHome({
   onChoosePlan,
   linkComponent: Link = PlainLink,
   storeNote = GMH_DASHBOARD_COPY.storeNote,
+  heroPhoto,
 }: DashboardHomeProps) {
   const stats = useMemo(() => {
     const open = courses.filter((c) => canAccess(account, c));
@@ -118,38 +126,85 @@ export function DashboardHome({
     <div className="space-y-12">
       {/* ── Hero ── */}
       <motion.section
-        className="dash-hero px-6 py-8 sm:px-10 sm:py-12"
+        className={cn("dash-hero px-6 py-8 sm:px-10 sm:py-12", heroPhoto && "dash-hero-photo sm:py-16")}
         initial={{ opacity: 0, y: 16, scale: 0.99 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.7, ease: EASE }}
       >
+        {heroPhoto && <PhotoBackdrop src={heroPhoto.src} position={heroPhoto.position} />}
+        {heroPhoto && (
+          /* The kit's contour striations across the navy behind the copy,
+             fading out before the people in the photo. No centrepiece: the
+             mark heads the copy instead (the lockup below). */
+          <motion.div
+            className="dash-hero-striations"
+            aria-hidden
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
+          >
+            <ContourGlobe centerpiece="none" />
+          </motion.div>
+        )}
         <div className="dash-aurora" aria-hidden>
           <span />
           <span />
           <span />
         </div>
-        <div className="pointer-events-none absolute -right-24 -top-24 hidden w-[34rem] opacity-60 md:block" aria-hidden>
-          <ContourGlobe centerpiece="none" />
-        </div>
         <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_auto]">
           <div>
-            <div className="mb-4 flex flex-wrap gap-2">
-              <Chip tone="navy">{TIER_LABEL[account.tier]}</Chip>
-              {account.plan && account.plan !== "member" && (
-                <Chip tone="navy">
-                  <Sparkles className="size-3" aria-hidden /> {account.plan === "practitioner" ? "Practitioner" : "Institution"} plan
-                </Chip>
+            {/* The lockup: the GMH mark, a hairline separator, then a stack of
+                the role chips, the greeting and the lead line — the mark set
+                beside the copy the way a logo sits beside a letterhead. */}
+            <motion.div
+              className="dash-hero-lockup flex items-center gap-5 sm:gap-7"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+            >
+              <div className="hidden shrink-0 sm:block">
+                <GmhLogo />
+              </div>
+              <span className="hidden w-px self-stretch bg-gradient-to-b from-transparent via-white/35 to-transparent sm:block" aria-hidden />
+              <div className="min-w-0">
+                <div className="mb-1 flex flex-wrap gap-2">
+                  <Chip tone="navy">{TIER_LABEL[account.tier]}</Chip>
+                  {account.plan && account.plan !== "member" && (
+                    <Chip tone="navy">
+                      <Sparkles className="size-3" aria-hidden /> {account.plan === "practitioner" ? "Practitioner" : "Institution"} plan
+                    </Chip>
+                  )}
+                </div>
+                {/* Type and spacing from the tokens only: M3 display and body
+                    roles (their own line heights), one space step between. */}
+                <h1 className="type-display-small sm:type-display-medium">
+                  {greeting()}, <span className="dash-gold-text">{firstName}</span>.
+                </h1>
+                <p className="mt-1 max-w-xl type-body-large opacity-85">
+                  {stats.done === 0
+                    ? "Start with the foundations course, or make something on-brand in the studios."
+                    : `You've finished ${stats.done} of ${stats.lessons} lessons. Pick up where you left off below.`}
+                </p>
+              </div>
+            </motion.div>
+            <div className={cn("mt-8 grid max-w-lg grid-cols-3 gap-3", heroPhoto && "max-w-2xl sm:grid-cols-4")}>
+              {heroPhoto && (
+                <motion.div
+                  className="col-span-3 flex items-center gap-3 rounded-2xl bg-white/8 p-3 ring-1 ring-white/12 backdrop-blur-sm sm:col-span-1"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
+                >
+                  <ProgressRing
+                    value={stats.completion}
+                    size={64}
+                    stroke={6}
+                    onNavy
+                    label={<span className="text-sm">{Math.round(stats.completion * 100)}%</span>}
+                  />
+                  <div className="text-xs leading-tight opacity-75">of your courses</div>
+                </motion.div>
               )}
-            </div>
-            <h1 className="font-serif text-4xl leading-tight sm:text-5xl">
-              {greeting()}, <span className="dash-gold-text">{firstName}</span>.
-            </h1>
-            <p className="mt-4 max-w-xl text-base/relaxed opacity-85">
-              {stats.done === 0
-                ? "Start with the foundations course, or make something on-brand in the studios."
-                : `You've finished ${stats.done} of ${stats.lessons} lessons. Pick up where you left off below.`}
-            </p>
-            <div className="mt-8 grid max-w-lg grid-cols-3 gap-3">
               {[
                 { label: "Lessons done", value: stats.done },
                 { label: "Certificates", value: stats.certificates },
@@ -171,21 +226,22 @@ export function DashboardHome({
               ))}
             </div>
           </div>
-          <div className="relative mx-auto grid place-items-center">
-            <div className="absolute size-64 opacity-50" aria-hidden>
-              <CareRings />
+          {!heroPhoto && (
+            <div className="mx-auto lg:mx-0">
+              <ProgressRing
+                value={stats.completion}
+                size={168}
+                stroke={12}
+                onNavy
+                label={`${Math.round(stats.completion * 100)}%`}
+                sublabel="of your courses"
+              />
             </div>
-            <ProgressRing
-              value={stats.completion}
-              size={190}
-              stroke={14}
-              onNavy
-              label={`${Math.round(stats.completion * 100)}%`}
-              sublabel="of your courses"
-            />
-          </div>
+          )}
         </div>
       </motion.section>
+
+      <WaveRule className="h-10" />
 
       {/* ── Continue learning ── */}
       {continuing.length > 0 && (
@@ -203,9 +259,14 @@ export function DashboardHome({
             {continuing.map(({ course, value }, i) => (
               <Item key={course.id}>
                 <Link href={`${coursesPath}/${course.id}`} className="block h-full">
-                  <TiltCard className="dash-panel group flex h-full flex-col gap-4 p-5">
+                  <TiltCard className="dash-panel group relative isolate flex h-full flex-col gap-4 overflow-hidden p-5">
+                    {course.image && (
+                      <div className="dash-card-photo" aria-hidden>
+                        <Image src={course.image} alt="" treatment="duotone" aspectRatio="fill" variant="default" className="!h-full" />
+                      </div>
+                    )}
                     <div className="flex items-center gap-4">
-                      <ArtTile art={{ kind: "glyph", name: course.glyph }} tone={toneAt(i)} size={36} className="size-14" />
+                      <ArtTile art={{ kind: "glyph", name: course.glyph }} tone={toneAt(i)} size={34} className="size-14 shrink-0 !rounded-2xl shadow-level2" />
                       <div className="min-w-0">
                         <div className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">{course.level}</div>
                         <div className="font-semibold leading-snug">{course.title}</div>
@@ -216,15 +277,7 @@ export function DashboardHome({
                         <span>{value === 1 ? "Complete" : value === 0 ? "Not started" : "In progress"}</span>
                         <span className="tabular-nums">{Math.round(value * 100)}%</span>
                       </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-surface-container-highest">
-                        <motion.div
-                          className="h-full rounded-full bg-gradient-to-r from-primary to-tertiary-container"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${value * 100}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1, ease: EASE, delay: 0.2 }}
-                        />
-                      </div>
+                      <LessonPath total={course.lessons.length} done={Math.round(value * course.lessons.length)} />
                     </div>
                   </TiltCard>
                 </Link>
@@ -245,11 +298,11 @@ export function DashboardHome({
                 className={cn("dash-panel flex h-full flex-col p-4", !open && "opacity-90")}
                 max={open ? 7 : 3}
               >
-                <ArtTile
+                <Cover
                   art={m.art}
                   tone={toneAt(i)}
-                  size={92}
-                  className={cn("aspect-[16/9] w-full", !open && "grayscale-[0.5]")}
+                  badge={<ModuleIconGlyph icon={m.icon} className="size-5" />}
+                  className={cn("aspect-[16/10] w-full", !open && "grayscale-[0.45]")}
                 />
                 <div className="mt-4 flex items-start justify-between gap-2">
                   <div className="font-semibold leading-snug">{m.title}</div>
@@ -277,6 +330,7 @@ export function DashboardHome({
       </section>
 
       {/* ── Store ── */}
+      <FigureRule className="opacity-80" />
       <Storefront
         account={account}
         modules={modules}
@@ -286,6 +340,8 @@ export function DashboardHome({
         onChoosePlan={onChoosePlan}
         note={storeNote}
       />
+
+      <WaveRule className="h-10" />
 
       {/* ── Noticeboard ── */}
       {(announcements.length > 0 || events.length > 0) && (
@@ -390,7 +446,12 @@ function Storefront({
   };
 
   return (
-    <section id="store" className="scroll-mt-24">
+    <section
+      id="store"
+      className="relative isolate scroll-mt-24 overflow-hidden rounded-[32px] bg-surface-container-low px-5 py-8 ring-1 ring-outline-variant/50 sm:px-8 sm:py-10"
+    >
+      <Ornament shape="rising-rings" corner="bottom-left" size={420} strength={0.09} />
+      <Ornament shape="seed" corner="top-right" size={300} strength={0.1} />
       <SectionTitle
         title="Plans & store"
         description="Upgrade for every course and template, or buy a single add-on."
@@ -501,7 +562,7 @@ function Storefront({
               const inCart = cartIds.includes(m.id);
               return (
                 <TiltCard key={m.id} className="dash-panel flex gap-5 p-5" max={4}>
-                  <ArtTile art={m.art} tone={toneAt(i + 1)} size={52} className="size-28 shrink-0" />
+                  <Cover art={m.art} tone={toneAt(i + 1)} className="size-28 shrink-0" />
                   <div className="flex min-w-0 flex-1 flex-col">
                     <div className="flex items-start justify-between gap-3">
                       <div>

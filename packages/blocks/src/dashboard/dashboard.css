@@ -460,3 +460,313 @@
   --graphic-ink: var(--gmh-color-navy);
   --graphic-ground: white;
 }
+
+/* ── The kit, used as the kit file labels it (ornaments.tsx) ─────────── */
+
+/* Covers: the art as an ornament cropped off the corner, not a centred icon. */
+.dash-cover {
+  display: block;
+}
+.dash-cover-shape {
+  position: absolute;
+  right: -12%;
+  bottom: -30%;
+  width: 72%;
+  aspect-ratio: 1;
+  rotate: -8deg;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .dash-cover-shape {
+  transform: translate(-4%, -5%) rotate(5deg) scale(1.04);
+}
+.dash-cover-glyph-ghost {
+  position: absolute;
+  right: -16%;
+  bottom: -34%;
+  width: 82%;
+  aspect-ratio: 1;
+  opacity: 0.16;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .dash-cover-glyph-ghost {
+  transform: rotate(-6deg) scale(1.05);
+}
+.dash-cover-glyph {
+  position: absolute;
+  left: 8%;
+  bottom: 12%;
+  width: min(30%, 5.5rem);
+  aspect-ratio: 1;
+}
+.dash-cover .graphic {
+  filter: none;
+}
+.dash-cover-shape .graphic {
+  filter: drop-shadow(0 18px 28px color-mix(in srgb, black 28%, transparent));
+}
+.dash-cover-badge {
+  position: absolute;
+  left: 0.875rem;
+  top: 0.875rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.875rem;
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, white 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 28%, transparent);
+  color: white;
+}
+.dash-cover:is([data-tone="gold"], [data-tone="sky"]) .dash-cover-badge {
+  background: color-mix(in srgb, white 45%, transparent);
+  color: var(--dash-navy);
+}
+
+/* Ornaments sit behind their siblings; on navy they take the light ink. */
+.dash-ornament .graphic {
+  filter: none;
+}
+
+/* Photo frames. The placeholder says what it is — never a stock stand-in. */
+.dash-photo-placeholder {
+  color: var(--gmh-color-on-surface-variant);
+  background:
+    radial-gradient(color-mix(in srgb, var(--gmh-color-on-surface) 16%, transparent) 1px, transparent 1.3px) 0 0 / 14px 14px,
+    color-mix(in srgb, var(--dash-navy) 7%, var(--gmh-color-surface-container-low));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--gmh-color-outline) 45%, transparent);
+}
+.dash-hero .dash-photo-placeholder {
+  color: color-mix(in srgb, var(--dash-on-navy) 80%, transparent);
+  background:
+    radial-gradient(color-mix(in srgb, white 22%, transparent) 1px, transparent 1.3px) 0 0 / 14px 14px,
+    color-mix(in srgb, white 7%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, white 25%, transparent);
+}
+.dash-bracket-corner {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-color: var(--dash-gold);
+}
+
+/* Dividers. */
+.dash-wave-edge {
+  stroke: var(--dash-gold);
+  stroke-width: 2.5;
+}
+.dash-wave-echo {
+  stroke: var(--gmh-color-primary);
+  stroke-width: 1.25;
+  opacity: 0.28;
+}
+.dark .dash-wave-echo {
+  stroke: var(--gmh-color-on-surface-variant);
+}
+.dash-figure-rule {
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* The pathway rule as progress: unfinished nodes are rings, not dots. The
+   roles are set on .graphic itself, hence the compound selector. */
+.dash-lesson-path.graphic {
+  --graphic-ground: var(--gmh-color-surface-container-lowest);
+  height: 2rem;
+}
+.dark .dash-lesson-path.graphic {
+  --graphic-ground: var(--gmh-color-surface-container);
+}
+.dash-hero .dash-lesson-path.graphic {
+  --graphic-ground: var(--dash-navy-deep);
+  --graphic-ink: white;
+}
+.dash-lesson-path .graphic-pathway-node {
+  transition: background-color 500ms, box-shadow 500ms;
+}
+.dash-lesson-path .dash-path-todo {
+  background: var(--graphic-ground);
+  box-shadow:
+    0 0 0 0.25rem var(--graphic-ground),
+    0 0 0 0.34rem color-mix(in srgb, var(--gmh-color-outline) 70%, transparent);
+}
+.dash-hero .dash-lesson-path .dash-path-todo {
+  box-shadow:
+    0 0 0 0.25rem var(--graphic-ground),
+    0 0 0 0.34rem color-mix(in srgb, white 35%, transparent);
+}
+.dash-lesson-path .graphic-pathway-goal.dash-path-todo {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+/* On a cover the path's gaps take the cover's own ground, in either mode
+   (a bare .dark rule would otherwise paint dark gaps on a gold cover). */
+.dash-art[data-tone="navy"] .dash-lesson-path.graphic {
+  --graphic-ground: var(--dash-navy);
+}
+.dash-art[data-tone="gold"] .dash-lesson-path.graphic {
+  --graphic-ground: color-mix(in srgb, var(--dash-gold-light) 55%, var(--dash-gold));
+}
+.dash-art[data-tone="sky"] .dash-lesson-path.graphic {
+  --graphic-ground: var(--gmh-color-primary-fixed-dim);
+}
+.dash-art:is([data-tone="gold"], [data-tone="sky"]) .dash-lesson-path .dash-path-todo {
+  box-shadow:
+    0 0 0 0.25rem var(--graphic-ground),
+    0 0 0 0.34rem color-mix(in srgb, var(--dash-navy) 45%, transparent);
+}
+
+/* ── Photographs ─────────────────────────────────────────────────────── */
+
+/* Hero backdrop: ui's PhotoBackdrop (duotone, then a wash) with the wash in
+   deep navy, so the hero stays a navy band with a place in it. The aurora is
+   quieter over a photo. */
+.dash-hero-photo .graphic-photo {
+  --graphic-photo-wash: var(--dash-navy-deep);
+  z-index: -3;
+}
+.dash-hero-photo .dash-aurora {
+  opacity: 0.45;
+}
+
+/* Cover built around a photograph: full colour, a navy fade from the bottom
+   (where the path and copy sit) and a light one from the top (the badge). */
+.dash-cover-with-photo::before {
+  content: none;
+}
+.dash-cover-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.dash-cover-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .dash-cover-photo img,
+.dash-tilt:hover .dash-cover-photo img {
+  transform: scale(1.06);
+}
+.dash-cover-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--dash-navy-deep) 0%, color-mix(in srgb, var(--dash-navy-deep) 60%, transparent) 26%, transparent 58%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--dash-navy-deep) 45%, transparent) 0%, transparent 30%);
+}
+.dash-cover-with-photo .dash-cover-badge:empty {
+  display: none;
+}
+.dash-cover-with-photo .dash-cover-badge .graphic {
+  --graphic-ink: white;
+  --graphic-ground: transparent;
+}
+.dash-cover-photo-shape {
+  position: absolute;
+  right: -6%;
+  bottom: -14%;
+  width: 34%;
+  aspect-ratio: 1;
+  rotate: -8deg;
+  opacity: 0.9;
+}
+.dash-cover-with-photo .dash-lesson-path.graphic {
+  --graphic-ground: var(--dash-navy-deep);
+  --graphic-ink: white;
+}
+
+/* In a navy hero the duotone plus the kit's wash left the photo a murky
+   smudge, so dashboard heroes show it in full colour instead: a navy fade
+   under the copy on the left, opening to the photo on the right, and a
+   foot of navy so the hero's edge stays clean. */
+.dash-hero-photo .graphic-photo {
+  background: var(--dash-navy-deep);
+}
+.dash-hero-photo .graphic-photo img {
+  filter: saturate(0.92) contrast(1.02);
+  mix-blend-mode: normal;
+}
+.dash-hero-photo .graphic-photo::before {
+  content: none;
+}
+.dash-hero-photo .graphic-photo::after,
+.dash-hero-photo .graphic-photo-wash-start::after {
+  background:
+    linear-gradient(90deg,
+      var(--dash-navy-deep) 0%,
+      color-mix(in srgb, var(--dash-navy-deep) 92%, transparent) 28%,
+      color-mix(in srgb, var(--dash-navy-deep) 55%, transparent) 52%,
+      color-mix(in srgb, var(--dash-navy-deep) 10%, transparent) 78%,
+      transparent 100%),
+    linear-gradient(to top, color-mix(in srgb, var(--dash-navy-deep) 70%, transparent) 0%, transparent 40%);
+}
+@media (max-width: 899.98px) {
+  .dash-hero-photo .graphic-photo::after,
+  .dash-hero-photo .graphic-photo-wash-start::after {
+    background: color-mix(in srgb, var(--dash-navy-deep) 78%, transparent);
+  }
+}
+.dash-cover-with-photo .dash-cover-badge {
+  width: 2.75rem;
+  height: 2.75rem;
+  background: color-mix(in srgb, var(--dash-navy-deep) 55%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 30%, transparent);
+}
+.dash-cover-with-photo .dash-cover-badge .graphic {
+  --graphic-glyph-stroke: 2.25;
+}
+
+/* A card's photo as a filtered background: the brand duotone, faint, sitting
+   on the card's right and fading out under its copy on the left. */
+.dash-card-photo {
+  position: absolute;
+  inset: 0 0 0 30%;
+  z-index: -1;
+  opacity: 0.32;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+  transition: opacity 500ms, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dark .dash-card-photo {
+  opacity: 0.26;
+}
+.group:hover .dash-card-photo {
+  opacity: 0.45;
+  transform: scale(1.04);
+}
+.dash-card-photo .image-duotone {
+  height: 100%;
+}
+
+/* The mark heading the home hero, like a letterhead: the simple drawing (the
+   detailed one's coastlines turn to noise at this size), white ink on the
+   navy, gold kept, and
+   a soft gold glow so it sits in the light rather than on it. logo.css sets
+   the roles on `.logo-gmh > svg`, hence the selector and the .dash prefix. */
+.dash .dash-hero-lockup .logo-gmh > svg {
+  /* Tall enough to stand beside the three-line stack it heads. */
+  --logo-gmh-height: 6rem;
+  --logo-mark-ink: var(--dash-on-navy);
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--dash-gold) 35%, transparent));
+}
+
+/* The home hero's striations: ContourGlobe (no centrepiece) laid across the
+   hero over the photo's navy fade, masked out from about 60% so the lines
+   never cross the people on the right. */
+.dash-hero-striations {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mask-image: linear-gradient(90deg, #000 0%, #000 42%, transparent 64%);
+}
+.dash-hero-striations .graphic {
+  --graphic-ink: var(--dash-on-navy);
+  --graphic-ground: var(--dash-navy-deep);
+  width: 100%;
+  height: 100%;
+  /* Quiet enough that a line crossing the headline never competes with it. */
+  opacity: 0.55;
+}
+

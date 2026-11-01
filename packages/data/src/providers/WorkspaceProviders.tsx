@@ -8,6 +8,7 @@ import type {
   MediaService,
   Order,
   Photo,
+  PublishedProfile,
   ReviewQueue,
 } from "@gmhlab/core";
 import { type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -17,6 +18,7 @@ import {
   CheckoutContext,
   LearningContext,
   MediaContext,
+  ProfilesContext,
 } from "../contexts/WorkspaceContexts";
 
 /**
@@ -215,4 +217,21 @@ export function WorkspaceProviders({ services, children }: { services: Workspace
       </LearningProvider>
     </AccountProvider>
   );
+}
+
+/**
+ * The approved public profiles (`AccountService.getPublishedProfiles`), for
+ * the public site. Mount it at the root — it needs no session — and call
+ * `refresh` where the profiles show, since approvals happen elsewhere.
+ */
+export function ProfilesProvider({ service, children }: { service: AccountService; children?: ReactNode }) {
+  const [profiles, setProfiles] = useState<PublishedProfile[]>([]);
+  const refresh = useCallback(async () => {
+    setProfiles(await service.getPublishedProfiles());
+  }, [service]);
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+  const value = useMemo(() => ({ profiles, refresh }), [profiles, refresh]);
+  return <ProfilesContext.Provider value={value}>{children}</ProfilesContext.Provider>;
 }

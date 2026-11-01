@@ -1,8 +1,13 @@
 "use client";
 
-import { AllProviders, type DataServices } from "@gmhlab/data";
+import { AllProviders, type DataServices, ProfilesProvider } from "@gmhlab/data";
 import type { ReactNode } from "react";
-import { mockWorkspaceAuthService } from "@gmhlab/core/mocks";
+import {
+  configureMockWorkspace,
+  mockAccountService,
+  mockWorkspaceAuthService,
+} from "@gmhlab/core/mocks";
+import { WORKSPACE_DEMO_SEED } from "@/content/workspace-demo-accounts";
 import {
   siteContactService,
   siteNewsletterService,
@@ -23,6 +28,10 @@ import {
  * This file exists because services are objects of functions, which a server
  * component (layout.tsx) cannot pass as props to a client component.
  */
+// The demo store is seeded with real team members (content/workspace-demo-
+// accounts.ts) before any service runs — this module loads with the root layout.
+configureMockWorkspace(WORKSPACE_DEMO_SEED);
+
 const SERVICES: DataServices = {
   auth: mockWorkspaceAuthService,
   pricing: sitePricingService,
@@ -35,5 +44,11 @@ const SERVICES: DataServices = {
 
 /** `AllProviders` bound to the site's services. Renders no DOM. */
 export function DataProviders({ children }: { children?: ReactNode }) {
-  return <AllProviders services={SERVICES}>{children}</AllProviders>;
+  // ProfilesProvider sits at the root (the public team page reads it); it
+  // must share the workspace's account service, set in workspace-providers.
+  return (
+    <AllProviders services={SERVICES}>
+      <ProfilesProvider service={mockAccountService}>{children}</ProfilesProvider>
+    </AllProviders>
+  );
 }

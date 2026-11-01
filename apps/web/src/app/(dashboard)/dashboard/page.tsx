@@ -7,6 +7,7 @@ import Link from "next/link";
 import { toast } from "@gmhlab/blocks";
 import { DASHBOARD_FEED, DASHBOARD_MODULES, DASHBOARD_PLANS } from "@/content/dashboard-modules";
 import { COURSES } from "@/content/equip-training";
+import { WORKSPACE_PHOTOS } from "@/content/workspace-images";
 
 export default function DashboardHomeRoute() {
   const { account } = useAccount();
@@ -36,6 +37,8 @@ export default function DashboardHomeRoute() {
         toast(`You're on ${plan.name}`, "Everything in the plan is unlocked. (Demo — nothing was charged.)");
       }}
       linkComponent={Link as unknown as DashboardLinkComponent}
+      // Unsplash stock (see workspace-images.ts), decorative behind the copy.
+      heroPhoto={{ src: WORKSPACE_PHOTOS.circle.src, position: "center 62%" }}
     />
   );
 }

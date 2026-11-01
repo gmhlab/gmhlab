@@ -30,8 +30,8 @@ import {
   type DashboardLinkComponent,
   type PracticeScenario,
 } from "./dashboard-types";
+import { Cover, LessonPath } from "./ornaments";
 import {
-  ArtTile,
   Chip,
   Confetti,
   DemoNote,
@@ -66,6 +66,10 @@ export type EquipAcademyProps = {
   storeHref?: string;
   title?: string;
   description?: string;
+  /** A photograph behind the hero (see `PageHero` `backdrop`). */
+  heroImage?: string;
+  /** `object-position` for its crop, e.g. "center 20%". */
+  heroImagePosition?: string;
   /** Provenance line for invented teaching content. Pass null to drop. */
   note?: ReactNode | null;
   linkComponent?: DashboardLinkComponent;
@@ -81,6 +85,8 @@ export function EquipAcademy({
   storeHref,
   title = "EQUIP Academy",
   description = "Competency-based training for helpers, trainers and supervisors: learn the skills, practise rating them, and earn a certificate.",
+  heroImage,
+  heroImagePosition,
   note,
   linkComponent: Link = PlainLink,
 }: EquipAcademyProps) {
@@ -91,6 +97,7 @@ export function EquipAcademy({
         title={title}
         description={description}
         art={{ kind: "glyph", name: "competency" }}
+        backdrop={heroImage ? { src: heroImage, position: heroImagePosition } : undefined}
         actions={
           practiceHref && (
             <Link
@@ -113,15 +120,21 @@ export function EquipAcademy({
             const minutes = course.lessons.reduce((n, l) => n + l.minutes, 0);
             const card = (
               <TiltCard className="dash-panel flex h-full flex-col overflow-hidden">
-                <ArtTile
+                <Cover
                   art={{ kind: "glyph", name: course.glyph }}
                   tone={toneAt(i)}
-                  size={80}
+                  photo={course.image}
                   className="aspect-[16/9] w-full !rounded-none"
-                />
+                >
+                  {/* Wrapped: the kit's unlayered `.graphic-pathway { position: relative }`
+                      beats Tailwind's layered `absolute` on the element itself. */}
+                  <div className="absolute inset-x-5 bottom-3">
+                    <LessonPath total={course.lessons.length} done={p?.completed.length ?? 0} />
+                  </div>
+                </Cover>
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex flex-wrap gap-2">
-                    <Chip tone={course.level === "Foundation" ? "success" : "info"}>{course.level}</Chip>
+                    <Chip tone={course.level === "Foundation" ? "success" : course.level === "Supervisor" ? "gold" : "info"}>{course.level}</Chip>
                     <Chip>
                       <Clock className="size-3" aria-hidden /> {minutes} min
                     </Chip>
@@ -363,8 +376,11 @@ function LessonView({
           <span />
           <span />
         </div>
-        <div className="text-xs font-bold uppercase tracking-[0.18em] text-brand-band-accent">
-          Lesson {index + 1} of {course.lessons.length} · {lesson.minutes} min
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="text-xs font-bold uppercase tracking-[0.18em] text-brand-band-accent">
+            Lesson {index + 1} of {course.lessons.length} · {lesson.minutes} min
+          </div>
+          <LessonPath total={course.lessons.length} done={index} className="w-64 max-w-full" />
         </div>
         <h1 className="mt-3 font-serif text-3xl sm:text-4xl">{lesson.title}</h1>
         <p className="mt-3 max-w-2xl text-lg/relaxed opacity-85">{lesson.summary}</p>
@@ -635,6 +651,8 @@ export type PracticeStudioProps = {
   competencies: Competency[];
   levels: CompetencyLevel[];
   backHref: string;
+  /** A photograph behind the hero. */
+  heroImage?: string;
   note?: ReactNode | null;
   linkComponent?: DashboardLinkComponent;
 };
@@ -714,6 +732,7 @@ export function PracticeStudio({
   competencies,
   levels,
   backHref,
+  heroImage,
   note,
   linkComponent: Link = PlainLink,
 }: PracticeStudioProps) {
@@ -741,6 +760,7 @@ export function PracticeStudio({
         title="Rate a role play"
         description="Read the session, rate each competency from 1 to 4, then compare with the expert consensus."
         art={{ kind: "glyph", name: "measurement" }}
+        backdrop={heroImage ? { src: heroImage, position: "center 40%" } : undefined}
       >
         {scenarios.length > 1 && (
           <div className="mt-6 flex flex-wrap gap-2">

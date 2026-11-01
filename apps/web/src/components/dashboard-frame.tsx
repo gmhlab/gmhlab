@@ -5,7 +5,6 @@ import {
   type DashboardLinkComponent,
   DashboardShell,
   DashboardSkeleton,
-  type DemoAccountOption,
   toast,
 } from "@gmhlab/blocks";
 import { DEMO_PASSWORD, resetMockWorkspace } from "@gmhlab/core/mocks";
@@ -16,14 +15,10 @@ import { type ReactNode, useEffect, useState } from "react";
 import { DASHBOARD_MODULES } from "@/content/dashboard-modules";
 import { useTheme } from "./theme-provider";
 import { SiteWorkspaceProviders } from "./workspace-providers";
+import { WORKSPACE_DEMO_ACCOUNTS } from "@/content/workspace-demo-accounts";
 
-/** The seeded demo accounts (core/mocks), for the shell's "view as" menu. */
-const DEMO_ACCOUNTS: DemoAccountOption[] = [
-  { email: "member@demo.gmhlab.org", label: "Member" },
-  { email: "partner@demo.gmhlab.org", label: "Project partner" },
-  { email: "staff@demo.gmhlab.org", label: "Staff" },
-  { email: "admin@demo.gmhlab.org", label: "Admin" },
-];
+/** The seeded demo accounts (real team members), for the "view as" menu. */
+const DEMO_ACCOUNTS = WORKSPACE_DEMO_ACCOUNTS;
 
 const NextLink = Link as unknown as DashboardLinkComponent;
 

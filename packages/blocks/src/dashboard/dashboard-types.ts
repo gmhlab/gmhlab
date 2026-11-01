@@ -149,6 +149,8 @@ export type Course = {
   /** Gate, checked with core's `canAccess` (the course id is the resource id). */
   access: Access;
   glyph: ResearchGlyphName;
+  /** A photograph the course card is built around; the glyph becomes its badge. */
+  image?: string;
   lessons: Lesson[];
   quiz: QuizQuestion[];
 };

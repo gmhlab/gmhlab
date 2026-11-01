@@ -261,3 +261,40 @@ the page shows (`DemoNote`).
   of the artwork, where the mark ends. On dashboard navy (the GW pin in both
   modes) ink is white via `--dash-on-navy`, never dark mode's pale-blue
   `on-brand-band`.
+- **The kit is used as its file labels it** (`ornaments.tsx`, 2026-10-31; the
+  boards are images in `.files/gmh-graphics-kit-v1.html` — render it headless
+  to read them). Duotone shapes are **ornaments** (`Ornament`, cropped off a
+  corner, behind content) or **cover art** (`Cover`: a shape cropped large off
+  the bottom-right, or a glyph big-and-faint behind a crisp one, plus an icon
+  badge) — never a small centred icon. Blob, arch, pill and bracket are
+  **photo frames** (`PhotoFrame`, through ui's `Image` duotone); with no photo
+  they show a labelled "Photo to come" placeholder, never a stock stand-in.
+  Dividers: `WaveRule` (the wave as a rule, no carve), `FigureRule` (the
+  figure band, faded), `LessonPath` (the pathway rule as progress: one node
+  per lesson, rings until done). `PageHero` takes `art` as an ornament, or
+  `backdrop` for a full-bleed photo (the arch-window `photo` prop was removed
+  with the rejected arch-window hero).
+- **Wrap the pathway rule to position it.** `.graphic-pathway` sets
+  `position: relative` in unlayered CSS, which beats Tailwind's layered
+  `absolute` on the same element. On a cover, its gaps take the cover's tone
+  (`.dash-art[data-tone] .dash-lesson-path.graphic`), or a bare `.dark` rule
+  paints dark gaps on a gold cover.
+- **Photographs lead where they exist** (2026-10-31). `Course.image` builds
+  the course cover around a full-colour photo under a navy fade (`Cover
+  photo`), the glyph moving into the badge. **Module tiles stay graphics
+  only** — no photos in the home module grid (the user's call: one language
+  per grid, not a mix). `DashboardHome heroPhoto` and
+  `PageHero backdrop` lay ui's `PhotoBackdrop` across the whole hero, but
+  `.dash-hero-photo` overrides it to **full colour under a navy fade from the
+  left** — the kit's duotone plus its wash turned a photo in a navy hero into
+  a murky smudge. Over a photo the hero's progress moves into the stats row so
+  nothing sits on the people in it. Never use a photo as a small framed inset
+  with a widget on top (the abandoned arch-window hero).
+- **The home hero: striations behind, the mark as a lockup above the copy.**
+  `.dash-hero-striations` lays `ContourGlobe centerpiece="none"` across the
+  hero at 0.55, masked out from ~42–64% so the lines never cross the photo's
+  people. The GMH mark heads the copy (`.dash-hero-lockup`: simple drawing,
+  white ink, soft gold glow, a hairline, then the role chips), read before the
+  greeting like a letterhead. Rejected: the mark superimposed on the photo at
+  the seam (too busy, out of place) and the detailed drawing at lockup size
+  (its coastlines turn to noise).

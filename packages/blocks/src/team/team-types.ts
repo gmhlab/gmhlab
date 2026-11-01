@@ -1,3 +1,4 @@
+import type { PublishedProfile } from "@gmhlab/core";
 import type { Project } from "../projects/projects-types";
 import type { Publication } from "../publications/publications-types";
 
@@ -126,4 +127,30 @@ export function projectPeople(projectSlug: string, people: Person[]): Person[] {
         person.projects?.includes(projectSlug),
     )
     .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
+}
+
+/**
+ * Overlay approved workspace profiles on the people records: where a profile
+ * with the person's slug exists, its title, bio, location and headshot win.
+ * The record keeps everything a profile can't edit (credentials, group,
+ * projects, links). Empty profile fields never blank out the record.
+ */
+export function applyPublishedProfiles(people: Person[], profiles: PublishedProfile[]): Person[] {
+  if (profiles.length === 0) return people;
+  const bySlug = new Map(profiles.map((p) => [p.profileSlug, p]));
+  return people.map((person) => {
+    const profile = bySlug.get(person.slug);
+    if (!profile) return person;
+    const bio = profile.bio
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    return {
+      ...person,
+      role: profile.title || person.role,
+      location: profile.location || person.location,
+      photo: profile.photo || person.photo,
+      bio: bio.length ? bio : person.bio,
+    };
+  });
 }

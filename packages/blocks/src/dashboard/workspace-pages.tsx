@@ -1,7 +1,6 @@
 import { type Account, type Photo, type PhotoUpload, tierAtLeast } from "@gmhlab/core";
 import { Button, cn } from "@gmhlab/ui";
 import {
-  Camera,
   CheckCircle2,
   ClipboardList,
   FileText,
@@ -20,6 +19,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { type FormEvent, type ReactNode, useMemo, useRef, useState } from "react";
 import type { HandbookSection, ProjectRoom, RoomResource } from "./dashboard-types";
+import { Cover, PhotoFrame } from "./ornaments";
 import { ArtTile, Chip, DemoNote, EASE, Item, PageHero, Panel, SectionTitle, Stagger, toneAt } from "./kit";
 
 /* ── Project rooms ────────────────────────────────────────────────────── */
@@ -210,7 +210,7 @@ function JoinCard({
   return (
     <Panel className="flex h-full flex-col overflow-hidden p-0">
       <div className="relative">
-        <ArtTile art={room.art} tone={tone} size={64} className="aspect-[2/1] w-full !rounded-none" />
+        <Cover art={room.art} tone={tone} className="aspect-[2/1] w-full !rounded-none" />
         <div className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-surface/90 shadow-level1">
           <Lock className="size-4 text-on-surface-variant" aria-label="Locked" />
         </div>
@@ -366,8 +366,10 @@ export function PhotoLibrary({
       {photos.length === 0 ? (
         <Panel className="grid place-items-center py-20 text-center">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-            <div className="mx-auto mb-5 grid size-20 place-items-center rounded-full bg-secondary-container">
-              <Camera className="size-9 text-on-secondary-container" aria-hidden />
+            <div className="mx-auto mb-8 flex items-end justify-center gap-4" aria-hidden>
+              <PhotoFrame frame="blob" placeholder="" className="size-28" />
+              <PhotoFrame frame="arch" placeholder="" className="h-40 w-32" />
+              <PhotoFrame frame="pill" placeholder="" className="h-32 w-20" />
             </div>
             <h2 className="font-serif text-2xl">No photos yet</h2>
             <p className="mx-auto mt-2 max-w-sm text-on-surface-variant">

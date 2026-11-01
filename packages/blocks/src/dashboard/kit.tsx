@@ -1,6 +1,6 @@
 "use client";
 
-import { BrandShape, ResearchGlyph, cn } from "@gmhlab/ui";
+import { BrandShape, PhotoBackdrop, ResearchGlyph, cn } from "@gmhlab/ui";
 import { Lock } from "lucide-react";
 import {
   animate,
@@ -262,57 +262,63 @@ export function PageHero({
   title,
   description,
   art,
+  backdrop,
   actions,
   children,
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
   description?: ReactNode;
+  /** Drawn as an ornament cropped off the hero's bottom-right corner. */
   art?: ModuleArt;
+  /**
+   * A photograph across the whole hero, in the brand duotone under a navy
+   * wash that keeps the copy at reading strength and opens to the right.
+   */
+  backdrop?: { src: string; position?: string };
   actions?: ReactNode;
   children?: ReactNode;
 }) {
   return (
     <motion.section
-      className="dash-hero px-6 py-8 sm:px-10 sm:py-10"
+      className={cn("dash-hero px-6 py-9 sm:px-10 sm:py-12", backdrop && "dash-hero-photo sm:py-16")}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: EASE }}
     >
+      {backdrop && <PhotoBackdrop src={backdrop.src} position={backdrop.position} />}
       <div className="dash-aurora" aria-hidden>
         <span />
         <span />
         <span />
       </div>
-      <div className="relative grid items-center gap-6 md:grid-cols-[1fr_auto]">
+      {art && !backdrop && (
+        <motion.div
+          className="pointer-events-none absolute -bottom-[38%] right-[-4%] -z-[1] hidden aspect-square w-[min(44%,26rem)] md:block"
+          initial={{ opacity: 0, rotate: -14, y: 30 }}
+          animate={{ opacity: art.kind === "shape" ? 0.55 : 0.22, rotate: -6, y: 0 }}
+          transition={{ duration: 1.1, ease: EASE, delay: 0.1 }}
+          aria-hidden
+        >
+          {art.kind === "shape" ? (
+            <BrandShape name={art.name} className="size-full" />
+          ) : (
+            <ResearchGlyph name={art.name} className="size-full" />
+          )}
+        </motion.div>
+      )}
+      <div className="relative">
         <div className="max-w-2xl">
           {eyebrow && (
             <div className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-band-accent">
               {eyebrow}
             </div>
           )}
-          <h1 className="font-serif text-3xl leading-tight sm:text-4xl">
-            {title}
-          </h1>
-          {description && <p className="mt-3 text-base/relaxed opacity-85">{description}</p>}
+          <h1 className="font-serif text-3xl leading-tight sm:text-[2.6rem]">{title}</h1>
+          {description && <p className="mt-3 max-w-xl text-base/relaxed opacity-85">{description}</p>}
           {actions && <div className="mt-6 flex flex-wrap gap-3">{actions}</div>}
           {children}
         </div>
-        {art && (
-          <motion.div
-            className="hidden md:block"
-            initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-          >
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <ArtTile art={art} tone="gold" size={96} className="size-40 rotate-3 shadow-2xl" />
-            </motion.div>
-          </motion.div>
-        )}
       </div>
     </motion.section>
   );

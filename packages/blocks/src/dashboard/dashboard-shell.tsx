@@ -63,7 +63,13 @@ const ICONS: Record<ModuleIcon, LucideIcon> = {
   layout: LayoutDashboard,
 };
 
-const GROUPS: ModuleNavGroup[] = ["Learn", "Create", "Workspace", "Lab"];
+/** A module's icon, as drawn in the sidebar — also the badge on its cover. */
+export function ModuleIconGlyph({ icon, className }: { icon: ModuleIcon; className?: string }) {
+  const Icon = ICONS[icon];
+  return <Icon className={className} aria-hidden />;
+}
+
+const GROUPS: ModuleNavGroup[] = ["Create", "Learn", "Workspace", "Lab"];
 
 const PlainLink: DashboardLinkComponent = ({ href, children, ...props }) => (
   <a href={href} {...props}>
@@ -80,8 +86,20 @@ export function initials(name: string) {
     .join("");
 }
 
-/** The account's initials on a gold disc — the workspace has no headshots. */
-export function Monogram({ name, className }: { name: string; className?: string }) {
+/**
+ * The account's headshot when it has one, else its initials on a gold disc —
+ * never a stand-in image (the team page's rule).
+ */
+export function Monogram({ name, photo, className }: { name: string; photo?: string; className?: string }) {
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt=""
+        className={cn("size-9 shrink-0 rounded-full object-cover ring-2 ring-white/30", className)}
+      />
+    );
+  }
   return (
     <span
       className={cn(
@@ -200,7 +218,7 @@ function Sidebar({
         onClick={onNavigate}
         className="mt-4 flex items-center gap-3 rounded-2xl bg-white/8 p-3 ring-1 ring-white/12 transition hover:bg-white/12"
       >
-        <Monogram name={account.name} />
+        <Monogram name={account.name} photo={account.photo} />
         <span className="min-w-0 flex-1">
           <span className="block truncate text-sm font-semibold">{account.name}</span>
           <span className="block truncate text-xs text-brand-band-accent">{TIER_LABEL[account.tier]}</span>
@@ -352,7 +370,8 @@ export function DashboardSkeleton() {
   );
 }
 
-export type DemoAccountOption = { email: string; label: string };
+/** A one-click demo sign-in: who (label) and what they can see (role). */
+export type DemoAccountOption = { email: string; label: string; role?: string };
 
 export type DashboardShellProps = {
   account: Account;
@@ -597,7 +616,7 @@ export function DashboardShell({
                   className="ml-1 rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                   aria-label="Account menu"
                 >
-                  <Monogram name={account.name} className="ring-outline-variant" />
+                  <Monogram name={account.name} photo={account.photo} className="ring-outline-variant" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64">
                   <DropdownMenuGroup>
@@ -626,7 +645,10 @@ export function DashboardShell({
                                 account.email === option.email ? "bg-tertiary-container" : "bg-outline-variant",
                               )}
                             />
-                            {option.label}
+                            <span>
+                              {option.label}
+                              {option.role && <span className="block text-xs text-on-surface-variant">{option.role}</span>}
+                            </span>
                           </DropdownMenuItem>
                         ))}
                         {onResetDemo && (
