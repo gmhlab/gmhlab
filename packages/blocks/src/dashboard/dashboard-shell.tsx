@@ -190,9 +190,9 @@ function Sidebar({
     <nav className="dash-sidebar flex h-full flex-col px-4 pb-4 pt-5" aria-label="Workspace">
       <div className="dash-sidebar-brand mb-6 flex items-center gap-3 px-2">
         <GmhLogo href={homeHref} />
-        <div className="leading-tight">
+        <div className="flex flex-col gap-0.5 leading-none">
           <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-band-accent">{eyebrow}</div>
-          <div className="font-serif text-lg">{name}</div>
+          <div className="font-serif text-lg leading-none">{name}</div>
         </div>
       </div>
 

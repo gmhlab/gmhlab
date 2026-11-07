@@ -437,7 +437,17 @@
   --logo-mark-ink: var(--dash-on-navy);
 }
 
+/* Reserve the scrollbar's gutter while the workspace is mounted. Without it,
+   opening an accordion (or anything that makes the page outgrow the window)
+   brings in a classic scrollbar, the layout narrows by its width, and the
+   whole page shifts sideways; closing it shifts back. Scoped with :has() so
+   the public site keeps its own scrollbar behaviour. */
+html:has(.dash) {
+  scrollbar-gutter: stable;
+}
+
 .dash-sidebar-scroll {
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, white 22%, transparent) transparent;
 }

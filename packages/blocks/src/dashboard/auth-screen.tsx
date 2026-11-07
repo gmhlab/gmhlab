@@ -125,11 +125,11 @@ export function AuthScreen({
   const wordmark = (
     <div className="dash-sidebar-brand flex items-center gap-3">
       <GmhLogo href={siteHref} />
-      <span className="leading-tight">
-        <span className="block text-[11px] font-bold uppercase tracking-[0.2em] text-brand-band-accent">
+      <span className="flex flex-col gap-0.5 leading-none">
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-band-accent">
           {GMH_DASHBOARD_COPY.workspaceEyebrow}
         </span>
-        <span className="block font-serif text-lg">{GMH_DASHBOARD_COPY.workspaceName}</span>
+        <span className="font-serif text-lg leading-none">{GMH_DASHBOARD_COPY.workspaceName}</span>
       </span>
     </div>
   );
