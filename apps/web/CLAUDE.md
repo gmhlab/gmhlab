@@ -7,8 +7,8 @@ The GW Center's records in `src/content/` feed the page blocks (see `packages/bl
 ## `publications-data.ts` is generated data with hand-maintained conventions
 
 It lives in **`apps/web/src/content/`** (it is the Center's bibliography, not
-library code — see `packages/blocks/CLAUDE.md`). It is ~5,200 lines and **343
-records** (as of 2026-08-13), merging the Center's
+library code — see `packages/blocks/CLAUDE.md`). It is ~5,200 lines and **356
+records** (as of 2026-11-07), merging the Center's
 own listing with the *full* OpenAlex records of Brandon A. Kohrt and Sauharda
 Rai. Google Scholar has no API and blocks scraping, so OpenAlex is the
 substitute — don't reach for Scholar. There is **no generator script in the
@@ -51,7 +51,7 @@ on `journal` — exact titles plus the BMC, Lancet, Frontiers, Cambridge Prisms
 and JAMA families, following the live site's own reuse of those marks. 13 images
 are the live /publications page's uploads (originals and crop notes in
 `apps/web/assets/gw-site/publications/`); 27 more (2026-10-28) cover every other
-venue with 2+ works, from publisher cover CDNs and PMC mastheads (sources, edits
+venue with 2+ works, and 3 single-work venues were added 2026-11-07, from publisher cover CDNs and PMC mastheads (sources, edits
 and the four venues still missing in `apps/web/assets/publication-covers/`).
 **Look for a real cover before leaving a venue on the book glyph.** `PublicationCover` (exported from
 blocks) renders the cover or, with none, the kit's `publication` (book) glyph on a flat tile — one stand-in for every record, not the theme glyph, which the row already shows; callers

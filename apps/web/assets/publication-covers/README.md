@@ -28,6 +28,9 @@ plain request even where the journal site is behind Cloudflare):
 | `epidemiology-and-psychiatric-sciences.jpg` | the journal page's `og:image` on `static.cambridge.org/covers/EPS_0_0_0/` |
 | `british-journal-of-psychiatry.jpg` | the same, `static.cambridge.org/covers/BJP_0_0_0/` |
 
+| `molecular-psychiatry.png` | `…/cover-hires/journal/41380` (added 2026-11-07) |
+| `nature-reviews-psychology.png` | `…/cover-hires/journal/44159` (added 2026-11-07) |
+
 The Elsevier id is `X` + the print ISSN without its hyphen; the Springer id is
 the journal number in its `link.springer.com/journal/<n>` URL.
 
@@ -41,7 +44,9 @@ abbreviation is the journal you want: `logo-bjp` is the *British Journal of
 Pain* and `logo-irp` is *Implementation Research and Practice*.
 
 **MDPI**: `mdpi-ijerph-logo.png` is `mdpi-res.com/img/journals/ijerph-logo.png`
-(650×140), sharper than PMC's banner.
+(650×140), sharper than PMC's banner. `mdpi-psychiatryint-logo.png`
+(*Psychiatry International*, added 2026-11-07) is the same host's
+`psychiatryint-logo.png`, padded square with no crop.
 
 ## Edits
 
@@ -67,6 +72,7 @@ on psychiatryonline.org, Wiley Online Library, Taylor & Francis and bmj.com, and
 PMC shows no masthead for these journals. Still on the glyph, by record count:
 *Psychiatric Services* (APA, 7), *Early Intervention in Psychiatry* (Wiley, 2),
 *International Review of Psychiatry* (T&F, 2), *International Journal of
-Culture and Mental Health* (T&F, ceased, 2). A cover saved by hand from the
+Culture and Mental Health* (T&F, ceased, 2). *Gedragstherapie* (Boom, 1 work, added 2026-11-07) is also on the glyph: its
+cover on `static.boomportaal.nl` answers 401 to a plain request. A cover saved by hand from the
 journal's page drops straight in: put the original here, the 192px square in
 `public/publications/`, and add a mapping line.
