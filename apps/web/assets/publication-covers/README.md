@@ -21,15 +21,16 @@ plain request even where the journal site is behind Cloudflare):
 | `journal-of-psychiatric-research.jpg` | `ars.els-cdn.com/content/image/X00223956.jpg` |
 | `psychoneuroendocrinology.jpg` | `ars.els-cdn.com/content/image/X03064530.jpg` |
 | `behaviour-research-and-therapy.jpg` | `ars.els-cdn.com/content/image/X00057967.jpg` |
+| `eclinicalmedicine.jpg` | `ars.els-cdn.com/content/image/X25895370.jpg` (added 2026-11-07) |
 | `culture-medicine-and-psychiatry.png` | `media.springernature.com/full/springer-static/cover-hires/journal/11013` |
 | `academic-psychiatry.png` | `…/cover-hires/journal/40596` |
 | `european-child-and-adolescent-psychiatry.png` | `…/cover-hires/journal/787` |
 | `community-mental-health-journal.png` | `…/cover-hires/journal/10597` |
 | `epidemiology-and-psychiatric-sciences.jpg` | the journal page's `og:image` on `static.cambridge.org/covers/EPS_0_0_0/` |
 | `british-journal-of-psychiatry.jpg` | the same, `static.cambridge.org/covers/BJP_0_0_0/` |
-
 | `molecular-psychiatry.png` | `…/cover-hires/journal/41380` (added 2026-11-07) |
 | `nature-reviews-psychology.png` | `…/cover-hires/journal/44159` (added 2026-11-07) |
+| `intervention.png` | the cover thumbnail on the journal page `journals.lww.com/invn`, served from `ovid.com/image-api/…/width/600.png` (added 2026-11-07) |
 
 The Elsevier id is `X` + the print ISSN without its hyphen; the Springer id is
 the journal number in its `link.springer.com/journal/<n>` URL.

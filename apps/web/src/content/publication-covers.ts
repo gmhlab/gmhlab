@@ -61,10 +61,12 @@ const EXACT: Record<string, string> = {
   "Culture Medicine and Psychiatry": "culture-medicine-and-psychiatry",
   "Epidemiology and Psychiatric Sciences":
     "epidemiology-and-psychiatric-sciences",
+  "EClinicalMedicine": "eclinicalmedicine",
   "European Child & Adolescent Psychiatry":
     "european-child-and-adolescent-psychiatry",
   "International Journal of Environmental Research and Public Health":
     "ijerph",
+  "Intervention": "intervention",
   "JMIR Research Protocols": "jmir-research-protocols",
   "JAACAP Open": "jaacap",
   "Journal of Adolescent Health": "journal-of-adolescent-health",

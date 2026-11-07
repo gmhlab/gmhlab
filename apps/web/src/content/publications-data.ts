@@ -1,7 +1,7 @@
 /**
  * Publications for the GW Center for Global Mental Health.
  *
- * Three sources, merged on DOI:
+ * Four sources, merged on DOI:
  *
  *   1. The Center's own /publications listing (19 entries). These carry the
  *      Center's curated `summary` and its `projects` links, and are flagged
@@ -13,11 +13,16 @@
  *      literature with verifiable DOIs, citation counts and open-access status.
  *   3. The full record of Sauharda Rai (ORCID 0000-0002-9393-1466, OpenAlex
  *      A5083993471). Same Google Scholar caveat, same OpenAlex substitution.
+ *   4. The full record of Dristy Gurung (ORCID 0000-0003-1839-9382, OpenAlex
+ *      A5001705086), added 2026-11-07. Same substitution. The 57 works from
+ *      2015 on yielded 21 not already present; the rest were co-authored with
+ *      Kohrt or Rai. One no-DOI King's College repository copy of a BJPsych
+ *      Open paper already in the set was left out.
  *
- * **Both author pulls now run to 2015 with no year window**, so coverage is
+ * **All three author pulls run to 2015 with no year window**, so coverage is
  * even across the span rather than thinning before a cutoff. (2) was originally
  * pulled at 2023-onward and backfilled to 2015 on 2026-08-13, at the same time
- * (3) was added; adding a fourth author means pulling them unwindowed too, or
+ * (3) was added, and (4) was pulled the same way; adding another author means pulling them unwindowed too, or
  * the early years quietly become a subset again.
  *
  * 17 of the Center's 19 appear in both (1) and (2) and are deduplicated by DOI;
@@ -34,8 +39,9 @@
  * books, book chapters, reference-work entries and letters are kept and mapped
  * onto `kind`. `citations` and `openAccess` are point-in-time values from
  * OpenAlex, captured 2026-08-09 for (1) and 2026-08-13 for (2)/(3); they drift
- * and are not re-fetched at runtime. A top-up of (2) on 2026-11-07 added 13
- * works newly indexed since that pull (values captured that day); where
+ * and are not re-fetched at runtime. On 2026-11-07, top-ups of (2) and (3)
+ * added 13 and 1 works newly indexed since that pull, and (4) was added
+ * (values captured that day); where
  * OpenAlex gives a 1 January placeholder date, Crossref's online date is used,
  * as for the rest of the corpus. The older works have had a decade to
  * accrue citations, so `sort by most cited` leads with 2015-2019 papers — that
@@ -89,6 +95,21 @@ const RECORDS: Publication[] = [
     doi: "https://doi.org/10.3390/psychiatryint7050222",
     citations: 0,
     openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
+    slug: "spousal-separation-and-depression-a-study-of-wives-of-labor-migrants-i",
+    title: "Spousal separation and depression: a study of wives of labor migrants in Nepal",
+    authors: ["Sauharda Rai", "Dirgha Jibi Ghimire", "Deepa Rao", "Stephen Meyers", "Nathalie E. Williams"],
+    authorCount: 5,
+    journal: "International Journal of Migration Health and Social Care",
+    date: "2026-09-15",
+    year: 2026,
+    doi: "https://doi.org/10.1108/ijmhsc-09-2025-0134",
+    citations: 0,
+    openAccess: false,
     kind: "Article",
     center: false,
     theme: "Care delivery & systems",
@@ -332,6 +353,21 @@ const RECORDS: Publication[] = [
     kind: "Article",
     center: false,
     theme: "Adolescent & child",
+  },
+  {
+    slug: "responding-to-experienced-and-anticipated-discrimination-training-for",
+    title: "Responding to experienced and anticipated discrimination training for health professionals working in mental health services (READ-MH): an international multisite pre-post mixed methods feasibility study",
+    authors: ["Hend Jemli", "Bethel Ayele", "Ioannis Bakolis", "Kalpana Bhattarai", "Elaine Brohan", "Anish V. Cherian"],
+    authorCount: 31,
+    journal: "SSM - Mental Health",
+    date: "2026-03-07",
+    year: 2026,
+    doi: "https://doi.org/10.1016/j.ssmmh.2026.100609",
+    citations: 0,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Stigma & discrimination",
   },
   {
     slug: "combining-neurobiological-markers-and-a-sociodemographic-risk-score-to",
@@ -739,6 +775,21 @@ const RECORDS: Publication[] = [
     theme: "Stigma & discrimination",
   },
   {
+    slug: "reducing-stigma-and-discriminatory-behaviour",
+    title: "Reducing stigma and discriminatory behaviour",
+    authors: ["Petra C. Gronholm", "Dristy Gurung", "Sarah Parry", "Nisha Mehta", "Graham Thornicroft"],
+    authorCount: 5,
+    journal: "Oxford Textbook of Community Mental Health",
+    date: "2025-02-01",
+    year: 2025,
+    doi: "https://doi.org/10.1093/med/9780198898818.003.0031",
+    citations: 0,
+    openAccess: false,
+    kind: "Chapter",
+    center: false,
+    theme: "Stigma & discrimination",
+  },
+  {
     slug: "development-of-a-mental-health-related-structural-stigma-measurement-f",
     title: "Development of a mental health-related structural stigma measurement framework in the healthcare system setting: A modified Delphi study",
     authors: ["Dristy Gurung", "Bhawana Subedi", "Brandon A. Kohrt", "Syed Shabab Wahid", "Sauharda Rai", "Graham Thornicroft"],
@@ -919,6 +970,21 @@ const RECORDS: Publication[] = [
     theme: "Measurement & validation",
   },
   {
+    slug: "reducing-stigma-and-improving-access-to-care-for-people-with-mental-he",
+    title: "Reducing stigma and improving access to care for people with mental health conditions in the community: protocol for a multi-site feasibility intervention study (Indigo-Local)",
+    authors: ["Maya Semrau", "Petra C. Gronholm", "Julian Eaton", "Pallab Kumar Maulik", "Bethel Ayele", "Ioannis Bakolis"],
+    authorCount: 29,
+    journal: "International Journal of Mental Health Systems",
+    date: "2024-11-18",
+    year: 2024,
+    doi: "https://doi.org/10.1186/s13033-024-00649-3",
+    citations: 37,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Stigma & discrimination",
+  },
+  {
     slug: "a-case-study-of-the-development-of-a-valid-and-pragmatic-implementatio",
     title: "A case study of the development of a valid and pragmatic implementation science measure: the Barriers and Facilitators in Implementation of Task-Sharing Mental Health interventions (BeFITS-MH) measure",
     authors: ["Lawrence H. Yang", "Judy K. Bass", "PhuongThao D. Le", "Ritika Singh", "Dristy Gurung", "Paola R. Velasco"],
@@ -1096,6 +1162,21 @@ const RECORDS: Publication[] = [
     theme: "Measurement & validation",
   },
   {
+    slug: "task-shifting-or-problem-shifting-how-lay-counselling-is-redefining-me",
+    title: "Task-shifting or problem-shifting? How lay counselling is redefining mental healthcare",
+    authors: ["Liana Chase", "Parbati Shrestha", "Gaurav Datta", "Nicky Forsythe", "Sumeet Jain", "Sujen Man Maharjan"],
+    authorCount: 15,
+    journal: "PLOS mental health.",
+    date: "2024-06-17",
+    year: 2024,
+    doi: "https://doi.org/10.1371/journal.pmen.0000067",
+    citations: 9,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Training & competency",
+  },
+  {
     slug: "integration-of-passive-sensing-technology-to-enhance-delivery-of-psych",
     title: "Integration of passive sensing technology to enhance delivery of psychological interventions for mothers with depression: the StandStrong study",
     authors: ["Alastair van Heerden", "Anubhuti Poudyal", "Ashley Hagaman", "Sujen Man Maharjan", "Prabin Byanjankar", "D\u00f6rte Bemme"],
@@ -1177,6 +1258,36 @@ const RECORDS: Publication[] = [
     center: true,
     summary: "Assessment of depression prevalence in primary care settings in Jhapa, Nepal, reveals significant insights into mental health challenges faced in low- and middle-income countries. A total of 1,897 adult patients aged 18\u201391 participated in the study, with 14.5% meeting the threshold for depression based on the Patient Health Questionnaire (PHQ-9) score. The most frequently reported symptoms included loss of energy and sleep difficulties, with only a small percentage of individuals meeting the DSM-5 criteria for depression when evaluated against hallmark symptoms. The findings indicate that reliance on total scores from screening tools like the PHQ-9 could overestimate prevalence rates and lead to false positives. Emphasizing the identification of hallmark symptoms may improve the accuracy of diagnosis and better allocate treatment resources in primary care settings.",
     theme: "Measurement & validation",
+  },
+  {
+    slug: "anti-stigma-interventions-in-low-income-and-middle-income-countries-a",
+    title: "Anti-stigma interventions in low-income and middle-income countries: a systematic review",
+    authors: ["Tazeen Majeed", "Gareth Hopkin", "Katie Wang", "Smriti Nepal", "Nicole Votruba", "Petra C. Gronholm"],
+    authorCount: 16,
+    journal: "EClinicalMedicine",
+    date: "2024-04-26",
+    year: 2024,
+    doi: "https://doi.org/10.1016/j.eclinm.2024.102612",
+    citations: 31,
+    openAccess: true,
+    kind: "Review",
+    center: false,
+    theme: "Stigma & discrimination",
+  },
+  {
+    slug: "social-contact-as-a-strategy-to-reduce-stigma-in-low-and-middle-income",
+    title: "Social contact as a strategy to reduce stigma in low- and middle-income countries: A systematic review and expert perspectives",
+    authors: ["Carlijn Damst\u00e9", "Petra C. Gronholm", "Tjitske de Groot", "Dristy Gurung", "Akerke Makhmud", "Ruth M. H. Peters"],
+    authorCount: 7,
+    journal: "PLOS Global Public Health",
+    date: "2024-03-27",
+    year: 2024,
+    doi: "https://doi.org/10.1371/journal.pgph.0003053",
+    citations: 16,
+    openAccess: true,
+    kind: "Review",
+    center: false,
+    theme: "Stigma & discrimination",
   },
   {
     slug: "systematic-review-and-meta-synthesis-how-is-depression-experienced-by",
@@ -1847,6 +1958,21 @@ const RECORDS: Publication[] = [
     kind: "Article",
     center: false,
     theme: "Measurement & validation",
+  },
+  {
+    slug: "training-for-mental-health-professionals-in-responding-to-experienced",
+    title: "Training for mental health professionals in responding to experienced and anticipated mental health-related discrimination (READ-MH): protocol for an international multisite feasibility study",
+    authors: ["Claire Henderson", "Uta Ouali", "Ioannis Bakolis", "Nada Berbeche", "Kalpana Bhattarai", "Elaine Brohan"],
+    authorCount: 26,
+    journal: "Pilot and Feasibility Studies",
+    date: "2022-12-13",
+    year: 2022,
+    doi: "https://doi.org/10.1186/s40814-022-01208-8",
+    citations: 20,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Stigma & discrimination",
   },
   {
     slug: "identifying-core-competencies-for-remote-delivery-of-psychological-int",
@@ -3289,6 +3415,21 @@ const RECORDS: Publication[] = [
     theme: "Adolescent & child",
   },
   {
+    slug: "gendering-psychosocial-care-risks-and-opportunities-for-global-mental",
+    title: "Gendering psychosocial care: risks and opportunities for global mental health",
+    authors: ["Liana Chase", "Dristy Gurung", "Parbati Shrestha", "Sunita Rumba"],
+    authorCount: 4,
+    journal: "The Lancet Psychiatry",
+    date: "2020-12-16",
+    year: 2020,
+    doi: "https://doi.org/10.1016/s2215-0366(20)30483-1",
+    citations: 9,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
     slug: "systematic-review-of-interventions-to-reduce-mental-health-stigma-in-i",
     title: "Systematic review of interventions to reduce mental health stigma in India",
     authors: ["Amanpreet Kaur", "Sudha Kallakuri", "Brandon A. Kohrt", "Eva Heim", "Petra C. Gronholm", "Graham Thornicroft"],
@@ -3469,6 +3610,21 @@ const RECORDS: Publication[] = [
     theme: "Care delivery & systems",
   },
   {
+    slug: "rethinking-research-on-the-social-determinants-of-global-mental-health",
+    title: "Rethinking research on the social determinants of global mental health",
+    authors: ["Kelly Rose\u2010Clarke", "Dristy Gurung", "Carrie Brooke\u2010Sumner", "Rochelle A. Burgess", "Jonathan Kenneth Burns", "Ritsuko Kakuma"],
+    authorCount: 15,
+    journal: "The Lancet Psychiatry",
+    date: "2020-07-23",
+    year: 2020,
+    doi: "https://doi.org/10.1016/s2215-0366(20)30134-6",
+    citations: 53,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
     slug: "common-factors-in-psychological-treatments-delivered-by-non-specialist",
     title: "Common factors in psychological treatments delivered by non-specialists in low- and middle-income countries: Manual review of competencies",
     authors: ["Gloria A. Pedersen", "Pooja Lakshmin", "Alison Schafer", "Sarah Watts", "Kenneth Carswell", "Ann Willhoite"],
@@ -3482,6 +3638,21 @@ const RECORDS: Publication[] = [
     kind: "Article",
     center: false,
     theme: "Training & competency",
+  },
+  {
+    slug: "evaluating-the-integration-of-chronic-care-elements-in-primary-health",
+    title: "Evaluating the integration of chronic care elements in primary health care for people with mental illness: a longitudinal study in Nepal conducted among primary health care workers",
+    authors: ["Nawaraj Upadhaya", "Mark J. D. Jordans", "Ramesh Prasad Adhikari", "Dristy Gurung", "Ruwayda Petrus", "Inge Petersen"],
+    authorCount: 7,
+    journal: "BMC Health Services Research",
+    date: "2020-07-09",
+    year: 2020,
+    doi: "https://doi.org/10.1186/s12913-020-05491-0",
+    citations: 13,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
   },
   {
     slug: "lessons-learned-through-piloting-a-community-based-sms-referral-system",
@@ -3662,6 +3833,21 @@ const RECORDS: Publication[] = [
     kind: "Article",
     center: false,
     theme: "Stigma & discrimination",
+  },
+  {
+    slug: "mental-health-and-psychosocial-support-services-in-primary-health-care",
+    title: "Mental health and psychosocial support services in primary health care in Nepal: perceived facilitating factors, barriers and strategies for improvement",
+    authors: ["Nawaraj Upadhaya", "Upasana Regmi", "Dristy Gurung", "Nagendra P. Luitel", "Inge Petersen", "Mark J. D. Jordans"],
+    authorCount: 7,
+    journal: "BMC Psychiatry",
+    date: "2020-02-13",
+    year: 2020,
+    doi: "https://doi.org/10.1186/s12888-020-2476-x",
+    citations: 65,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
   },
   {
     slug: "policy-makers-tough-choices-for-psychological-interventions-in-global",
@@ -3889,6 +4075,66 @@ const RECORDS: Publication[] = [
     theme: "Care delivery & systems",
   },
   {
+    slug: "scaling-up-integrated-primary-mental-health-in-six-low-and-middle-inco",
+    title: "Scaling up integrated primary mental health in six low- and middle-income countries: obstacles, synergies and implications for systems reform",
+    authors: ["Inge Petersen", "Andr\u00e9 Janse van Rensburg", "Fred N. Kigozi", "Maya Semrau", "Charlotte Hanlon", "Jibril Omuya Abdulmalik"],
+    authorCount: 22,
+    journal: "BJPsych Open",
+    date: "2019-08-06",
+    year: 2019,
+    doi: "https://doi.org/10.1192/bjo.2019.7",
+    citations: 114,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
+    slug: "mental-health-financing-challenges-opportunities-and-strategies-in-low",
+    title: "Mental health financing challenges, opportunities and strategies in low- and middle-income countries: findings from the Emerald project",
+    authors: ["Dan Chisholm", "Sumaiyah Docrat", "Jibril Omuya Abdulmalik", "Atalay Alem", "Oye Gureje", "Dristy Gurung"],
+    authorCount: 16,
+    journal: "BJPsych Open",
+    date: "2019-08-06",
+    year: 2019,
+    doi: "https://doi.org/10.1192/bjo.2019.24",
+    citations: 89,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
+    slug: "experience-of-implementing-new-mental-health-indicators-within-informa",
+    title: "Experience of implementing new mental health indicators within information systems in six low- and middle-income countries",
+    authors: ["Shalini Ahuja", "Charlotte Hanlon", "Dan Chisholm", "Maya Semrau", "Dristy Gurung", "Jibril Omuya Abdulmalik"],
+    authorCount: 17,
+    journal: "BJPsych Open",
+    date: "2019-08-06",
+    year: 2019,
+    doi: "https://doi.org/10.1192/bjo.2019.29",
+    citations: 26,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
+    slug: "evaluation-of-performance-and-perceived-utility-of-mental-healthcare-i",
+    title: "Evaluation of performance and perceived utility of mental healthcare indicators in routine health information systems in five low- and middle-income countries",
+    authors: ["Mark J. D. Jordans", "Dan Chisholm", "Maya Semrau", "Dristy Gurung", "Jibril Omuya Abdulmalik", "Shalini Ahuja"],
+    authorCount: 15,
+    journal: "BJPsych Open",
+    date: "2019-08-06",
+    year: 2019,
+    doi: "https://doi.org/10.1192/bjo.2019.22",
+    citations: 22,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
     slug: "eliciting-recovery-narratives-in-global-mental-health-benefits-and-pot",
     title: "Eliciting recovery narratives in global mental health: Benefits and potential harms in service user participation",
     authors: ["Bonnie N. Kaiser", "Saiba Varma", "Elizabeth Carpenter-Song", "Rebecca Sareff", "Sauharda Rai", "Brandon A. Kohrt"],
@@ -4007,6 +4253,21 @@ const RECORDS: Publication[] = [
     kind: "Article",
     center: false,
     theme: "Stigma & discrimination",
+  },
+  {
+    slug: "household-economic-costs-associated-with-mental-neurological-and-subst",
+    title: "Household economic costs associated with mental, neurological and substance use disorders: a cross-sectional survey in six low- and middle-income countries",
+    authors: ["Crick Lund", "Sumaiyah Docrat", "Jibril Omuya Abdulmalik", "Atalay Alem", "Abebaw Fekadu", "Oye Gureje"],
+    authorCount: 18,
+    journal: "BJPsych Open",
+    date: "2019-04-08",
+    year: 2019,
+    doi: "https://doi.org/10.1192/bjo.2019.20",
+    citations: 44,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
   },
   {
     slug: "engaging-families-to-advance-global-mental-health-intervention-researc",
@@ -4202,6 +4463,21 @@ const RECORDS: Publication[] = [
     kind: "Article",
     center: false,
     theme: "Training & competency",
+  },
+  {
+    slug: "geographies-of-adolescent-distress-a-need-for-a-community-based-psycho",
+    title: "Geographies of adolescent distress: A need for a community-based psychosocial care system in Nepal",
+    authors: ["Nawaraj Upadhaya", "Carola Tize", "RameshP Adhikari", "Dristy Gurung", "Ruja Pokhrel", "Sujen Man Maharjan"],
+    authorCount: 7,
+    journal: "Intervention",
+    date: "2018-10-10",
+    year: 2018,
+    doi: "https://doi.org/10.4103/intv.intv_21_18",
+    citations: 11,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Adolescent & child",
   },
   {
     slug: "global-mental-health",
@@ -4459,6 +4735,21 @@ const RECORDS: Publication[] = [
     theme: "Stigma & discrimination",
   },
   {
+    slug: "psychotropic-drugs-in-nepal-perceptions-on-use-and-supply-chain-manage",
+    title: "Psychotropic drugs in Nepal: perceptions on use and supply chain management",
+    authors: ["Nawaraj Upadhaya", "Mark J. D. Jordans", "Dristy Gurung", "Ruja Pokhrel", "Ramesh Prasad Adhikari", "Ivan H. Komproe"],
+    authorCount: 6,
+    journal: "Globalization and Health",
+    date: "2018-01-24",
+    year: 2018,
+    doi: "https://doi.org/10.1186/s12992-018-0322-4",
+    citations: 17,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
     slug: "income-inequality-and-depression-a-systematic-review-and-meta-analysis",
     title: "Income inequality and depression: a systematic review and meta\u2010analysis of the association and a scoping review of mechanisms",
     authors: ["Vikram Patel", "Jonathan K. Burns", "Monisha Dhingra", "Leslie Tarver", "Brandon A. Kohrt", "Crick Lund"],
@@ -4572,6 +4863,21 @@ const RECORDS: Publication[] = [
     year: 2017,
     doi: "https://doi.org/10.1186/s13033-017-0176-9",
     citations: 39,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
+    slug: "service-user-and-caregiver-involvement-in-mental-health-system-strengt",
+    title: "Service user and caregiver involvement in mental health system strengthening in low- and middle-income countries: a cross-country qualitative study",
+    authors: ["Heidi K Lempp", "Sisay Abayneh", "Dristy Gurung", "Lola Kola", "Jibril Omuya Abdulmalik", "Sara E. Evans-Lacko"],
+    authorCount: 10,
+    journal: "Epidemiology and Psychiatric Sciences",
+    date: "2017-11-08",
+    year: 2017,
+    doi: "https://doi.org/10.1017/s2045796017000634",
+    citations: 138,
     openAccess: true,
     kind: "Article",
     center: false,
@@ -4698,6 +5004,21 @@ const RECORDS: Publication[] = [
     theme: "Care delivery & systems",
   },
   {
+    slug: "current-situations-and-future-directions-for-mental-health-system-gove",
+    title: "Current situations and future directions for mental health system governance in Nepal: findings from a qualitative study",
+    authors: ["Nawaraj Upadhaya", "Mark J. D. Jordans", "Ruja Pokhrel", "Dristy Gurung", "Ramesh Prasad Adhikari", "Inge Petersen"],
+    authorCount: 7,
+    journal: "International Journal of Mental Health Systems",
+    date: "2017-06-08",
+    year: 2017,
+    doi: "https://doi.org/10.1186/s13033-017-0145-3",
+    citations: 63,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
     slug: "the-role-of-cultural-expectations-in-emotion-regulation-among-nepali-a",
     title: "The Role of Cultural Expectations in Emotion Regulation among Nepali Adolescents",
     authors: ["M.P. Lambregtse-van den Berg", "Megan Ramaiya", "Andi Schmidt", "Susanna Sharma", "Brandon A. Kohrt"],
@@ -4751,6 +5072,21 @@ const RECORDS: Publication[] = [
     year: 2017,
     doi: "https://doi.org/10.2471/blt.16.189282",
     citations: 70,
+    openAccess: true,
+    kind: "Article",
+    center: false,
+    theme: "Care delivery & systems",
+  },
+  {
+    slug: "service-user-and-care-giver-involvement-in-mental-health-system-streng",
+    title: "Service user and care giver involvement in mental health system strengthening in Nepal: a qualitative study on barriers and facilitating factors",
+    authors: ["Dristy Gurung", "Nawaraj Upadhyaya", "Jananee Magar", "Nir Prakash Giri", "Charlotte Hanlon", "Mark J. D. Jordans"],
+    authorCount: 6,
+    journal: "International Journal of Mental Health Systems",
+    date: "2017-04-19",
+    year: 2017,
+    doi: "https://doi.org/10.1186/s13033-017-0139-1",
+    citations: 64,
     openAccess: true,
     kind: "Article",
     center: false,
@@ -5457,10 +5793,10 @@ const newestYear = PUBLICATIONS[0]?.year;
 const oldestYear = PUBLICATIONS[PUBLICATIONS.length - 1]?.year;
 
 /**
- * What the page's numbers cover, shown under the hero stats. Naming the two
- * authors is the honest framing: this is a merge of two people's records, not
+ * What the page's numbers cover, shown under the hero stats. Naming the three
+ * authors is the honest framing: this is a merge of three people's records, not
  * a complete Center archive (see the provenance header above). Passed by the
  * app rather than defaulted in the block, because it is a claim about this
  * dataset specifically.
  */
-export const PUBLICATIONS_NOTE = `Covers ${oldestYear}–${newestYear}: the Center’s own listing merged with the full OpenAlex records for Brandon A. Kohrt and Sauharda Rai. Citation counts are for these ${PUBLICATIONS.length} works and were captured between August and November 2026.`;
+export const PUBLICATIONS_NOTE = `Covers ${oldestYear}–${newestYear}: the Center’s own listing merged with the full OpenAlex records for Brandon A. Kohrt, Sauharda Rai and Dristy Gurung. Citation counts are for these ${PUBLICATIONS.length} works and were captured between August and November 2026.`;

@@ -7,17 +7,17 @@ The GW Center's records in `src/content/` feed the page blocks (see `packages/bl
 ## `publications-data.ts` is generated data with hand-maintained conventions
 
 It lives in **`apps/web/src/content/`** (it is the Center's bibliography, not
-library code — see `packages/blocks/CLAUDE.md`). It is ~5,200 lines and **356
+library code — see `packages/blocks/CLAUDE.md`). It is ~5,800 lines and **378
 records** (as of 2026-11-07), merging the Center's
-own listing with the *full* OpenAlex records of Brandon A. Kohrt and Sauharda
-Rai. Google Scholar has no API and blocks scraping, so OpenAlex is the
+own listing with the *full* OpenAlex records of Brandon A. Kohrt, Sauharda
+Rai and Dristy Gurung. Google Scholar has no API and blocks scraping, so OpenAlex is the
 substitute — don't reach for Scholar. There is **no generator script in the
 repo**: the records were produced by throwaway scripts, so anything added by
 hand has to match the existing shape exactly. Five conventions, all of which
 fail silently:
 
-- **Both author pulls are unwindowed (2015 onward).** Kohrt was originally
-  pulled 2023+ and backfilled. Adding a third author means pulling them
+- **All three author pulls are unwindowed (2015 onward).** Kohrt was originally
+  pulled 2023+ and backfilled. Adding another author means pulling them
   unwindowed too, or the early years quietly become one author's back
   catalogue while the year facet implies a full archive.
 - **`slug` is a pure function of `title`**: Unicode-normalise, drop combining
