@@ -1,0 +1,1117 @@
+{
+  "file": "GMH - Foundations",
+  "exported": "2026-11-17T06:21:44.085Z",
+  "paint": [],
+  "text": [
+    {
+      "name": "Display/Large",
+      "fontName": {
+        "family": "Libre Baskerville",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 57,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 64
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/display/large/tracking",
+          "css": "--gmh-typescale-display-large-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/display/large/size",
+          "css": "--gmh-typescale-display-large-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/display/large/font",
+          "css": "--gmh-typescale-display-large-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/display/large/line-height",
+          "css": "--gmh-typescale-display-large-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/display/large/weight",
+          "css": "--gmh-typescale-display-large-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-display-large); letter-spacing: var(--gmh-typescale-display-large-tracking). Tailwind: type-display-large.",
+      "id": "S:8d6256f33098e24a0fa13e425b4ea204842b75d7,",
+      "key": "8d6256f33098e24a0fa13e425b4ea204842b75d7"
+    },
+    {
+      "name": "Display/Medium",
+      "fontName": {
+        "family": "Libre Baskerville",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 45,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 52
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/display/medium/tracking",
+          "css": "--gmh-typescale-display-medium-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/display/medium/size",
+          "css": "--gmh-typescale-display-medium-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/display/medium/font",
+          "css": "--gmh-typescale-display-medium-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/display/medium/line-height",
+          "css": "--gmh-typescale-display-medium-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/display/medium/weight",
+          "css": "--gmh-typescale-display-medium-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-display-medium); letter-spacing: var(--gmh-typescale-display-medium-tracking). Tailwind: type-display-medium.",
+      "id": "S:aea34ff5085a4df25180be422800fe88f51392ee,",
+      "key": "aea34ff5085a4df25180be422800fe88f51392ee"
+    },
+    {
+      "name": "Display/Small",
+      "fontName": {
+        "family": "Libre Baskerville",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 36,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 44
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/display/small/tracking",
+          "css": "--gmh-typescale-display-small-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/display/small/size",
+          "css": "--gmh-typescale-display-small-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/display/small/font",
+          "css": "--gmh-typescale-display-small-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/display/small/line-height",
+          "css": "--gmh-typescale-display-small-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/display/small/weight",
+          "css": "--gmh-typescale-display-small-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-display-small); letter-spacing: var(--gmh-typescale-display-small-tracking). Tailwind: type-display-small.",
+      "id": "S:913e955b862b029b43bc1ae9ccafb63594a6b2a1,",
+      "key": "913e955b862b029b43bc1ae9ccafb63594a6b2a1"
+    },
+    {
+      "name": "Headline/Large",
+      "fontName": {
+        "family": "Libre Baskerville",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 32,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 40
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/headline/large/tracking",
+          "css": "--gmh-typescale-headline-large-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/headline/large/size",
+          "css": "--gmh-typescale-headline-large-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/headline/large/font",
+          "css": "--gmh-typescale-headline-large-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/headline/large/line-height",
+          "css": "--gmh-typescale-headline-large-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/headline/large/weight",
+          "css": "--gmh-typescale-headline-large-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-headline-large); letter-spacing: var(--gmh-typescale-headline-large-tracking). Tailwind: type-headline-large.",
+      "id": "S:934bdd2b0e011288d47e81d57d60015f9059eee7,",
+      "key": "934bdd2b0e011288d47e81d57d60015f9059eee7"
+    },
+    {
+      "name": "Headline/Medium",
+      "fontName": {
+        "family": "Libre Baskerville",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 28,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 36
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/headline/medium/tracking",
+          "css": "--gmh-typescale-headline-medium-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/headline/medium/size",
+          "css": "--gmh-typescale-headline-medium-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/headline/medium/font",
+          "css": "--gmh-typescale-headline-medium-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/headline/medium/line-height",
+          "css": "--gmh-typescale-headline-medium-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/headline/medium/weight",
+          "css": "--gmh-typescale-headline-medium-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-headline-medium); letter-spacing: var(--gmh-typescale-headline-medium-tracking). Tailwind: type-headline-medium.",
+      "id": "S:360db523e50a3a7baa18f0fc0374dfe3989975b2,",
+      "key": "360db523e50a3a7baa18f0fc0374dfe3989975b2"
+    },
+    {
+      "name": "Headline/Small",
+      "fontName": {
+        "family": "Libre Baskerville",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 24,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 32
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/headline/small/tracking",
+          "css": "--gmh-typescale-headline-small-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/headline/small/size",
+          "css": "--gmh-typescale-headline-small-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/headline/small/font",
+          "css": "--gmh-typescale-headline-small-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/headline/small/line-height",
+          "css": "--gmh-typescale-headline-small-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/headline/small/weight",
+          "css": "--gmh-typescale-headline-small-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-headline-small); letter-spacing: var(--gmh-typescale-headline-small-tracking). Tailwind: type-headline-small.",
+      "id": "S:a999ddd85e7b5d031276f969d6671f4da1728b43,",
+      "key": "a999ddd85e7b5d031276f969d6671f4da1728b43"
+    },
+    {
+      "name": "Title/Large",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Bold",
+        "variationSettings": {
+          "YTLC": 500,
+          "wdth": 100,
+          "wght": 700
+        }
+      },
+      "fontSize": 22,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 28
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/title/large/tracking",
+          "css": "--gmh-typescale-title-large-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/title/large/size",
+          "css": "--gmh-typescale-title-large-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/title/large/font",
+          "css": "--gmh-typescale-title-large-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/title/large/line-height",
+          "css": "--gmh-typescale-title-large-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/title/large/weight",
+          "css": "--gmh-typescale-title-large-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-title-large); letter-spacing: var(--gmh-typescale-title-large-tracking). Tailwind: type-title-large.",
+      "id": "S:2b004c77fba85c4c22d698b0bb2a5373520b0e53,",
+      "key": "2b004c77fba85c4c22d698b0bb2a5373520b0e53"
+    },
+    {
+      "name": "Title/Medium",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Regular",
+        "variationSettings": {
+          "YTLC": 500,
+          "wdth": 100,
+          "wght": 400
+        }
+      },
+      "fontSize": 16,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 24
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0.15000000596046448
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/title/medium/tracking",
+          "css": "--gmh-typescale-title-medium-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/title/medium/size",
+          "css": "--gmh-typescale-title-medium-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/title/medium/font",
+          "css": "--gmh-typescale-title-medium-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/title/medium/line-height",
+          "css": "--gmh-typescale-title-medium-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/headline/small/weight",
+          "css": "--gmh-typescale-headline-small-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-title-medium); letter-spacing: var(--gmh-typescale-title-medium-tracking). Tailwind: type-title-medium.",
+      "id": "S:cbe61a637be55a3987e3ab879728ab38a1072387,",
+      "key": "cbe61a637be55a3987e3ab879728ab38a1072387"
+    },
+    {
+      "name": "Title/Small",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Bold",
+        "variationSettings": {
+          "YTLC": 500,
+          "wdth": 100,
+          "wght": 700
+        }
+      },
+      "fontSize": 14,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 20
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0.10000000149011612
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/title/small/tracking",
+          "css": "--gmh-typescale-title-small-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/title/small/size",
+          "css": "--gmh-typescale-title-small-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/title/small/font",
+          "css": "--gmh-typescale-title-small-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/title/small/line-height",
+          "css": "--gmh-typescale-title-small-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/title/small/weight",
+          "css": "--gmh-typescale-title-small-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-title-small); letter-spacing: var(--gmh-typescale-title-small-tracking). Tailwind: type-title-small.",
+      "id": "S:1ec766118d23f1ea9c6f3f6ad2bf054c736a6915,",
+      "key": "1ec766118d23f1ea9c6f3f6ad2bf054c736a6915"
+    },
+    {
+      "name": "Body/Large",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Medium",
+        "variationSettings": {
+          "YTLC": 500,
+          "wdth": 100,
+          "wght": 500
+        }
+      },
+      "fontSize": 16,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 24
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/body/large/tracking",
+          "css": "--gmh-typescale-body-large-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/body/large/size",
+          "css": "--gmh-typescale-body-large-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/body/large/font",
+          "css": "--gmh-typescale-body-large-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/body/large/line-height",
+          "css": "--gmh-typescale-body-large-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/body/large/weight",
+          "css": "--gmh-typescale-body-large-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-body-large); letter-spacing: var(--gmh-typescale-body-large-tracking). Tailwind: type-body-large.",
+      "id": "S:c9bd3b11fd34f7973bc83e7a31e93ee3c7ebe1bd,",
+      "key": "c9bd3b11fd34f7973bc83e7a31e93ee3c7ebe1bd"
+    },
+    {
+      "name": "Body/Medium",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Regular",
+        "variationSettings": {
+          "YTLC": 500,
+          "opsz": 12,
+          "wdth": 100,
+          "wght": 400
+        }
+      },
+      "fontSize": 14,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 20
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/body/medium/tracking",
+          "css": "--gmh-typescale-body-medium-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/body/medium/size",
+          "css": "--gmh-typescale-body-medium-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/body/medium/font",
+          "css": "--gmh-typescale-body-medium-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/body/medium/line-height",
+          "css": "--gmh-typescale-body-medium-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/body/medium/weight",
+          "css": "--gmh-typescale-body-medium-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-body-medium); letter-spacing: var(--gmh-typescale-body-medium-tracking). Tailwind: type-body-medium.",
+      "id": "S:8df30f3568251cca35848b86b12556c3a05b48df,",
+      "key": "8df30f3568251cca35848b86b12556c3a05b48df"
+    },
+    {
+      "name": "Body/Small",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Regular",
+        "variationSettings": {
+          "YTLC": 500,
+          "opsz": 12,
+          "wdth": 100,
+          "wght": 400
+        }
+      },
+      "fontSize": 12,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 16
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0.4000000059604645
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/body/small/tracking",
+          "css": "--gmh-typescale-body-small-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/body/small/size",
+          "css": "--gmh-typescale-body-small-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/body/small/font",
+          "css": "--gmh-typescale-body-small-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/body/small/line-height",
+          "css": "--gmh-typescale-body-small-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/body/small/weight",
+          "css": "--gmh-typescale-body-small-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-body-small); letter-spacing: var(--gmh-typescale-body-small-tracking). Tailwind: type-body-small.",
+      "id": "S:e49b31e1ff443403f0b7414580e64e5bf8f912d9,",
+      "key": "e49b31e1ff443403f0b7414580e64e5bf8f912d9"
+    },
+    {
+      "name": "Label/Large",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Medium",
+        "variationSettings": {
+          "YTLC": 500,
+          "opsz": 12,
+          "wdth": 100,
+          "wght": 500
+        }
+      },
+      "fontSize": 14,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 20
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0.10000000149011612
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/label/large/tracking",
+          "css": "--gmh-typescale-label-large-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/label/large/size",
+          "css": "--gmh-typescale-label-large-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/label/large/font",
+          "css": "--gmh-typescale-label-large-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/label/large/line-height",
+          "css": "--gmh-typescale-label-large-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/label/large/weight",
+          "css": "--gmh-typescale-label-large-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-label-large); letter-spacing: var(--gmh-typescale-label-large-tracking). Tailwind: type-label-large.",
+      "id": "S:70497f9fd2b43a820533c0698acaaf02253ec18e,",
+      "key": "70497f9fd2b43a820533c0698acaaf02253ec18e"
+    },
+    {
+      "name": "Label/Medium",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Medium",
+        "variationSettings": {
+          "YTLC": 500,
+          "opsz": 12,
+          "wdth": 100,
+          "wght": 500
+        }
+      },
+      "fontSize": 12,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 16
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0.5
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/label/medium/tracking",
+          "css": "--gmh-typescale-label-medium-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/label/medium/size",
+          "css": "--gmh-typescale-label-medium-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/label/medium/font",
+          "css": "--gmh-typescale-label-medium-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/label/medium/line-height",
+          "css": "--gmh-typescale-label-medium-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/label/medium/weight",
+          "css": "--gmh-typescale-label-medium-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-label-medium); letter-spacing: var(--gmh-typescale-label-medium-tracking). Tailwind: type-label-medium.",
+      "id": "S:ea79bb93951a9f4a02d6afc37429bcc371163e73,",
+      "key": "ea79bb93951a9f4a02d6afc37429bcc371163e73"
+    },
+    {
+      "name": "Label/Small",
+      "fontName": {
+        "family": "Nunito Sans",
+        "style": "Medium",
+        "variationSettings": {
+          "YTLC": 500,
+          "opsz": 12,
+          "wdth": 100,
+          "wght": 500
+        }
+      },
+      "fontSize": 11,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 16
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0.5
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "letterSpacing": {
+          "alias": "Typography/label/small/tracking",
+          "css": "--gmh-typescale-label-small-tracking"
+        },
+        "fontSize": {
+          "alias": "Typography/label/small/size",
+          "css": "--gmh-typescale-label-small-size"
+        },
+        "fontFamily": {
+          "alias": "Typography/label/small/font",
+          "css": "--gmh-typescale-label-small-font"
+        },
+        "lineHeight": {
+          "alias": "Typography/label/small/line-height",
+          "css": "--gmh-typescale-label-small-line-height"
+        },
+        "fontWeight": {
+          "alias": "Typography/label/small/weight",
+          "css": "--gmh-typescale-label-small-weight"
+        }
+      },
+      "description": "font: var(--gmh-typescale-label-small); letter-spacing: var(--gmh-typescale-label-small-tracking). Tailwind: type-label-small.",
+      "id": "S:4844b59ba0dacde8353fed571344805644db4b3f,",
+      "key": "4844b59ba0dacde8353fed571344805644db4b3f"
+    },
+    {
+      "name": "Code/Medium",
+      "fontName": {
+        "family": "Roboto Mono",
+        "style": "Regular",
+        "variationSettings": {
+          "wght": 400
+        }
+      },
+      "fontSize": 14,
+      "lineHeight": {
+        "unit": "PIXELS",
+        "value": 20
+      },
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL",
+      "textDecoration": "NONE",
+      "textDecorationStyle": null,
+      "textDecorationOffset": null,
+      "textDecorationThickness": null,
+      "textDecorationColor": null,
+      "textDecorationSkipInk": null,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "listSpacing": 0,
+      "leadingTrim": "NONE",
+      "hangingPunctuation": false,
+      "hangingList": false,
+      "boundVariables": {
+        "lineHeight": {
+          "alias": "Typography/body/medium/line-height",
+          "css": "--gmh-typescale-body-medium-line-height"
+        },
+        "fontFamily": {
+          "alias": "Typography/typeface/mono",
+          "css": "--gmh-ref-typeface-mono"
+        },
+        "fontSize": {
+          "alias": "Typography/body/medium/size",
+          "css": "--gmh-typescale-body-medium-size"
+        }
+      },
+      "description": "pre, code: body-medium metrics in the mono face (tokens globals.css).",
+      "id": "S:b15400852edaddab8cb8d81d2c21bc09d739ec3b,",
+      "key": "b15400852edaddab8cb8d81d2c21bc09d739ec3b"
+    }
+  ],
+  "effect": [
+    {
+      "name": "Elevation/Level 1",
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 2,
+          "boundVariables": {},
+          "color": "#0000004D",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 3,
+          "boundVariables": {},
+          "color": "#00000026",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "spread": 1,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "description": "var(--gmh-elevation-level1). Key + ambient shadow in the shadow role at 30% / 15%. Tailwind: shadow-level1. For things that genuinely float; M3 expresses most elevation as surface-container colour.",
+      "id": "S:520cc4280740e78fa0bb36cc9d8f35569268c61b,",
+      "key": "520cc4280740e78fa0bb36cc9d8f35569268c61b"
+    },
+    {
+      "name": "Elevation/Level 2",
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 2,
+          "boundVariables": {},
+          "color": "#0000004D",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 6,
+          "boundVariables": {},
+          "color": "#00000026",
+          "offset": {
+            "x": 0,
+            "y": 2
+          },
+          "spread": 2,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "description": "var(--gmh-elevation-level2). Key + ambient shadow in the shadow role at 30% / 15%. Tailwind: shadow-level2. For things that genuinely float; M3 expresses most elevation as surface-container colour.",
+      "id": "S:05e87a53bceda86e690805ca7425ceb822b75c3e,",
+      "key": "05e87a53bceda86e690805ca7425ceb822b75c3e"
+    },
+    {
+      "name": "Elevation/Level 3",
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 3,
+          "boundVariables": {},
+          "color": "#0000004D",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 8,
+          "boundVariables": {},
+          "color": "#00000026",
+          "offset": {
+            "x": 0,
+            "y": 4
+          },
+          "spread": 3,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "description": "var(--gmh-elevation-level3). Key + ambient shadow in the shadow role at 30% / 15%. Tailwind: shadow-level3. For things that genuinely float; M3 expresses most elevation as surface-container colour.",
+      "id": "S:47a2a343028e9e98dab2ed75db7ceacef30648db,",
+      "key": "47a2a343028e9e98dab2ed75db7ceacef30648db"
+    },
+    {
+      "name": "Elevation/Level 4",
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 3,
+          "boundVariables": {},
+          "color": "#0000004D",
+          "offset": {
+            "x": 0,
+            "y": 2
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 10,
+          "boundVariables": {},
+          "color": "#00000026",
+          "offset": {
+            "x": 0,
+            "y": 6
+          },
+          "spread": 4,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "description": "var(--gmh-elevation-level4). Key + ambient shadow in the shadow role at 30% / 15%. Tailwind: shadow-level4. For things that genuinely float; M3 expresses most elevation as surface-container colour.",
+      "id": "S:eea6981ed4771e0dc9d96d6ccf92516c26d9ba9f,",
+      "key": "eea6981ed4771e0dc9d96d6ccf92516c26d9ba9f"
+    },
+    {
+      "name": "Elevation/Level 5",
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 4,
+          "boundVariables": {},
+          "color": "#0000004D",
+          "offset": {
+            "x": 0,
+            "y": 4
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "color": "#00000026",
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 6,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "description": "var(--gmh-elevation-level5). Key + ambient shadow in the shadow role at 30% / 15%. Tailwind: shadow-level5. For things that genuinely float; M3 expresses most elevation as surface-container colour.",
+      "id": "S:738892ad123775ce58123cd9eec407d8c3d95d92,",
+      "key": "738892ad123775ce58123cd9eec407d8c3d95d92"
+    }
+  ],
+  "grid": []
+}

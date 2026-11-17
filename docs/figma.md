@@ -2,11 +2,43 @@
 
 Read this before any Figma work in this repo.
 
-There is no Figma → code token pipeline any more. The MonoFly ingestion
-(`script:tokens`, the Figma plugin, `tokens.json`/`styles.json`, the
-`theme.css` drift report) was deleted on 2026-10-24 with the `--mfy-*` layer:
-it read the MonoFly DSP file and emitted `--mfy-*`. Code is the source of
-truth; Figma is built *from* the tokens.
+There is no automated Figma → code token pipeline. The MonoFly ingestion
+(`script:tokens`, its plugin, `tokens.json`/`styles.json`, the `theme.css`
+drift report) was deleted on 2026-10-24 with the `--mfy-*` layer it emitted.
+Neither side is automatically authoritative: the Foundations file was first
+built *from* the tokens, but a change can start in either place.
+
+To get a file's tokens out by hand, two read-only development plugins
+(Plugins → Development → Import plugin from manifest…) show copy-and-paste
+text in JSON (lossless) or CSS:
+
+- **`packages/tokens/scripts/figma-copy-variables/`** — every local
+  collection, every mode, aliases by name. CSS names come from each
+  variable's WEB code syntax, so the output lines up with `--gmh-*`.
+- **`packages/tokens/scripts/figma-copy-styles/`** — paint, text, effect and
+  grid styles, with bound variables written as `var(--…)`.
+
+`ui.html` is the same file in both; edit both. Each folder also holds its
+Figma listing art (`icon.png` 128×128, `thumbnail.png` 1920×1080), rendered
+by `packages/tokens/scripts/figma-plugin-art/render.sh` from `art.html` with
+headless Chrome. It needs a built `@gmhlab/tokens`, because the colours come
+from the tokens CSS. Re-render the art; don't edit the PNGs.
+
+**`packages/tokens/plugin-export/`** holds the plugins' output from GMH -
+Foundations (`variables.{json,css}`, `styles.{json,css}`), pasted by hand as
+a snapshot so a diff shows what changed in Figma between exports. Nothing
+builds from them. To update, re-run the plugins and overwrite the files;
+don't edit them.
+
+Their playground file is **`VxtQb7XJJUrasKqRtmnjqy` ("GMH Copy Plugins —
+Playground")**, built 2026-11-17 for the Figma listing. It is a small
+stand-in, not a library: 46 variables in six collections (Palette, Color
+Light/Dark with alias-of-alias chains, Typography, Shape, Size, State), with
+GMH values and Web code syntax, plus 14 styles (5 paint, 4 text, 3 effect, 2
+grid) bound to them, and one page with run instructions and a sample card in
+Light and Dark. Binding a variable to a paint resets that paint's opacity, so
+set opacity *after* `setBoundVariableForPaint`; `Scrim/Navy 40` needed exactly
+that fix.
 
 ## The libraries and the app
 

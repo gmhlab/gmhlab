@@ -1,0 +1,219 @@
+<!doctype html>
+<!--
+  Listing art for the two Figma plugins. render.sh screenshots this page with
+  headless Chrome: ?plugin=variables|styles&asset=icon (128×128) or
+  thumbnail (1920×1080). Colours and type come from the built tokens, so run
+  `pnpm --filter @gmhlab/tokens build` first.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../dist/index.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--gmh-color-navy);
+    color: var(--gmh-color-on-brand-band);
+    font-family: var(--gmh-ref-typeface-plain);
+    -webkit-font-smoothing: antialiased;
+  }
+  .gold { color: var(--gmh-color-tertiary-container); }
+  [hidden] { display: none !important; }
+
+  /* ---------- icon ---------- */
+  .icon { position: relative; width: 128px; height: 128px; display: grid; place-items: center; }
+  .icon svg { width: 84px; height: 84px; }
+
+  /* ---------- thumbnail ---------- */
+  .thumb {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 980px; align-items: center;
+    padding: 0 120px; gap: 96px;
+  }
+  /* Faint contour rings, the graphics kit's texture, off the right edge. */
+  .rings { position: absolute; inset: 0; pointer-events: none; }
+  .copy { position: relative; display: flex; flex-direction: column; gap: 36px; }
+  .mark { width: 132px; }
+  .eyebrow {
+    font-weight: 600; font-size: 26px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gmh-color-brand-band-accent);
+  }
+  h1 {
+    font-family: var(--gmh-ref-typeface-brand); font-weight: 400;
+    font-size: 132px; line-height: 1.02; letter-spacing: -.01em;
+  }
+  .rule { width: 120px; height: 6px; background: var(--gmh-color-tertiary-container); }
+  .lede { font-size: 38px; line-height: 1.4; max-width: 640px; opacity: .92; }
+  .facts { display: flex; gap: 14px; flex-wrap: wrap; }
+  .facts span {
+    font-size: 24px; font-weight: 500; padding: 10px 20px; border-radius: 999px;
+    border: 2px solid color-mix(in srgb, var(--gmh-color-on-brand-band) 35%, transparent);
+  }
+
+  /* A faithful mock of the plugin window (its real ui.html, at 1.75×). */
+  .window {
+    position: relative; height: 900px; border-radius: 22px; overflow: hidden;
+    background: #fff; color: #000;
+    box-shadow: 0 40px 90px -20px color-mix(in srgb, var(--gmh-color-scrim) 65%, transparent);
+    display: flex; flex-direction: column;
+    font: 19px/28px Inter, system-ui, sans-serif;
+  }
+  .titlebar {
+    height: 70px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 26px;
+    border-bottom: 1px solid #e6e6e6; font-weight: 600;
+  }
+  .titlebar .x { margin-left: auto; color: #999; font-size: 30px; font-weight: 400; }
+  .body { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 14px; min-height: 0; }
+  .bar { display: flex; gap: 10px; }
+  .ctl {
+    height: 49px; padding: 0 16px; border-radius: 7px; border: 1px solid #e6e6e6;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ctl.primary { margin-left: auto; border-color: transparent; color: #fff; background: #0d99ff; font-weight: 600; padding: 0 26px; }
+  .out {
+    flex: 1; min-height: 0; overflow: hidden; border-radius: 7px; padding: 14px 16px;
+    background: #f5f5f5; border: 1px solid #e6e6e6;
+    font: 19px/29px ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; color: #333;
+  }
+  .out .c { color: #8a8a8a; }
+  .out .p { color: #1b4b69; }
+  .status { color: #666; height: 28px; }
+  .chip { display: inline-block; width: 17px; height: 17px; border-radius: 4px; vertical-align: -2px; margin-right: 8px; border: 1px solid #0002; }
+</style>
+</head>
+<body>
+
+<!-- ===== icons ===== -->
+<div class="icon" id="icon-variables" hidden>
+  <!-- Three token rows: swatch + name bar. The middle swatch is gold. -->
+  <svg viewBox="0 0 84 84" fill="none">
+    <rect x="6" y="10" width="18" height="18" rx="5" fill="currentColor"/>
+    <rect x="32" y="15" width="46" height="8" rx="4" fill="currentColor" opacity=".55"/>
+    <rect x="6" y="33" width="18" height="18" rx="5" fill="var(--gmh-color-tertiary-container)"/>
+    <rect x="32" y="38" width="38" height="8" rx="4" fill="currentColor" opacity=".55"/>
+    <rect x="6" y="56" width="18" height="18" rx="5" stroke="currentColor" stroke-width="3"/>
+    <rect x="32" y="61" width="42" height="8" rx="4" fill="currentColor" opacity=".55"/>
+  </svg>
+</div>
+<div class="icon" id="icon-styles" hidden>
+  <!-- "Aa" in the brand face on a gold rule. -->
+  <svg viewBox="0 0 84 84">
+    <text x="42" y="58" text-anchor="middle" fill="currentColor"
+      style="font-family: var(--gmh-ref-typeface-brand); font-size: 52px;">Aa</text>
+    <rect x="12" y="68" width="60" height="6" rx="3" fill="var(--gmh-color-tertiary-container)"/>
+  </svg>
+</div>
+
+<!-- ===== thumbnail ===== -->
+<div class="thumb" id="thumb" hidden>
+  <svg class="rings" viewBox="0 0 1920 1080" fill="none" stroke="currentColor" stroke-opacity=".07" stroke-width="2">
+    <circle cx="1500" cy="540" r="380"/><circle cx="1500" cy="540" r="520"/>
+    <circle cx="1500" cy="540" r="660"/><circle cx="1500" cy="540" r="800"/>
+    <circle cx="1500" cy="540" r="940"/><circle cx="1500" cy="540" r="1080"/>
+  </svg>
+  <div class="copy">
+    <img class="mark" src="../../../ui/src/primitives/logo/source/gmh-mark-simple-dark.svg" alt="">
+    <div class="eyebrow">GMH Lab · Figma plugin</div>
+    <h1 id="t-title"></h1>
+    <div class="rule"></div>
+    <p class="lede" id="t-lede"></p>
+    <div class="facts"><span>JSON or CSS</span><span>One-click copy</span><span>Read-only</span></div>
+  </div>
+  <div class="window">
+    <div class="titlebar"><span id="t-name"></span><span class="x">×</span></div>
+    <div class="body">
+      <div class="bar">
+        <div class="ctl">CSS <span style="color:#999">▾</span></div>
+        <div class="ctl">Refresh</div>
+        <div class="ctl primary">Copy</div>
+      </div>
+      <div class="out" id="t-out"></div>
+      <div class="status" id="t-status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var q = new URLSearchParams(location.search);
+  var plugin = q.get("plugin") === "styles" ? "styles" : "variables";
+  var asset = q.get("asset") === "thumbnail" ? "thumbnail" : "icon";
+
+  // Real plugin output (from the Node smoke test), lightly highlighted.
+  var C = function (s) { return '<span class="c">' + s + "</span>"; };
+  var P = function (s) { return '<span class="p">' + s + "</span>"; };
+  var sw = function (v) { return '<span class="chip" style="background:var(' + v + ')"></span>'; };
+  var CONTENT = {
+    variables: {
+      title: "Copy<br>Variables",
+      lede: "Every collection and every mode, with aliases kept, ready to paste.",
+      status: "Copied CSS. 365 variables · 8 collections",
+      out: [
+        C("/* Color · Light */"),
+        ":root {",
+        "  " + sw("--gmh-color-primary") + P("--gmh-color-primary") + ": #033C5A;",
+        "  " + sw("--gmh-color-primary-container") + P("--gmh-color-primary-container") + ": #CAE6FF;",
+        "  " + sw("--gmh-color-tertiary-container") + P("--gmh-color-tertiary-container") + ": #AA9868;",
+        "  " + sw("--gmh-color-surface") + P("--gmh-color-surface") + ": #F7F9FF;",
+        "  " + sw("--gmh-color-navy") + P("--gmh-color-brand-band") + ": var(--gmh-color-primary);",
+        "}",
+        "",
+        C("/* Typography */"),
+        ":root {",
+        "  " + P("--gmh-typescale-body-large-size") + ": 16px;",
+        "  " + P("--gmh-typescale-body-large-line-height") + ": 24px;",
+        "  " + P("--gmh-ref-typeface-brand") + ": \"Libre Baskerville\";",
+        "  " + P("--gmh-ref-typeface-weight-semibold") + ": 600;",
+        "}",
+        "",
+        C("/* Shape */"),
+        ":root {",
+        "  " + P("--gmh-shape-corner-medium") + ": 12px;",
+        "  " + P("--gmh-shape-corner-extra-large") + ": 28px;",
+        "}",
+      ],
+    },
+    styles: {
+      title: "Copy<br>Styles",
+      lede: "Every paint, text, effect and grid style, bound variables included.",
+      status: "Copied CSS. 21 styles · 0 paint, 16 text, 5 effect, 0 grid",
+      out: [
+        C("/* Effect styles → custom properties */"),
+        ":root {",
+        "  " + P("--elevation-level-1") + ": 0px 1px 2px 0px #0000004D,",
+        "    0px 1px 3px 1px #00000026;",
+        "  " + P("--elevation-level-2") + ": 0px 1px 2px 0px #0000004D,",
+        "    0px 2px 6px 2px #00000026;",
+        "}",
+        "",
+        C("/* Text styles → classes */"),
+        ".display-large {",
+        "  font-family: " + P("var(--gmh-typescale-display-large-font)") + ";",
+        "  font-weight: 400;",
+        "  font-size: " + P("var(--gmh-typescale-display-large-size)") + ";",
+        "  line-height: " + P("var(--gmh-typescale-display-large-line-height)") + ";",
+        "}",
+        ".label-large {",
+        "  font-family: " + P("var(--gmh-typescale-label-large-font)") + ";",
+        "  font-weight: 600;",
+        "  font-size: " + P("var(--gmh-typescale-label-large-size)") + ";",
+        "  letter-spacing: 0.00625em;",
+        "}",
+      ],
+    },
+  };
+
+  if (asset === "icon") {
+    document.getElementById("icon-" + plugin).hidden = false;
+  } else {
+    var c = CONTENT[plugin];
+    document.getElementById("thumb").hidden = false;
+    document.getElementById("t-title").innerHTML = c.title;
+    document.getElementById("t-lede").textContent = c.lede;
+    document.getElementById("t-name").textContent = "GMH — Copy " + (plugin === "styles" ? "Styles" : "Variables");
+    document.getElementById("t-out").innerHTML = c.out.join("\n");
+    document.getElementById("t-status").textContent = c.status;
+  }
+</script>
+</body>
+</html>
