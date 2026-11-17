@@ -43,7 +43,7 @@ export function Toaster() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, x: 40 }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="dash-panel pointer-events-auto flex gap-3 p-4"
+            className="lit-panel pointer-events-auto flex gap-3 p-4"
           >
             {t.tone === "info" ? (
               <Info className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />

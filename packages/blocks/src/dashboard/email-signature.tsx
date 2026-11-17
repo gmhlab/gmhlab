@@ -158,7 +158,7 @@ export function EmailSignatureBuilder({
             <div className={cn(dark && "rounded-xl bg-white/95 p-3")} dangerouslySetInnerHTML={{ __html: html }} />
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button size="lg" className="dash-shine" onClick={copyRich} disabled={!html}>
+            <Button size="lg" className="lit-shine" onClick={copyRich} disabled={!html}>
               {copied === "rich" ? <Check aria-hidden /> : <ClipboardCopy aria-hidden />}
               {copied === "rich" ? "Copied — paste it into your mail settings" : "Copy signature"}
             </Button>

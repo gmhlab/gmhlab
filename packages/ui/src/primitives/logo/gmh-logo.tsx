@@ -60,3 +60,30 @@ export function GmhLogo({
     </AnchorOrButton>
   );
 }
+
+/**
+ * The mark as artwork rather than a control: a bare, decorative `aria-hidden`
+ * svg that fills its container's width, for showing it large inside a
+ * composition. `GmhLogo` always renders a link or a button, which would put a
+ * stray focus stop in the middle of a hero. Defaults to the `detailed` drawing,
+ * since this is the large use. Same colour roles as `GmhLogo`.
+ */
+export function GmhMark({
+  variant = "detailed",
+  className,
+}: {
+  variant?: "simple" | "detailed";
+  className?: string;
+}) {
+  return (
+    <svg
+      className={clsx("gmh-mark", className)}
+      viewBox={GMH_MARK_VIEWBOX}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {variant === "detailed" ? <GmhMarkArt /> : <GmhMarkSimpleArt />}
+    </svg>
+  );
+}

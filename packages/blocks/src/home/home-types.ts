@@ -36,19 +36,21 @@ export type HomeHero = {
   primary: HomeLink;
   secondary?: HomeLink;
   /**
-   * A photograph beside the copy, framed by the contour globe. Omit it and
-   * the hero draws the contours fading into the GMH mark instead.
+   * A photograph beside the copy, in full colour in a lit frame. Omit it and
+   * the GMH mark stands large in that place.
    */
   image?: HomeImage;
   /**
-   * A photograph behind the whole hero, in the brand duotone under the
-   * contours. Decorative (no alt text); independent of `image`.
+   * A photograph across the whole hero, in full colour under a navy fade from
+   * the left. The mark sits high on the right, so pick one with open space
+   * there (sky, not the subject). Decorative (no alt text); independent of
+   * `image`.
    */
   background?: string;
 };
 
 export type HomeStat = {
-  /** Display value. A leading number counts up on scroll ("343", "2,400+"). */
+  /** Display value, as written ("343", "2,400+"). Shown in the hero as a glass tile. */
   value: string;
   label: string;
 };
@@ -77,9 +79,10 @@ export type HomeFocusItem = {
   href: string;
   linkLabel?: string;
   /**
-   * The card's art. A photograph when there is a real one; otherwise a
-   * graphics-kit glyph, drawn large on a navy contour panel. `image` wins
-   * when both are set.
+   * The card's cover. A photograph when there is a real one (full colour
+   * under a navy fade, the glyph in its badge); otherwise the graphics-kit
+   * glyph as cover art, big and faint behind a crisp one. `image` wins when
+   * both are set.
    */
   image?: HomeImage;
   glyph?: ResearchGlyphName;

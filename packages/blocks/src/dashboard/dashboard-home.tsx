@@ -23,7 +23,7 @@ import {
   unlockHint,
 } from "./dashboard-types";
 import { ModuleIconGlyph } from "./dashboard-shell";
-import { Cover, FigureRule, LessonPath, Ornament, WaveRule } from "./ornaments";
+import { Cover, FigureRule, LessonPath, Ornament, WaveRule } from "../shared/ornaments";
 import {
   ArtTile,
   Chip,
@@ -126,7 +126,7 @@ export function DashboardHome({
     <div className="space-y-12">
       {/* ── Hero ── */}
       <motion.section
-        className={cn("dash-hero px-6 py-8 sm:px-10 sm:py-12", heroPhoto && "dash-hero-photo sm:py-16")}
+        className={cn("lit-hero px-6 py-8 sm:px-10 sm:py-12", heroPhoto && "lit-hero-photo sm:py-16")}
         initial={{ opacity: 0, y: 16, scale: 0.99 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.7, ease: EASE }}
@@ -137,7 +137,7 @@ export function DashboardHome({
              fading out before the people in the photo. No centrepiece: the
              mark heads the copy instead (the lockup below). */
           <motion.div
-            className="dash-hero-striations"
+            className="lit-hero-striations"
             aria-hidden
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -146,7 +146,7 @@ export function DashboardHome({
             <ContourGlobe centerpiece="none" />
           </motion.div>
         )}
-        <div className="dash-aurora" aria-hidden>
+        <div className="lit-aurora" aria-hidden>
           <span />
           <span />
           <span />
@@ -157,7 +157,7 @@ export function DashboardHome({
                 the role chips, the greeting and the lead line — the mark set
                 beside the copy the way a logo sits beside a letterhead. */}
             <motion.div
-              className="dash-hero-lockup flex items-center gap-5 sm:gap-7"
+              className="lit-hero-lockup flex items-center gap-5 sm:gap-7"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE }}
@@ -178,7 +178,7 @@ export function DashboardHome({
                 {/* Type and spacing from the tokens only: M3 display and body
                     roles (their own line heights), one space step between. */}
                 <h1 className="type-display-small sm:type-display-medium">
-                  {greeting()}, <span className="dash-gold-text">{firstName}</span>.
+                  {greeting()}, <span className="lit-gold-text">{firstName}</span>.
                 </h1>
                 <p className="mt-1 max-w-xl type-body-large opacity-85">
                   {stats.done === 0
@@ -259,9 +259,9 @@ export function DashboardHome({
             {continuing.map(({ course, value }, i) => (
               <Item key={course.id}>
                 <Link href={`${coursesPath}/${course.id}`} className="block h-full">
-                  <TiltCard className="dash-panel group relative isolate flex h-full flex-col gap-4 overflow-hidden p-5">
+                  <TiltCard className="lit-panel group relative isolate flex h-full flex-col gap-4 overflow-hidden p-5">
                     {course.image && (
-                      <div className="dash-card-photo" aria-hidden>
+                      <div className="lit-card-photo" aria-hidden>
                         <Image src={course.image} alt="" treatment="duotone" aspectRatio="fill" variant="default" className="!h-full" />
                       </div>
                     )}
@@ -295,7 +295,7 @@ export function DashboardHome({
             const open = canAccess(account, m) && !m.soon;
             const tile = (
               <TiltCard
-                className={cn("dash-panel flex h-full flex-col p-4", !open && "opacity-90")}
+                className={cn("lit-panel flex h-full flex-col p-4", !open && "opacity-90")}
                 max={open ? 7 : 3}
               >
                 <Cover
@@ -498,11 +498,11 @@ function Storefront({
               transition={{ delay: i * 0.08, duration: 0.55, ease: EASE }}
               className={cn(
                 "relative flex flex-col p-7",
-                featured ? "dash-hero lg:-my-3 lg:py-10" : "dash-panel",
+                featured ? "lit-hero lg:-my-3 lg:py-10" : "lit-panel",
               )}
             >
               {featured && (
-                <div className="dash-aurora" aria-hidden>
+                <div className="lit-aurora" aria-hidden>
                   <span />
                   <span />
                   <span />
@@ -538,7 +538,7 @@ function Storefront({
               </ul>
               <div className="mt-auto pt-8">
                 <Button
-                  className={cn("w-full", featured && !current && !included && "dash-shine")}
+                  className={cn("w-full", featured && !current && !included && "lit-shine")}
                   variant={featured ? "accent" : current || included ? "outline" : "default"}
                   size="lg"
                   disabled={current || included || pending !== null}
@@ -561,7 +561,7 @@ function Storefront({
               const owned = canAccess(account, m);
               const inCart = cartIds.includes(m.id);
               return (
-                <TiltCard key={m.id} className="dash-panel flex gap-5 p-5" max={4}>
+                <TiltCard key={m.id} className="lit-panel flex gap-5 p-5" max={4}>
                   <Cover art={m.art} tone={toneAt(i + 1)} className="size-28 shrink-0" />
                   <div className="flex min-w-0 flex-1 flex-col">
                     <div className="flex items-start justify-between gap-3">

@@ -27,7 +27,7 @@ import {
 import type { PageCta } from "../shared/page-copy";
 import { GMH_PROJECTS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
-import { PageHero } from "../shared/page-hero";
+import { PageHero, PageHeroStats } from "../shared/page-hero";
 import { ProjectMark } from "../shared/project-mark";
 import "./projects-page.css";
 
@@ -260,7 +260,7 @@ function Spotlight({
 }) {
   return (
     <Section
-      className="projects-spotlight-section"
+      className="projects-spotlight-section lit-band lit-cards"
       variant="brand"
       padding="1200"
     >
@@ -485,16 +485,7 @@ export function ProjectsPage({
         paddingBottom="800"
         flexProps={{ gap: "1200" }}
       >
-        <Flex className="projects-stats" wrap gap="1200">
-          {stats.map((stat) => (
-            <div className="projects-stat" key={stat.label}>
-              <span className="projects-stat-value">{stat.value}</span>
-              <TextSmall className="projects-stat-label">
-                {stat.label}
-              </TextSmall>
-            </div>
-          ))}
-        </Flex>
+        <PageHeroStats stats={stats} />
       </PageHero>
 
       {/* A neutral band directly under the image hero, closed with a hairline,
@@ -556,6 +547,7 @@ export function ProjectsPage({
           top padding tightens to 600 in that case. The cards stay
           `variant="stroke"` and reset their own colour. */}
       <Section
+        className="lit-band lit-cards"
         variant="brand"
         paddingTop={showSpotlight ? "600" : "1600"}
         paddingBottom="1600"

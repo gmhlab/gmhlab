@@ -1,0 +1,779 @@
+/* The lit language — the look the member workspace introduced, shared with
+ * the public pages: the brand's navy and gold pushed further than flat bands,
+ * with depth from layered token gradients, a film-grain texture, the kit's
+ * contour lines, slow brand light (the aurora), glass panels, and gold used
+ * as light rather than as text.
+ *
+ * Every class is `lit-`-prefixed. The dashboard's own chrome (sidebar,
+ * slides, sign-in panel) stays in ../dashboard/dashboard.css.
+ *
+ * No literal brand colours: every tint is a color-mix of a --gmh-* token.
+ * Neutral white/black alphas are used for light and shade only. Everything
+ * that moves stops under prefers-reduced-motion (bottom of file). */
+
+/* Lit navy is the GW pin in both modes (not dark mode's lighter brand band),
+   so its ink stays the designer's reversed white rather than dark mode's
+   pale-blue on-brand role. Defined on the root so a lit surface works
+   anywhere — inside the workspace shell or on a public page. */
+:root {
+  --lit-navy: var(--gmh-color-navy);
+  --lit-navy-deep: color-mix(in srgb, var(--gmh-color-navy) 72%, black);
+  --lit-gold: var(--gmh-color-tertiary-container);
+  --lit-gold-light: var(--gmh-color-brand-band-accent);
+  --lit-sky: var(--gmh-color-inverse-primary);
+  --lit-on-navy: var(--gmh-color-on-brand-band);
+  --lit-radius: var(--gmh-shape-corner-extra-large, 28px);
+  --lit-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lit-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dark {
+  --lit-on-navy: white;
+}
+
+/* ── The canvas ───────────────────────────────────────────────────────── */
+
+/* Two soft brand lights and a film grain, fixed behind a whole page. Any
+   band with its own background covers it; paper bands let it through. */
+.lit-canvas {
+  position: relative;
+  isolation: isolate;
+}
+.lit-canvas::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(55rem 38rem at 92% -8%, color-mix(in srgb, var(--lit-gold) 20%, transparent), transparent 62%),
+    radial-gradient(48rem 42rem at 18% 12%, color-mix(in srgb, var(--lit-navy) 11%, transparent), transparent 65%),
+    radial-gradient(40rem 30rem at 60% 110%, color-mix(in srgb, var(--lit-sky) 14%, transparent), transparent 70%);
+}
+.lit-canvas::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--lit-grain);
+  opacity: 0.09;
+  mix-blend-mode: multiply;
+}
+.dark .lit-canvas::after {
+  mix-blend-mode: screen;
+  opacity: 0.05;
+}
+
+/* ── Hero bands ───────────────────────────────────────────────────────── */
+
+.lit-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--lit-radius);
+  color: var(--lit-on-navy);
+  background: linear-gradient(125deg, var(--lit-navy) 0%, var(--lit-navy-deep) 70%);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 18%, transparent) inset,
+    0 30px 60px -30px color-mix(in srgb, var(--lit-navy) 70%, transparent);
+}
+.lit-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--lit-grain);
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.lit-hero .graphic {
+  --graphic-ink: color-mix(in srgb, white 85%, var(--lit-sky));
+  --graphic-ground: var(--lit-navy);
+}
+
+/* Slow aurora: three blurred brand lights orbiting behind the copy. */
+.lit-aurora {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  filter: blur(60px);
+  opacity: 0.85;
+}
+.lit-aurora span {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+.lit-aurora span:nth-child(1) {
+  width: 46%;
+  height: 60%;
+  left: 52%;
+  top: 0%;
+  background: color-mix(in srgb, var(--lit-gold) 75%, transparent);
+  animation: lit-orbit-a 22s ease-in-out infinite alternate;
+}
+.lit-aurora span:nth-child(2) {
+  width: 40%;
+  height: 55%;
+  left: 20%;
+  top: 40%;
+  background: color-mix(in srgb, var(--lit-sky) 55%, transparent);
+  animation: lit-orbit-b 26s ease-in-out infinite alternate;
+}
+.lit-aurora span:nth-child(3) {
+  width: 30%;
+  height: 40%;
+  left: 70%;
+  top: 55%;
+  background: color-mix(in srgb, var(--lit-gold-light) 45%, transparent);
+  animation: lit-orbit-c 30s ease-in-out infinite alternate;
+}
+
+@keyframes lit-orbit-a {
+  to { transform: translate(-18%, 22%) scale(1.15); }
+}
+@keyframes lit-orbit-b {
+  to { transform: translate(30%, -18%) scale(0.9); }
+}
+@keyframes lit-orbit-c {
+  to { transform: translate(-40%, -30%) scale(1.25); }
+}
+
+/* ── Surfaces ─────────────────────────────────────────────────────────── */
+
+.lit-panel {
+  position: relative;
+  border-radius: var(--lit-radius);
+  background: color-mix(in srgb, var(--gmh-color-surface-container-lowest) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gmh-color-outline-variant) 70%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 60%, transparent) inset,
+    0 18px 40px -28px color-mix(in srgb, var(--gmh-color-shadow, black) 45%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+.dark .lit-panel {
+  background: color-mix(in srgb, var(--gmh-color-surface-container) 78%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 7%, transparent) inset,
+    0 18px 40px -28px black;
+}
+
+/* Glare that follows the pointer on tilt cards (TiltCard sets --mx/--my). */
+.lit-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.lit-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, white 28%, transparent), transparent 45%);
+  transition: opacity 300ms;
+  mix-blend-mode: soft-light;
+}
+.lit-tilt:hover::after {
+  opacity: 1;
+}
+
+/* Art tiles: a module's glyph or shape on a lit, contoured ground. */
+.lit-art {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--lit-radius) - 8px);
+}
+.lit-art[data-tone="navy"] {
+  background:
+    radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--lit-gold) 45%, transparent), transparent 55%),
+    linear-gradient(150deg, var(--lit-navy), var(--lit-navy-deep));
+}
+.lit-art[data-tone="gold"] {
+  background:
+    radial-gradient(110% 90% at 15% 90%, color-mix(in srgb, var(--lit-navy) 30%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--lit-gold-light), var(--lit-gold));
+}
+.lit-art[data-tone="sky"] {
+  background:
+    radial-gradient(110% 90% at 80% 20%, color-mix(in srgb, white 50%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--gmh-color-primary-fixed), var(--gmh-color-primary-fixed-dim));
+}
+.lit-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: white;
+  opacity: 0.35;
+  mask: var(--graphic-contour-mask) center / 240% 120% no-repeat;
+  -webkit-mask: var(--graphic-contour-mask) center / 240% 120% no-repeat;
+}
+.lit-art[data-tone="gold"]::before,
+.lit-art[data-tone="sky"]::before {
+  background: var(--lit-navy);
+  opacity: 0.22;
+}
+.lit-art[data-tone="navy"] .graphic {
+  --graphic-ink: color-mix(in srgb, white 88%, var(--lit-sky));
+  --graphic-ground: var(--lit-navy);
+}
+.lit-art[data-tone="gold"] .graphic,
+.lit-art[data-tone="sky"] .graphic {
+  --graphic-ink: var(--lit-navy);
+  --graphic-ground: var(--lit-gold-light);
+  --graphic-gold: color-mix(in srgb, white 70%, var(--lit-gold));
+}
+.lit-art .graphic {
+  filter: drop-shadow(0 10px 18px color-mix(in srgb, black 25%, transparent));
+}
+
+/* Sweep of light across a button or chip. */
+.lit-shine {
+  position: relative;
+  overflow: hidden;
+}
+.lit-shine::after {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -60%;
+  width: 40%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, white 55%, transparent), transparent);
+  animation: lit-sweep 4.5s ease-in-out infinite;
+}
+@keyframes lit-sweep {
+  0%, 60% { left: -60%; }
+  100% { left: 140%; }
+}
+
+/* Gold gradient text on navy only (light gold on navy passes contrast;
+   never on paper — see the gold contrast rule). */
+.lit-gold-text {
+  background: linear-gradient(90deg, var(--lit-gold-light), color-mix(in srgb, var(--lit-gold-light) 60%, white));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+/* ── The kit, used as the kit file labels it (ornaments.tsx) ─────────── */
+
+/* Covers: the art as an ornament cropped off the corner, not a centred icon. */
+.lit-cover {
+  display: block;
+}
+.lit-cover-shape {
+  position: absolute;
+  right: -12%;
+  bottom: -30%;
+  width: 72%;
+  aspect-ratio: 1;
+  rotate: -8deg;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .lit-cover-shape {
+  transform: translate(-4%, -5%) rotate(5deg) scale(1.04);
+}
+.lit-cover-glyph-ghost {
+  position: absolute;
+  right: -16%;
+  bottom: -34%;
+  width: 82%;
+  aspect-ratio: 1;
+  opacity: 0.16;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .lit-cover-glyph-ghost {
+  transform: rotate(-6deg) scale(1.05);
+}
+.lit-cover-glyph {
+  position: absolute;
+  left: 8%;
+  bottom: 12%;
+  width: min(30%, 5.5rem);
+  aspect-ratio: 1;
+}
+.lit-cover .graphic {
+  filter: none;
+}
+.lit-cover-shape .graphic {
+  filter: drop-shadow(0 18px 28px color-mix(in srgb, black 28%, transparent));
+}
+.lit-cover-badge {
+  position: absolute;
+  left: 0.875rem;
+  top: 0.875rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.875rem;
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, white 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 28%, transparent);
+  color: white;
+}
+.lit-cover:is([data-tone="gold"], [data-tone="sky"]) .lit-cover-badge {
+  background: color-mix(in srgb, white 45%, transparent);
+  color: var(--lit-navy);
+}
+
+/* Ornaments sit behind their siblings; on navy they take the light ink. */
+.lit-ornament .graphic {
+  filter: none;
+}
+
+/* Photo frames. The placeholder says what it is — never a stock stand-in. */
+.lit-photo-placeholder {
+  color: var(--gmh-color-on-surface-variant);
+  background:
+    radial-gradient(color-mix(in srgb, var(--gmh-color-on-surface) 16%, transparent) 1px, transparent 1.3px) 0 0 / 14px 14px,
+    color-mix(in srgb, var(--lit-navy) 7%, var(--gmh-color-surface-container-low));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--gmh-color-outline) 45%, transparent);
+}
+.lit-hero .lit-photo-placeholder {
+  color: color-mix(in srgb, var(--lit-on-navy) 80%, transparent);
+  background:
+    radial-gradient(color-mix(in srgb, white 22%, transparent) 1px, transparent 1.3px) 0 0 / 14px 14px,
+    color-mix(in srgb, white 7%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, white 25%, transparent);
+}
+.lit-bracket-corner {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-color: var(--lit-gold);
+}
+
+/* Dividers. */
+.lit-wave-edge {
+  stroke: var(--lit-gold);
+  stroke-width: 2.5;
+}
+.lit-wave-echo {
+  stroke: var(--gmh-color-primary);
+  stroke-width: 1.25;
+  opacity: 0.28;
+}
+.dark .lit-wave-echo {
+  stroke: var(--gmh-color-on-surface-variant);
+}
+.lit-figure-rule {
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* The pathway rule as progress: unfinished nodes are rings, not dots. The
+   roles are set on .graphic itself, hence the compound selector. */
+.lit-lesson-path.graphic {
+  --graphic-ground: var(--gmh-color-surface-container-lowest);
+  height: 2rem;
+}
+.dark .lit-lesson-path.graphic {
+  --graphic-ground: var(--gmh-color-surface-container);
+}
+.lit-hero .lit-lesson-path.graphic {
+  --graphic-ground: var(--lit-navy-deep);
+  --graphic-ink: white;
+}
+.lit-lesson-path .graphic-pathway-node {
+  transition: background-color 500ms, box-shadow 500ms;
+}
+.lit-lesson-path .lit-path-todo {
+  background: var(--graphic-ground);
+  box-shadow:
+    0 0 0 0.25rem var(--graphic-ground),
+    0 0 0 0.34rem color-mix(in srgb, var(--gmh-color-outline) 70%, transparent);
+}
+.lit-hero .lit-lesson-path .lit-path-todo {
+  box-shadow:
+    0 0 0 0.25rem var(--graphic-ground),
+    0 0 0 0.34rem color-mix(in srgb, white 35%, transparent);
+}
+.lit-lesson-path .graphic-pathway-goal.lit-path-todo {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+/* On a cover the path's gaps take the cover's own ground, in either mode
+   (a bare .dark rule would otherwise paint dark gaps on a gold cover). */
+.lit-art[data-tone="navy"] .lit-lesson-path.graphic {
+  --graphic-ground: var(--lit-navy);
+}
+.lit-art[data-tone="gold"] .lit-lesson-path.graphic {
+  --graphic-ground: color-mix(in srgb, var(--lit-gold-light) 55%, var(--lit-gold));
+}
+.lit-art[data-tone="sky"] .lit-lesson-path.graphic {
+  --graphic-ground: var(--gmh-color-primary-fixed-dim);
+}
+.lit-art:is([data-tone="gold"], [data-tone="sky"]) .lit-lesson-path .lit-path-todo {
+  box-shadow:
+    0 0 0 0.25rem var(--graphic-ground),
+    0 0 0 0.34rem color-mix(in srgb, var(--lit-navy) 45%, transparent);
+}
+
+/* ── Photographs ─────────────────────────────────────────────────────── */
+
+/* Hero backdrop: ui's PhotoBackdrop (duotone, then a wash) with the wash in
+   deep navy, so the hero stays a navy band with a place in it. The aurora is
+   quieter over a photo. */
+.lit-hero-photo .graphic-photo {
+  --graphic-photo-wash: var(--lit-navy-deep);
+  z-index: -3;
+}
+.lit-hero-photo .lit-aurora {
+  opacity: 0.45;
+}
+
+/* Cover built around a photograph: full colour, a navy fade from the bottom
+   (where the path and copy sit) and a light one from the top (the badge). */
+.lit-cover-with-photo::before {
+  content: none;
+}
+.lit-cover-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.lit-cover-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .lit-cover-photo img,
+.lit-tilt:hover .lit-cover-photo img {
+  transform: scale(1.06);
+}
+.lit-cover-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--lit-navy-deep) 0%, color-mix(in srgb, var(--lit-navy-deep) 60%, transparent) 26%, transparent 58%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--lit-navy-deep) 45%, transparent) 0%, transparent 30%);
+}
+.lit-cover-with-photo .lit-cover-badge:empty {
+  display: none;
+}
+.lit-cover-with-photo .lit-cover-badge .graphic {
+  --graphic-ink: white;
+  --graphic-ground: transparent;
+}
+.lit-cover-photo-shape {
+  position: absolute;
+  right: -6%;
+  bottom: -14%;
+  width: 34%;
+  aspect-ratio: 1;
+  rotate: -8deg;
+  opacity: 0.9;
+}
+.lit-cover-with-photo .lit-lesson-path.graphic {
+  --graphic-ground: var(--lit-navy-deep);
+  --graphic-ink: white;
+}
+
+/* In a navy hero the duotone plus the kit's wash left the photo a murky
+   smudge, so dashboard heroes show it in full colour instead: a navy fade
+   under the copy on the left, opening to the photo on the right, and a
+   foot of navy so the hero's edge stays clean. */
+.lit-hero-photo .graphic-photo {
+  background: var(--lit-navy-deep);
+}
+.lit-hero-photo .graphic-photo img {
+  filter: saturate(0.92) contrast(1.02);
+  mix-blend-mode: normal;
+}
+.lit-hero-photo .graphic-photo::before {
+  content: none;
+}
+.lit-hero-photo .graphic-photo::after,
+.lit-hero-photo .graphic-photo-wash-start::after {
+  background:
+    linear-gradient(90deg,
+      var(--lit-navy-deep) 0%,
+      color-mix(in srgb, var(--lit-navy-deep) 92%, transparent) 28%,
+      color-mix(in srgb, var(--lit-navy-deep) 55%, transparent) 52%,
+      color-mix(in srgb, var(--lit-navy-deep) 10%, transparent) 78%,
+      transparent 100%),
+    linear-gradient(to top, color-mix(in srgb, var(--lit-navy-deep) 70%, transparent) 0%, transparent 40%);
+}
+@media (max-width: 899.98px) {
+  .lit-hero-photo .graphic-photo::after,
+  .lit-hero-photo .graphic-photo-wash-start::after {
+    background: color-mix(in srgb, var(--lit-navy-deep) 78%, transparent);
+  }
+}
+.lit-cover-with-photo .lit-cover-badge {
+  width: 2.75rem;
+  height: 2.75rem;
+  background: color-mix(in srgb, var(--lit-navy-deep) 55%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 30%, transparent);
+}
+.lit-cover-with-photo .lit-cover-badge .graphic {
+  --graphic-glyph-stroke: 2.25;
+}
+
+/* A card's photo as a filtered background: the brand duotone, faint, sitting
+   on the card's right and fading out under its copy on the left. */
+.lit-card-photo {
+  position: absolute;
+  inset: 0 0 0 30%;
+  z-index: -1;
+  opacity: 0.32;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+  transition: opacity 500ms, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dark .lit-card-photo {
+  opacity: 0.26;
+}
+.group:hover .lit-card-photo {
+  opacity: 0.45;
+  transform: scale(1.04);
+}
+.lit-card-photo .image-duotone {
+  height: 100%;
+}
+
+/* The mark heading the home hero, like a letterhead: the simple drawing (the
+   detailed one's coastlines turn to noise at this size), white ink on the
+   navy, gold kept, and
+   a soft gold glow so it sits in the light rather than on it. logo.css sets
+   the roles on `.logo-gmh > svg`, hence the selector and the .lit-hero prefix. */
+.lit-hero .lit-hero-lockup .logo-gmh > svg {
+  /* Tall enough to stand beside the three-line stack it heads. */
+  --logo-gmh-height: 6rem;
+  --logo-mark-ink: var(--lit-on-navy);
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--lit-gold) 35%, transparent));
+}
+
+/* The home hero's striations: ContourGlobe (no centrepiece) laid across the
+   hero over the photo's navy fade, masked out from about 60% so the lines
+   never cross the people on the right. */
+.lit-hero-striations {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mask-image: linear-gradient(90deg, #000 0%, #000 42%, transparent 64%);
+}
+.lit-hero-striations .graphic {
+  --graphic-ink: var(--lit-on-navy);
+  --graphic-ground: var(--lit-navy-deep);
+  width: 100%;
+  height: 100%;
+  /* Quiet enough that a line crossing the headline never competes with it. */
+  opacity: 0.55;
+}
+
+
+/* ── On the public pages ──────────────────────────────────────────────── */
+
+/* The stage: a lit hero inset from the viewport edges as a floating card,
+   the way the workspace sets its heroes inside the shell. The stage's own
+   ground (`data-ground`) continues into the band under the hero, so a
+   toolbar below reads as the same surface the card floats on. */
+.lit-stage {
+  padding: clamp(0.5rem, 1.4vw, 1.25rem) clamp(0.5rem, 1.4vw, 1.25rem) 0;
+}
+.lit-stage[data-ground="neutral"] {
+  background: var(--gmh-color-surface-container-high);
+  padding-bottom: clamp(0.5rem, 1.4vw, 1.25rem);
+}
+.lit-stage > .lit-hero {
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 18%, transparent) inset,
+    0 40px 80px -40px color-mix(in srgb, var(--lit-navy) 75%, transparent);
+}
+
+/* A lit hero built on a brand Section: the lit gradient replaces the band's
+   bloom, and the aurora and the kit graphics replace its contour texture. */
+.lit-hero.section-variant-brand {
+  background: linear-gradient(125deg, var(--lit-navy) 0%, var(--lit-navy-deep) 70%);
+  color: var(--lit-on-navy);
+}
+.lit-hero.section-variant-brand::before {
+  content: none;
+}
+/* Lit navy is the GW pin in both modes, so headings and the mark keep the
+   reversed white rather than dark mode's pale-blue on-brand role. */
+.lit-hero .logo svg,
+.lit-hero .logo-gmh > svg {
+  --logo-color: var(--lit-on-navy);
+  --logo-crest-ink: var(--lit-on-navy);
+  --logo-mark-ink: var(--lit-on-navy);
+}
+.lit-hero .icon {
+  --icon-color: var(--lit-on-navy);
+}
+
+/* A full-bleed lit band: the hero's light and grain across a whole
+   section, for the navy bands between paper ones. */
+.lit-band.section-variant-brand {
+  background:
+    radial-gradient(70rem 30rem at 10% 0%, color-mix(in srgb, var(--lit-gold) 22%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--lit-navy) 0%, var(--lit-navy-deep) 100%);
+  color: var(--lit-on-navy);
+  overflow: hidden;
+}
+.lit-band::after,
+.lit-hero.section-variant-brand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--lit-grain);
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+/* Over a whole band the gold light, screened onto navy, turns olive at
+   full strength; keep it a glow. */
+.lit-band .lit-aurora {
+  opacity: 0.32;
+}
+
+/* Cards on a lit page: the workspace panel's corner and soft shadow, and a
+   gold edge with a lift on hover (ui's Card reads --border-radius). */
+.lit-cards .card {
+  --border-radius: var(--gmh-shape-corner-extra-large, 28px);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 60%, transparent) inset,
+    0 0 0 1px color-mix(in srgb, var(--gmh-color-outline-variant) 70%, transparent),
+    0 18px 40px -28px color-mix(in srgb, var(--gmh-color-shadow, black) 45%, transparent);
+  transition:
+    box-shadow 0.4s var(--lit-ease),
+    translate 0.4s var(--lit-ease);
+}
+.lit-band.lit-cards .card {
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 60%, transparent) inset,
+    0 30px 50px -30px black;
+}
+.lit-cards .card:has(.card-interaction[data-hovered]:not([data-focus-visible])),
+.lit-cards .card:has(.card-interaction):hover {
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--lit-gold) 80%, transparent),
+    0 26px 50px -24px color-mix(in srgb, var(--lit-navy-deep) 70%, transparent),
+    0 0 40px -12px color-mix(in srgb, var(--lit-gold) 50%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lit-cards .card:has(.card-interaction):hover {
+    translate: 0 -5px;
+  }
+}
+
+/* Glass stat tiles on navy — the workspace hero's stats row. */
+.lit-stats {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+  margin: 0;
+  max-width: 44rem;
+  padding: 0;
+  width: 100%;
+}
+.lit-stat {
+  backdrop-filter: blur(4px);
+  background: color-mix(in srgb, white 8%, transparent);
+  border-radius: 1.25rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 12%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-100);
+  min-width: 0;
+  padding: var(--gmh-space-400);
+  transition: background-color 300ms, box-shadow 300ms;
+}
+.lit-stat:hover {
+  background: color-mix(in srgb, white 12%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--lit-gold-light) 40%, transparent),
+    0 12px 30px -16px color-mix(in srgb, var(--lit-gold) 60%, transparent);
+}
+.lit-stat dt {
+  font: var(--gmh-typescale-body-small);
+  opacity: 0.78;
+  order: 2;
+}
+.lit-stat dd {
+  font-family: var(--gmh-ref-typeface-brand);
+  font-size: var(--gmh-typescale-display-small-size);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--gmh-ref-typeface-weight-regular);
+  line-height: 1;
+  margin: 0;
+  order: 1;
+}
+
+/* Entrance: copy and tiles rise in out of a soft blur, one after another
+   (`--lit-i`), on load. CSS rather than motion so it runs from the server
+   HTML, before hydration, and never hides anything from a no-JS reader. */
+@media (prefers-reduced-motion: no-preference) {
+  .lit-enter {
+    animation: lit-rise 0.9s var(--lit-ease) both;
+    animation-delay: calc(var(--lit-i, 0) * 90ms + 60ms);
+  }
+  .lit-stage > .lit-hero {
+    animation: lit-hero-in 0.9s var(--lit-ease) both;
+  }
+}
+@keyframes lit-rise {
+  from {
+    filter: blur(6px);
+    opacity: 0;
+    translate: 0 18px;
+  }
+}
+@keyframes lit-hero-in {
+  from {
+    opacity: 0;
+    scale: 0.985;
+    translate: 0 12px;
+  }
+}
+
+/* Scroll reveal (useLitReveal): hidden only once JS has marked the root, so
+   the server HTML and no-JS readers always see everything. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-lit-reveal] .lit-reveal {
+    transition:
+      opacity 0.7s ease,
+      translate 0.9s var(--lit-ease),
+      filter 0.7s ease;
+    transition-delay: calc(var(--lit-i, 0) * 80ms);
+  }
+  [data-lit-reveal] .lit-reveal:not(.is-in) {
+    filter: blur(6px);
+    opacity: 0;
+    translate: 0 22px;
+  }
+}
+
+/* The gold sweep on a filled button: a slow pass of light. */
+.lit-cta-button {
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--lit-gold) 85%, transparent);
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .lit-aurora span,
+  .lit-shine::after,
+  .lit-hero-striations,
+  .lit-hero *,
+  .lit-tilt,
+  .lit-cover-shape,
+  .lit-cover-glyph-ghost,
+  .lit-cover-photo img,
+  .lit-card-photo,
+  .lit-enter,
+  .lit-stage > .lit-hero {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

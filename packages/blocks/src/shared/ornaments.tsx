@@ -1,7 +1,7 @@
 import { BrandShape, type BrandShapeName, FigureBand, Image, ResearchGlyph, cn } from "@gmhlab/ui";
 import { Camera } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
-import type { ModuleArt } from "./dashboard-types";
+import type { LitArt } from "./lit";
 
 /**
  * The graphics kit used the way the designer's kit file labels it: the
@@ -42,7 +42,7 @@ export function Ornament({
 }) {
   return (
     <div
-      className={cn("dash-ornament pointer-events-none absolute -z-10", className)}
+      className={cn("lit-ornament pointer-events-none absolute -z-10", className)}
       style={{ ...CORNER[corner], width: size, height: size, opacity: strength }}
       aria-hidden
     >
@@ -68,7 +68,7 @@ export function Cover({
   className,
   children,
 }: {
-  art: ModuleArt;
+  art: LitArt;
   tone?: CoverTone;
   /**
    * Build the cover around a photograph, in full colour under a navy fade.
@@ -82,16 +82,16 @@ export function Cover({
 }) {
   if (photo) {
     return (
-      <div className={cn("dash-art dash-cover dash-cover-with-photo", className)} data-tone="navy">
-        <div className="dash-cover-photo" aria-hidden>
+      <div className={cn("lit-art lit-cover lit-cover-with-photo", className)} data-tone="navy">
+        <div className="lit-cover-photo" aria-hidden>
           <img src={photo} alt="" loading="lazy" decoding="async" />
         </div>
         {art.kind === "shape" && (
-          <div className="dash-cover-photo-shape" aria-hidden>
+          <div className="lit-cover-photo-shape" aria-hidden>
             <BrandShape name={art.name} className="size-full" />
           </div>
         )}
-        <div className="dash-cover-badge">
+        <div className="lit-cover-badge">
           {badge ?? (art.kind === "glyph" ? <ResearchGlyph name={art.name} className="size-7" /> : null)}
         </div>
         {children}
@@ -99,22 +99,22 @@ export function Cover({
     );
   }
   return (
-    <div className={cn("dash-art dash-cover", className)} data-tone={tone}>
+    <div className={cn("lit-art lit-cover", className)} data-tone={tone}>
       {art.kind === "shape" ? (
-        <div className="dash-cover-shape" aria-hidden>
+        <div className="lit-cover-shape" aria-hidden>
           <BrandShape name={art.name} className="size-full" />
         </div>
       ) : (
         <>
-          <div className="dash-cover-glyph-ghost" aria-hidden>
+          <div className="lit-cover-glyph-ghost" aria-hidden>
             <ResearchGlyph name={art.name} className="size-full" />
           </div>
-          <div className="dash-cover-glyph" aria-hidden>
+          <div className="lit-cover-glyph" aria-hidden>
             <ResearchGlyph name={art.name} className="size-full" />
           </div>
         </>
       )}
-      {badge && <div className="dash-cover-badge">{badge}</div>}
+      {badge && <div className="lit-cover-badge">{badge}</div>}
       {children}
     </div>
   );
@@ -154,7 +154,7 @@ export function PhotoFrame({
           ? "graphic-mask-arch"
           : "rounded-[24px]";
   const inner = (
-    <div className={cn("dash-photo relative size-full overflow-hidden", crop)}>
+    <div className={cn("lit-photo relative size-full overflow-hidden", crop)}>
       {src ? (
         duotone ? (
           <Image src={src} alt={alt} treatment="duotone" aspectRatio="fill" variant="default" className="!h-full" />
@@ -162,7 +162,7 @@ export function PhotoFrame({
           <img src={src} alt={alt} className="size-full object-cover" />
         )
       ) : (
-        <div className="dash-photo-placeholder grid size-full place-items-center">
+        <div className="lit-photo-placeholder grid size-full place-items-center">
           <span className="flex flex-col items-center gap-1.5 text-center text-xs font-semibold">
             <Camera className="size-5" aria-hidden />
             {placeholder}
@@ -174,11 +174,11 @@ export function PhotoFrame({
   );
   if (frame !== "bracket") return <div className={className}>{inner}</div>;
   return (
-    <div className={cn("dash-bracket relative p-3", className)}>
-      <span className="dash-bracket-corner left-0 top-0 border-l-2 border-t-2" aria-hidden />
-      <span className="dash-bracket-corner right-0 top-0 border-r-2 border-t-2" aria-hidden />
-      <span className="dash-bracket-corner bottom-0 left-0 border-b-2 border-l-2" aria-hidden />
-      <span className="dash-bracket-corner bottom-0 right-0 border-b-2 border-r-2" aria-hidden />
+    <div className={cn("lit-bracket relative p-3", className)}>
+      <span className="lit-bracket-corner left-0 top-0 border-l-2 border-t-2" aria-hidden />
+      <span className="lit-bracket-corner right-0 top-0 border-r-2 border-t-2" aria-hidden />
+      <span className="lit-bracket-corner bottom-0 left-0 border-b-2 border-l-2" aria-hidden />
+      <span className="lit-bracket-corner bottom-0 right-0 border-b-2 border-r-2" aria-hidden />
       {inner}
     </div>
   );
@@ -189,9 +189,9 @@ export function PhotoFrame({
 /** The kit's wave as a section rule: a gold line with its faint echo. */
 export function WaveRule({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" className={cn("dash-wave-rule block h-14 w-full", className)} aria-hidden>
-      <path d="M0 56 C240 6 480 106 720 56 S1200 6 1440 56" fill="none" vectorEffect="non-scaling-stroke" className="dash-wave-echo" />
-      <path d="M0 72 C240 22 480 122 720 72 S1200 22 1440 72" fill="none" vectorEffect="non-scaling-stroke" className="dash-wave-edge" />
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" className={cn("lit-wave-rule block h-14 w-full", className)} aria-hidden>
+      <path d="M0 56 C240 6 480 106 720 56 S1200 6 1440 56" fill="none" vectorEffect="non-scaling-stroke" className="lit-wave-echo" />
+      <path d="M0 72 C240 22 480 122 720 72 S1200 22 1440 72" fill="none" vectorEffect="non-scaling-stroke" className="lit-wave-edge" />
     </svg>
   );
 }
@@ -199,7 +199,7 @@ export function WaveRule({ className }: { className?: string }) {
 /** The kit's figure band, faded at both ends — a quiet break between sections. */
 export function FigureRule({ className }: { className?: string }) {
   return (
-    <div className={cn("dash-figure-rule", className)} aria-hidden>
+    <div className={cn("lit-figure-rule", className)} aria-hidden>
       <FigureBand />
     </div>
   );
@@ -212,14 +212,14 @@ export function FigureRule({ className }: { className?: string }) {
 export function LessonPath({ total, done, className }: { total: number; done: number; className?: string }) {
   return (
     <div
-      className={cn("graphic graphic-pathway dash-lesson-path", className)}
+      className={cn("graphic graphic-pathway lit-lesson-path", className)}
       role="img"
       aria-label={`${done} of ${total} lessons done`}
     >
       {Array.from({ length: total }, (_, i) => (
-        <span key={i} className={cn("graphic-pathway-node", i >= done && "dash-path-todo")} />
+        <span key={i} className={cn("graphic-pathway-node", i >= done && "lit-path-todo")} />
       ))}
-      <span className={cn("graphic-pathway-node graphic-pathway-goal", done < total && "dash-path-todo")} />
+      <span className={cn("graphic-pathway-node graphic-pathway-goal", done < total && "lit-path-todo")} />
     </div>
   );
 }

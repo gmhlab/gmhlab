@@ -1,9 +1,12 @@
 /* HomePage — scoped under `.home-page`, every class `home-`-prefixed, so
  * nothing here can leak into another consumer of @gmhlab/blocks/styles.css.
  *
+ * The look is the lit language (../shared/lit.css): the lit hero and stage,
+ * the aurora, glass panels and stat tiles, tilt cards, covers and the wave
+ * rule. This file only lays them out for the landing page.
+ *
  * Colour, type and radius all come from tokens. The few literals left are
- * geometry (the gap-field glyph, the bracket frame) — the hero's contour globe,
- * the wave, the glyphs and the care rings are @gmhlab/ui graphics.
+ * geometry (the gap-field glyph) and neutral light and shade.
  *
  * Every grid child gets `min-width: 0`: these grids sit inside a Flex
  * container, whose items default to `min-width: auto` and would otherwise let
@@ -29,8 +32,11 @@
   }
 }
 @media (min-width: 940px) {
-  .home-split-hero {
-    grid-template-columns: 1.02fr 0.98fr;
+  .home-split-hero:has(.home-hero-figure) {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+  .home-split-hero:has(.home-hero-mark) {
+    grid-template-columns: 1.25fr 0.75fr;
   }
   .home-split-gap {
     grid-template-columns: 0.85fr 1.15fr;
@@ -63,108 +69,205 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .home-arrow-button:hover .home-arrow,
-  .home-focus-card:hover .home-arrow {
+  .home-focus-link:hover .home-arrow {
     translate: 4px 0;
   }
 }
 
 /* ── Hero ───────────────────────────────────────────────────────────── */
 
+/* Tall enough to read as the page's opening, short enough that the wave and
+   the start of the next section show on a laptop. */
 .home-hero {
-  isolation: isolate;
-  overflow: hidden;
-}
-
-/* No photo: the hero is the copy over the contours and the mark, given the
-   artboard's proportions so the mark sits whole beside the headline. */
-.home-hero-mark {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: clamp(28rem, 44vw, 40rem);
+  min-height: clamp(36rem, 82vh, 50rem);
+}
+
+/* The copy column: the photo (or the mark) owns the right of the card. */
+.home-hero-copy {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gmh-space-600);
+  max-width: 44rem;
+}
+
+/* The eyebrow as the workspace's glass chip, with a gold light in it. */
+.home-hero-chip {
+  align-items: center;
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, white 10%, transparent);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 20%, transparent);
+  display: inline-flex;
+  font: var(--gmh-typescale-label-large);
+  gap: var(--gmh-space-200);
+  letter-spacing: 0.12em;
+  padding: var(--gmh-space-150, 0.375rem) var(--gmh-space-400);
+  text-transform: uppercase;
+}
+.home-hero-chip-dot {
+  background: var(--lit-gold-light);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--lit-gold) 30%, transparent),
+    0 0 14px var(--lit-gold);
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+/* The emphasis is light gold on navy (it passes contrast there; never on
+   paper), with room for the italic's overhang. */
+.home-hero-title em {
+  font-style: italic;
+  padding-right: 0.06em;
+}
+.home-hero-lede {
+  color: color-mix(in srgb, var(--lit-on-navy) 88%, transparent);
 }
 
 .home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gmh-space-300);
   margin-top: var(--gmh-space-200);
 }
 
+/* The workspace's glass outline, for a secondary action on navy. Unlayered,
+   so it wins over the Button's Tailwind utilities. */
+.home-page .home-glass-button {
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, white 8%, transparent);
+  border-color: color-mix(in srgb, white 28%, transparent);
+  color: var(--lit-on-navy);
+}
+.home-page .home-glass-button:hover {
+  background: color-mix(in srgb, white 16%, transparent);
+  border-color: color-mix(in srgb, var(--lit-gold-light) 60%, transparent);
+  color: var(--lit-on-navy);
+}
+
+.home-hero-stats {
+  margin-top: var(--gmh-space-600);
+}
+
+/* The photo is the hero's picture, so it gets more room than the shared lit
+   fade gives: solid only under the copy, then a light navy veil that keeps it
+   in the card's colour without hiding it. */
+.home-hero.lit-hero-photo .graphic-photo::after,
+.home-hero.lit-hero-photo .graphic-photo-wash-start::after {
+  background:
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--lit-navy-deep) 96%, transparent) 0%,
+      color-mix(in srgb, var(--lit-navy-deep) 86%, transparent) 30%,
+      color-mix(in srgb, var(--lit-navy-deep) 36%, transparent) 54%,
+      color-mix(in srgb, var(--lit-navy-deep) 26%, transparent) 100%),
+    linear-gradient(to top, color-mix(in srgb, var(--lit-navy-deep) 50%, transparent) 0%, transparent 26%);
+}
+/* The aurora's gold turns the photo's colours muddy at full strength. */
+.home-hero.lit-hero-photo .lit-aurora {
+  opacity: 0.22;
+}
+/* Likewise over a large plain card, with no photo under it. */
+.home-hero:not(.lit-hero-photo) .lit-aurora {
+  opacity: 0.4;
+}
+
+/* The mark: large, on the photo, white ink and gold. A tight shadow separates
+   it from the picture; no glow, no clearing. Set high and right, in the open
+   part of the picture rather than on its subject (with the campus photo, the
+   sky beside the book, the arch running below). */
+.home-hero-mark {
+  align-self: start;
+  justify-self: end;
+  margin-top: -3rem;
+  /* The photo scales with the window and the content column does not, so on
+     wide windows the mark moves out with the picture to stay beside its
+     subject. */
+  translate: max(0px, (100vw - 1440px) * 0.25) 0;
+  width: min(100%, 22rem);
+
+  .gmh-mark {
+    --logo-mark-ink: var(--lit-on-navy);
+    filter:
+      drop-shadow(0 1px 2px color-mix(in srgb, black 55%, transparent))
+      drop-shadow(0 12px 28px color-mix(in srgb, black 45%, transparent));
+  }
+}
+
+/* Stacked: the mark heads the hero on the open photo, and the fade runs top to
+   bottom instead, reaching reading strength where the copy starts. In rem, as
+   the mark's height is fixed while the hero's is not. */
+@media (max-width: 939.98px) {
+  .home-hero-mark {
+    align-self: auto;
+    justify-self: center;
+    margin-top: 0;
+    order: -1;
+    translate: none;
+    width: min(64%, 17rem);
+  }
+  /* A tall crop of a wide photo: slide it to the same open sky. */
+  .home-hero.lit-hero-photo .graphic-photo {
+    --graphic-photo-position: 88% center;
+  }
+  .home-hero.lit-hero-photo .graphic-photo::after,
+  .home-hero.lit-hero-photo .graphic-photo-wash-start::after {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--lit-navy-deep) 22%, transparent) 0,
+      color-mix(in srgb, var(--lit-navy-deep) 30%, transparent) 14rem,
+      color-mix(in srgb, var(--lit-navy-deep) 90%, transparent) 25rem,
+      var(--lit-navy-deep) 100%);
+  }
+}
+
+/* Tablets: the crop still shows the subject on the left, so the mark keeps
+   to the right of it. */
+@media (min-width: 640px) and (max-width: 939.98px) {
+  .home-hero-mark {
+    justify-self: end;
+  }
+}
+
+/* A side photograph: full colour, the workspace's 28px corner, the gold
+   light behind it. */
 .home-hero-figure {
   margin: 0;
 }
 .home-hero-frame {
-  isolation: isolate;
-  position: relative;
+  border-radius: var(--lit-radius);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, white 16%, transparent),
+    0 30px 60px -24px color-mix(in srgb, black 55%, transparent),
+    0 0 80px -20px color-mix(in srgb, var(--lit-gold) 60%, transparent);
+  overflow: hidden;
 }
 .home-hero-image {
   aspect-ratio: 4 / 5;
-  border-radius: var(--gmh-shape-corner-extra-small);
-}
-/* The kit's bracket frame: gold corners at two opposite edges of the photo,
-   a dotted field behind its lower-left. */
-.home-hero-frame::before,
-.home-hero-frame::after {
-  border: 3px solid var(--gmh-color-tertiary-container);
-  content: "";
-  height: clamp(2rem, 4vw, 3rem);
-  position: absolute;
-  width: clamp(2rem, 4vw, 3rem);
-}
-.home-hero-frame::before {
-  border-bottom: 0;
-  border-left: 0;
-  right: -0.875rem;
-  top: -0.875rem;
-}
-.home-hero-frame::after {
-  border-right: 0;
-  border-top: 0;
-  bottom: -0.875rem;
-  left: -0.875rem;
-}
-.home-hero-rule {
-  background: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--gmh-color-primary) 50%, transparent)
-        1.6px,
-      transparent 2px
-    )
-    0 0 / 12px 12px;
-  bottom: -2rem;
-  height: 46%;
-  left: -2rem;
-  position: absolute;
-  width: 46%;
-  z-index: -1;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
 }
 .home-hero-figure .home-caption {
+  color: color-mix(in srgb, var(--lit-on-navy) 75%, transparent);
   margin-top: var(--gmh-space-300);
 }
 @media (max-width: 939.98px) {
   .home-hero-figure {
     margin-inline: auto;
     max-width: 30rem;
-    padding-left: 1rem;
   }
 }
 
-/* ── Stats ──────────────────────────────────────────────────────────── */
+/* ── The wave ───────────────────────────────────────────────────────── */
 
-/* Plain navy behind the figures: the band keeps its bloom and the gold wave
-   on its top edge, but not the contour texture every other brand band
-   carries (section.css). */
-.home-stats-band.section-variant-brand::before {
-  content: none;
+.home-wave {
+  padding-block: var(--gmh-space-600) 0;
 }
-
-.home-stats {
-  display: grid;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  grid-template-columns: repeat(auto-fit, minmax(11.25rem, 1fr));
-  width: 100%;
-
-  > * {
-    min-width: 0;
-  }
+.home-wave-rule {
+  height: 2.5rem;
 }
 
 /* ── The care-gap field ─────────────────────────────────────────────── */
@@ -174,10 +277,15 @@
   max-width: 52ch;
 }
 
+/* The field on a glass panel, the workspace's dot grid faint behind it. */
 .home-gap-field {
+  background-image:
+    radial-gradient(color-mix(in srgb, var(--gmh-color-on-surface) 9%, transparent) 1px, transparent 1.2px);
+  background-size: 18px 18px;
   display: grid;
   gap: clamp(4px, 0.8vw, 9px);
   grid-template-columns: repeat(20, minmax(0, 1fr));
+  padding: clamp(1.25rem, 3vw, 2.25rem);
 
   svg {
     height: auto;
@@ -194,10 +302,12 @@
   transition:
     opacity 0.5s ease,
     fill 0.5s ease,
-    stroke 0.5s ease;
+    stroke 0.5s ease,
+    filter 0.5s ease;
 
   &.is-lit {
     fill: var(--gmh-color-tertiary-container);
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--lit-gold) 55%, transparent));
     opacity: 1;
     stroke: var(--gmh-color-tertiary-container);
   }
@@ -205,13 +315,14 @@
 /* When the field scrolls in, the lit figures fill one after another — the
    eye catches how few of them there are as it happens. */
 @media (prefers-reduced-motion: no-preference) {
-  .home-page[data-reveal] .home-gap-field:not(.is-in) .home-gap-cell.is-lit {
+  .home-page[data-lit-reveal] .home-gap-field:not(.is-in) .home-gap-cell.is-lit {
     fill: transparent;
+    filter: none;
     opacity: 0.3;
     stroke: var(--gmh-color-primary);
   }
   .home-gap-field.is-in .home-gap-cell.is-lit {
-    transition-delay: calc(var(--cell-index) * 9ms + 300ms);
+    transition-delay: calc(var(--cell-index) * 9ms + 400ms);
   }
 }
 
@@ -231,6 +342,7 @@
 }
 .home-gap-key {
   border: 1.4px solid var(--gmh-color-primary);
+  border-radius: 50%;
   display: inline-block;
   height: 0.6875rem;
   opacity: 0.45;
@@ -239,6 +351,7 @@
 .home-gap-key-lit {
   background: var(--gmh-color-tertiary-container);
   border-color: var(--gmh-color-tertiary-container);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--lit-gold) 60%, transparent);
   opacity: 1;
 }
 
@@ -267,11 +380,17 @@
   }
 }
 
+/* The workspace's corner and lift; the index sits on the photo as a glass
+   chip. */
 .home-approach-figure {
+  border-radius: var(--lit-radius);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 50%, transparent) inset,
+    0 24px 48px -28px color-mix(in srgb, var(--gmh-color-shadow, black) 55%, transparent);
+  isolation: isolate;
   margin: 0 0 var(--gmh-space-600);
   overflow: hidden;
-  border-radius: var(--gmh-shape-corner-medium);
-  box-shadow: var(--gmh-elevation-level1);
+  position: relative;
 
   .home-caption {
     padding: var(--gmh-space-300) var(--gmh-space-400);
@@ -285,12 +404,12 @@
   display: block;
   height: auto;
   object-fit: cover;
-  transition: scale var(--global-duration-slow) var(--global-ease-out);
+  transition: scale 1.2s var(--lit-ease);
   width: 100%;
 }
 @media (prefers-reduced-motion: no-preference) {
   .home-approach-item:hover .home-approach-image {
-    scale: 1.03;
+    scale: 1.05;
   }
 }
 
@@ -307,6 +426,17 @@
   color: var(--gmh-color-tertiary);
   font: var(--gmh-typescale-label-large);
   letter-spacing: 0.12em;
+}
+.home-approach-figure .home-approach-index {
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--lit-navy-deep) 55%, transparent);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 30%, transparent);
+  color: white;
+  left: var(--gmh-space-400);
+  padding: var(--gmh-space-100) var(--gmh-space-300);
+  position: absolute;
+  top: var(--gmh-space-400);
 }
 .home-approach-points {
   border-top: var(--gmh-stroke-border) solid var(--gmh-color-outline-variant);
@@ -334,79 +464,74 @@
   }
 }
 
-/* ── Focus cards ────────────────────────────────────────────────────── */
+/* ── Research lines ─────────────────────────────────────────────────── */
 
+/* The workspace's module grid on a lit band: glass panels that tilt toward
+   the pointer, each opening on its theme's glyph as cover art. One language
+   per grid — graphics only, or photographs only, never a mix. */
 .home-focus-grid {
   display: grid;
-  gap: clamp(1.125rem, 2.4vw, 1.875rem);
-  grid-template-columns: repeat(auto-fit, minmax(16.75rem, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
   width: 100%;
 
   > * {
     min-width: 0;
   }
 }
-
-.home-focus-card.card {
-  gap: 0;
-  overflow: hidden;
-
-  /* Stretch the content so the link line pins to the card's bottom edge
-     across a row of uneven copy. */
-  .card-content {
-    flex: 1;
-  }
-  .card-asset {
-    display: block;
-  }
+.home-focus-link {
+  border-radius: var(--lit-radius);
+  color: var(--gmh-color-on-surface);
+  display: block;
+  text-decoration: none;
 }
-.home-focus-image {
-  aspect-ratio: 16 / 10;
+.home-focus-link:focus-visible {
+  outline: 2px solid var(--lit-gold-light);
+  outline-offset: 4px;
 }
-/* The research band is plain navy: its contour lines live inside the cards'
-   glyph panels instead (below). */
+.home-focus-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--gmh-space-400);
+}
+/* On navy the glass panel is a near-solid card, so its copy keeps paper's
+   contrast in both modes. */
+.home-focus-band .home-focus-card.lit-panel {
+  background: color-mix(in srgb, var(--gmh-color-surface-container-lowest) 94%, transparent);
+  border-color: color-mix(in srgb, white 20%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 60%, transparent) inset,
+    0 30px 50px -30px black;
+}
+/* The band's eyebrow and heading roles are for navy; on the card they take
+   paper's. */
+.home-focus-card {
+  --text-eyebrow-color: var(--gmh-color-tertiary);
+  --text-heading-color: var(--gmh-color-primary);
+}
+/* No contour texture across the band: the covers carry the contours. */
 .home-focus-band.section-variant-brand::before {
   content: none;
 }
-
-/* A glyph card's art: the glyph large on a navy panel with the kit's contour
-   texture and the brand band's gold bloom. */
-.home-focus-art {
-  --graphic-contour-color: var(--gmh-color-on-brand-band);
-  align-items: center;
+.home-focus-cover {
   aspect-ratio: 16 / 10;
-  background:
-    radial-gradient(
-      90% 120% at 14% 0%,
-      color-mix(in srgb, var(--gmh-color-tertiary-container) 28%, transparent),
-      transparent 62%
-    ),
-    var(--gmh-color-brand-band);
-  display: flex;
-  justify-content: center;
   width: 100%;
-
-  .graphic {
-    --graphic-glyph-stroke: 1.5;
-    transition: scale var(--global-duration-slow) var(--global-ease-out);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .home-focus-card:hover .home-focus-art .graphic {
-    scale: 1.06;
-  }
 }
 .home-focus-body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--gmh-space-300);
-  padding: clamp(1.25rem, 2.4vw, 1.75rem);
+  gap: var(--gmh-space-200);
+  padding: var(--gmh-space-500, 1.25rem) var(--gmh-space-200) var(--gmh-space-200);
 
   .text-body-base {
-    color: var(--gmh-color-on-surface);
+    color: var(--gmh-color-on-surface-variant);
     font-size: 0.96875rem;
     margin-bottom: var(--gmh-space-200);
+  }
+  .text-heading {
+    color: var(--gmh-color-primary);
   }
 }
 .home-arrow-link {
@@ -421,7 +546,7 @@
   padding-bottom: 3px;
   transition: border-color var(--global-duration-fast) ease;
 }
-.home-focus-card:hover .home-arrow-link {
+.home-focus-link:hover .home-arrow-link {
   border-color: var(--gmh-color-tertiary-container);
 }
 
@@ -436,27 +561,31 @@
 
 .home-partners {
   display: grid;
-  gap: var(--gmh-space-400);
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: var(--gmh-space-300);
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   list-style: none;
   margin: 0;
   padding: 0;
   width: 100%;
 }
-.home-partner {
-  background: var(--gmh-color-surface);
-  border: var(--gmh-stroke-border) solid
-    var(--gmh-color-outline-variant);
-  border-radius: var(--gmh-shape-corner-extra-small);
+.home-partner.lit-panel {
+  border-radius: 1.25rem;
   color: var(--gmh-color-primary);
   font: var(--gmh-typescale-label-large);
   min-width: 0;
   padding: 1.375rem 1.125rem;
   text-align: center;
-  transition: border-color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    translate 0.4s var(--lit-ease);
 
   &:hover {
-    border-color: var(--gmh-color-tertiary-container);
+    border-color: color-mix(in srgb, var(--lit-gold) 70%, transparent);
+    box-shadow:
+      0 1px 0 color-mix(in srgb, white 60%, transparent) inset,
+      0 18px 36px -22px color-mix(in srgb, var(--lit-gold) 80%, transparent);
+    translate: 0 -2px;
   }
 
   span {
@@ -469,28 +598,21 @@
   }
 }
 
-/* ── Consecutive navy bands ─────────────────────────────────────────── */
-
-/* Research and the closing CTA are brand bands; with no pull quote and no
-   partners they stack. A faint gold hairline keeps each its own. */
-.home-page .section-variant-brand + .section-variant-brand {
-  border-top: var(--gmh-stroke-border) solid
-    color-mix(in srgb, var(--gmh-color-tertiary-container) 30%, transparent);
-}
-
 /* ── Closing CTA ────────────────────────────────────────────────────── */
 
-/* Mirrors the stat band's bloom from the opposite corner, so the page opens
-   and closes on the same light. */
-.home-cta.section-variant-brand {
-  background:
-    radial-gradient(
-      70% 120% at 78% 110%,
-      color-mix(in srgb, var(--gmh-color-tertiary-container) 38%, transparent),
-      transparent 60%
-    ),
-    var(--gmh-ref-palette-primary15);
+/* A lit card on its stage, closing on the same light the page opened on. */
+.home-cta-stage {
+  padding-bottom: clamp(0.5rem, 1.4vw, 1.25rem);
+}
+.home-cta.lit-hero.section-variant-brand {
   text-align: center;
+}
+.home-cta .lit-aurora {
+  opacity: 0.45;
+}
+.home-cta .graphic {
+  --graphic-ink: color-mix(in srgb, white 85%, var(--lit-sky));
+  --graphic-ground: var(--lit-navy-deep);
 }
 /* The care rings radiate from behind the right edge — the page closes on
    reach. Faded under the centred copy on narrow screens. */
@@ -507,22 +629,6 @@
   }
 }
 .home-cta-body {
-  color: var(--gmh-color-brand-band-accent);
+  color: var(--lit-gold-light);
   max-width: 52ch;
-}
-
-/* ── Scroll reveal ──────────────────────────────────────────────────── */
-
-/* Only hidden once JS has set `data-reveal` (see useReveal), so the server
-   HTML and no-JS readers always see everything. */
-@media (prefers-reduced-motion: no-preference) {
-  .home-page[data-reveal] .home-reveal {
-    transition:
-      opacity var(--global-duration-slow) ease,
-      translate var(--global-duration-slow) var(--global-ease-out);
-  }
-  .home-page[data-reveal] .home-reveal:not(.is-in) {
-    opacity: 0;
-    translate: 0 22px;
-  }
 }

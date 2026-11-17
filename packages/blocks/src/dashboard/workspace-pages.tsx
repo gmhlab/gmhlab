@@ -19,7 +19,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { type FormEvent, type ReactNode, useMemo, useRef, useState } from "react";
 import type { HandbookSection, ProjectRoom, RoomResource } from "./dashboard-types";
-import { Cover, PhotoFrame } from "./ornaments";
+import { Cover, PhotoFrame } from "../shared/ornaments";
 import { ArtTile, Chip, DemoNote, EASE, Item, PageHero, Panel, SectionTitle, Stagger, toneAt } from "./kit";
 
 /* ── Project rooms ────────────────────────────────────────────────────── */
@@ -327,7 +327,7 @@ export function PhotoLibrary({
         art={{ kind: "glyph", name: "lived-experience" }}
         actions={
           canUpload && (
-            <Button size="lg" variant="accent" className="dash-shine" onClick={() => setUploading(true)}>
+            <Button size="lg" variant="accent" className="lit-shine" onClick={() => setUploading(true)}>
               <ImagePlus aria-hidden /> Upload photos
             </Button>
           )

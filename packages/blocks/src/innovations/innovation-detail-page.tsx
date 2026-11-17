@@ -29,6 +29,8 @@ import type {
   InnovationDetail,
   InnovationProcessImage,
 } from "./innovation-detail-types";
+import { Aurora } from "../shared/lit";
+import { Cover } from "../shared/ornaments";
 import { PageActions, PageCtaSection } from "../shared/page-cta";
 import { ProjectMark } from "../shared/project-mark";
 import { PeopleSection } from "../team/team-page";
@@ -117,82 +119,102 @@ function Breadcrumb({
 
 function Hero({ detail }: { detail: InnovationDetail }) {
   return (
-    <Section variant="neutral" padding="1600">
-      {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
-      <ContourGlobe backdrop centerpiece="none" className="innovation-detail-contours graphic-fade-start" />
-      <Flex container type="third" gap="1200" wrap>
-        <FlexItem size="major">
-          <Flex direction="column" alignSecondary="stretch" gap="600">
-            {detail.badges?.length ? (
-              <Flex wrap gap="300">
-                {detail.badges.map((badge) => (
-                  <Badge
-                    key={badge.label}
-                    variant={badge.tone}
-                    className="innovation-detail-badge"
-                  >
-                    {badge.label}
-                  </Badge>
-                ))}
-              </Flex>
-            ) : null}
-            {/* TextTitlePage (3rem), not TextContentTitle — that resolves to
-                TextTitleHero (4.5rem) on desktop, which is the index page's
-                size. A detail page sits one level down. */}
-            <Flex alignSecondary="center" gap="600">
-              {detail.logo ? (
-                <ProjectMark src={detail.logo} size="large" />
+    /* A lit hero on its stage (../shared/lit.css): the photo in full colour
+       under the navy fade, striations behind the copy, the visual and the
+       figures as the workspace's cover art and glass tiles. */
+    <div className="lit-stage" data-ground="neutral">
+      <Section
+        variant="brand"
+        padding="1600"
+        className={
+          detail.heroImage
+            ? "innovation-detail-hero lit-hero lit-hero-photo"
+            : "innovation-detail-hero lit-hero"
+        }
+      >
+        {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
+        <div className="lit-hero-striations innovation-detail-striations" aria-hidden>
+          <ContourGlobe centerpiece="none" />
+        </div>
+        <Aurora />
+        <Flex container type="third" gap="1200" wrap className="lit-enter">
+          <FlexItem size="major">
+            <Flex direction="column" alignSecondary="stretch" gap="600">
+              {detail.badges?.length ? (
+                <Flex wrap gap="300">
+                  {detail.badges.map((badge) => (
+                    <Badge
+                      key={badge.label}
+                      variant={badge.tone}
+                      className="innovation-detail-badge"
+                    >
+                      {badge.label}
+                    </Badge>
+                  ))}
+                </Flex>
               ) : null}
-              <Flex direction="column" alignSecondary="stretch" gap="200">
-                <TextTitlePage>{detail.name}</TextTitlePage>
-                {detail.expandedName ? (
-                  <TextSubheading>{detail.expandedName}</TextSubheading>
+              {/* TextTitlePage (3rem), not TextContentTitle — that resolves to
+                  TextTitleHero (4.5rem) on desktop, which is the index page's
+                  size. A detail page sits one level down. */}
+              <Flex alignSecondary="center" gap="600">
+                {detail.logo ? (
+                  <ProjectMark src={detail.logo} size="large" />
                 ) : null}
+                <Flex direction="column" alignSecondary="stretch" gap="200">
+                  <TextTitlePage>{detail.name}</TextTitlePage>
+                  {detail.expandedName ? (
+                    <TextSubheading>{detail.expandedName}</TextSubheading>
+                  ) : null}
+                </Flex>
               </Flex>
+              <Text className="innovation-detail-hero-copy">{detail.summary}</Text>
+              <PageActions actions={detail.actions ?? []} lit />
             </Flex>
-            <Text className="innovation-detail-hero-copy">{detail.summary}</Text>
-            <PageActions actions={detail.actions ?? []} />
-          </Flex>
-        </FlexItem>
-        <FlexItem size="minor">
-          <Flex direction="column" alignSecondary="stretch" gap="400">
-            {detail.glyph || detail.visualCaption ? (
-              <figure className="innovation-detail-visual">
-                <div className="innovation-detail-visual-art graphic-on-brand graphic-contours">
-                  {detail.glyph ? (
-                    <ResearchGlyph name={detail.glyph} size={112} />
-                  ) : (
-                    <BrandShape name="arch" size={128} />
-                  )}
-                </div>
-                {detail.visualCaption ? (
-                  <figcaption>
-                    <TextSmall>{detail.visualCaption}</TextSmall>
-                  </figcaption>
-                ) : null}
-              </figure>
-            ) : null}
-            {detail.stats?.length ? (
-              <Grid
-                columns={`repeat(${Math.min(detail.stats.length, 3)}, 1fr)`}
-                gap="300"
-              >
-                {detail.stats.map((stat) => (
-                  <div className="innovation-detail-stat" key={stat.label}>
-                    <span className="innovation-detail-stat-value">
-                      {stat.value}
-                    </span>
-                    <span className="innovation-detail-stat-label">
-                      {stat.label}
-                    </span>
-                  </div>
-                ))}
-              </Grid>
-            ) : null}
-          </Flex>
-        </FlexItem>
-      </Flex>
-    </Section>
+          </FlexItem>
+          <FlexItem size="minor">
+            <Flex direction="column" alignSecondary="stretch" gap="400">
+              {detail.glyph || detail.visualCaption ? (
+                <figure className="innovation-detail-visual">
+                  {/* The kit's cover art — the glyph big and faint behind a
+                      crisp one — not a small centred icon. */}
+                  <Cover
+                    art={
+                      detail.glyph
+                        ? { kind: "glyph", name: detail.glyph }
+                        : { kind: "shape", name: "arch" }
+                    }
+                    tone="gold"
+                    className="innovation-detail-visual-art"
+                  />
+                  {detail.visualCaption ? (
+                    <figcaption>
+                      <TextSmall>{detail.visualCaption}</TextSmall>
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ) : null}
+              {detail.stats?.length ? (
+                <Grid
+                  columns={`repeat(${Math.min(detail.stats.length, 3)}, 1fr)`}
+                  gap="300"
+                >
+                  {detail.stats.map((stat) => (
+                    <div className="innovation-detail-stat" key={stat.label}>
+                      <span className="innovation-detail-stat-value">
+                        {stat.value}
+                      </span>
+                      <span className="innovation-detail-stat-label">
+                        {stat.label}
+                      </span>
+                    </div>
+                  ))}
+                </Grid>
+              ) : null}
+            </Flex>
+          </FlexItem>
+        </Flex>
+      </Section>
+    </div>
   );
 }
 
@@ -519,7 +541,7 @@ export function InnovationDetailPage({
   teamHref = "/team",
 }: InnovationDetailPageProps) {
   return (
-    <div className="innovation-detail-page">
+    <div className="innovation-detail-page lit-canvas">
       <Breadcrumb
         basePath={basePath}
         detail={detail}

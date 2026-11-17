@@ -209,7 +209,7 @@ export function AccountProfilePage({
               </label>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <Button type="submit" size="lg" disabled={!dirty || saving} className={cn(dirty && "dash-shine")}>
+              <Button type="submit" size="lg" disabled={!dirty || saving} className={cn(dirty && "lit-shine")}>
                 {saving ? "Saving…" : changedPublic ? (
                   <>
                     <Send aria-hidden /> Save and send for review
@@ -607,7 +607,7 @@ function SubmissionCard({
         </label>
       </div>
       <div className="mt-5 flex gap-2">
-        <Button disabled={busy} onClick={() => decide(true)} className="dash-shine">
+        <Button disabled={busy} onClick={() => decide(true)} className="lit-shine">
           <Check aria-hidden /> Approve and publish
         </Button>
         <Button disabled={busy} variant="outline" onClick={() => decide(false)}>

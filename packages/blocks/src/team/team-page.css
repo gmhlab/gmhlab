@@ -223,17 +223,18 @@
 }
 
 /* The same family as a rail on the card's top edge, like the projects
- * index's status rail — so the grouping reads before the faces do. Corner
- * radii are matched rather than clipped, to keep the card's focus ring. */
+ * index's status rail — so the grouping reads before the faces do. A
+ * card-sized overlay with the card's own radius, masked to its top 3px, so
+ * the rail stays inside the rounded corners. Not clipped with
+ * `overflow: hidden`, to keep the card's focus ring. */
 .team-card-core::before,
 .team-card-affiliate::before {
   background: var(--team-card-rail);
-  border-start-end-radius: var(--gmh-shape-corner-small);
-  border-start-start-radius: var(--gmh-shape-corner-small);
+  border-radius: inherit;
   content: "";
-  height: 3px;
-  inset-block-start: 0;
-  inset-inline: 0;
+  inset: 0;
+  mask: linear-gradient(#000, #000) top / 100% 3px no-repeat;
+  pointer-events: none;
   position: absolute;
 }
 

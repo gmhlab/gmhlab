@@ -1,12 +1,15 @@
-/* PageHero's graphic form. Scoped under `.page-hero`; every class prefixed.
+/* PageHero: a lit hero (../shared/lit.css) on an inset stage. Scoped under
+ * `.page-hero`; every class prefixed.
  *
- * The motif sits behind left-aligned copy, so it is kept to the right half
- * on wide screens and faded on narrow ones, where it has to run under the
- * title. */
+ * With a photo the striations sit behind the copy and fade out before the
+ * photo's subject; without one the motif is kept to the right half on wide
+ * screens and faded on narrow ones, where it has to run under the title. */
 
 .page-hero .graphic {
-  /* Knock-outs (the care-rings hub) cut to this band's surface, not paper. */
-  --graphic-ground: var(--gmh-color-surface-container-high);
+  --graphic-ink: color-mix(in srgb, white 85%, var(--lit-sky));
+  /* Knock-outs (the care-rings hub, the globe's clearing) cut to the hero's
+     deep end, where the motif sits. */
+  --graphic-ground: var(--lit-navy-deep);
 }
 
 /* A hero's height, so the 1440x640 motif is sliced to something that still
@@ -16,12 +19,24 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: clamp(18rem, 30vw, 27rem);
+  min-height: clamp(20rem, 32vw, 30rem);
 }
 
-/* The title column stays clear of the globe on desktop. */
+/* The title column stays clear of the photo's subject and the motif. */
+.page-hero-title {
+  max-width: 40rem;
+}
 .page-hero .text-content-title {
   max-width: 40rem;
+}
+/* The subtitle at the workspace hero's reading strength. */
+.page-hero .text-content-title .text-subtitle,
+.page-hero .text-content-title p {
+  color: color-mix(in srgb, var(--lit-on-navy) 86%, transparent);
+}
+
+.page-hero-extra {
+  width: 100%;
 }
 
 /* The rings are a square, so they are sized by the band's height and bled

@@ -28,6 +28,7 @@ import {
 import type { Project } from "./projects-types";
 import type { Publication } from "../publications/publications-types";
 import { PublicationCover } from "../publications/publication-cover";
+import { Aurora } from "../shared/lit";
 import { PageCtaSection } from "../shared/page-cta";
 import { PeopleSection } from "../team/team-page";
 import { projectPeople, type Person } from "../team/team-types";
@@ -148,66 +149,78 @@ const STATUS_VARIANT: Record<ProjectDetail["status"], "success" | "info"> = {
 
 function Hero({ detail, logo }: { detail: ProjectDetail; logo?: string }) {
   return (
-    <Section variant="neutral" padding="1600">
-      {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
-      <ContourGlobe backdrop centerpiece="none" className="pd-hero-contours graphic-fade-start" />
-      <Flex container direction="column" alignSecondary="stretch" gap="1200">
-        <Flex type="third" gap="1200" wrap>
-          <FlexItem size="major">
-            <Flex direction="column" alignSecondary="stretch" gap="600">
-              <Flex wrap gap="300">
-                <Badge
-                  variant={STATUS_VARIANT[detail.status]}
-                  className="pd-badge"
-                >
-                  {detail.statusLabel}
-                </Badge>
-              </Flex>
-              <Flex alignSecondary="center" gap="600">
-                {logo ? <ProjectMark src={logo} size="large" /> : null}
-                <Flex direction="column" alignSecondary="stretch" gap="200">
-                  {/* TextTitlePage (3rem), not TextContentTitle — that
-                      resolves to TextTitleHero on desktop, which is the index
-                      page's size. A detail page sits one level down. */}
-                  <TextTitlePage>{detail.name}</TextTitlePage>
-                  {detail.expandedName ? (
-                    <TextSubheading className="pd-expanded-name">
-                      {detail.expandedName}
-                    </TextSubheading>
-                  ) : null}
+    /* A lit hero on the stage the breadcrumb sits on: the photo in full
+       colour under the navy fade, the striations behind the copy, the facts
+       and figures as the workspace's dark glass. */
+    <div className="lit-stage pd-hero-stage" data-ground="neutral">
+      <Section
+        variant="brand"
+        padding="1600"
+        className={detail.heroImage ? "pd-hero lit-hero lit-hero-photo" : "pd-hero lit-hero"}
+      >
+        {detail.heroImage ? <PhotoBackdrop src={detail.heroImage} /> : null}
+        <div className="lit-hero-striations pd-hero-striations" aria-hidden>
+          <ContourGlobe centerpiece="none" />
+        </div>
+        <Aurora />
+        <Flex container direction="column" alignSecondary="stretch" gap="1200" className="lit-enter">
+          <Flex type="third" gap="1200" wrap>
+            <FlexItem size="major">
+              <Flex direction="column" alignSecondary="stretch" gap="600">
+                <Flex wrap gap="300">
+                  <Badge
+                    variant={STATUS_VARIANT[detail.status]}
+                    className="pd-badge"
+                  >
+                    {detail.statusLabel}
+                  </Badge>
                 </Flex>
+                <Flex alignSecondary="center" gap="600">
+                  {logo ? <ProjectMark src={logo} size="large" /> : null}
+                  <Flex direction="column" alignSecondary="stretch" gap="200">
+                    {/* TextTitlePage (3rem), not TextContentTitle — that
+                        resolves to TextTitleHero on desktop, which is the index
+                        page's size. A detail page sits one level down. */}
+                    <TextTitlePage>{detail.name}</TextTitlePage>
+                    {detail.expandedName ? (
+                      <TextSubheading className="pd-expanded-name">
+                        {detail.expandedName}
+                      </TextSubheading>
+                    ) : null}
+                  </Flex>
+                </Flex>
+                <Text className="pd-lede">{detail.lede}</Text>
               </Flex>
-              <Text className="pd-lede">{detail.lede}</Text>
-            </Flex>
-          </FlexItem>
-          <FlexItem size="minor">
-            <div className="pd-facts">
-              <dl className="pd-facts-list">
-                {detail.facts.map((fact) => (
-                  <div className="pd-fact" key={fact.term}>
-                    <dt className="pd-fact-term">{fact.term}</dt>
-                    <dd className="pd-fact-detail">{fact.detail}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </FlexItem>
+            </FlexItem>
+            <FlexItem size="minor">
+              <div className="pd-facts">
+                <dl className="pd-facts-list">
+                  {detail.facts.map((fact) => (
+                    <div className="pd-fact" key={fact.term}>
+                      <dt className="pd-fact-term">{fact.term}</dt>
+                      <dd className="pd-fact-detail">{fact.detail}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </FlexItem>
+          </Flex>
+          {detail.figures?.length ? (
+            <ul className="pd-figures">
+              {detail.figures.map((figure) => (
+                <li className="pd-figure" key={figure.label}>
+                  <span className="pd-figure-value">{figure.value}</span>
+                  <span className="pd-figure-label">{figure.label}</span>
+                  {figure.note ? (
+                    <span className="pd-figure-note">{figure.note}</span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </Flex>
-        {detail.figures?.length ? (
-          <ul className="pd-figures">
-            {detail.figures.map((figure) => (
-              <li className="pd-figure" key={figure.label}>
-                <span className="pd-figure-value">{figure.value}</span>
-                <span className="pd-figure-label">{figure.label}</span>
-                {figure.note ? (
-                  <span className="pd-figure-note">{figure.note}</span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </Flex>
-    </Section>
+      </Section>
+    </div>
   );
 }
 
@@ -894,7 +907,7 @@ export function ProjectDetailPage({
   teamHref = "/team",
 }: ProjectDetailPageProps) {
   return (
-    <div className="project-detail-page">
+    <div className="project-detail-page lit-canvas">
       <Breadcrumb basePath={basePath} detail={detail} />
       {/* The logo lives on the portfolio record, not the detail record, so
           a project's mark is set in one place. */}

@@ -20,11 +20,10 @@
   width: 100%;
 }
 
-/* Breadcrumb and hero are both `variant="neutral"`, so the divider between
-   them has to come from here. */
-.innovation-detail-breadcrumb {
-  border-bottom: var(--gmh-stroke-border) solid
-    var(--gmh-color-outline);
+/* The breadcrumb sits on the hero stage's neutral ground, so the two read
+   as one header; the stage's own top padding is folded into it. */
+.innovation-detail-breadcrumb + .lit-stage {
+  padding-top: 0;
 }
 
 .innovation-detail-badge {
@@ -34,64 +33,46 @@
 
 /* Hero ------------------------------------------------------------------ */
 
+/* A lit hero (../shared/lit.css). Its striations run quieter than an index
+   hero's, since this band carries the visual and stats on the right. */
+.innovation-detail-striations {
+  mask-image: linear-gradient(90deg, #000 0%, #000 50%, transparent 80%);
+  opacity: 0.8;
+}
+
 .innovation-detail-hero-copy {
-  color: var(--gmh-color-on-surface-variant);
+  color: color-mix(in srgb, var(--lit-on-navy) 88%, transparent);
   max-width: 38rem;
 }
+.innovation-detail-hero .text-subheading {
+  color: color-mix(in srgb, var(--lit-on-navy) 86%, transparent);
+}
 
-/* Stands in for the screenshot/demo slot. Same treatment as the map tile
-   below, minus the tint. */
+/* Stands in for the screenshot/demo slot: the kit's cover art, lifted off
+   the hero like the workspace's module covers, captioned under it. */
 .innovation-detail-visual {
-  background: var(--gmh-color-surface);
-  border-radius: var(--gmh-shape-corner-medium);
-  box-shadow:
-    inset 0 0 0 var(--gmh-stroke-border)
-      var(--gmh-color-outline-variant),
-    var(--gmh-elevation-level2);
   margin: 0;
-  overflow: hidden;
 
   figcaption {
-    /* `secondary`, not `tertiary`: tertiary is the outline role, not text.
-       See the contrast note in ../projects/projects-page.css. */
-    color: var(--gmh-color-on-surface-variant);
-    padding: var(--gmh-space-300) var(--gmh-space-400);
+    color: color-mix(in srgb, var(--lit-on-navy) 80%, transparent);
+    padding: var(--gmh-space-300) var(--gmh-space-100) 0;
   }
 }
-/* The glyph large on a navy panel with the kit's contour texture and the
-   brand band's gold bloom — the same art as the landing page's theme cards. */
 .innovation-detail-visual-art {
-  --graphic-contour-color: var(--gmh-color-on-brand-band);
-  align-items: center;
-  background:
-    radial-gradient(
-      90% 120% at 14% 0%,
-      color-mix(in srgb, var(--gmh-color-tertiary-container) 28%, transparent),
-      transparent 62%
-    ),
-    var(--gmh-color-brand-band);
-  display: flex;
-  justify-content: center;
-  min-height: 13.75rem;
-  padding: var(--gmh-space-600);
-
-  .graphic-glyph {
-    --graphic-glyph-stroke: 1.4;
-  }
+  aspect-ratio: 16 / 10;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white 22%, transparent),
+    0 30px 60px -28px black;
+  width: 100%;
 }
 
-/* The hero's contours sit back further than an index hero's: this band
-   carries a facts panel and stats on the right. */
-.innovation-detail-contours {
-  opacity: 0.55;
-}
-
+/* The workspace's glass stat tiles. */
 .innovation-detail-stat {
   align-items: center;
-  background: var(--gmh-color-surface);
-  border-radius: var(--gmh-shape-corner-extra-small);
-  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
-    var(--gmh-color-outline-variant);
+  backdrop-filter: blur(4px);
+  background: color-mix(in srgb, white 8%, transparent);
+  border-radius: 1.25rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 12%, transparent);
   display: flex;
   flex-direction: column;
   gap: var(--gmh-space-050);
@@ -100,7 +81,7 @@
 }
 
 .innovation-detail-stat-value {
-  color: var(--gmh-color-primary);
+  color: var(--lit-on-navy);
   font-size: var(--gmh-typescale-headline-small-size);
   /* Serif figures, regular weight: the same voice as the system StatsCard. */
   font-family: var(--gmh-ref-typeface-brand);
@@ -109,8 +90,7 @@
 }
 
 .innovation-detail-stat-label {
-  /* White tile surface — `secondary` is 4.61:1, `tertiary` would be ~2:1. */
-  color: var(--gmh-color-on-surface-variant);
+  color: color-mix(in srgb, var(--lit-on-navy) 78%, transparent);
   font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.03125rem;
   line-height: 1.4;

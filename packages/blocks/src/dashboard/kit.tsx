@@ -2,140 +2,28 @@
 
 import { BrandShape, PhotoBackdrop, ResearchGlyph, cn } from "@gmhlab/ui";
 import { Lock } from "lucide-react";
-import {
-  animate,
-  motion,
-  useInView,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-  type Variants,
-} from "motion/react";
-import {
-  type ComponentProps,
-  type PointerEvent,
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { motion, useInView, useReducedMotion } from "motion/react";
+import { type ReactNode, useEffect, useRef } from "react";
+import { EASE } from "../shared/lit";
 import type { ModuleArt } from "./dashboard-types";
 import "./dashboard.css";
 
-/* ── Motion presets ───────────────────────────────────────────────────── */
-
-export const EASE = [0.22, 1, 0.36, 1] as const;
-
-export const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
-};
-
-export const rise: Variants = {
-  hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: EASE } },
-};
-
-/** A container whose `Item` children rise in one after another. */
-export function Stagger({ className, children, ...props }: ComponentProps<typeof motion.div>) {
-  return (
-    <motion.div className={className} variants={stagger} initial="hidden" animate="show" {...props}>
-      {children}
-    </motion.div>
-  );
-}
-
-export function Item({ className, children, ...props }: ComponentProps<typeof motion.div>) {
-  return (
-    <motion.div className={className} variants={rise} {...props}>
-      {children}
-    </motion.div>
-  );
-}
-
-/* ── Surfaces ─────────────────────────────────────────────────────────── */
-
-export function Panel({ className, children, ...props }: ComponentProps<"div">) {
-  return (
-    <div className={cn("dash-panel p-6", className)} {...props}>
-      {children}
-    </div>
-  );
-}
-
-/**
- * A card that tilts toward the pointer with a glare that follows it.
- * Flat under reduced motion.
- */
-export function TiltCard({
-  className,
-  children,
-  max = 7,
-  ...props
-}: ComponentProps<typeof motion.div> & { max?: number }) {
-  const reduce = useReducedMotion();
-  const x = useMotionValue(0.5);
-  const y = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(y, [0, 1], [max, -max]), { stiffness: 220, damping: 20 });
-  const rotateY = useSpring(useTransform(x, [0, 1], [-max, max]), { stiffness: 220, damping: 20 });
-
-  const onMove = (event: PointerEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const px = (event.clientX - rect.left) / rect.width;
-    const py = (event.clientY - rect.top) / rect.height;
-    x.set(px);
-    y.set(py);
-    event.currentTarget.style.setProperty("--mx", `${px * 100}%`);
-    event.currentTarget.style.setProperty("--my", `${py * 100}%`);
-  };
-  const onLeave = () => {
-    x.set(0.5);
-    y.set(0.5);
-  };
-
-  return (
-    <motion.div
-      className={cn("dash-tilt", className)}
-      style={reduce ? undefined : { rotateX, rotateY, transformPerspective: 900 }}
-      onPointerMove={reduce ? undefined : onMove}
-      onPointerLeave={onLeave}
-      whileHover={reduce ? undefined : { y: -4 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-      {...props}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export type ArtTone = "navy" | "gold" | "sky";
-
-/** A module's glyph or shape on a lit, contoured tile. */
-export function ArtTile({
-  art,
-  tone = "navy",
-  size = 64,
-  className,
-}: {
-  art: ModuleArt;
-  tone?: ArtTone;
-  size?: number;
-  className?: string;
-}) {
-  return (
-    <div className={cn("dash-art", className)} data-tone={tone}>
-      {art.kind === "glyph" ? (
-        <ResearchGlyph name={art.name} size={size} />
-      ) : (
-        <BrandShape name={art.name} size={size} />
-      )}
-    </div>
-  );
-}
-
-/** Deterministic tone per index, so a grid alternates navy/gold/sky. */
-export const toneAt = (i: number): ArtTone => (["navy", "gold", "sky"] as const)[i % 3];
+/* The motion presets, surfaces, art tiles and CountUp are the lit language's,
+   shared with the public pages (../shared/lit.tsx); re-exported here so the
+   workspace keeps one import site. */
+export {
+  ArtTile,
+  type ArtTone,
+  CountUp,
+  EASE,
+  Item,
+  Panel,
+  Stagger,
+  TiltCard,
+  rise,
+  stagger,
+  toneAt,
+} from "../shared/lit";
 
 /* ── Data display ─────────────────────────────────────────────────────── */
 
@@ -165,8 +53,8 @@ export function ProgressRing({
       <svg ref={ref} width={size} height={size} className="-rotate-90" aria-hidden>
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="var(--dash-gold-light)" />
-            <stop offset="100%" stopColor="var(--dash-gold)" />
+            <stop offset="0%" stopColor="var(--lit-gold-light)" />
+            <stop offset="100%" stopColor="var(--lit-gold)" />
           </linearGradient>
         </defs>
         <circle
@@ -189,7 +77,7 @@ export function ProgressRing({
           initial={{ strokeDashoffset: c }}
           animate={{ strokeDashoffset: inView ? c * (1 - Math.min(1, Math.max(0, value))) : c }}
           transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
-          style={{ filter: "drop-shadow(0 0 6px color-mix(in srgb, var(--dash-gold) 70%, transparent))" }}
+          style={{ filter: "drop-shadow(0 0 6px color-mix(in srgb, var(--lit-gold) 70%, transparent))" }}
         />
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">
@@ -199,25 +87,6 @@ export function ProgressRing({
         </div>
       </div>
     </div>
-  );
-}
-
-/** Counts up to `to` once in view. Renders the final value on the server. */
-export function CountUp({ to, suffix = "", decimals = 0 }: { to: number; suffix?: string; decimals?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
-  const reduce = useReducedMotion();
-  const [value, setValue] = useState(to);
-  useEffect(() => {
-    if (!inView || reduce) return;
-    const controls = animate(0, to, { duration: 1.2, ease: EASE, onUpdate: setValue });
-    return () => controls.stop();
-  }, [inView, reduce, to]);
-  return (
-    <span ref={ref} className="tabular-nums">
-      {value.toFixed(decimals)}
-      {suffix}
-    </span>
   );
 }
 
@@ -281,13 +150,13 @@ export function PageHero({
 }) {
   return (
     <motion.section
-      className={cn("dash-hero px-6 py-9 sm:px-10 sm:py-12", backdrop && "dash-hero-photo sm:py-16")}
+      className={cn("lit-hero px-6 py-9 sm:px-10 sm:py-12", backdrop && "lit-hero-photo sm:py-16")}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: EASE }}
     >
       {backdrop && <PhotoBackdrop src={backdrop.src} position={backdrop.position} />}
-      <div className="dash-aurora" aria-hidden>
+      <div className="lit-aurora" aria-hidden>
         <span />
         <span />
         <span />
@@ -381,7 +250,7 @@ export function Confetti({ onDone }: { onDone?: () => void }) {
     <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden" aria-hidden>
       {CONFETTI.map((i) => {
         const left = (i * 37) % 100;
-        const colours = ["var(--dash-gold)", "var(--dash-gold-light)", "var(--dash-navy)", "var(--dash-sky)"];
+        const colours = ["var(--lit-gold)", "var(--lit-gold-light)", "var(--lit-navy)", "var(--lit-sky)"];
         return (
           <motion.span
             key={i}

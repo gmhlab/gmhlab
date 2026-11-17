@@ -149,6 +149,7 @@ export function ContactPage({
           subtitle={subtitle}
           image={heroImage}
           motif="rings"
+          ground="paper"
         />
 
         <Section

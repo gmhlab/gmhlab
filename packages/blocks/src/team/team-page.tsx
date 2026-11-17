@@ -428,7 +428,7 @@ export function TeamPage({
           innovations index does. Cards reset their own colour, so they read as
           light panels on navy; the compact rows take the band's on-brand text
           (see `.team-groups` in the CSS). */}
-      <Section className="team-groups" variant="brand" padding="1600">
+      <Section className="team-groups lit-band lit-cards" variant="brand" padding="1600">
         <Flex container direction="column" alignSecondary="stretch" gap="1600">
           {GROUPS.map(({ group, heading }) => {
             const members = visible(group);
@@ -491,7 +491,7 @@ export function PeopleSection({
 }) {
   if (!people.length) return null;
   return (
-    <Section className="team-people" variant={variant} padding="1600">
+    <Section className="team-people lit-cards" variant={variant} padding="1600">
       <Flex container direction="column" alignSecondary="stretch" gap="800">
         <TextContentHeading heading={heading} />
         <ul className="team-rows">

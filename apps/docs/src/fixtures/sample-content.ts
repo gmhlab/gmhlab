@@ -780,7 +780,7 @@ export const HOME_CONTENT: HomeContent = {
     { value: String(PROJECTS.length), label: "Projects in the sample portfolio" },
     { value: String(PUBLICATIONS.length), label: "Publications in the sample bibliography" },
     { value: String(INNOVATIONS.length), label: "Innovations" },
-    { value: "2,400+", label: "A comma-grouped figure, to exercise the count-up" },
+    { value: "2,400+", label: "A comma-grouped figure, shown as written" },
   ],
   gap: {
     eyebrow: "The signature figure",

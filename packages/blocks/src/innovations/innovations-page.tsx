@@ -168,7 +168,7 @@ export function InnovationsPage({
           `variant="stroke"` and reset their own colour, so they read as light
           panels on the brand surface; the CardGrid heading has no colour of its
           own and inherits the section's `text-brand-on-brand`. */}
-      <Section variant="brand" padding="1600">
+      <Section className="lit-band lit-cards" variant="brand" padding="1600">
         <WaveDivider />
         <CardGrid
           container

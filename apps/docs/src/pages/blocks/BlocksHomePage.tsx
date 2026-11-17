@@ -13,7 +13,7 @@ export function BlocksHomePage() {
   return (
     <DemoFrame
       component="HomePage"
-      blurb="A research centre's landing page: serif hero over drawn contour lines, a counting stat band, the signature gap figure, duotone link cards, a pull quote, a partner wall and a closing CTA. Every section after the stats is optional."
+      blurb="A research centre's landing page in the workspace's lit language: a lit navy hero with its figures as glass tiles, the gold wave, the signature gap figure, tilt cards with kit cover art on a lit band, a pull quote, a partner wall and a closing lit card. Every section after the stats is optional."
       props={`<HomePage content={HOME_CONTENT} />`}
     >
       <HomePage content={HOME_CONTENT} />

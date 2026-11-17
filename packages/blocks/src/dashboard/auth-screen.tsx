@@ -136,7 +136,7 @@ export function AuthScreen({
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="dash grid min-h-screen lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+      <div className="dash lit-canvas grid min-h-screen lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
         {/* ── Brand panel (desktop) ── */}
         <aside className="dash-auth-art sticky top-0 hidden h-screen flex-col overflow-hidden lg:flex">
           <div className="relative z-10 flex items-center justify-between px-12 pt-10">

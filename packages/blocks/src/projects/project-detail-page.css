@@ -21,10 +21,12 @@
   width: 100%;
 }
 
-/* The graphics kit's contours behind the hero, set back further than an
-   index hero's: this band carries the facts panel on the right. */
-.project-detail-page .pd-hero-contours {
-  opacity: 0.55;
+/* The hero is a lit hero (../shared/lit.css). Its striations run the
+   full width — behind the facts panel too, which is glass — but quieter
+   than an index hero's, since this band carries more copy. */
+.project-detail-page .pd-hero-striations {
+  mask-image: linear-gradient(90deg, #000 0%, #000 50%, transparent 80%);
+  opacity: 0.8;
 }
 
 /* Guard, not a fix for an observed break. Flex items default to
@@ -60,11 +62,10 @@
   overflow-wrap: anywhere;
 }
 
-/* Breadcrumb and hero are both `variant="neutral"`, so the divider between
-   them has to come from here. */
-.project-detail-page .pd-breadcrumb {
-  border-bottom: var(--gmh-stroke-border) solid
-    var(--gmh-color-outline);
+/* The breadcrumb sits on the hero stage's neutral ground, so the two read
+   as one header; the stage's own top padding is folded into it. */
+.project-detail-page .pd-breadcrumb + .pd-hero-stage {
+  padding-top: 0;
 }
 
 .project-detail-page .pd-badge {
@@ -87,10 +88,11 @@
 /* Hero -------------------------------------------------------------------- */
 
 .project-detail-page .pd-expanded-name {
-  color: var(--gmh-color-on-surface);
+  color: color-mix(in srgb, var(--lit-on-navy) 86%, transparent);
 }
 
 .project-detail-page .pd-lede {
+  color: color-mix(in srgb, var(--lit-on-navy) 92%, transparent);
   font-size: var(--gmh-typescale-title-large-size);
   line-height: 1.55;
   max-width: 42rem;
@@ -100,10 +102,13 @@
    categorical facts about the study, not quantities, and rendering them as
    big numbers would overstate them. */
 .project-detail-page .pd-facts {
-  background: var(--gmh-color-surface);
-  border-radius: var(--gmh-shape-corner-small);
-  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
-    var(--gmh-color-outline-variant);
+  backdrop-filter: blur(14px) saturate(1.2);
+  background: color-mix(in srgb, var(--lit-navy-deep) 45%, transparent);
+  border-radius: 1.5rem;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+    0 24px 50px -30px black;
   padding: var(--gmh-space-600);
 }
 
@@ -122,19 +127,19 @@
 
 .project-detail-page .pd-fact + .pd-fact {
   border-top: var(--gmh-stroke-border) solid
-    var(--gmh-color-outline);
+    color-mix(in srgb, white 16%, transparent);
   padding-top: var(--gmh-space-400);
 }
 
 .project-detail-page .pd-fact-term {
-  color: var(--gmh-color-on-surface-variant);
+  color: var(--lit-gold-light);
   font-size: var(--gmh-typescale-label-medium-size);
   letter-spacing: 0.0625rem;
   text-transform: uppercase;
 }
 
 .project-detail-page .pd-fact-detail {
-  color: var(--gmh-color-on-surface);
+  color: var(--lit-on-navy);
   font-weight: var(--gmh-ref-typeface-weight-semibold);
   margin: 0;
 }
@@ -150,12 +155,13 @@
   padding: 0;
 }
 
+/* The workspace's glass stat tiles. */
 .project-detail-page .pd-figure {
   align-items: flex-start;
-  background: var(--gmh-color-surface);
-  border-radius: var(--gmh-shape-corner-extra-small);
-  box-shadow: inset 0 0 0 var(--gmh-stroke-border)
-    var(--gmh-color-outline-variant);
+  backdrop-filter: blur(4px);
+  background: color-mix(in srgb, white 8%, transparent);
+  border-radius: 1.25rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 12%, transparent);
   display: flex;
   flex-direction: column;
   gap: var(--gmh-space-050);
@@ -163,19 +169,21 @@
 }
 
 .project-detail-page .pd-figure-value {
-  color: var(--gmh-color-primary);
-  font-size: var(--gmh-typescale-headline-large-size);
-  font-weight: var(--gmh-ref-typeface-weight-bold);
+  color: var(--lit-on-navy);
+  font-family: var(--gmh-ref-typeface-brand);
+  font-size: var(--gmh-typescale-display-small-size);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--gmh-ref-typeface-weight-regular);
   line-height: 1.1;
 }
 
 .project-detail-page .pd-figure-label {
-  color: var(--gmh-color-on-surface);
+  color: var(--lit-on-navy);
   font-weight: var(--gmh-ref-typeface-weight-medium);
 }
 
 .project-detail-page .pd-figure-note {
-  color: var(--gmh-color-on-surface-variant);
+  color: color-mix(in srgb, var(--lit-on-navy) 72%, transparent);
   font-size: var(--gmh-typescale-label-medium-size);
 }
 

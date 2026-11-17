@@ -275,7 +275,7 @@ function CommandPalette({
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"
-            className="dash-panel w-[min(36rem,100%)] overflow-hidden"
+            className="lit-panel w-[min(36rem,100%)] overflow-hidden"
             initial={{ opacity: 0, y: -12, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -356,7 +356,7 @@ function CommandPalette({
 /** The shell's loading state: sidebar and shimmer cards, no content. */
 export function DashboardSkeleton() {
   return (
-    <div className="dash flex">
+    <div className="dash lit-canvas flex">
       <div className="dash-sidebar hidden h-screen w-[var(--dash-sidebar-w)] lg:block" />
       <div className="flex-1 space-y-6 p-6 lg:p-10">
         <div className="dash-skeleton h-56 rounded-[28px]" />
@@ -500,7 +500,7 @@ export function DashboardShell({
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="dash lg:grid lg:grid-cols-[var(--dash-sidebar-w)_minmax(0,1fr)]">
+      <div className="dash lit-canvas lg:grid lg:grid-cols-[var(--dash-sidebar-w)_minmax(0,1fr)]">
         <a
           href="#dash-main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-on-primary"

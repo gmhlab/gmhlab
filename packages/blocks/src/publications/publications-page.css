@@ -13,35 +13,12 @@
   width: 100%;
 }
 
-/* ---------------------------------------------------------------- hero stats
- * Four tiles here rather than the Projects page's three — the extra one is
- * the open-access share, which is the stat a reader without institutional
- * access actually cares about. */
-.publications-stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gmh-space-050);
-}
-
-.publications-stat-value {
-  color: var(--gmh-color-primary);
-  font-size: var(--gmh-typescale-display-small-size);
-  /* Serif figures, regular weight: the same voice as the system StatsCard. */
-  font-family: var(--gmh-ref-typeface-brand);
-  font-weight: var(--gmh-ref-typeface-weight-regular);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-/* Band surface — see the contrast note above. */
-.publications-stat-label {
-  color: var(--gmh-color-on-surface);
-}
-
-/* Provenance line under the stats. Measure-capped so it reads as a footnote
- * to the numbers rather than as a second subtitle. */
+/* ---------------------------------------------------------------- hero note
+ * The provenance line under the hero's stat tiles (PageHeroStats). Measure-
+ * capped so it reads as a footnote to the numbers, at the lit hero's
+ * reading strength. */
 .publications-note {
-  color: var(--gmh-color-on-surface);
+  color: color-mix(in srgb, var(--lit-on-navy) 80%, transparent);
   max-width: 46rem;
 }
 

@@ -27,28 +27,6 @@
   width: 100%;
 }
 
-/* ---------------------------------------------------------------- hero stats
- * Portfolio scale, sitting under the page title on the neutral band. */
-.projects-stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gmh-space-050);
-}
-
-.projects-stat-value {
-  color: var(--gmh-color-primary);
-  font-size: var(--gmh-typescale-display-small-size);
-  /* Serif figures, regular weight: the same voice as the system StatsCard. */
-  font-family: var(--gmh-ref-typeface-brand);
-  font-weight: var(--gmh-ref-typeface-weight-regular);
-  line-height: 1;
-}
-
-/* Band surface — see the contrast note above. */
-.projects-stat-label {
-  color: var(--gmh-color-on-surface);
-}
-
 /* ------------------------------------------------------------------- toolbar
  * Shares the hero's neutral surface and closes it with a hairline, so header,
  * search and facets read as one band rather than three stacked sections. */
@@ -224,17 +202,17 @@
 /* Status rail. Ties each card to the facet chip that selects it, and gives the
  * grid something to scan by at a glance.
  *
- * Not `overflow: hidden` to clip it — that would also clip the focus ring
- * `.card-interaction::before` draws outside the card. Matching the top corner
- * radii does the same job and keeps the ring intact. */
+ * Drawn as the top border of a card-sized overlay with the card's own radius,
+ * so the rail runs into the card's corners instead of sitting on them as a
+ * flat bar. Not `overflow: hidden` to clip it — that would also clip the
+ * focus ring `.card-interaction::before` draws outside the card. */
 .project-card::before {
-  background: var(--project-rail, var(--gmh-color-outline-variant));
-  border-start-end-radius: var(--gmh-shape-corner-small);
-  border-start-start-radius: var(--gmh-shape-corner-small);
+  border-radius: inherit;
+  border-top: var(--gmh-space-050) solid
+    var(--project-rail, var(--gmh-color-outline-variant));
   content: "";
-  height: var(--gmh-space-050);
-  inset-block-start: 0;
-  inset-inline: 0;
+  inset: 0;
+  pointer-events: none;
   position: absolute;
 }
 
@@ -246,16 +224,6 @@
 }
 .project-card-status-closed {
   --project-rail: var(--gmh-color-outline-variant);
-}
-
-/* Card already handles the hover *surface* via
- * `:has(.card-interaction[data-hovered])`; this adds the lift. */
-.project-card:hover {
-  box-shadow:
-    inset 0 0 0 var(--gmh-stroke-border)
-      var(--gmh-color-outline-variant),
-    var(--gmh-elevation-level5);
-  transform: translateY(-2px);
 }
 
 .project-status {

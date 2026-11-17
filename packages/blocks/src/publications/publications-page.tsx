@@ -25,7 +25,7 @@ import { PublicationCover } from "./publication-cover";
 import type { PageCta } from "../shared/page-copy";
 import { GMH_PUBLICATIONS_COPY } from "../shared/gmh-copy";
 import { PageCtaSection } from "../shared/page-cta";
-import { PageHero } from "../shared/page-hero";
+import { PageHero, PageHeroStats } from "../shared/page-hero";
 import "./publications-page.css";
 
 /**
@@ -469,16 +469,7 @@ export function PublicationsPage({
         flexProps={{ gap: "1200" }}
       >
         <Flex direction="column" alignSecondary="stretch" gap="400">
-          <Flex className="publications-stats" wrap gap="1200">
-            {stats.map((stat) => (
-              <div className="publications-stat" key={stat.label}>
-                <span className="publications-stat-value">{stat.value}</span>
-                <TextSmall className="publications-stat-label">
-                  {stat.label}
-                </TextSmall>
-              </div>
-            ))}
-          </Flex>
+          <PageHeroStats stats={stats} />
           {note ? (
             <TextSmall className="publications-note">{note}</TextSmall>
           ) : null}
@@ -590,7 +581,7 @@ export function PublicationsPage({
       {/* Brand band — the first content section under the hero, skipping the
           toolbar. The rows stay `variant="stroke"` and reset their own colour,
           so they read as light cards on the brand surface. */}
-      <Section variant="brand" padding="1600">
+      <Section className="lit-band lit-cards" variant="brand" padding="1600">
         <Flex container direction="column" alignSecondary="stretch" gap="800">
           {shown.length > 0 ? (
             <>

@@ -67,6 +67,20 @@
   --logo-mark-ink: var(--gmh-color-on-surface);
 }
 
+/* GmhMark: the bare artwork, sized by its container. Overflow as above: the
+   heads touch the viewBox's top edge. */
+.gmh-mark {
+  --logo-mark-ink: var(--gmh-color-primary);
+  --logo-mark-gold: var(--gmh-color-tertiary-container);
+  display: block;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
+.dark .gmh-mark {
+  --logo-mark-ink: var(--gmh-color-on-surface);
+}
+
 /* The crest lockup (GmhCrestLogo), 595x144. Sized by height for the same
    reason as the mark above, and with the same three guards: explicit width,
    no flex shrink, visible overflow. 64px is the smallest height at which the

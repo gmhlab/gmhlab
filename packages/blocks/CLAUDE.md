@@ -199,16 +199,82 @@ unattributed design copy and must not be put under a real GW role; the docs demo
 exercises that section with the synthetic institute. Placeholder photos have
 `alt=""` because describing a random picsum scene would be false.
 
-Motion is progressive and server-safe: `useReveal` marks on-screen elements
-visible *before* enabling the hidden state, and `StatsCard countUp` only counts
-cards that mount below the fold, so SSR HTML never blinks to 0. Everything is off
-under `prefers-reduced-motion`.
+Since 2026-11-08 it is drawn in the lit language (below): the hero is a lit
+card on a stage: `hero.background` in full colour under a navy fade from the
+left (`.home-hero.lit-hero-photo` opens the shared fade much further), the
+striations behind the copy, and **the GMH mark large on the photo** — ui's
+decorative `GmhMark`, its own element in the hero's grid, white ink with only a
+tight shadow, set high and right in the picture's open sky. Stacked, it heads the
+hero and the fade runs top to bottom. A side `hero.image` takes the mark's place.
+Rejected, in order: leading with the photo and no mark (the index heroes do that;
+the home page keeps the mark); then `ContourGlobe centerpiece="mark"` over a faint
+texture, because its built-in clearing paints a halo over the photo and the wash
+it needs hides the picture. Don't use that centrepiece over a photo. **The stats are glass tiles
+inside the hero** (no separate stat band, no count-up); a `WaveRule` follows;
+the gap field sits on a glass panel; the research lines are `TiltCard` glass
+panels with `Cover` art on a lit band (graphics only, or photos only); the
+partners are glass tiles; the CTA is a lit card. Motion is progressive and
+server-safe: the hero rises in through CSS (`lit-enter`), and `useLitReveal`
+marks on-screen elements visible *before* enabling the hidden state.
+Everything is off under `prefers-reduced-motion`.
 
 New ui pieces it introduced, all reusable: `TextEyebrow`, `TextBlockquote`, the
 `eyebrow` prop on `TextContentHeading`/`TextContentTitle`, `Image treatment="duotone"`
 (navy shadows, gold highlights), `Button`/`Badge` `variant="accent"`,
 `Section variant="tint"`, the restyled `StatsCard`, and the brand-band gold glow
 on every `Section variant="brand"`.
+
+## The lit language (`shared/lit.{tsx,css}`, `shared/ornaments.tsx`, 2026-11-08)
+
+The workspace's look, pulled out of `dashboard/` so the public pages share
+it rather than copy it. **One definition, two users**: the dashboard and every
+public page block. Every class is `lit-`; its tokens are `--lit-*` on `:root`
+(`--lit-navy`, `--lit-navy-deep`, `--lit-gold`, `--lit-gold-light`,
+`--lit-sky`, `--lit-on-navy`, `--lit-radius`, `--lit-grain`), all tints of
+`--gmh-*` roles. Lit navy is the GW pin in **both modes**, so `--lit-on-navy`
+is white after `.dark`, never dark mode's pale-blue on-brand role.
+
+- **Surfaces**: `.lit-canvas` (a page root: fixed brand lights and grain
+  behind paper bands), `.lit-hero` (a lit navy card: gradient, grain,
+  inset highlight), `Aurora` (`.lit-aurora`, three slow lights),
+  `.lit-band` (a full-bleed brand Section with the lit gradient and grain;
+  it keeps the band's contour texture unless the page switches it off),
+  `Panel` (`.lit-panel`, glass), `TiltCard` (`.lit-tilt`, pointer tilt and
+  glare), `ArtTile` (`.lit-art[data-tone]`), `.lit-shine`, `.lit-gold-text`
+  (light gold on navy **only**), `.lit-cards` (gives ui `Card`s inside it the
+  28px corner, glass shadow and gold hover via `--border-radius`).
+- **Photos in a lit hero**: `.lit-hero-photo` turns ui's `PhotoBackdrop` into
+  full colour under a navy fade from the left; `.lit-hero-striations` lays
+  `ContourGlobe centerpiece="none"` behind the copy, masked out before the
+  photo's subject.
+- **The stage**: public heroes and CTAs sit on `.lit-stage` — the card inset
+  from the viewport edges. `data-ground` is the surface it floats on
+  (`neutral` continues into a toolbar band below; `paper`/unset lets the
+  canvas through). A lit hero built on `Section variant="brand"` drops the
+  band's `::before` contour texture and takes the lit gradient.
+- **Glass stat tiles**: `.lit-stats` > `.lit-stat` (a `<dl>`; `dt` label,
+  `dd` value — `order` puts the value first). `PageHeroStats` renders them.
+- **Two kinds of motion.** `Stagger`/`Item` (motion variants, hidden state in
+  the server HTML) are for the workspace only, which renders after the
+  session restores. Public pages use `.lit-enter` (CSS, on load, staggered by
+  `--lit-i`) and `useLitReveal` + `.lit-reveal` (scroll, hidden only after
+  mount) so server HTML and no-JS readers always see everything.
+- **The kit as labelled** lives in `shared/ornaments.tsx` (`Cover`,
+  `Ornament`, `PhotoFrame`, `WaveRule`, `FigureRule`, `LessonPath`); its art
+  type is `LitArt` (`ModuleArt` aliases it).
+- **The aurora screened onto a whole band turns olive** at the hero's
+  strength; bands and CTAs run it at 0.3–0.45.
+- **Brand Section roles are for navy.** A light card inside a lit band must
+  reset `--text-eyebrow-color` / `--text-heading-color` (the home research
+  cards do), or the band's light-gold eyebrow lands on near-white.
+
+Where it is applied: `PageHero` (every index page; lit card on a neutral
+stage; `ground="paper"` for contact, whose care notice overlaps it),
+`PageCtaSection` (a lit card on a stage; `variant` is now the stage's ground,
+and `PageActions lit` makes the primary the gold accent with a shine and the
+rest glass), the project and innovation detail heroes (breadcrumb folded
+onto the stage; facts and figures as dark glass; the innovation visual is a
+gold `Cover`), the index list bands (`lit-band lit-cards`), and `HomePage`.
 
 ## The member workspace (`dashboard/`, 2026-10-31)
 
@@ -233,14 +299,16 @@ the page shows (`DemoNote`).
 
 - **Access is core's `canAccess`**, never re-derived here. `unlockHint` only
   phrases a rule for the UI.
-- **The look lives in `dashboard.css`**, every class `dash-`-prefixed and all
-  colour from tokens: lit navy bands (`.dash-hero` + `.dash-aurora`), grain
-  (`--dash-grain`), the kit's contour mask on art tiles (`.dash-art`
-  `data-tone="navy|gold|sky"`), glass panels (`.dash-panel`), and a light sweep
-  (`.dash-shine`). Motion is `motion/react` (`kit.tsx`: `Stagger`/`Item`,
-  `TiltCard`, `ProgressRing`, `CountUp`, `Confetti`); the shell wraps
-  everything in `MotionConfig reducedMotion="user"` and the CSS stops every
-  animation under `prefers-reduced-motion`.
+- **The look is the lit language** (above, `shared/lit.css`): lit heroes
+  (`.lit-hero` + `Aurora`), grain, art tiles (`.lit-art`), glass panels
+  (`.lit-panel`), the sweep (`.lit-shine`), and the shell's canvas
+  (`.dash.lit-canvas`). `dashboard.css` keeps only the workspace's own chrome,
+  `dash-`-prefixed: sidebar, nav pill, slides, the sign-in panel, skeletons.
+  Motion is `motion/react`; `kit.tsx` re-exports the shared `Stagger`/`Item`,
+  `TiltCard`, `CountUp`, `Panel`, `ArtTile` and owns `ProgressRing`,
+  `Confetti`, `Chip` and its `PageHero`. The shell wraps everything in
+  `MotionConfig reducedMotion="user"` and the CSS stops every animation under
+  `prefers-reduced-motion`.
 - **`.dash` sets `flex: none`.** The app's `<body>` is a 100%-tall flex column,
   and `min-height: 100vh` replaces a flex item's automatic minimum — without it
   the shell shrinks to the viewport, content overflows it, and the sticky
@@ -259,9 +327,9 @@ the page shows (`DemoNote`).
   placed in container units (`cqw`/`cqh`, not `%` — `top` would resolve a `%`
   against height) to centre the mark, and its edge fade starts after 85.4%
   of the artwork, where the mark ends. On dashboard navy (the GW pin in both
-  modes) ink is white via `--dash-on-navy`, never dark mode's pale-blue
+  modes) ink is white via `--lit-on-navy`, never dark mode's pale-blue
   `on-brand-band`.
-- **The kit is used as its file labels it** (`ornaments.tsx`, 2026-10-31; the
+- **The kit is used as its file labels it** (`shared/ornaments.tsx`, 2026-10-31; the
   boards are images in `.files/gmh-graphics-kit-v1.html` — render it headless
   to read them). Duotone shapes are **ornaments** (`Ornament`, cropped off a
   corner, behind content) or **cover art** (`Cover`: a shape cropped large off
@@ -277,7 +345,7 @@ the page shows (`DemoNote`).
 - **Wrap the pathway rule to position it.** `.graphic-pathway` sets
   `position: relative` in unlayered CSS, which beats Tailwind's layered
   `absolute` on the same element. On a cover, its gaps take the cover's tone
-  (`.dash-art[data-tone] .dash-lesson-path.graphic`), or a bare `.dark` rule
+  (`.lit-art[data-tone] .lit-lesson-path.graphic`), or a bare `.dark` rule
   paints dark gaps on a gold cover.
 - **Photographs lead where they exist** (2026-10-31). `Course.image` builds
   the course cover around a full-colour photo under a navy fade (`Cover
@@ -285,15 +353,15 @@ the page shows (`DemoNote`).
   only** — no photos in the home module grid (the user's call: one language
   per grid, not a mix). `DashboardHome heroPhoto` and
   `PageHero backdrop` lay ui's `PhotoBackdrop` across the whole hero, but
-  `.dash-hero-photo` overrides it to **full colour under a navy fade from the
+  `.lit-hero-photo` overrides it to **full colour under a navy fade from the
   left** — the kit's duotone plus its wash turned a photo in a navy hero into
   a murky smudge. Over a photo the hero's progress moves into the stats row so
   nothing sits on the people in it. Never use a photo as a small framed inset
   with a widget on top (the abandoned arch-window hero).
 - **The home hero: striations behind, the mark as a lockup above the copy.**
-  `.dash-hero-striations` lays `ContourGlobe centerpiece="none"` across the
+  `.lit-hero-striations` lays `ContourGlobe centerpiece="none"` across the
   hero at 0.55, masked out from ~42–64% so the lines never cross the photo's
-  people. The GMH mark heads the copy (`.dash-hero-lockup`: simple drawing,
+  people. The GMH mark heads the copy (`.lit-hero-lockup`: simple drawing,
   white ink, soft gold glow, a hairline, then the role chips), read before the
   greeting like a letterhead. Rejected: the mark superimposed on the photo at
   the seam (too busy, out of place) and the detailed drawing at lockup size

@@ -1,5 +1,6 @@
 import type { Access, Tier } from "@gmhlab/core";
-import type { BrandShapeName, ResearchGlyphName } from "@gmhlab/ui";
+import type { ResearchGlyphName } from "@gmhlab/ui";
+import type { LitArt } from "../shared/lit";
 import type { ComponentType, ReactNode } from "react";
 
 /**
@@ -32,9 +33,8 @@ export type DashboardLinkComponent = ComponentType<{
 
 /* ── Modules ──────────────────────────────────────────────────────────── */
 
-export type ModuleArt =
-  | { kind: "glyph"; name: ResearchGlyphName }
-  | { kind: "shape"; name: BrandShapeName };
+/** A module's art — the lit language's graphics-kit drawing. */
+export type ModuleArt = LitArt;
 
 export type ModuleNavGroup = "Learn" | "Create" | "Workspace" | "Lab";
 

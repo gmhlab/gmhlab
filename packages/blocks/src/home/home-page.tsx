@@ -1,14 +1,12 @@
 import {
   Button,
   CareRings,
-  Card,
   ContourGlobe,
   Flex,
+  GmhMark,
   Image,
   PhotoBackdrop,
-  ResearchGlyph,
   Section,
-  StatsCard,
   Text,
   TextBlockquote,
   TextEyebrow,
@@ -16,15 +14,10 @@ import {
   TextSubheading,
   TextTitleHero,
   TextTitlePage,
-  WaveDivider,
 } from "@gmhlab/ui";
-import {
-  type CSSProperties,
-  type ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { type CSSProperties, type ReactNode, useMemo } from "react";
+import { Aurora, TiltCard, toneAt, useLitReveal } from "../shared/lit";
+import { Cover, WaveRule } from "../shared/ornaments";
 import {
   gapLitCells,
   type HomeContent,
@@ -35,63 +28,50 @@ import {
 import "./home-page.css";
 
 /**
- * A research centre's landing page, after the GW Global Mental Health
- * reference design and the GMH graphics kit: serif headline over the contour
- * backdrop (the globe around a hero photo, or the GMH mark when there is
- * none) over an optional duotone background photo, a navy stat band carved in by the gold wave, the "care gap" field
- * figure, how the organisation works (photographs in natural colour), research cards (photo or kit glyph), a pull quote, a partner wall
- * and a closing call to action over the care rings.
+ * A research centre's landing page, in the lit language the member workspace
+ * introduced (../shared/lit.css): a lit navy hero set as a floating card,
+ * with the campus photograph in full colour, the GMH mark large on it, the
+ * kit's contours behind the copy and the figures as glass tiles;
+ * the gold wave as a rule; the "care gap" field figure on a glass panel; how
+ * the organisation works (photographs in natural colour); the research lines
+ * as tilt cards with kit cover art on a lit band; a pull quote; a partner
+ * wall; and a closing lit card over the care rings.
  *
  * Record-driven — see `home-types.ts`. Page content only: the site header and
  * footer belong to the consuming app's layout.
  *
- * Motion is progressive. Sections rise in as they scroll into view, but the
- * hidden state is only applied after mount, and anything already on screen at
- * mount is marked visible first — so server HTML is fully visible, no-JS
- * readers see everything, and the first paint never blinks. All of it is off
- * under `prefers-reduced-motion`.
+ * Motion is progressive. The hero rises in on load in CSS (it runs from the
+ * server HTML), and sections rise in as they scroll into view, but the hidden
+ * state is only applied after mount, and anything already on screen at mount
+ * is marked visible first — so server HTML is fully visible, no-JS readers
+ * see everything, and the first paint never blinks. All of it is off under
+ * `prefers-reduced-motion`.
  */
 export function HomePage({ content }: { content: HomeContent }) {
-  const rootRef = useReveal();
+  const rootRef = useLitReveal();
   const { hero, stats, gap, approach, focus, quote, partners, cta } = content;
 
   return (
-    <div className="home-page" ref={rootRef}>
-      <HomeHeroSection hero={hero} />
+    <div className="home-page lit-canvas" ref={rootRef}>
+      <HomeHeroSection hero={hero} stats={stats} />
 
-      {stats.length > 0 && (
-        <Section
-          variant="brand"
-          padding="1200"
-          className="home-stats-band"
-          aria-label="At a glance"
-        >
-          <WaveDivider />
-          <Flex container>
-            <div className="home-stats">
-              {stats.map((stat) => (
-                <StatsCard
-                  key={stat.label}
-                  className="home-reveal"
-                  stat={stat.value}
-                  description={stat.label}
-                  countUp
-                />
-              ))}
-            </div>
-          </Flex>
-        </Section>
-      )}
+      <Flex container className="home-wave">
+        <WaveRule className="home-wave-rule" />
+      </Flex>
 
       {gap && <HomeGapSection gap={gap} />}
 
       {approach && approach.items.length > 0 && (
-        <Section variant="tint" padding="1600" className="home-approach-band">
+        <Section padding="1600" className="home-approach-band">
           <Flex container direction="column" gap="1200">
             <SectionHead head={approach} />
             <ol className="home-approach">
               {approach.items.map((item, i) => (
-                <li key={item.heading} className="home-approach-item home-reveal">
+                <li
+                  key={item.heading}
+                  className="home-approach-item lit-reveal"
+                  style={{ "--lit-i": i } as CSSProperties}
+                >
                   {item.image && (
                     <figure className="home-approach-figure">
                       <Image
@@ -101,6 +81,9 @@ export function HomePage({ content }: { content: HomeContent }) {
                         alt={item.image.alt}
                         loading="lazy"
                       />
+                      <span className="home-approach-index" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
                       {item.image.caption && (
                         <figcaption className="home-caption">
                           {item.image.caption}
@@ -109,9 +92,11 @@ export function HomePage({ content }: { content: HomeContent }) {
                     </figure>
                   )}
                   <div className="home-approach-body">
-                    <span className="home-approach-index" aria-hidden="true">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+                    {!item.image && (
+                      <span className="home-approach-index" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    )}
                     <TextHeading>{item.heading}</TextHeading>
                     {item.body && <Text>{item.body}</Text>}
                     {item.points && item.points.length > 0 && (
@@ -133,46 +118,46 @@ export function HomePage({ content }: { content: HomeContent }) {
       )}
 
       {focus && focus.items.length > 0 && (
-        <Section variant="brand" padding="1600" className="home-focus-band">
+        <Section variant="brand" padding="1600" className="home-focus-band lit-band">
+          <Aurora />
           <Flex container direction="column" gap="1200">
             <SectionHead head={focus} />
             <div className="home-focus-grid">
-              {focus.items.map((item) => (
-                <Card
+              {focus.items.map((item, i) => (
+                <a
                   key={item.heading}
-                  className="home-focus-card home-reveal"
-                  variant="stroke"
-                  direction="vertical"
-                  interactionProps={{
-                    href: item.href,
-                    "aria-label": `${item.heading} — ${item.linkLabel ?? "Read the work"}`,
-                  }}
-                  asset={
-                    item.image ? (
-                      <Image
-                        treatment="duotone"
-                        aspectRatio="natural"
-                        className="home-focus-image"
-                        src={item.image.src}
-                        alt={item.image.alt}
-                        loading="lazy"
-                      />
-                    ) : item.glyph ? (
-                      <div className="home-focus-art graphic-on-brand graphic-contours">
-                        <ResearchGlyph name={item.glyph} size={96} />
-                      </div>
-                    ) : undefined
-                  }
+                  href={item.href}
+                  className="home-focus-link group lit-reveal"
+                  style={{ "--lit-i": i } as CSSProperties}
                 >
-                  <div className="home-focus-body">
-                    <TextEyebrow rule={false}>{item.tag}</TextEyebrow>
-                    <TextHeading>{item.heading}</TextHeading>
-                    <Text>{item.body}</Text>
-                    <span className="home-arrow-link" aria-hidden="true">
-                      {item.linkLabel ?? "Read the work"} <Arrow />
-                    </span>
-                  </div>
-                </Card>
+                  <TiltCard className="home-focus-card lit-panel">
+                    {item.image ? (
+                      <Cover
+                        art={{ kind: "glyph", name: item.glyph ?? "publication" }}
+                        photo={item.image.src}
+                        /* The theme's glyph moves into the badge; with no
+                           glyph, no badge (an empty one is hidden) rather
+                           than a stand-in. */
+                        badge={item.glyph ? undefined : <></>}
+                        className="home-focus-cover"
+                      />
+                    ) : (
+                      <Cover
+                        art={{ kind: "glyph", name: item.glyph ?? "publication" }}
+                        tone={toneAt(i)}
+                        className="home-focus-cover"
+                      />
+                    )}
+                    <div className="home-focus-body">
+                      <TextEyebrow rule={false}>{item.tag}</TextEyebrow>
+                      <TextHeading>{item.heading}</TextHeading>
+                      <Text>{item.body}</Text>
+                      <span className="home-arrow-link">
+                        {item.linkLabel ?? "Read the work"} <Arrow />
+                      </span>
+                    </div>
+                  </TiltCard>
+                </a>
               ))}
             </div>
           </Flex>
@@ -184,7 +169,7 @@ export function HomePage({ content }: { content: HomeContent }) {
           <Flex container>
             <div className="home-split home-split-quote">
               {quote.image && (
-                <div className="home-reveal home-quote-art graphic-mask-blob">
+                <div className="lit-reveal home-quote-art graphic-mask-blob">
                   <Image
                     treatment="duotone"
                     aspectRatio="1-1"
@@ -194,7 +179,7 @@ export function HomePage({ content }: { content: HomeContent }) {
                   />
                 </div>
               )}
-              <Flex direction="column" gap="600" className="home-reveal">
+              <Flex direction="column" gap="600" className="lit-reveal">
                 {quote.eyebrow && <TextEyebrow>{quote.eyebrow}</TextEyebrow>}
                 <TextBlockquote
                   quote={quote.quote}
@@ -214,12 +199,16 @@ export function HomePage({ content }: { content: HomeContent }) {
       )}
 
       {partners && partners.items.length > 0 && (
-        <Section variant="neutral" padding="1600">
+        <Section padding="1600" className="home-partners-band">
           <Flex container direction="column" gap="1200">
             <SectionHead head={partners} />
-            <ul className="home-partners home-reveal">
-              {partners.items.map((partner) => (
-                <li key={partner.name} className="home-partner">
+            <ul className="home-partners">
+              {partners.items.map((partner, i) => (
+                <li
+                  key={partner.name}
+                  className="home-partner lit-panel lit-reveal"
+                  style={{ "--lit-i": i % 6 } as CSSProperties}
+                >
                   {partner.name}
                   {partner.detail && <span>{partner.detail}</span>}
                 </li>
@@ -230,90 +219,148 @@ export function HomePage({ content }: { content: HomeContent }) {
       )}
 
       {cta && (
-        <Section variant="brand" padding="1600" className="home-cta">
-          <CareRings
-            className="graphic-backdrop home-cta-rings"
-            preserveAspectRatio="xMaxYMid meet"
-          />
-          <Flex
-            container
-            direction="column"
-            alignSecondary="center"
-            gap="600"
-            className="home-reveal"
-          >
-            <TextTitlePage>{cta.heading}</TextTitlePage>
-            <Text className="home-cta-body">{cta.body}</Text>
-            <ArrowButton link={cta.action} variant="accent" />
-          </Flex>
-        </Section>
+        <div className="lit-stage home-cta-stage">
+          <Section variant="brand" padding="1600" className="home-cta lit-hero">
+            <CareRings
+              className="graphic-backdrop home-cta-rings"
+              preserveAspectRatio="xMaxYMid meet"
+            />
+            <Aurora />
+            <Flex
+              container
+              direction="column"
+              alignSecondary="center"
+              gap="600"
+              className="lit-reveal"
+            >
+              <TextTitlePage>{cta.heading}</TextTitlePage>
+              <Text className="home-cta-body">{cta.body}</Text>
+              <ArrowButton link={cta.action} variant="accent" />
+            </Flex>
+          </Section>
+        </div>
       )}
     </div>
   );
 }
 
-function HomeHeroSection({ hero }: { hero: HomeContent["hero"] }) {
+/**
+ * The hero: lit navy on an inset stage, the `background` photograph in full
+ * colour under a navy fade from the left, and the contours behind the copy,
+ * fading out before the right of the card. Without a side `image`, the GMH
+ * mark stands large on the right, on the photo itself: its own element with
+ * only a tight shadow, because the contour drawing's built-in clearing would
+ * paint a halo over the photo. With a side `image`, that stands there instead.
+ * The figures sit in the hero as glass tiles.
+ */
+function HomeHeroSection({
+  hero,
+  stats,
+}: {
+  hero: HomeContent["hero"];
+  stats: HomeContent["stats"];
+}) {
   const parts = splitEmphasis(hero.title, hero.emphasis);
+  const withMark = !hero.image;
   return (
-    <Section
-      className={hero.image ? "home-hero" : "home-hero home-hero-mark"}
-      padding="1600"
-      elementType="header"
-    >
-      {hero.background ? <PhotoBackdrop src={hero.background} /> : null}
-      {/* With a photo the globe frames it; without one the right half is the
-          contours fading into the GMH mark. */}
-      <ContourGlobe
-        backdrop
-        centerpiece={hero.image ? "globe" : "mark"}
-        className="graphic-fade-start"
-      />
-      <Flex container>
-        <div className="home-split home-split-hero">
-          <Flex direction="column" gap="600" alignSecondary="start">
-            {hero.eyebrow && <TextEyebrow>{hero.eyebrow}</TextEyebrow>}
-            <TextTitleHero>
-              {parts.length === 3 ? (
-                <>
-                  {parts[0]}
-                  <em>{parts[1]}</em>
-                  {parts[2]}
-                </>
-              ) : (
-                parts[0]
-              )}
-            </TextTitleHero>
-            <TextSubheading className="home-lede">{hero.lede}</TextSubheading>
-            <Flex gap="300" wrap className="home-hero-actions">
-              <ArrowButton link={hero.primary} />
-              {hero.secondary && (
-                <ArrowButton link={hero.secondary} variant="outline" arrow={false} />
-              )}
-            </Flex>
-          </Flex>
-          {hero.image && (
-            <figure className="home-hero-figure">
-              <div className="home-hero-frame">
-                <Image
-                  treatment="duotone"
-                  aspectRatio="natural"
-                  className="home-hero-image"
-                  src={hero.image.src}
-                  alt={hero.image.alt}
-                  fetchPriority="high"
-                />
-                <span className="home-hero-rule" aria-hidden="true" />
-              </div>
-              {hero.image.caption && (
-                <figcaption className="home-caption">
-                  {hero.image.caption}
-                </figcaption>
-              )}
-            </figure>
-          )}
+    <div className="lit-stage home-hero-stage">
+      <Section
+        variant="brand"
+        className={hero.background ? "home-hero lit-hero lit-hero-photo" : "home-hero lit-hero"}
+        padding="1600"
+        elementType="header"
+      >
+        {hero.background ? <PhotoBackdrop src={hero.background} /> : null}
+        <div className="lit-hero-striations" aria-hidden>
+          <ContourGlobe centerpiece="none" />
         </div>
-      </Flex>
-    </Section>
+        <Aurora />
+        <Flex container>
+          <div className="home-split home-split-hero">
+            <div className="home-hero-copy">
+              {hero.eyebrow && (
+                <span className="home-hero-chip lit-enter">
+                  <span className="home-hero-chip-dot" aria-hidden="true" />
+                  {hero.eyebrow}
+                </span>
+              )}
+              <TextTitleHero
+                className="home-hero-title lit-enter"
+                style={{ "--lit-i": 1 } as CSSProperties}
+              >
+                {parts.length === 3 ? (
+                  <>
+                    {parts[0]}
+                    <em className="lit-gold-text">{parts[1]}</em>
+                    {parts[2]}
+                  </>
+                ) : (
+                  parts[0]
+                )}
+              </TextTitleHero>
+              <TextSubheading
+                className="home-lede home-hero-lede lit-enter"
+                style={{ "--lit-i": 2 } as CSSProperties}
+              >
+                {hero.lede}
+              </TextSubheading>
+              <div
+                className="home-hero-actions lit-enter"
+                style={{ "--lit-i": 3 } as CSSProperties}
+              >
+                <ArrowButton link={hero.primary} variant="accent" shine />
+                {hero.secondary && (
+                  <ArrowButton link={hero.secondary} variant="glass" arrow={false} />
+                )}
+              </div>
+              {stats.length > 0 && (
+                <dl className="lit-stats home-hero-stats" aria-label="At a glance">
+                  {stats.map((stat, i) => (
+                    <div
+                      className="lit-stat lit-enter"
+                      key={stat.label}
+                      style={{ "--lit-i": i + 4 } as CSSProperties}
+                    >
+                      <dt>{stat.label}</dt>
+                      <dd>{stat.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </div>
+            {withMark && (
+              <div
+                className="home-hero-mark lit-enter"
+                style={{ "--lit-i": 2 } as CSSProperties}
+              >
+                <GmhMark />
+              </div>
+            )}
+            {hero.image && (
+              <figure
+                className="home-hero-figure lit-enter"
+                style={{ "--lit-i": 2 } as CSSProperties}
+              >
+                <div className="home-hero-frame">
+                  <Image
+                    aspectRatio="natural"
+                    className="home-hero-image"
+                    src={hero.image.src}
+                    alt={hero.image.alt}
+                    fetchPriority="high"
+                  />
+                </div>
+                {hero.image.caption && (
+                  <figcaption className="home-caption">
+                    {hero.image.caption}
+                  </figcaption>
+                )}
+              </figure>
+            )}
+          </div>
+        </Flex>
+      </Section>
+    </div>
   );
 }
 
@@ -330,7 +377,7 @@ function HomeGapSection({ gap }: { gap: NonNullable<HomeContent["gap"]> }) {
     <Section padding="1600">
       <Flex container>
         <div className="home-split home-split-gap">
-          <Flex direction="column" gap="400" className="home-reveal">
+          <Flex direction="column" gap="400" className="lit-reveal">
             {gap.eyebrow && <TextEyebrow>{gap.eyebrow}</TextEyebrow>}
             <TextTitlePage>{gap.heading}</TextTitlePage>
             <Text className="home-gap-body">{gap.body}</Text>
@@ -347,7 +394,7 @@ function HomeGapSection({ gap }: { gap: NonNullable<HomeContent["gap"]> }) {
             {gap.source && <p className="home-caption">{gap.source}</p>}
           </Flex>
           <div
-            className="home-gap-field home-reveal"
+            className="home-gap-field lit-panel lit-reveal"
             role="img"
             aria-label={`${gap.reached} of every ${gap.total} people: ${gap.reachedLabel.toLowerCase()}. The other ${gap.total - gap.reached}: ${gap.unreachedLabel.toLowerCase()}.`}
           >
@@ -377,7 +424,7 @@ function SectionHead({ head }: { head: HomeSectionHead }) {
     // Not TextContentHeading: that sets the heading at the 24px `heading`
     // size, which is card scale. A section head on this page is the page-title
     // size, as in the reference.
-    <Flex direction="column" gap="400" className="home-section-head home-reveal">
+    <Flex direction="column" gap="400" className="home-section-head lit-reveal">
       {head.eyebrow && <TextEyebrow>{head.eyebrow}</TextEyebrow>}
       <TextTitlePage>{head.heading}</TextTitlePage>
       {head.lede && (
@@ -391,17 +438,28 @@ function ArrowButton({
   link,
   variant = "default",
   arrow = true,
+  shine = false,
 }: {
   link: HomeLink;
-  variant?: "default" | "accent" | "outline";
+  /** `glass` is the workspace's light-on-navy outline, for lit bands. */
+  variant?: "default" | "accent" | "outline" | "glass";
   arrow?: boolean;
+  /** The workspace's slow sweep of light across the button. */
+  shine?: boolean;
 }) {
   return (
     <Button
       size="lg"
-      variant={variant}
+      variant={variant === "glass" ? "outline" : variant}
       nativeButton={false}
-      className="home-arrow-button"
+      className={[
+        "home-arrow-button",
+        variant === "glass" ? "home-glass-button" : null,
+        variant === "accent" ? "lit-cta-button" : null,
+        shine ? "lit-shine" : null,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       render={<a href={link.href} />}
     >
       {link.label}
@@ -416,38 +474,4 @@ function Arrow(): ReactNode {
       →
     </span>
   );
-}
-
-/**
- * Scroll reveal for every `.home-reveal` under the returned ref. Elements on
- * screen at mount are marked in BEFORE the hidden state is switched on, so
- * the server-rendered first paint never disappears.
- */
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const items = Array.from(root.querySelectorAll<HTMLElement>(".home-reveal"));
-    const below = items.filter((el) => {
-      const inView = el.getBoundingClientRect().top < window.innerHeight;
-      if (inView) el.classList.add("is-in");
-      return !inView;
-    });
-    root.dataset.reveal = "";
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-in");
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.18, rootMargin: "0px 0px -70px" },
-    );
-    below.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-  return ref;
 }

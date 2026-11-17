@@ -30,7 +30,7 @@ import {
   type DashboardLinkComponent,
   type PracticeScenario,
 } from "./dashboard-types";
-import { Cover, LessonPath } from "./ornaments";
+import { Cover, LessonPath } from "../shared/ornaments";
 import {
   Chip,
   Confetti,
@@ -102,7 +102,7 @@ export function EquipAcademy({
           practiceHref && (
             <Link
               href={practiceHref}
-              className="dash-shine inline-flex h-11 items-center gap-2 rounded-full bg-tertiary-container px-5 text-sm font-bold text-on-tertiary-container"
+              className="lit-shine inline-flex h-11 items-center gap-2 rounded-full bg-tertiary-container px-5 text-sm font-bold text-on-tertiary-container"
             >
               Open the practice studio <ArrowRight className="size-4" aria-hidden />
             </Link>
@@ -119,7 +119,7 @@ export function EquipAcademy({
             const value = courseCompletion(p, course.lessons.length);
             const minutes = course.lessons.reduce((n, l) => n + l.minutes, 0);
             const card = (
-              <TiltCard className="dash-panel flex h-full flex-col overflow-hidden">
+              <TiltCard className="lit-panel flex h-full flex-col overflow-hidden">
                 <Cover
                   art={{ kind: "glyph", name: course.glyph }}
                   tone={toneAt(i)}
@@ -370,8 +370,8 @@ function LessonView({
   const [busy, setBusy] = useState(false);
   return (
     <article className="space-y-6">
-      <header className="dash-hero px-8 py-8">
-        <div className="dash-aurora" aria-hidden>
+      <header className="lit-hero px-8 py-8">
+        <div className="lit-aurora" aria-hidden>
           <span />
           <span />
           <span />
@@ -435,7 +435,7 @@ function LessonView({
         ) : (
           <Button
             size="lg"
-            className="dash-shine"
+            className="lit-shine"
             disabled={busy}
             onClick={async () => {
               setBusy(true);
@@ -543,7 +543,7 @@ function QuizView({
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          className={cn("flex flex-wrap items-center justify-between gap-4 p-6", passed ? "dash-hero" : "dash-panel")}
+          className={cn("flex flex-wrap items-center justify-between gap-4 p-6", passed ? "lit-hero" : "lit-panel")}
         >
           <div>
             <div className="font-serif text-3xl">{Math.round(score * 100)}%</div>
@@ -552,7 +552,7 @@ function QuizView({
             </div>
           </div>
           {passed ? (
-            <Button size="lg" variant="accent" className="dash-shine" onClick={onPassed}>
+            <Button size="lg" variant="accent" className="lit-shine" onClick={onPassed}>
               <Award aria-hidden /> Claim certificate
             </Button>
           ) : (
@@ -601,13 +601,13 @@ function Certificate({
   return (
     <div className="space-y-4">
       <motion.div
-        className="dash-hero dash-certificate relative aspect-[1.414/1] w-full p-[6%] text-center"
+        className="lit-hero dash-certificate relative aspect-[1.414/1] w-full p-[6%] text-center"
         initial={{ opacity: 0, rotateX: 18, y: 30 }}
         animate={{ opacity: 1, rotateX: 0, y: 0 }}
         transition={{ duration: 0.9, ease: EASE }}
         style={{ transformPerspective: 1200 }}
       >
-        <div className="dash-aurora" aria-hidden>
+        <div className="lit-aurora" aria-hidden>
           <span />
           <span />
           <span />
@@ -622,7 +622,7 @@ function Certificate({
             Certificate of completion
           </div>
           <div className="mt-[3%] text-[clamp(12px,1.6vw,16px)] opacity-80">This certifies that</div>
-          <div className="dash-gold-text mt-[1.5%] font-serif text-[clamp(28px,5vw,56px)] leading-tight">{learnerName}</div>
+          <div className="lit-gold-text mt-[1.5%] font-serif text-[clamp(28px,5vw,56px)] leading-tight">{learnerName}</div>
           <div className="mt-[2%] text-[clamp(12px,1.6vw,16px)] opacity-80">has completed</div>
           <div className="mt-[1%] font-serif text-[clamp(18px,2.8vw,30px)]">{course.title}</div>
           <div className="mt-[4%] flex items-center gap-6 text-[clamp(10px,1.2vw,13px)] opacity-80">
@@ -880,7 +880,7 @@ export function PracticeStudio({
 
           {!revealed ? (
             <div className="flex justify-end">
-              <Button size="lg" className={cn(complete && "dash-shine")} disabled={!complete} onClick={() => setRevealed(true)}>
+              <Button size="lg" className={cn(complete && "lit-shine")} disabled={!complete} onClick={() => setRevealed(true)}>
                 Compare with the experts
               </Button>
             </div>

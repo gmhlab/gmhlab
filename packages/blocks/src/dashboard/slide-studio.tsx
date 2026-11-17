@@ -90,11 +90,11 @@ export function SlidePreview({ slide, deck, index }: { slide: DeckSlide; deck: D
     <div
       className={cn(
         "dash-slide rounded-xl text-left shadow-level2 ring-1 ring-outline-variant/60",
-        navy && "dash-hero !rounded-xl",
+        navy && "lit-hero !rounded-xl",
       )}
       style={
         gold
-          ? { background: "linear-gradient(150deg, var(--dash-gold-light), var(--dash-gold))", color: "var(--dash-navy)" }
+          ? { background: "linear-gradient(150deg, var(--lit-gold-light), var(--lit-gold))", color: "var(--lit-navy)" }
           : !navy
             ? { background: "white", color: "var(--gmh-color-navy)" }
             : undefined
@@ -118,7 +118,7 @@ export function SlidePreview({ slide, deck, index }: { slide: DeckSlide; deck: D
         <div className="flex flex-1 flex-col justify-center">
           {slide.layout === "stat" ? (
             <div className="grid grid-cols-[auto_1fr] items-center gap-[5%]">
-              <div className="dash-gold-text font-serif text-[16cqw] leading-none">{slide.stat || "0"}</div>
+              <div className="lit-gold-text font-serif text-[16cqw] leading-none">{slide.stat || "0"}</div>
               <div>
                 <div className="font-serif text-[3.4cqw] leading-tight">{slide.heading}</div>
                 {slide.body && <div className="mt-[3%] text-[1.8cqw] opacity-75">{slide.body}</div>}
@@ -126,7 +126,7 @@ export function SlidePreview({ slide, deck, index }: { slide: DeckSlide; deck: D
             </div>
           ) : (
             <>
-              {slide.layout === "section" && <div className="mb-[2%] h-[0.6cqw] w-[12%] rounded-full bg-[var(--dash-navy)]" />}
+              {slide.layout === "section" && <div className="mb-[2%] h-[0.6cqw] w-[12%] rounded-full bg-[var(--lit-navy)]" />}
               <div
                 className={cn(
                   "font-serif leading-[1.1]",
@@ -323,7 +323,7 @@ export function SlideStudio({
         description={description}
         art={{ kind: "shape", name: "arch" }}
         actions={
-          <Button size="lg" variant="accent" className="dash-shine" disabled={busy || !palette} onClick={exportDeck}>
+          <Button size="lg" variant="accent" className="lit-shine" disabled={busy || !palette} onClick={exportDeck}>
             <Download aria-hidden /> {busy ? "Building your deck…" : "Download .pptx"}
           </Button>
         }
@@ -506,9 +506,9 @@ export function SlideStudio({
           {TEMPLATES.map((t, i) => (
             <Item key={t.id}>
               <Panel className="overflow-hidden p-0">
-                <div className={cn("relative grid aspect-[3/4] place-items-center p-6", i === 1 ? "dash-art" : "dash-hero !rounded-none")} data-tone={i === 1 ? "gold" : undefined}>
+                <div className={cn("relative grid aspect-[3/4] place-items-center p-6", i === 1 ? "lit-art" : "lit-hero !rounded-none")} data-tone={i === 1 ? "gold" : undefined}>
                   {i !== 1 && (
-                    <div className="dash-aurora" aria-hidden>
+                    <div className="lit-aurora" aria-hidden>
                       <span />
                       <span />
                       <span />

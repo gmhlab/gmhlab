@@ -3,7 +3,7 @@ import { ArrowRight, Lock, ShoppingBag, Sparkles, UserPlus } from "lucide-react"
 import { motion } from "motion/react";
 import { type DashboardLinkComponent, type DashboardModule, unlockHint } from "./dashboard-types";
 import { EASE } from "./kit";
-import { Cover } from "./ornaments";
+import { Cover } from "../shared/ornaments";
 
 const PlainLink: DashboardLinkComponent = ({ href, children, ...props }) => (
   <a href={href} {...props}>
@@ -40,7 +40,7 @@ export function LockedModule({
   return (
     <div className="grid min-h-[70vh] place-items-center">
       <motion.div
-        className="dash-panel w-full max-w-2xl overflow-hidden"
+        className="lit-panel w-full max-w-2xl overflow-hidden"
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: EASE }}
@@ -76,7 +76,7 @@ export function LockedModule({
               <>
                 <Link
                   href={storeHref}
-                  className="dash-shine inline-flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-on-primary"
+                  className="lit-shine inline-flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-on-primary"
                 >
                   <Sparkles className="size-4" aria-hidden /> See plans
                 </Link>

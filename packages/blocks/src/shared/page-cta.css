@@ -1,7 +1,55 @@
-/* PageCtaSection. Scoped by its own prefixed class. */
+/* PageCtaSection: a lit card (lit.css) on a stage. Scoped by its own
+ * prefixed classes. */
+
+/* The stage's ground continues the band above it; on a brand ground it is a
+   lit navy band, so the card reads as a lighter pane within it. */
+.page-cta-stage {
+  padding-bottom: clamp(0.5rem, 1.4vw, 1.25rem);
+}
+.page-cta-stage[data-ground="tint"] {
+  background: var(--gmh-color-surface-container-low);
+}
+.page-cta-stage[data-ground="brand"] {
+  background: linear-gradient(180deg, var(--lit-navy-deep), var(--lit-navy-deep));
+}
+.page-cta-stage[data-ground="brand"] > .lit-hero {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, white 10%, transparent),
+    0 1px 0 color-mix(in srgb, white 18%, transparent) inset;
+}
+
+.page-cta.lit-hero.section-variant-brand {
+  background:
+    radial-gradient(60% 120% at 50% 120%, color-mix(in srgb, var(--lit-gold) 26%, transparent), transparent 60%),
+    linear-gradient(125deg, var(--lit-navy) 0%, var(--lit-navy-deep) 70%);
+}
+.page-cta .lit-aurora {
+  opacity: 0.4;
+}
+.page-cta .graphic {
+  --graphic-ink: color-mix(in srgb, white 80%, var(--lit-sky));
+}
+.page-cta-copy {
+  color: color-mix(in srgb, var(--lit-on-navy) 84%, transparent);
+}
 
 /* A motif over the heading, not a rule across the page: five 96px pattern
    tiles, fifteen figures, five of them gold. */
 .page-cta-figures {
   max-width: 30rem;
+}
+
+/* The workspace's glass outline for the secondary actions on navy (the
+   CTA card and any lit hero that passes `lit` to PageActions).
+   Unlayered, so it wins over the Button's Tailwind utilities. */
+.lit-hero .page-cta-glass {
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, white 8%, transparent);
+  border-color: color-mix(in srgb, white 28%, transparent);
+  color: var(--lit-on-navy);
+}
+.lit-hero .page-cta-glass:hover {
+  background: color-mix(in srgb, white 16%, transparent);
+  border-color: color-mix(in srgb, var(--lit-gold-light) 60%, transparent);
+  color: var(--lit-on-navy);
 }

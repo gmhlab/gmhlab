@@ -150,7 +150,7 @@ export function DashboardCart({
                 </div>
                 {error && <p className="mb-3 text-sm text-error">{error}</p>}
                 <Button
-                  className={cn("w-full", lines.length > 0 && !busy && "dash-shine")}
+                  className={cn("w-full", lines.length > 0 && !busy && "lit-shine")}
                   size="lg"
                   disabled={lines.length === 0 || busy}
                   onClick={checkout}

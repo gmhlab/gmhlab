@@ -85,7 +85,7 @@ function Tile({
         <div
           ref={ref}
           className={cn(
-            "dash-art grid place-items-center !rounded-none p-6 transition duration-500 group-hover:scale-[1.02]",
+            "lit-art grid place-items-center !rounded-none p-6 transition duration-500 group-hover:scale-[1.02]",
             wide ? "aspect-[2/1]" : "aspect-square",
           )}
           data-tone={ground === "paper" ? undefined : ground === "navy" ? "navy" : "gold"}
