@@ -16,7 +16,7 @@ Claude Code loads a nested `CLAUDE.md` when you work in its directory. Detail li
 - **`packages/ui/CLAUDE.md`** — the Tailwind bridge (`tailwind.css`), the two component styling systems and their silent selector traps, adding shadcn components, icons, the GMH logo and crest, the graphics kit, and `useMediaQuery`'s server snapshot.
 - **`packages/blocks/CLAUDE.md`** — the shape every record-driven page block shares (copy defaults, links, fail-soft references, faceting), and the project/innovation detail, contact, team and home pages.
 - **`apps/web/CLAUDE.md`** — Next.js 16 rules (via `AGENTS.md`) and the content-record conventions, above all `publications-data.ts`.
-- **`docs/figma.md`** — the four GMH Figma files (Foundations, UI, Blocks, App) and how they are kept faithful to code. **Read it before any Figma work**; it is not auto-loaded.
+- **`docs/figma.md`** — the five GMH Figma files (Foundations, UI, Blocks, Apps, Dashboard), the team folder that holds them, and how they are kept faithful to code. **Read it before any Figma work**; it is not auto-loaded.
 
 ## Workspace layout
 

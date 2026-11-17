@@ -160,7 +160,7 @@ in light mode.
 
 ## Design files and agent docs
 
-The design system is also drawn in Figma, built *from* the code: **GMH - Foundations** (the tokens), **GMH - UI** and **GMH - Blocks** (the component libraries), and **GMH - App** (`apps/web`, route by route). `docs/figma.md` lists the files and how they are kept faithful to the code.
+The design system is also drawn in Figma, built *from* the code: **GMH - Foundations** (the tokens), **GMH - UI** and **GMH - Blocks** (the component libraries), **GMH - Apps** (`apps/web`, route by route) and **GMH - Dashboard** (the member workspace). All five are in the team's [GMH Library folder](https://www.figma.com/files/folder/692578747). `docs/figma.md` lists the files and how they are kept faithful to the code.
 
 The `CLAUDE.md` files are written for coding agents but double as the detailed developer notes: the root one covers the repo as a whole, and each of `packages/tokens`, `packages/ui`, `packages/blocks` and `apps/web` has its own next to the code it describes.
 
