@@ -11,23 +11,23 @@
  * Neutral white/black alphas are used for light and shade only. Everything
  * that moves stops under prefers-reduced-motion (bottom of file). */
 
-/* Lit navy is the GW pin in both modes (not dark mode's lighter brand band),
-   so its ink stays the designer's reversed white rather than dark mode's
-   pale-blue on-brand role. Defined on the root so a lit surface works
-   anywhere — inside the workspace shell or on a public page. */
+/* Every --lit-* value is an existing token, so Figma binds the same
+   variables (only the grain, a texture, has no token). Lit navy is the GW pin
+   in both modes (not dark mode's lighter brand band), so its ink is white in
+   both modes: palette primary100, never dark mode's pale-blue on-brand role.
+   The deep end of the navy gradient is palette primary15, the home closing
+   band's navy. Defined on the root so a lit surface works anywhere — inside
+   the workspace shell or on a public page. */
 :root {
   --lit-navy: var(--gmh-color-navy);
-  --lit-navy-deep: color-mix(in srgb, var(--gmh-color-navy) 72%, black);
+  --lit-navy-deep: var(--gmh-ref-palette-primary15);
   --lit-gold: var(--gmh-color-tertiary-container);
   --lit-gold-light: var(--gmh-color-brand-band-accent);
   --lit-sky: var(--gmh-color-inverse-primary);
-  --lit-on-navy: var(--gmh-color-on-brand-band);
+  --lit-on-navy: var(--gmh-ref-palette-primary100);
   --lit-radius: var(--gmh-shape-corner-extra-large, 28px);
-  --lit-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lit-ease: var(--gmh-motion-easing-emphasized-decelerate);
   --lit-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.dark {
-  --lit-on-navy: white;
 }
 
 /* ── The canvas ───────────────────────────────────────────────────────── */

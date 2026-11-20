@@ -230,9 +230,13 @@ The workspace's look, pulled out of `dashboard/` so the public pages share
 it rather than copy it. **One definition, two users**: the dashboard and every
 public page block. Every class is `lit-`; its tokens are `--lit-*` on `:root`
 (`--lit-navy`, `--lit-navy-deep`, `--lit-gold`, `--lit-gold-light`,
-`--lit-sky`, `--lit-on-navy`, `--lit-radius`, `--lit-grain`), all tints of
-`--gmh-*` roles. Lit navy is the GW pin in **both modes**, so `--lit-on-navy`
-is white after `.dark`, never dark mode's pale-blue on-brand role.
+`--lit-sky`, `--lit-on-navy`, `--lit-radius`, `--lit-ease`, `--lit-grain`).
+**Each is an existing token, never a computed value** (2026-11-19), so the
+Figma files bind the same variables: `--lit-navy-deep` is palette primary15,
+`--lit-on-navy` palette primary100, `--lit-ease` emphasized-decelerate. Only
+the grain, a texture, has no token. Lit navy is the GW pin in **both modes**,
+so `--lit-on-navy` is white in both, never dark mode's pale-blue on-brand
+role. Don't add a `color-mix` or literal here; pick the nearest token.
 
 - **Surfaces**: `.lit-canvas` (a page root: fixed brand lights and grain
   behind paper bands), `.lit-hero` (a lit navy card: gradient, grain,
