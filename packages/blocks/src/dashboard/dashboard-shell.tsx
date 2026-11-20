@@ -31,6 +31,7 @@ import {
   Search,
   Shapes,
   ShieldCheck,
+  UserCog,
   ShoppingBag,
   Sun,
   UserRound,
@@ -61,6 +62,7 @@ const ICONS: Record<ModuleIcon, LucideIcon> = {
   shield: ShieldCheck,
   chart: BarChart3,
   layout: LayoutDashboard,
+  users: UserCog,
 };
 
 /** A module's icon, as drawn in the sidebar — also the badge on its cover. */

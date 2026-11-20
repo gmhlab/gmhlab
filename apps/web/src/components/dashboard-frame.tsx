@@ -12,7 +12,7 @@ import { useAccount, useAuth, useCheckout, useProducts } from "@gmhlab/data";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
-import { DASHBOARD_MODULES } from "@/content/dashboard-modules";
+import { DASHBOARD_MODULES, STORE_ENABLED } from "@/content/dashboard-modules";
 import { useTheme } from "./theme-provider";
 import { SiteWorkspaceProviders } from "./workspace-providers";
 import { WORKSPACE_DEMO_ACCOUNTS } from "@/content/workspace-demo-accounts";
@@ -62,7 +62,7 @@ function Shell({ children }: { children: ReactNode }) {
       linkComponent={NextLink}
       onNavigate={(href) => router.push(href)}
       cartCount={cart.items.reduce((n, item) => n + item.quantity, 0)}
-      onOpenCart={() => setCartOpen(true)}
+      onOpenCart={STORE_ENABLED ? () => setCartOpen(true) : undefined}
       isDark={isDark}
       onToggleTheme={() => setTheme(isDark ? "light" : "dark")}
       pendingReviews={pendingReviews}
@@ -81,23 +81,25 @@ function Shell({ children }: { children: ReactNode }) {
         window.location.reload();
       }}
       overlays={
-        <DashboardCart
-          open={cartOpen}
-          onClose={() => setCartOpen(false)}
-          modules={DASHBOARD_MODULES}
-          lines={cart.items.map(({ product, quantity }) => ({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity,
-          }))}
-          onRemove={removeFromCart}
-          onCheckout={async () => {
-            await checkout(cart.items.map(({ product }) => ({ id: product.id, name: product.name, price: product.price })));
-            clearCart();
-            toast("Order placed", "Your add-ons are unlocked. (Demo — nothing was charged.)");
-          }}
-        />
+        STORE_ENABLED && (
+          <DashboardCart
+            open={cartOpen}
+            onClose={() => setCartOpen(false)}
+            modules={DASHBOARD_MODULES}
+            lines={cart.items.map(({ product, quantity }) => ({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              quantity,
+            }))}
+            onRemove={removeFromCart}
+            onCheckout={async () => {
+              await checkout(cart.items.map(({ product }) => ({ id: product.id, name: product.name, price: product.price })));
+              clearCart();
+              toast("Order placed", "Your add-ons are unlocked. (Demo — nothing was charged.)");
+            }}
+          />
+        )
       }
     >
       {children}

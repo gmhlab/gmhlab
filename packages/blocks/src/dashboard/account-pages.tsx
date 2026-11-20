@@ -617,3 +617,182 @@ function SubmissionCard({
     </Panel>
   );
 }
+
+/* ── Project admins ───────────────────────────────────────────────────── */
+
+type ProjectAdminPerson = ReviewQueue["people"][number];
+
+export type ProjectAdminsPageProps = {
+  /** The projects that have rooms. */
+  projects: { slug: string; name: string; logo?: string }[];
+  /** Every account (the review queue's `people`), with their `leads`. */
+  people: ProjectAdminPerson[];
+  /** Replace a project's admins with these account ids. */
+  onSave: (project: string, accountIds: string[]) => Promise<unknown>;
+};
+
+/**
+ * Site admins assign each project's admins: the people who post to its
+ * room's message board and choose the publications its page features.
+ * Site admins can do both everywhere, so they are listed apart.
+ */
+export function ProjectAdminsPage({ projects, people, onSave }: ProjectAdminsPageProps) {
+  const [query, setQuery] = useState("");
+  const siteAdmins = people.filter((p) => p.tier === "admin");
+  const shown = projects.filter((p) => p.name.toLowerCase().includes(query.trim().toLowerCase()));
+
+  return (
+    <div className="space-y-8">
+      <PageHero
+        eyebrow="Lab"
+        title="Project admins"
+        description="Each project's admins post to its room's message board and choose the publications its page features."
+        art={{ kind: "glyph", name: "community" }}
+      />
+
+      <Panel className="flex flex-wrap items-center gap-x-4 gap-y-3 p-5 text-sm">
+        <ShieldCheck className="size-5 shrink-0 text-primary" aria-hidden />
+        <span className="min-w-0 flex-1">
+          <strong>Site admins manage every project</strong> without being listed:{" "}
+          {siteAdmins.map((p) => p.name).join(", ") || "none"}.
+        </span>
+        <label className="w-full sm:w-64">
+          <span className="sr-only">Find a project</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Find a project"
+            className="h-10 w-full rounded-full border border-outline-variant bg-surface-container-lowest px-4 text-sm outline-none focus:border-primary"
+          />
+        </label>
+      </Panel>
+
+      <Stagger className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {shown.map((project) => (
+          <Item key={project.slug}>
+            <ProjectAdminCard
+              project={project}
+              people={people.filter((p) => p.tier !== "admin")}
+              onSave={(ids) => onSave(project.slug, ids)}
+            />
+          </Item>
+        ))}
+      </Stagger>
+      {shown.length === 0 && <p className="text-sm text-on-surface-variant">No project matches &ldquo;{query}&rdquo;.</p>}
+    </div>
+  );
+}
+
+function ProjectAdminCard({
+  project,
+  people,
+  onSave,
+}: {
+  project: { slug: string; name: string; logo?: string };
+  people: ProjectAdminPerson[];
+  onSave: (accountIds: string[]) => Promise<unknown>;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const admins = people.filter((p) => (p.leads ?? []).includes(project.slug));
+  const adminIds = admins.map((p) => p.id);
+  const byName = (a: ProjectAdminPerson, b: ProjectAdminPerson) => a.name.localeCompare(b.name);
+  const candidates = people.filter((p) => !adminIds.includes(p.id));
+  const onProject = candidates.filter((p) => p.projects.includes(project.slug)).sort(byName);
+  const everyoneElse = candidates.filter((p) => !p.projects.includes(project.slug)).sort(byName);
+  const selectId = `add-admin-${project.slug}`;
+
+  const save = async (ids: string[]) => {
+    setBusy(true);
+    setError(null);
+    try {
+      await onSave(ids);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "That didn't save.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Panel className="flex h-full flex-col p-5" aria-busy={busy}>
+      <div className="flex items-center gap-3">
+        {project.logo ? (
+          <img src={project.logo} alt="" className="size-11 shrink-0 rounded-xl bg-white object-contain p-1" />
+        ) : (
+          <div className="size-11 shrink-0 rounded-xl bg-surface-container-high" aria-hidden />
+        )}
+        <h2 className="min-w-0 truncate font-semibold">{project.name}</h2>
+      </div>
+
+      {admins.length === 0 ? (
+        <p className="mt-4 rounded-2xl bg-surface-container-low px-4 py-3 text-sm text-on-surface-variant">
+          No project admins yet. Site admins manage it.
+        </p>
+      ) : (
+        <ul className="mt-4 space-y-2">
+          {admins.sort(byName).map((p) => (
+            <li key={p.id} className="flex items-center gap-3 rounded-2xl bg-surface-container-low p-2 pr-3">
+              <Monogram name={p.name} photo={p.photo} className="size-9" />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold">{p.name}</span>
+                <span className="block truncate text-xs text-on-surface-variant">
+                  {TIER_LABEL[p.tier]}
+                  {p.projects.includes(project.slug) ? "" : " · not on this project"}
+                </span>
+              </span>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => void save(adminIds.filter((id) => id !== p.id))}
+                aria-label={`Remove ${p.name} as an admin of ${project.name}`}
+                className="grid size-8 shrink-0 place-items-center rounded-full text-on-surface-variant transition hover:bg-surface-container-high hover:text-error disabled:opacity-50"
+              >
+                <X className="size-4" aria-hidden />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="mt-auto pt-4">
+        <label htmlFor={selectId} className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+          Add an admin
+        </label>
+        <select
+          id={selectId}
+          value=""
+          disabled={busy}
+          onChange={(e) => e.target.value && void save([...adminIds, e.target.value])}
+          className="h-10 w-full rounded-2xl border border-outline-variant bg-surface-container-lowest px-3 text-sm outline-none focus:border-primary"
+        >
+          <option value="">Choose a person…</option>
+          {onProject.length > 0 && (
+            <optgroup label={`On ${project.name}`}>
+              {onProject.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} · {TIER_LABEL[p.tier]}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {everyoneElse.length > 0 && (
+            <optgroup label="Everyone else">
+              {everyoneElse.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} · {TIER_LABEL[p.tier]}
+                </option>
+              ))}
+            </optgroup>
+          )}
+        </select>
+        {error && (
+          <p role="alert" className="mt-2 text-sm text-error">
+            {error}
+          </p>
+        )}
+      </div>
+    </Panel>
+  );
+}

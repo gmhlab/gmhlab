@@ -5,7 +5,7 @@ import { type Account, canAccess } from "@gmhlab/core";
 import { useAccount, useProducts } from "@gmhlab/data";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { DASHBOARD_MODULES } from "@/content/dashboard-modules";
+import { DASHBOARD_MODULES, STORE_ENABLED } from "@/content/dashboard-modules";
 
 /**
  * Renders `children(account)` when the signed-in account can open the module,
@@ -23,10 +23,14 @@ export function ModuleGate({ id, children }: { id: string; children: (account: A
       module={module}
       storeHref="/dashboard#store"
       inCart={cart.items.some((item) => item.product.id === id)}
-      onAddToCart={() => {
-        addToCart(id);
-        toast("Added to your cart", "Check out from the bag in the top bar.");
-      }}
+      onAddToCart={
+        STORE_ENABLED
+          ? () => {
+              addToCart(id);
+              toast("Added to your cart", "Check out from the bag in the top bar.");
+            }
+          : undefined
+      }
       linkComponent={Link as unknown as DashboardLinkComponent}
     />
   );

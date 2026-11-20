@@ -39,6 +39,7 @@
  * never rendered as a broken row.
  */
 
+import { FEATURED_PUBLICATION_LIMIT } from "@gmhlab/core";
 import type { Project, ProjectStatus } from "./projects-types";
 import {
   resolvePublicationRefs,
@@ -264,6 +265,27 @@ export function resolveProjectPublications(
   publications: Publication[],
 ): ResolvedProjectPublication[] {
   return resolvePublicationRefs(detail.publications, publications);
+}
+
+/**
+ * Which of a project's works its page features, and the rest. `chosen` is
+ * what the project's admins picked (slugs, in order); any that aren't the
+ * project's works are ignored, and the remaining places fill in the order the
+ * *record* lists its works — a record leads with its protocol or development
+ * paper, which newest-first would bury. With nothing chosen that order alone
+ * decides. The rest keep the resolver's newest-first order.
+ */
+export function featuredProjectPublications(
+  detail: ProjectDetail,
+  publications: Publication[],
+  chosen: string[] = [],
+): { featured: ResolvedProjectPublication[]; rest: ResolvedProjectPublication[]; all: ResolvedProjectPublication[] } {
+  const all = resolveProjectPublications(detail, publications);
+  const bySlug = new Map(all.map((entry) => [entry.publication.slug, entry]));
+  const picked = chosen.flatMap((slug) => bySlug.get(slug) ?? []);
+  const recordOrder = (detail.publications ?? []).flatMap((ref) => bySlug.get(ref.slug) ?? []);
+  const featured = [...new Set([...picked, ...recordOrder])].slice(0, FEATURED_PUBLICATION_LIMIT);
+  return { featured, rest: all.filter((entry) => !featured.includes(entry)), all };
 }
 
 /** Resolve related project slugs against a portfolio, preserving order. */

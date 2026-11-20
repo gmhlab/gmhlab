@@ -38,6 +38,11 @@ export type Account = Profile & {
   tier: Tier;
   /** Project slugs a partner has been approved for. */
   projects: string[];
+  /**
+   * Project slugs this account administers: it posts to those rooms' message
+   * boards. Site admins post to every room without being listed.
+   */
+  leads?: string[];
   /** The storefront plan, if one was bought (a `PlanSku`). */
   plan?: PlanSku;
   /** Ids of modules bought one at a time. */
@@ -104,7 +109,7 @@ export type ProfileSubmission = {
 export type ReviewQueue = {
   submissions: ProfileSubmission[];
   requests: AccessRequest[];
-  people: Pick<Account, "id" | "name" | "email" | "tier" | "projects" | "photo">[];
+  people: Pick<Account, "id" | "name" | "email" | "tier" | "projects" | "leads" | "photo">[];
 };
 
 /** One account's own requests and submissions, newest first. */
@@ -131,6 +136,11 @@ export interface AccountService {
   getReviewQueue(): Promise<ReviewQueue>;
   decideSubmission(id: string, approve: boolean, note?: string): Promise<void>;
   decideRequest(id: string, approve: boolean): Promise<void>;
+  /**
+   * Admins only: set who administers a project (posts to its room's board and
+   * chooses its featured publications). Replaces the project's whole list.
+   */
+  setProjectLeads(project: string, accountIds: string[]): Promise<void>;
   /**
    * Every approved profile owned by an account — public, no session needed.
    * The public site overlays these on its own people records.
@@ -193,6 +203,57 @@ export function canAccess(
     case "tier":
       return tierAtLeast(account, rule.min);
   }
+}
+
+/* ── Project rooms ────────────────────────────────────────────────────── */
+
+/** A notice on a project room's message board. */
+export type RoomMessage = {
+  id: string;
+  /** The project slug. */
+  project: string;
+  authorId: string;
+  authorName: string;
+  authorPhoto?: string;
+  body: string;
+  /** ISO date-time. */
+  at: string;
+};
+
+/** Whether an account can see a project's room. */
+export const canViewRoom = (account: Pick<Account, "tier" | "projects" | "leads">, project: string) =>
+  tierAtLeast(account, "staff") ||
+  account.projects.includes(project) ||
+  (account.leads ?? []).includes(project);
+
+/** Whether an account may post to (and remove from) a room's message board. */
+export const canPostToRoom = (account: Pick<Account, "tier" | "leads">, project: string) =>
+  account.tier === "admin" || (account.leads ?? []).includes(project);
+
+/** How many publications a project page features. */
+export const FEATURED_PUBLICATION_LIMIT = 3;
+
+/** Project slug → the publication slugs its admins chose to feature, in order. */
+export type FeaturedPublications = Record<string, string[]>;
+
+/**
+ * What a project's admins manage from its room: the message board, and which
+ * of the project's publications its public page features.
+ */
+export interface ProjectRoomService {
+  /** Newest first, only for rooms the session can see. */
+  listMessages(): Promise<RoomMessage[]>;
+  /** Rejects unless `canPostToRoom`. */
+  postMessage(project: string, body: string): Promise<RoomMessage>;
+  /** Rejects unless `canPostToRoom` for the message's project. */
+  removeMessage(id: string): Promise<void>;
+  /** Public, no session needed: the public project pages read it. */
+  getFeaturedPublications(): Promise<FeaturedPublications>;
+  /**
+   * Rejects unless `canPostToRoom`, or over `FEATURED_PUBLICATION_LIMIT`.
+   * An empty list goes back to the project record's own order.
+   */
+  setFeaturedPublications(project: string, slugs: string[]): Promise<void>;
 }
 
 /* ── Learning ─────────────────────────────────────────────────────────── */

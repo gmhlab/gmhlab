@@ -10,12 +10,15 @@ import type {
   Order,
   Photo,
   ProfileSubmission,
+  ProjectRoomService,
+  RoomMessage,
 } from "../workspace";
+import { canPostToRoom, canViewRoom, FEATURED_PUBLICATION_LIMIT } from "../workspace";
 import { delay } from "./delay";
 
 /**
  * The member workspace's demo backend: one JSON document in localStorage,
- * shared by five services (auth, accounts, learning, media, checkout) so the
+ * shared by six services (auth, accounts, learning, media, checkout, rooms) so the
  * whole flow — sign up, request access, edit a bio, approve it from the admin
  * account, finish a course, buy a module — works end to end in one browser.
  *
@@ -42,6 +45,10 @@ type Db = {
   progress: Record<string, Record<string, CourseProgress>>;
   photos: Photo[];
   orders: Order[];
+  /** Added after v1 shipped; older stored copies lack it. */
+  messages?: RoomMessage[];
+  /** Project slug → featured publication slugs. Added after v1 too. */
+  featured?: Record<string, string[]>;
 };
 
 /**
@@ -113,6 +120,7 @@ export type MockWorkspaceSeed = {
   requests?: AccessRequest[];
   submissions?: ProfileSubmission[];
   progress?: Record<string, Record<string, CourseProgress>>;
+  messages?: RoomMessage[];
 };
 
 const DEFAULT_SEED: MockWorkspaceSeed = {
@@ -177,6 +185,7 @@ function seed(): Db {
     progress: seedConfig.progress ?? {},
     photos: [],
     orders: [],
+    messages: seedConfig.messages ?? [],
   };
 }
 
@@ -378,7 +387,15 @@ export const mockAccountService: AccountService = {
     return {
       submissions: db.submissions,
       requests: db.requests,
-      people: db.accounts.map(({ id, name, email, tier, projects, photo }) => ({ id, name, email, tier, projects, photo })),
+      people: db.accounts.map(({ id, name, email, tier, projects, leads, photo }) => ({
+        id,
+        name,
+        email,
+        tier,
+        projects,
+        leads,
+        photo,
+      })),
     };
   },
 
@@ -416,6 +433,20 @@ export const mockAccountService: AccountService = {
         location: a.location,
         photo: a.photo,
       }));
+  },
+
+  async setProjectLeads(project, accountIds) {
+    await delay(LATENCY);
+    const account = requireSession();
+    if (account.tier !== "admin") throw new Error("Only admins can assign project admins.");
+    const ids = new Set(accountIds);
+    update((db) => ({
+      ...db,
+      accounts: db.accounts.map((a) => {
+        const others = (a.leads ?? []).filter((slug) => slug !== project);
+        return { ...a, leads: ids.has(a.id) ? [...others, project] : others };
+      }),
+    }));
   },
 
   async decideRequest(id, approve) {
@@ -494,6 +525,62 @@ export const mockMediaService: MediaService = {
   },
   async removePhoto(id) {
     update((db) => ({ ...db, photos: db.photos.filter((p) => p.id !== id) }));
+  },
+};
+
+/* ── project rooms ────────────────────────────────────────────────────── */
+
+export const mockProjectRoomService: ProjectRoomService = {
+  async listMessages() {
+    const account = session();
+    if (!account) return [];
+    return (read().messages ?? [])
+      .filter((m) => canViewRoom(account, m.project))
+      .sort((a, b) => b.at.localeCompare(a.at));
+  },
+  async postMessage(project, body) {
+    await delay(LATENCY);
+    const account = requireSession();
+    if (!canPostToRoom(account, project)) throw new Error("Only this project's admins can post here.");
+    const text = body.trim();
+    if (!text) throw new Error("Write a message first.");
+    const message: RoomMessage = {
+      id: uid("msg"),
+      project,
+      authorId: account.id,
+      authorName: account.name,
+      authorPhoto: account.photo,
+      body: text,
+      at: now(),
+    };
+    update((db) => ({ ...db, messages: [message, ...(db.messages ?? [])] }));
+    return message;
+  },
+  async removeMessage(id) {
+    await delay(LATENCY / 2);
+    const account = requireSession();
+    const message = (read().messages ?? []).find((m) => m.id === id);
+    if (!message) return;
+    if (!canPostToRoom(account, message.project)) throw new Error("Only this project's admins can remove messages.");
+    update((db) => ({ ...db, messages: (db.messages ?? []).filter((m) => m.id !== id) }));
+  },
+  async getFeaturedPublications() {
+    return read().featured ?? {};
+  },
+  async setFeaturedPublications(project, slugs) {
+    await delay(LATENCY);
+    const account = requireSession();
+    if (!canPostToRoom(account, project)) throw new Error("Only this project's admins can choose its publications.");
+    const unique = [...new Set(slugs)];
+    if (unique.length > FEATURED_PUBLICATION_LIMIT) {
+      throw new Error(`Choose up to ${FEATURED_PUBLICATION_LIMIT} publications.`);
+    }
+    update((db) => {
+      const featured = { ...(db.featured ?? {}) };
+      if (unique.length) featured[project] = unique;
+      else delete featured[project];
+      return { ...db, featured };
+    });
   },
 };
 

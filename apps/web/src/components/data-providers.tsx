@@ -1,10 +1,11 @@
 "use client";
 
-import { AllProviders, type DataServices, ProfilesProvider } from "@gmhlab/data";
+import { AllProviders, type DataServices, FeaturedPublicationsProvider, ProfilesProvider } from "@gmhlab/data";
 import type { ReactNode } from "react";
 import {
   configureMockWorkspace,
   mockAccountService,
+  mockProjectRoomService,
   mockWorkspaceAuthService,
 } from "@gmhlab/core/mocks";
 import { WORKSPACE_DEMO_SEED } from "@/content/workspace-demo-accounts";
@@ -44,11 +45,14 @@ const SERVICES: DataServices = {
 
 /** `AllProviders` bound to the site's services. Renders no DOM. */
 export function DataProviders({ children }: { children?: ReactNode }) {
-  // ProfilesProvider sits at the root (the public team page reads it); it
-  // must share the workspace's account service, set in workspace-providers.
+  // ProfilesProvider and FeaturedPublicationsProvider sit at the root (the
+  // public team and project pages read them); they must share the workspace's
+  // account and room services, set in workspace-providers.
   return (
     <AllProviders services={SERVICES}>
-      <ProfilesProvider service={mockAccountService}>{children}</ProfilesProvider>
+      <ProfilesProvider service={mockAccountService}>
+        <FeaturedPublicationsProvider service={mockProjectRoomService}>{children}</FeaturedPublicationsProvider>
+      </ProfilesProvider>
     </AllProviders>
   );
 }

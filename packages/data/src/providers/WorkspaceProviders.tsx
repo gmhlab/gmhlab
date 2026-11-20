@@ -3,22 +3,27 @@ import type {
   AccountActivity,
   AccountService,
   CheckoutService,
+  FeaturedPublications,
   LearningProgress,
   LearningService,
   MediaService,
   Order,
   Photo,
+  ProjectRoomService,
   PublishedProfile,
   ReviewQueue,
+  RoomMessage,
 } from "@gmhlab/core";
 import { type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import {
   AccountContext,
   CheckoutContext,
+  FeaturedPublicationsContext,
   LearningContext,
   MediaContext,
   ProfilesContext,
+  RoomsContext,
 } from "../contexts/WorkspaceContexts";
 
 /**
@@ -88,6 +93,8 @@ export function AccountProvider({ service, children }: { service: AccountService
       decideSubmission: (id: string, approve: boolean, note?: string) =>
         after(() => service.decideSubmission(id, approve, note))(),
       decideRequest: (id: string, approve: boolean) => after(() => service.decideRequest(id, approve))(),
+      setProjectLeads: (project: string, accountIds: string[]) =>
+        after(() => service.setProjectLeads(project, accountIds))(),
     }),
     [account, activity, queue, isLoading, refresh, after, service],
   );
@@ -196,15 +203,54 @@ export function CheckoutProvider({ service, children }: { service: CheckoutServi
   return <CheckoutContext.Provider value={value}>{children}</CheckoutContext.Provider>;
 }
 
+/** Project room message boards. Reloads when the signed-in user changes. */
+export function RoomsProvider({ service, children }: { service: ProjectRoomService; children?: ReactNode }) {
+  const userKey = useUserKey();
+  const [messages, setMessages] = useState<RoomMessage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsLoading(true);
+    service
+      .listMessages()
+      .then((m) => !cancelled && setMessages(m))
+      .finally(() => !cancelled && setIsLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [service, userKey]);
+
+  const value = useMemo(
+    () => ({
+      messages,
+      isLoading,
+      post: async (project: string, body: string) => {
+        const message = await service.postMessage(project, body);
+        setMessages((list) => [message, ...list]);
+        return message;
+      },
+      remove: async (id: string) => {
+        await service.removeMessage(id);
+        setMessages((list) => list.filter((m) => m.id !== id));
+      },
+    }),
+    [messages, isLoading, service],
+  );
+
+  return <RoomsContext.Provider value={value}>{children}</RoomsContext.Provider>;
+}
+
 export type WorkspaceServices = {
   account: AccountService;
   learning: LearningService;
   media: MediaService;
   checkout: CheckoutService;
+  rooms: ProjectRoomService;
 };
 
 /**
- * The four workspace providers in order. Renders no DOM. Mount it only where
+ * The five workspace providers in order. Renders no DOM. Mount it only where
  * the workspace is used (the dashboard's layout), inside `AllProviders`.
  */
 export function WorkspaceProviders({ services, children }: { services: WorkspaceServices; children?: ReactNode }) {
@@ -212,7 +258,9 @@ export function WorkspaceProviders({ services, children }: { services: Workspace
     <AccountProvider service={services.account}>
       <LearningProvider service={services.learning}>
         <MediaProvider service={services.media}>
-          <CheckoutProvider service={services.checkout}>{children}</CheckoutProvider>
+          <CheckoutProvider service={services.checkout}>
+            <RoomsProvider service={services.rooms}>{children}</RoomsProvider>
+          </CheckoutProvider>
         </MediaProvider>
       </LearningProvider>
     </AccountProvider>
@@ -234,4 +282,37 @@ export function ProfilesProvider({ service, children }: { service: AccountServic
   }, [refresh]);
   const value = useMemo(() => ({ profiles, refresh }), [profiles, refresh]);
   return <ProfilesContext.Provider value={value}>{children}</ProfilesContext.Provider>;
+}
+
+/**
+ * Featured publications per project (`ProjectRoomService.getFeaturedPublications`).
+ * Mount it at the root — the public project pages read it, no session needed —
+ * and call `refresh` where they show, since admins choose them elsewhere.
+ */
+export function FeaturedPublicationsProvider({
+  service,
+  children,
+}: {
+  service: ProjectRoomService;
+  children?: ReactNode;
+}) {
+  const [featured, setFeatured] = useState<FeaturedPublications>({});
+  const refresh = useCallback(async () => {
+    setFeatured(await service.getFeaturedPublications());
+  }, [service]);
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+  const value = useMemo(
+    () => ({
+      featured,
+      refresh,
+      set: async (project: string, slugs: string[]) => {
+        await service.setFeaturedPublications(project, slugs);
+        await refresh();
+      },
+    }),
+    [featured, refresh, service],
+  );
+  return <FeaturedPublicationsContext.Provider value={value}>{children}</FeaturedPublicationsContext.Provider>;
 }

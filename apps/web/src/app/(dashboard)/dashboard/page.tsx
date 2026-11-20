@@ -5,7 +5,7 @@ import { useAccount, useCheckout, useLearning, useProducts } from "@gmhlab/data"
 import { planLineId, type PlanSku } from "@gmhlab/core";
 import Link from "next/link";
 import { toast } from "@gmhlab/blocks";
-import { DASHBOARD_FEED, DASHBOARD_MODULES, DASHBOARD_PLANS } from "@/content/dashboard-modules";
+import { DASHBOARD_FEED, DASHBOARD_MODULES, DASHBOARD_PLANS, STORE_ENABLED } from "@/content/dashboard-modules";
 import { COURSES } from "@/content/equip-training";
 import { WORKSPACE_PHOTOS } from "@/content/workspace-images";
 
@@ -24,6 +24,7 @@ export default function DashboardHomeRoute() {
       progress={progress}
       coursesPath="/dashboard/equip"
       plans={DASHBOARD_PLANS}
+      showStore={STORE_ENABLED}
       announcements={DASHBOARD_FEED.announcements}
       events={DASHBOARD_FEED.events}
       cartIds={cart.items.map((item) => item.product.id)}

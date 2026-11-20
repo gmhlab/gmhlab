@@ -62,6 +62,8 @@ export type DashboardHomeProps = {
   onChoosePlan: (plan: PricingPlan) => Promise<void>;
   linkComponent?: DashboardLinkComponent;
   storeNote?: string | null;
+  /** Show the plans & store section. Deactivated for now; defaults to false. */
+  showStore?: boolean;
   /**
    * A photograph across the whole hero, in the brand duotone under a navy
    * wash (copy on the left stays at reading strength). Decorative.
@@ -77,8 +79,8 @@ function greeting(date = new Date()) {
 /**
  * The workspace home: a lit navy hero with the account's learning progress,
  * the courses to continue, every module as a tilt tile (locked ones say what
- * unlocks them), the storefront — plans and buyable add-ons — and the
- * noticeboard.
+ * unlocks them) and the storefront — plans and buyable add-ons, off by
+ * default. The noticeboard sits right under the hero.
  */
 export function DashboardHome({
   account,
@@ -94,6 +96,7 @@ export function DashboardHome({
   onChoosePlan,
   linkComponent: Link = PlainLink,
   storeNote = GMH_DASHBOARD_COPY.storeNote,
+  showStore = false,
   heroPhoto,
 }: DashboardHomeProps) {
   const stats = useMemo(() => {
@@ -241,6 +244,68 @@ export function DashboardHome({
         </div>
       </motion.section>
 
+      {/* ── Noticeboard: the news first, right under the hero ── */}
+      {(announcements.length > 0 || events.length > 0) && (
+        <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+          {announcements.length > 0 && (
+            <div>
+              <SectionTitle title="What's new" />
+              <Stagger className="space-y-3">
+                {announcements.map((a) => {
+                  const body = (
+                    <Panel className="flex items-start gap-4 p-5 transition hover:-translate-y-0.5">
+                      <Chip tone="gold">{a.label}</Chip>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold">{a.title}</div>
+                        <p className="mt-1 text-sm text-on-surface-variant">{a.body}</p>
+                      </div>
+                      {a.href && <ArrowRight className="mt-1 size-4 shrink-0 text-on-surface-variant" aria-hidden />}
+                    </Panel>
+                  );
+                  return (
+                    <Item key={a.id}>
+                      {a.href ? (
+                        <Link href={a.href} className="block">
+                          {body}
+                        </Link>
+                      ) : (
+                        body
+                      )}
+                    </Item>
+                  );
+                })}
+              </Stagger>
+            </div>
+          )}
+          {events.length > 0 && (
+            <div>
+              <SectionTitle title="Coming up" />
+              <Panel className="space-y-1 p-3">
+                {events.map((e) => {
+                  const d = new Date(`${e.date}T12:00:00`);
+                  return (
+                    <div key={e.id} className="flex items-center gap-4 rounded-2xl p-2 hover:bg-surface-container">
+                      <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-band text-on-brand-band">
+                        <div className="text-center leading-none">
+                          <div className="text-[10px] font-bold uppercase tracking-wider text-brand-band-accent">
+                            {d.toLocaleDateString("en-US", { month: "short" })}
+                          </div>
+                          <div className="font-serif text-xl">{d.getDate()}</div>
+                        </div>
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-semibold">{e.title}</div>
+                        <div className="text-sm text-on-surface-variant">{e.detail}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </Panel>
+            </div>
+          )}
+        </section>
+      )}
+
       <WaveRule className="h-10" />
 
       {/* ── Continue learning ── */}
@@ -329,81 +394,22 @@ export function DashboardHome({
         </Stagger>
       </section>
 
-      {/* ── Store ── */}
-      <FigureRule className="opacity-80" />
-      <Storefront
-        account={account}
-        modules={modules}
-        plans={plans}
-        cartIds={cartIds}
-        onAddToCart={onAddToCart}
-        onChoosePlan={onChoosePlan}
-        note={storeNote}
-      />
-
-      <WaveRule className="h-10" />
-
-      {/* ── Noticeboard ── */}
-      {(announcements.length > 0 || events.length > 0) && (
-        <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-          {announcements.length > 0 && (
-            <div>
-              <SectionTitle title="What's new" />
-              <Stagger className="space-y-3">
-                {announcements.map((a) => {
-                  const body = (
-                    <Panel className="flex items-start gap-4 p-5 transition hover:-translate-y-0.5">
-                      <Chip tone="gold">{a.label}</Chip>
-                      <div className="min-w-0 flex-1">
-                        <div className="font-semibold">{a.title}</div>
-                        <p className="mt-1 text-sm text-on-surface-variant">{a.body}</p>
-                      </div>
-                      {a.href && <ArrowRight className="mt-1 size-4 shrink-0 text-on-surface-variant" aria-hidden />}
-                    </Panel>
-                  );
-                  return (
-                    <Item key={a.id}>
-                      {a.href ? (
-                        <Link href={a.href} className="block">
-                          {body}
-                        </Link>
-                      ) : (
-                        body
-                      )}
-                    </Item>
-                  );
-                })}
-              </Stagger>
-            </div>
-          )}
-          {events.length > 0 && (
-            <div>
-              <SectionTitle title="Coming up" />
-              <Panel className="space-y-1 p-3">
-                {events.map((e) => {
-                  const d = new Date(`${e.date}T12:00:00`);
-                  return (
-                    <div key={e.id} className="flex items-center gap-4 rounded-2xl p-2 hover:bg-surface-container">
-                      <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-band text-on-brand-band">
-                        <div className="text-center leading-none">
-                          <div className="text-[10px] font-bold uppercase tracking-wider text-brand-band-accent">
-                            {d.toLocaleDateString("en-US", { month: "short" })}
-                          </div>
-                          <div className="font-serif text-xl">{d.getDate()}</div>
-                        </div>
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-semibold">{e.title}</div>
-                        <div className="text-sm text-on-surface-variant">{e.detail}</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </Panel>
-            </div>
-          )}
-        </section>
+      {/* ── Store ── off by default; pass `showStore` to bring it back. */}
+      {showStore && (
+        <>
+          <FigureRule className="opacity-80" />
+          <Storefront
+            account={account}
+            modules={modules}
+            plans={plans}
+            cartIds={cartIds}
+            onAddToCart={onAddToCart}
+            onChoosePlan={onChoosePlan}
+            note={storeNote}
+          />
+        </>
       )}
+
     </div>
   );
 }

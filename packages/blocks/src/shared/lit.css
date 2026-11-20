@@ -142,8 +142,14 @@
 
 /* ── Surfaces ─────────────────────────────────────────────────────────── */
 
+/* Position sits in the components layer so a `sticky` utility on a panel wins.
+   Unlayered, `relative` beat it and `top-24` pushed the panel 96px down. */
+@layer components {
+  .lit-panel {
+    position: relative;
+  }
+}
 .lit-panel {
-  position: relative;
   border-radius: var(--lit-radius);
   background: color-mix(in srgb, var(--gmh-color-surface-container-lowest) 82%, transparent);
   border: 1px solid color-mix(in srgb, var(--gmh-color-outline-variant) 70%, transparent);

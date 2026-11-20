@@ -17,15 +17,25 @@ import { TEAM } from "./team-data";
  *   alumni → members.
  * - Emails are `demo.gmhlab.org` addresses; every account signs in with
  *   `DEMO_PASSWORD` until the real backend replaces the demo store.
+ * - Project admins (`leads`, who post to a room's message board) are a demo
+ *   assignment from each person's stated role, not a confirmed one: Ruta
+ *   Rangel (EQUIP Program Manager) for EQUIP, Laure Experton for RECOUP-NY.
+ *   Brandon Kohrt, as site admin, posts to every room.
  * - The demo sign-ins are Farhana Alam (member), Laure Experton (partner),
  *   Ruta Rangel (staff) and Brandon Kohrt (admin).
  *
  * Changing the seed? Bump `SEED_ID`, or browsers keep their stored copy.
  */
 
-const SEED_ID = "gmh-team-profiles-2026-10-31";
+const SEED_ID = "gmh-team-profiles-2026-11-20";
 
 const ADMIN = "brandon-kohrt";
+
+/** Person slug → projects they administer (demo; see the header). */
+const LEADS: Record<string, string[]> = {
+  "ruta-rangel": ["equip"],
+  "laure-experton": ["recoup-ny"],
+};
 
 const bioOf = (p: Person) => (p.bio ?? []).join("\n\n");
 const titleOf = (p: Person) => p.role ?? (p.program ? `Student, ${p.program}` : "");
@@ -53,6 +63,7 @@ function account(p: Person): Account {
     bio,
     photo: p.photo,
     projects: p.group === "core" || p.group === "affiliate" ? (p.projects ?? []) : [],
+    ...(LEADS[p.slug] ? { leads: LEADS[p.slug] } : {}),
     owned: [],
     joined: "2026-10-31",
     // Everyone here is already on the team page: their profile is live.

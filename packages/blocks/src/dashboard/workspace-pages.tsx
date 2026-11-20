@@ -1,13 +1,27 @@
-import { type Account, type Photo, type PhotoUpload, tierAtLeast } from "@gmhlab/core";
+import {
+  type Account,
+  canPostToRoom,
+  FEATURED_PUBLICATION_LIMIT,
+  type Photo,
+  type PhotoUpload,
+  type RoomMessage,
+  tierAtLeast,
+} from "@gmhlab/core";
 import { Button, cn } from "@gmhlab/ui";
 import {
+  BookMarked,
   CheckCircle2,
+  ChevronDown,
   ClipboardList,
+  ExternalLink,
   FileText,
+  FolderOpen,
+  Globe,
   FlaskConical,
   ImagePlus,
   Lock,
   Mail,
+  Megaphone,
   PlayCircle,
   Ruler,
   Search,
@@ -17,14 +31,15 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { type FormEvent, type ReactNode, useMemo, useRef, useState } from "react";
-import type { HandbookSection, ProjectRoom, RoomResource } from "./dashboard-types";
+import { type FormEvent, type ReactNode, useId, useMemo, useRef, useState } from "react";
+import type { HandbookSection, ProjectRoom, RoomPublication, RoomResource } from "./dashboard-types";
 import { Cover, PhotoFrame } from "../shared/ornaments";
 import { ArtTile, Chip, DemoNote, EASE, Item, PageHero, Panel, SectionTitle, Stagger, toneAt } from "./kit";
 
 /* ── Project rooms ────────────────────────────────────────────────────── */
 
 const KIND_ICON: Record<RoomResource["kind"], typeof FileText> = {
+  Summary: FileText,
   Protocol: ClipboardList,
   Measure: Ruler,
   Training: FlaskConical,
@@ -41,15 +56,43 @@ export type ProjectRoomsProps = {
   /** Project slugs with a pending request from this account. */
   pendingProjects?: string[];
   note?: ReactNode | null;
+  /** Every message the account can see; each room shows its own. */
+  messages?: RoomMessage[];
+  /** Post to a room's board. Shown only where `canPostToRoom` allows. */
+  onPostMessage?: (project: string, body: string) => Promise<unknown>;
+  onRemoveMessage?: (id: string) => Promise<unknown>;
+  /** Room slug → the project's works, for choosing what its page features. */
+  roomPublications?: Record<string, RoomPublication[]>;
+  /** Room slug → the slugs its page features now (chosen, or the default). */
+  featuredPublications?: Record<string, string[]>;
+  /** Room slug → whether its admins chose them (false: the record's default). */
+  featuredChosen?: Record<string, boolean>;
+  /** Save a room's featured works; an empty list restores the default. */
+  onSaveFeatured?: (project: string, slugs: string[]) => Promise<unknown>;
 };
 
 /**
  * One room per project. Partners see the rooms they were approved for; staff
  * see them all; everyone else sees each room's outline and can ask to join.
  */
-export function ProjectRooms({ account, rooms, onRequestAccess, pendingProjects = [], note }: ProjectRoomsProps) {
+export function ProjectRooms({
+  account,
+  rooms,
+  onRequestAccess,
+  pendingProjects = [],
+  note,
+  messages = [],
+  onPostMessage,
+  onRemoveMessage,
+  roomPublications = {},
+  featuredPublications = {},
+  featuredChosen = {},
+  onSaveFeatured,
+}: ProjectRoomsProps) {
   const staff = tierAtLeast(account, "staff");
-  const mine = rooms.filter((r) => staff || account.projects.includes(r.slug));
+  const mine = rooms.filter(
+    (r) => staff || account.projects.includes(r.slug) || (account.leads ?? []).includes(r.slug),
+  );
   const others = rooms.filter((r) => !mine.includes(r));
   const [active, setActive] = useState(mine[0]?.slug);
   const room = mine.find((r) => r.slug === active) ?? mine[0];
@@ -100,18 +143,29 @@ export function ProjectRooms({ account, rooms, onRequestAccess, pendingProjects 
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
-              <Panel className="flex flex-wrap items-center gap-5 p-6">
-                {room.logo ? (
-                  <img src={room.logo} alt="" className="size-20 rounded-2xl bg-white object-contain p-2 shadow-level1" />
-                ) : (
-                  <ArtTile art={room.art} size={44} className="size-20" />
-                )}
+              <Panel className="grid gap-5 p-6 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
+                {/* Square, as tall as the title, summary and links beside it. Its
+                    height is 0 + min 100% so it never sets the row's height, and
+                    grid re-sizes the column once the row is known. The art is
+                    absolutely placed for the same reason. Stacked on phones. */}
+                <div className="relative size-20 sm:aspect-square sm:size-auto sm:h-0 sm:min-h-[max(5rem,100%)]">
+                  {room.logo ? (
+                    <img
+                      src={room.logo}
+                      alt=""
+                      className="absolute inset-0 size-full rounded-2xl bg-white object-contain p-3 shadow-level1"
+                    />
+                  ) : (
+                    <ArtTile art={room.art} size={56} className="absolute inset-0 size-full" />
+                  )}
+                </div>
                 <div className="min-w-0 flex-1">
                   <h2 className="font-serif text-2xl">{room.name}</h2>
                   <p className="mt-1 text-on-surface-variant">{room.summary}</p>
+                  <RoomLinks room={room} />
                 </div>
                 {room.contact && (
-                  <div className="rounded-2xl bg-surface-container p-4 text-sm">
+                  <div className="self-center rounded-2xl bg-surface-container p-4 text-sm">
                     <div className="font-semibold">{room.contact.name}</div>
                     <div className="text-on-surface-variant">{room.contact.role}</div>
                     {room.contact.email && (
@@ -122,6 +176,13 @@ export function ProjectRooms({ account, rooms, onRequestAccess, pendingProjects 
                   </div>
                 )}
               </Panel>
+              <MessageBoard
+                project={room.slug}
+                messages={messages.filter((m) => m.project === room.slug)}
+                canPost={Boolean(onPostMessage) && canPostToRoom(account, room.slug)}
+                onPost={(body) => onPostMessage!(room.slug, body)}
+                onRemove={onRemoveMessage}
+              />
               <Stagger className="grid gap-4 md:grid-cols-2">
                 {room.resources.map((res) => {
                   const Icon = KIND_ICON[res.kind];
@@ -153,6 +214,16 @@ export function ProjectRooms({ account, rooms, onRequestAccess, pendingProjects 
                   );
                 })}
               </Stagger>
+              {onSaveFeatured && canPostToRoom(account, room.slug) && (roomPublications[room.slug]?.length ?? 0) > 0 && (
+                <FeaturedPicker
+                  key={`${room.slug}:${(featuredPublications[room.slug] ?? []).join(",")}`}
+                  works={roomPublications[room.slug]!}
+                  current={featuredPublications[room.slug] ?? []}
+                  chosen={featuredChosen[room.slug] ?? false}
+                  pageHref={room.siteHref}
+                  onSave={(slugs) => onSaveFeatured(room.slug, slugs)}
+                />
+              )}
             </motion.div>
           </AnimatePresence>
         </section>
@@ -180,6 +251,334 @@ export function ProjectRooms({ account, rooms, onRequestAccess, pendingProjects 
       )}
       {note !== null && note !== undefined && <DemoNote>{note}</DemoNote>}
     </div>
+  );
+}
+
+const linkPill =
+  "inline-flex h-9 items-center gap-2 rounded-full border border-outline-variant px-4 text-sm font-semibold transition hover:bg-surface-container";
+
+/** The room's shared folder and its page on the public site. */
+function RoomLinks({ room }: { room: ProjectRoom }) {
+  return (
+    <div className="mt-4 flex flex-wrap gap-2">
+      {room.folder ? (
+        <a href={room.folder.href} target="_blank" rel="noreferrer" className={cn(linkPill, "text-primary")}>
+          <FolderOpen className="size-4" aria-hidden /> {room.folder.label ?? "Google Drive folder"}
+          <ExternalLink className="size-3.5 opacity-70" aria-hidden />
+          <span className="sr-only">(opens in a new tab)</span>
+        </a>
+      ) : (
+        <span className={cn(linkPill, "cursor-default border-dashed text-on-surface-variant hover:bg-transparent")}>
+          <FolderOpen className="size-4" aria-hidden /> Folder not linked yet
+        </span>
+      )}
+      {room.siteHref && (
+        <a href={room.siteHref} target="_blank" rel="noreferrer" className={cn(linkPill, "text-primary")}>
+          <Globe className="size-4" aria-hidden /> Project page
+          <ExternalLink className="size-3.5 opacity-70" aria-hidden />
+          <span className="sr-only">(opens in a new tab)</span>
+        </a>
+      )}
+    </div>
+  );
+}
+
+const postedAt = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]!.toUpperCase())
+    .join("");
+
+/** A room's notices. Everyone in the room reads it; its admins post. */
+function MessageBoard({
+  project,
+  messages,
+  canPost,
+  onPost,
+  onRemove,
+}: {
+  project: string;
+  messages: RoomMessage[];
+  canPost: boolean;
+  onPost: (body: string) => Promise<unknown>;
+  onRemove?: (id: string) => Promise<unknown>;
+}) {
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    try {
+      await onPost(text);
+      setText("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "That didn't post.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  const inputId = `room-message-${project}`;
+
+  return (
+    <Panel className="p-6">
+      <div className="flex items-center gap-3">
+        <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-tertiary-container text-on-tertiary-container">
+          <Megaphone className="size-5" aria-hidden />
+        </div>
+        <div className="min-w-0">
+          <h3 className="font-semibold">Message board</h3>
+          <p className="text-sm text-on-surface-variant">
+            {canPost ? "You're an admin for this project. Post updates for everyone in the room." : "Updates from the project's admins."}
+          </p>
+        </div>
+      </div>
+
+      {canPost && (
+        <form onSubmit={submit} className="mt-5 space-y-2">
+          <label htmlFor={inputId} className="sr-only">
+            New message
+          </label>
+          <textarea
+            id={inputId}
+            required
+            rows={3}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Share an update, a deadline or a new file."
+            className="w-full rounded-2xl border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm outline-none focus:border-primary"
+          />
+          {error && (
+            <p role="alert" className="text-sm text-error">
+              {error}
+            </p>
+          )}
+          <Button size="sm" type="submit" disabled={busy || !text.trim()}>
+            {busy ? "Posting…" : "Post message"}
+          </Button>
+        </form>
+      )}
+
+      {messages.length === 0 ? (
+        <p className="mt-5 rounded-2xl bg-surface-container-low px-4 py-3 text-sm text-on-surface-variant">No messages yet.</p>
+      ) : (
+        <ul className="mt-5 space-y-3">
+          <AnimatePresence initial={false}>
+            {messages.map((m) => (
+              <motion.li
+                key={m.id}
+                layout
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="flex gap-3 rounded-2xl bg-surface-container-low p-4"
+              >
+                {m.authorPhoto ? (
+                  <img src={m.authorPhoto} alt="" className="size-9 shrink-0 rounded-full object-cover" />
+                ) : (
+                  <div className="grid size-9 shrink-0 place-items-center rounded-full bg-primary-container text-xs font-bold text-on-primary-container">
+                    {initials(m.authorName)}
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-baseline gap-x-2">
+                    <span className="font-semibold">{m.authorName}</span>
+                    <time dateTime={m.at} className="text-xs text-on-surface-variant">
+                      {postedAt(m.at)}
+                    </time>
+                  </div>
+                  <p className="mt-1 whitespace-pre-line text-sm">{m.body}</p>
+                </div>
+                {canPost && onRemove && (
+                  <button
+                    type="button"
+                    onClick={() => void onRemove(m.id)}
+                    aria-label={`Remove message from ${m.authorName}, ${postedAt(m.at)}`}
+                    className="grid size-8 shrink-0 place-items-center rounded-full text-on-surface-variant transition hover:bg-surface-container-high hover:text-error"
+                  >
+                    <Trash2 className="size-4" aria-hidden />
+                  </button>
+                )}
+              </motion.li>
+            ))}
+          </AnimatePresence>
+        </ul>
+      )}
+    </Panel>
+  );
+}
+
+/** For a room's admins: pick the works its public page features. */
+function FeaturedPicker({
+  works,
+  current,
+  chosen,
+  pageHref,
+  onSave,
+}: {
+  works: RoomPublication[];
+  current: string[];
+  chosen: boolean;
+  pageHref?: string;
+  onSave: (slugs: string[]) => Promise<unknown>;
+}) {
+  const [picked, setPicked] = useState<string[]>(current);
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const full = picked.length >= FEATURED_PUBLICATION_LIMIT;
+  const listId = useId();
+  const changed = picked.join(",") !== current.join(",");
+
+  const toggle = (slug: string) =>
+    setPicked((list) => (list.includes(slug) ? list.filter((s) => s !== slug) : full ? list : [...list, slug]));
+
+  const save = async (slugs: string[]) => {
+    setBusy(true);
+    setError(null);
+    try {
+      await onSave(slugs);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "That didn't save.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Panel className="p-6">
+      <div className="flex items-center gap-3">
+        <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary-container text-on-primary-container">
+          <BookMarked className="size-5" aria-hidden />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="font-semibold">Featured publications</h3>
+          <p className="text-sm text-on-surface-variant">
+            {chosen ? "Chosen by this project's admins" : "The default: the first works the project record lists"}.{" "}
+            {works.length > FEATURED_PUBLICATION_LIMIT
+              ? `${FEATURED_PUBLICATION_LIMIT} of its ${works.length} publications lead the project page.`
+              : "They lead the project page, in this order."}
+          </p>
+        </div>
+        {pageHref && (
+          <a href={pageHref} target="_blank" rel="noreferrer" className={cn(linkPill, "hidden shrink-0 text-primary sm:inline-flex")}>
+            View page <ExternalLink className="size-3.5 opacity-70" aria-hidden />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        )}
+      </div>
+
+      {!open && (
+        <ol className="mt-5 space-y-2">
+          {current.map((slug, i) => {
+            const work = works.find((w) => w.slug === slug);
+            return work ? (
+              <li key={slug} className="flex items-start gap-3 rounded-2xl bg-surface-container-low p-3">
+                <span aria-hidden className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-primary text-xs font-bold text-on-primary">
+                  {i + 1}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold leading-snug">{work.title}</span>
+                  <span className="mt-0.5 block text-xs text-on-surface-variant">
+                    <em>{work.journal}</em> · {work.year}
+                  </span>
+                </span>
+              </li>
+            ) : null;
+          })}
+        </ol>
+      )}
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={listId}
+        onClick={() => {
+          setOpen((o) => !o);
+          setPicked(current);
+          setError(null);
+        }}
+        className={cn(linkPill, "mt-4 text-primary")}
+      >
+        <ChevronDown className={cn("size-4 transition", open && "rotate-180")} aria-hidden />
+        {open ? "Close" : `Change featured publications (${works.length})`}
+      </button>
+      {open && (
+        <div id={listId}>
+          <fieldset className="mt-5">
+            <legend className="sr-only">Publications to feature, up to {FEATURED_PUBLICATION_LIMIT}</legend>
+            <ul className="space-y-2">
+              {works.map((work) => {
+                const rank = picked.indexOf(work.slug);
+                const on = rank !== -1;
+                const id = `feature-${work.slug}`;
+                return (
+                  <li key={work.slug}>
+                    <label
+                      htmlFor={id}
+                      className={cn(
+                        "flex cursor-pointer items-start gap-3 rounded-2xl p-3 transition",
+                        on ? "bg-secondary-container" : "hover:bg-surface-container",
+                        !on && full && "cursor-not-allowed hover:bg-transparent",
+                      )}
+                    >
+                      <input
+                        id={id}
+                        type="checkbox"
+                        checked={on}
+                        disabled={!on && full}
+                        onChange={() => toggle(work.slug)}
+                        className="sr-only"
+                      />
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "mt-0.5 grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold",
+                          on ? "bg-primary text-on-primary" : "border border-outline",
+                        )}
+                      >
+                        {on ? rank + 1 : null}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-semibold leading-snug">{work.title}</span>
+                        <span className="mt-0.5 block text-xs text-on-surface-variant">
+                          <em>{work.journal}</em> · {work.year}
+                        </span>
+                      </span>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+          </fieldset>
+
+          {error && (
+            <p role="alert" className="mt-3 text-sm text-error">
+              {error}
+            </p>
+          )}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <Button size="sm" disabled={busy || !changed || picked.length === 0} onClick={() => void save(picked)}>
+              {busy ? "Saving…" : "Save featured"}
+            </Button>
+            {chosen && (
+              <Button size="sm" variant="ghost" disabled={busy} onClick={() => void save([])}>
+                Use the default
+              </Button>
+            )}
+            <span className="text-xs text-on-surface-variant" aria-live="polite">
+              {full ? `${FEATURED_PUBLICATION_LIMIT} chosen. Untick one to choose another.` : `${picked.length} of ${FEATURED_PUBLICATION_LIMIT} chosen.`}
+            </span>
+          </div>
+        </div>
+      )}
+    </Panel>
   );
 }
 

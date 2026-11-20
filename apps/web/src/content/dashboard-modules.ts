@@ -14,6 +14,13 @@ import type { PricingPlans, Product } from "@gmhlab/core";
  * storefront) before launch. The noticeboard is invented too.
  */
 
+/**
+ * The storefront and cart switch. Off (2026-11-20): the Plans & store section,
+ * the top-bar bag, the cart drawer and "Buy it alone" are hidden, not deleted.
+ * Set to true to bring them all back.
+ */
+export const STORE_ENABLED = false;
+
 export const DASHBOARD_MODULES: DashboardModule[] = [
   {
     id: "equip",
@@ -184,6 +191,20 @@ export const DASHBOARD_MODULES: DashboardModule[] = [
     art: { kind: "shape", name: "held" },
     access: { kind: "tier", min: "admin" },
     includes: ["Bio review with a diff", "Access requests"],
+    nav: "Lab",
+  },
+  {
+    id: "project-admins",
+    icon: "users",
+    title: "Project admins",
+    tagline: "Choose who runs each project room",
+    description:
+      "Assign each project's admins: they post to its room's message board and choose the publications its page features.",
+    href: "/dashboard/project-admins",
+    category: "Lab",
+    art: { kind: "glyph", name: "community" },
+    access: { kind: "tier", min: "admin" },
+    includes: ["Admins per project", "Message board and featured publications rights"],
     nav: "Lab",
   },
 ];

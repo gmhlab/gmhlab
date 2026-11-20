@@ -2,6 +2,7 @@ import type {
   AccessRequest,
   Account,
   AccountActivity,
+  FeaturedPublications,
   CourseProgress,
   LearningProgress,
   Order,
@@ -13,6 +14,7 @@ import type {
   ProfileSubmission,
   PublishedProfile,
   ReviewQueue,
+  RoomMessage,
 } from "@gmhlab/core";
 
 /**
@@ -34,6 +36,8 @@ export interface AccountContextType {
   requestAccess: (input: Pick<AccessRequest, "kind" | "project" | "note">) => Promise<AccessRequest>;
   decideSubmission: (id: string, approve: boolean, note?: string) => Promise<void>;
   decideRequest: (id: string, approve: boolean) => Promise<void>;
+  /** Admins only: replace a project's admins. Refreshes the account and queue. */
+  setProjectLeads: (project: string, accountIds: string[]) => Promise<void>;
 }
 
 /** Course progress for the signed-in account. */
@@ -70,4 +74,26 @@ export interface CheckoutContextType {
 export interface ProfilesContextType {
   profiles: PublishedProfile[];
   refresh: () => Promise<void>;
+}
+
+/**
+ * Project room message boards: every message the signed-in account can see,
+ * newest first. Posting and removing are for the room's admins.
+ */
+export interface RoomsContextType {
+  messages: RoomMessage[];
+  isLoading: boolean;
+  post: (project: string, body: string) => Promise<RoomMessage>;
+  remove: (id: string) => Promise<void>;
+}
+
+/**
+ * Which publications each project page features, chosen by the project's
+ * admins. Mounted at the root like the profiles, since the public project
+ * pages read it; `set` needs a signed-in admin of that project.
+ */
+export interface FeaturedPublicationsContextType {
+  featured: FeaturedPublications;
+  refresh: () => Promise<void>;
+  set: (project: string, slugs: string[]) => Promise<void>;
 }

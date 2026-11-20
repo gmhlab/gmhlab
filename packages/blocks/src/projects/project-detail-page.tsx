@@ -17,7 +17,7 @@ import {
   TextTitlePage,
 } from "@gmhlab/ui";
 import {
-  resolveProjectPublications,
+  featuredProjectPublications,
   resolveRelatedProjects,
   type Objective,
   type ProjectDetail,
@@ -101,6 +101,11 @@ export type ProjectDetailPageProps = {
   basePath?: string;
   /** Where "all publications" links to. */
   publicationsHref?: string;
+  /**
+   * Publication slugs the project's admins chose to feature, in order (up to
+   * three). Omit to feature the first works the record lists.
+   */
+  featuredPublications?: string[];
   /**
    * Everyone on the team page. The page shows those tagged with this
    * project's slug; omit and the people section renders nothing.
@@ -656,9 +661,6 @@ function Findings({
 
 /* -- Evidence ------------------------------------------------------------- */
 
-/** How many works the evidence section shows before the disclosure. */
-const FEATURED_PUBLICATIONS = 3;
-
 function PublicationRow({
   publication,
   note,
@@ -668,9 +670,10 @@ function PublicationRow({
       <div className="pd-pub-meta">
         <PublicationCover publication={publication} />
         <span className="pd-pub-year">{publication.year}</span>
-        {note ? <span className="pd-pub-note">{note}</span> : null}
       </div>
       <div className="pd-pub-body">
+        {/* What the work is to the project, read before its title. */}
+        {note ? <span className="pd-pub-note">{note}</span> : null}
         <span className="pd-pub-title">
           {publication.doi ? (
             <TextLink href={publication.doi}>{publication.title}</TextLink>
@@ -700,30 +703,23 @@ function Evidence({
   detail,
   publications,
   publicationsHref,
+  featuredPublications,
 }: {
   detail: ProjectDetail;
   publications: Publication[];
   publicationsHref: string;
+  featuredPublications?: string[];
 }) {
-  const entries = resolveProjectPublications(detail, publications);
-  if (!entries.length) return null;
-
-  /* The first works the *record* lists are the featured ones — a record
-     leads with its protocol or development paper, which newest-first would
-     bury. The rest keep the resolver's newest-first order, behind a
+  /* Three works are featured — the admins' choice, else the record's own
+     lead works (see `featuredProjectPublications`). The rest sit behind a
      disclosure, so a long bibliography never becomes the page's longest
      section and nothing is dropped. */
-  const order = new Map(
-    (detail.publications ?? []).map((ref, index) => [ref.slug, index]),
+  const { featured, rest, all: entries } = featuredProjectPublications(
+    detail,
+    publications,
+    featuredPublications,
   );
-  const featured = [...entries]
-    .sort(
-      (a, b) =>
-        (order.get(a.publication.slug) ?? 0) -
-        (order.get(b.publication.slug) ?? 0),
-    )
-    .slice(0, FEATURED_PUBLICATIONS);
-  const rest = entries.filter((entry) => !featured.includes(entry));
+  if (!entries.length) return null;
 
   return (
     <Section variant="neutral" padding="1600">
@@ -903,6 +899,7 @@ export function ProjectDetailPage({
   detailSlugs = [],
   basePath = "/projects",
   publicationsHref = "/publications",
+  featuredPublications,
   people = [],
   teamHref = "/team",
 }: ProjectDetailPageProps) {
@@ -939,6 +936,7 @@ export function ProjectDetailPage({
         detail={detail}
         publications={publications}
         publicationsHref={publicationsHref}
+        featuredPublications={featuredPublications}
       />
       <Collaborate detail={detail} />
       <Related

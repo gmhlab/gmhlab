@@ -119,9 +119,13 @@ the contract in ways that matter for the next one:
 - **`findings`** renders published results as a "What it found" brand band,
   each card citing a bibliography slug (`source`, fail-soft like
   `publications`). Only published numbers go here.
-- **Published work shows the first three works the record lists**, with the
-  rest behind a "Show all N" disclosure — so order each record's
-  `publications` most-important first (protocol / development paper).
+- **Published work features three works**, with the rest behind a "Show all
+  N" disclosure. The project's admins choose the three in its dashboard room
+  (`featuredPublications` prop, from `ProjectRoomService`, 2026-11-20);
+  unchosen places fall back to the first works the record lists, so still
+  order each record's `publications` most-important first (protocol /
+  development paper). `featuredProjectPublications` is the one rule both the
+  page and the room's picker use.
 - Section copy that assumed a trial is overridable per record (`armsLabel`,
   `objectivesNote`, `timelineHeading`, `timelineNote`, `eligibilityNote`,
   `findingsNote`).

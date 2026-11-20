@@ -5,13 +5,14 @@ import {
   mockCheckoutService,
   mockLearningService,
   mockMediaService,
+  mockProjectRoomService,
 } from "@gmhlab/core/mocks";
 import { WorkspaceProviders, type WorkspaceServices } from "@gmhlab/data";
 import type { ReactNode } from "react";
 
 /**
  * The member workspace's backends — core's demo workspace (localStorage), the
- * same store `DataProviders`' auth service signs into. Swap these four for
+ * same store `DataProviders`' auth service signs into. Swap these five for
  * real services here. Module-level so the references are stable.
  */
 const SERVICES: WorkspaceServices = {
@@ -19,6 +20,7 @@ const SERVICES: WorkspaceServices = {
   learning: mockLearningService,
   media: mockMediaService,
   checkout: mockCheckoutService,
+  rooms: mockProjectRoomService,
 };
 
 /** Renders no DOM. Mounted by the dashboard layout only. */

@@ -50,7 +50,8 @@ export type ModuleIcon =
   | "book"
   | "shield"
   | "chart"
-  | "layout";
+  | "layout"
+  | "users";
 
 export type DashboardModule = {
   id: string;
@@ -181,7 +182,7 @@ export type PracticeScenario = {
 
 export type RoomResource = {
   title: string;
-  kind: "Protocol" | "Measure" | "Training" | "Template" | "Report" | "Video";
+  kind: "Summary" | "Protocol" | "Measure" | "Training" | "Template" | "Report" | "Video";
   detail: string;
   href?: string;
 };
@@ -195,6 +196,18 @@ export type ProjectRoom = {
   art: ModuleArt;
   resources: RoomResource[];
   contact?: { name: string; role: string; email?: string };
+  /** The project's shared folder (Google Drive, Docs, …). Omit until one is linked. */
+  folder?: { href: string; label?: string };
+  /** The project's page on the public site. */
+  siteHref?: string;
+};
+
+/** A work a room's admins can feature on the project's public page. */
+export type RoomPublication = {
+  slug: string;
+  title: string;
+  journal: string;
+  year: number;
 };
 
 /* ── Handbook ─────────────────────────────────────────────────────────── */
