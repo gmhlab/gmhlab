@@ -3,14 +3,18 @@ import { Libre_Baskerville, Nunito_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import { DataProviders } from "../components/data-providers";
 import { ThemeProvider } from "../components/theme-provider";
+import { SITE_ORIGIN } from "../site-origin";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "GW Global Mental Health",
   description:
     "Supporting Wellbeing Worldwide.",
-  // Pre-launch. Drop this alongside app/robots.ts to open the site to indexing.
-  robots: { index: false, follow: false },
+  // Absolute URLs (Open Graph images and the like) point at the real domain
+  // whichever host served the page. Indexing is decided per host in
+  // next.config.ts and app/robots.ts, not here: a <meta> tag that varied by
+  // host would make every page render dynamically.
+  metadataBase: new URL(SITE_ORIGIN),
 };
 
 /* Web fallbacks for the GW faces. Baskerville and Avenir Next are macOS system
