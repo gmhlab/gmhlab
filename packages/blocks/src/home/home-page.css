@@ -2,8 +2,9 @@
  * nothing here can leak into another consumer of @gmhlab/blocks/styles.css.
  *
  * The look is the lit language (../shared/lit.css): the lit hero and stage,
- * the aurora, glass panels and stat tiles, tilt cards, covers and the wave
- * rule. This file only lays them out for the landing page.
+ * the aurora, glass panels, tilt cards and covers. The stat band under the
+ * hero is a plain brand Section with ui's wave and count-up StatsCards. This
+ * file only lays them out for the landing page.
  *
  * Colour, type and radius all come from tokens. The few literals left are
  * geometry (the gap-field glyph) and neutral light and shade.
@@ -76,13 +77,29 @@
 
 /* ── Hero ───────────────────────────────────────────────────────────── */
 
-/* Tall enough to read as the page's opening, short enough that the wave and
-   the start of the next section show on a laptop. */
+/* Full width: the home hero is a lit band edge to edge, not a card on a
+   stage like the index heroes, so the lit card's corners and drop go. */
+.home-hero.lit-hero {
+  border-radius: 0;
+  box-shadow: none;
+  /* Room above and below the copy: 6rem on wide screens, 4rem on narrow.
+     The stat band slides up over the hero's foot by the wave's height (see
+     Stats), so the bottom adds that height back and the copy keeps the same
+     room above the gold line. Same clamp as ui's --graphic-wave-height. */
+  --home-hero-pad: clamp(var(--gmh-space-1600), 7vw, var(--gmh-space-2400));
+  --padding-y-top: var(--home-hero-pad);
+  --padding-y-bottom: calc(var(--home-hero-pad) + clamp(3rem, 7vw, 6.25rem));
+}
+
+/* Tall enough to read as the page's opening without empty bands of photo
+   above and below the copy; the stat band and its wave follow close under
+   it. (It was clamp(36rem, 82vh, 50rem) with 4rem padding, which left too
+   much air top and bottom.) */
 .home-hero {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: clamp(36rem, 82vh, 50rem);
+  min-height: clamp(28rem, 58vh, 38rem);
 }
 
 /* The copy column: the photo (or the mark) owns the right of the card. */
@@ -148,13 +165,10 @@
   color: var(--lit-on-navy);
 }
 
-.home-hero-stats {
-  margin-top: var(--gmh-space-600);
-}
-
 /* The photo is the hero's picture, so it gets more room than the shared lit
    fade gives: solid only under the copy, then a light navy veil that keeps it
-   in the card's colour without hiding it. */
+   in the card's colour without hiding it. Its foot runs under the stat band,
+   which overlaps it up to the gold wave. */
 .home-hero.lit-hero-photo .graphic-photo::after,
 .home-hero.lit-hero-photo .graphic-photo-wash-start::after {
   background:
@@ -175,17 +189,12 @@
 }
 
 /* The mark: large, on the photo, white ink and gold. A tight shadow separates
-   it from the picture; no glow, no clearing. Set high and right, in the open
-   part of the picture rather than on its subject (with the campus photo, the
-   sky beside the book, the arch running below). */
+   it from the picture; no glow, no clearing. Centred in its column of
+   .home-split-hero, both ways (2026-11-20: it was pushed to the column's end,
+   set high, and shifted further out on wide windows). */
 .home-hero-mark {
-  align-self: start;
-  justify-self: end;
-  margin-top: -3rem;
-  /* The photo scales with the window and the content column does not, so on
-     wide windows the mark moves out with the picture to stay beside its
-     subject. */
-  translate: max(0px, (100vw - 1440px) * 0.25) 0;
+  align-self: center;
+  justify-self: center;
   width: min(100%, 22rem);
 
   .gmh-mark {
@@ -222,13 +231,6 @@
   }
 }
 
-/* Tablets: the crop still shows the subject on the left, so the mark keeps
-   to the right of it. */
-@media (min-width: 640px) and (max-width: 939.98px) {
-  .home-hero-mark {
-    justify-self: end;
-  }
-}
 
 /* A side photograph: full colour, the workspace's 28px corner, the gold
    light behind it. */
@@ -261,13 +263,61 @@
   }
 }
 
-/* ── The wave ───────────────────────────────────────────────────────── */
+/* ── Stats ──────────────────────────────────────────────────────────── */
 
-.home-wave {
-  padding-block: var(--gmh-space-600) 0;
+/* The figures get their own band under the hero rather than crowding it.
+   Plain navy behind them: the band keeps its bloom and the gold wave on its
+   top edge, but not the contour texture every other brand band carries
+   (section.css). */
+/* The band follows a navy photo hero, so the wave can't be carved in the page
+   paper (a paper strip) or a flat navy (the photo's bottom edge shows). The
+   band instead slides up over the hero's foot by the wave's height, and is
+   transparent above the gold line: its paint moves to ::before (the brand
+   band's bloom, fall and navy, without its contour texture), masked to the
+   wave's shape. The photo runs down to the gold line, and its bottom edge is
+   hidden under the band. */
+.home-stats-band.section-variant-brand {
+  --graphic-wave-fill: transparent;
+  background: none;
+  margin-top: calc(var(--graphic-wave-height) * -1);
+  /* The content clears the whole wave, not three quarters of it. */
+  padding-top: calc(var(--padding-y-top) + var(--graphic-wave-height));
+  z-index: 1;
 }
-.home-wave-rule {
-  height: 2.5rem;
+.home-stats-band.section-variant-brand::before {
+  background:
+    radial-gradient(
+      80% 130% at 12% 0%,
+      color-mix(in srgb, var(--gmh-color-tertiary-container) 30%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(
+      175deg,
+      transparent 45%,
+      color-mix(in srgb, var(--gmh-ref-palette-primary10) 80%, transparent)
+    ),
+    var(--gmh-color-brand-band);
+  /* Below the wave (the same path as ui's WaveDivider, stretched the same
+     way), then everything under it. */
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 72 C240 22 480 122 720 72 S1200 22 1440 72 V100 H0 Z'/%3E%3C/svg%3E")
+      top / 100% var(--graphic-wave-height) no-repeat,
+    linear-gradient(#000 0 0) 0 calc(var(--graphic-wave-height) - 1px) / 100% 100% no-repeat;
+}
+.home-stats-band .graphic-wave-echo {
+  opacity: 0.18;
+  stroke: var(--lit-on-navy);
+}
+
+.home-stats {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(11.25rem, 1fr));
+  width: 100%;
+
+  > * {
+    min-width: 0;
+  }
 }
 
 /* ── The care-gap field ─────────────────────────────────────────────── */

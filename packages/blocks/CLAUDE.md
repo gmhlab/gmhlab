@@ -199,18 +199,27 @@ unattributed design copy and must not be put under a real GW role; the docs demo
 exercises that section with the synthetic institute. Placeholder photos have
 `alt=""` because describing a random picsum scene would be false.
 
-Since 2026-11-08 it is drawn in the lit language (below): the hero is a lit
-card on a stage: `hero.background` in full colour under a navy fade from the
+Since 2026-11-08 it is drawn in the lit language (below). Since 2026-11-20 the
+hero is a **full-width lit band** (`lit-hero lit-band`, no stage, no card corners
+or drop; the user's call), unlike the index heroes, which stay cards on a stage:
+`hero.background` in full colour under a navy fade from the
 left (`.home-hero.lit-hero-photo` opens the shared fade much further), the
 striations behind the copy, and **the GMH mark large on the photo** — ui's
 decorative `GmhMark`, its own element in the hero's grid, white ink with only a
-tight shadow, set high and right in the picture's open sky. Stacked, it heads the
+tight shadow, centred both ways in its column of `.home-split-hero` (2026-11-20; it
+was pushed to the column's end, set high, and shifted out on wide windows). The hero is min clamp(28rem, 58vh, 38rem) tall with 4–6rem
+padding (6rem from 1372px), plus the wave's height at the bottom, because the stat band overlaps the
+hero's foot up to its gold wave (transparent above the line, its paint on a masked
+`::before`) so the photo runs to the wave with no edge showing. Stacked, it heads the
 hero and the fade runs top to bottom. A side `hero.image` takes the mark's place.
 Rejected, in order: leading with the photo and no mark (the index heroes do that;
 the home page keeps the mark); then `ContourGlobe centerpiece="mark"` over a faint
 texture, because its built-in clearing paints a halo over the photo and the wash
-it needs hides the picture. Don't use that centrepiece over a photo. **The stats are glass tiles
-inside the hero** (no separate stat band, no count-up); a `WaveRule` follows;
+it needs hides the picture. Don't use that centrepiece over a photo. **The stats are not in
+the hero** (2026-11-20, the user's call: the hero carried too much). They are the
+pre-lit stat band again, a `Section variant="brand"` under the hero with ui's
+`WaveDivider` carved into its top edge, no contour texture, and `StatsCard countUp`
+tiles; don't move them back into the hero as glass tiles;
 the gap field sits on a glass panel; the research lines are `TiltCard` glass
 panels with `Cover` art on a lit band (graphics only, or photos only); the
 partners are glass tiles; the CTA is a lit card. Motion is progressive and

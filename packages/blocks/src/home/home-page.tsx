@@ -7,6 +7,7 @@ import {
   Image,
   PhotoBackdrop,
   Section,
+  StatsCard,
   Text,
   TextBlockquote,
   TextEyebrow,
@@ -14,10 +15,11 @@ import {
   TextSubheading,
   TextTitleHero,
   TextTitlePage,
+  WaveDivider,
 } from "@gmhlab/ui";
 import { type CSSProperties, type ReactNode, useMemo } from "react";
 import { Aurora, TiltCard, toneAt, useLitReveal } from "../shared/lit";
-import { Cover, WaveRule } from "../shared/ornaments";
+import { Cover } from "../shared/ornaments";
 import {
   gapLitCells,
   type HomeContent,
@@ -29,10 +31,10 @@ import "./home-page.css";
 
 /**
  * A research centre's landing page, in the lit language the member workspace
- * introduced (../shared/lit.css): a lit navy hero set as a floating card,
+ * introduced (../shared/lit.css): a full-width lit navy hero band,
  * with the campus photograph in full colour, the GMH mark large on it, the
- * kit's contours behind the copy and the figures as glass tiles;
- * the gold wave as a rule; the "care gap" field figure on a glass panel; how
+ * kit's contours behind the copy; a navy stat band carved in by the gold
+ * wave, the figures counting up; the "care gap" field figure on a glass panel; how
  * the organisation works (photographs in natural colour); the research lines
  * as tilt cards with kit cover art on a lit band; a pull quote; a partner
  * wall; and a closing lit card over the care rings.
@@ -53,11 +55,32 @@ export function HomePage({ content }: { content: HomeContent }) {
 
   return (
     <div className="home-page lit-canvas" ref={rootRef}>
-      <HomeHeroSection hero={hero} stats={stats} />
+      <HomeHeroSection hero={hero} />
 
-      <Flex container className="home-wave">
-        <WaveRule className="home-wave-rule" />
-      </Flex>
+      {stats.length > 0 && (
+        <Section
+          variant="brand"
+          padding="600"
+          className="home-stats-band"
+          aria-label="At a glance"
+        >
+          <WaveDivider />
+          <Flex container>
+            <div className="home-stats">
+              {stats.map((stat, i) => (
+                <StatsCard
+                  key={stat.label}
+                  className="lit-reveal"
+                  style={{ "--lit-i": i } as CSSProperties}
+                  stat={stat.value}
+                  description={stat.label}
+                  countUp
+                />
+              ))}
+            </div>
+          </Flex>
+        </Section>
+      )}
 
       {gap && <HomeGapSection gap={gap} />}
 
@@ -245,122 +268,105 @@ export function HomePage({ content }: { content: HomeContent }) {
 }
 
 /**
- * The hero: lit navy on an inset stage, the `background` photograph in full
+ * The hero: a full-width lit band (no inset stage, no card corners), the
+ * `background` photograph in full
  * colour under a navy fade from the left, and the contours behind the copy,
- * fading out before the right of the card. Without a side `image`, the GMH
+ * fading out before the right of the band. Without a side `image`, the GMH
  * mark stands large on the right, on the photo itself: its own element with
  * only a tight shadow, because the contour drawing's built-in clearing would
  * paint a halo over the photo. With a side `image`, that stands there instead.
- * The figures sit in the hero as glass tiles.
+ * The figures are not in the hero; they get their own band below it.
  */
-function HomeHeroSection({
-  hero,
-  stats,
-}: {
-  hero: HomeContent["hero"];
-  stats: HomeContent["stats"];
-}) {
+function HomeHeroSection({ hero }: { hero: HomeContent["hero"] }) {
   const parts = splitEmphasis(hero.title, hero.emphasis);
   const withMark = !hero.image;
   return (
-    <div className="lit-stage home-hero-stage">
-      <Section
-        variant="brand"
-        className={hero.background ? "home-hero lit-hero lit-hero-photo" : "home-hero lit-hero"}
-        padding="1600"
-        elementType="header"
-      >
-        {hero.background ? <PhotoBackdrop src={hero.background} /> : null}
-        <div className="lit-hero-striations" aria-hidden>
-          <ContourGlobe centerpiece="none" />
-        </div>
-        <Aurora />
-        <Flex container>
-          <div className="home-split home-split-hero">
-            <div className="home-hero-copy">
-              {hero.eyebrow && (
-                <span className="home-hero-chip lit-enter">
-                  <span className="home-hero-chip-dot" aria-hidden="true" />
-                  {hero.eyebrow}
-                </span>
+    <Section
+      variant="brand"
+      className={
+        hero.background
+          ? "home-hero lit-hero lit-band lit-hero-photo"
+          : "home-hero lit-hero lit-band"
+      }
+      padding="1600"
+      elementType="header"
+    >
+      {hero.background ? <PhotoBackdrop src={hero.background} /> : null}
+      <div className="lit-hero-striations" aria-hidden>
+        <ContourGlobe centerpiece="none" />
+      </div>
+      <Aurora />
+      <Flex container>
+        <div className="home-split home-split-hero">
+          <div className="home-hero-copy">
+            {hero.eyebrow && (
+              <span className="home-hero-chip lit-enter">
+                <span className="home-hero-chip-dot" aria-hidden="true" />
+                {hero.eyebrow}
+              </span>
+            )}
+            <TextTitleHero
+              className="home-hero-title lit-enter"
+              style={{ "--lit-i": 1 } as CSSProperties}
+            >
+              {parts.length === 3 ? (
+                <>
+                  {parts[0]}
+                  <em className="lit-gold-text">{parts[1]}</em>
+                  {parts[2]}
+                </>
+              ) : (
+                parts[0]
               )}
-              <TextTitleHero
-                className="home-hero-title lit-enter"
-                style={{ "--lit-i": 1 } as CSSProperties}
-              >
-                {parts.length === 3 ? (
-                  <>
-                    {parts[0]}
-                    <em className="lit-gold-text">{parts[1]}</em>
-                    {parts[2]}
-                  </>
-                ) : (
-                  parts[0]
-                )}
-              </TextTitleHero>
-              <TextSubheading
-                className="home-lede home-hero-lede lit-enter"
-                style={{ "--lit-i": 2 } as CSSProperties}
-              >
-                {hero.lede}
-              </TextSubheading>
-              <div
-                className="home-hero-actions lit-enter"
-                style={{ "--lit-i": 3 } as CSSProperties}
-              >
-                <ArrowButton link={hero.primary} variant="accent" shine />
-                {hero.secondary && (
-                  <ArrowButton link={hero.secondary} variant="glass" arrow={false} />
-                )}
-              </div>
-              {stats.length > 0 && (
-                <dl className="lit-stats home-hero-stats" aria-label="At a glance">
-                  {stats.map((stat, i) => (
-                    <div
-                      className="lit-stat lit-enter"
-                      key={stat.label}
-                      style={{ "--lit-i": i + 4 } as CSSProperties}
-                    >
-                      <dt>{stat.label}</dt>
-                      <dd>{stat.value}</dd>
-                    </div>
-                  ))}
-                </dl>
+            </TextTitleHero>
+            <TextSubheading
+              className="home-lede home-hero-lede lit-enter"
+              style={{ "--lit-i": 2 } as CSSProperties}
+            >
+              {hero.lede}
+            </TextSubheading>
+            <div
+              className="home-hero-actions lit-enter"
+              style={{ "--lit-i": 3 } as CSSProperties}
+            >
+              <ArrowButton link={hero.primary} variant="accent" shine />
+              {hero.secondary && (
+                <ArrowButton link={hero.secondary} variant="glass" arrow={false} />
               )}
             </div>
-            {withMark && (
-              <div
-                className="home-hero-mark lit-enter"
-                style={{ "--lit-i": 2 } as CSSProperties}
-              >
-                <GmhMark />
-              </div>
-            )}
-            {hero.image && (
-              <figure
-                className="home-hero-figure lit-enter"
-                style={{ "--lit-i": 2 } as CSSProperties}
-              >
-                <div className="home-hero-frame">
-                  <Image
-                    aspectRatio="natural"
-                    className="home-hero-image"
-                    src={hero.image.src}
-                    alt={hero.image.alt}
-                    fetchPriority="high"
-                  />
-                </div>
-                {hero.image.caption && (
-                  <figcaption className="home-caption">
-                    {hero.image.caption}
-                  </figcaption>
-                )}
-              </figure>
-            )}
           </div>
-        </Flex>
-      </Section>
-    </div>
+          {withMark && (
+            <div
+              className="home-hero-mark lit-enter"
+              style={{ "--lit-i": 2 } as CSSProperties}
+            >
+              <GmhMark />
+            </div>
+          )}
+          {hero.image && (
+            <figure
+              className="home-hero-figure lit-enter"
+              style={{ "--lit-i": 2 } as CSSProperties}
+            >
+              <div className="home-hero-frame">
+                <Image
+                  aspectRatio="natural"
+                  className="home-hero-image"
+                  src={hero.image.src}
+                  alt={hero.image.alt}
+                  fetchPriority="high"
+                />
+              </div>
+              {hero.image.caption && (
+                <figcaption className="home-caption">
+                  {hero.image.caption}
+                </figcaption>
+              )}
+            </figure>
+          )}
+        </div>
+      </Flex>
+    </Section>
   );
 }
 
